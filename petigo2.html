@@ -266,7 +266,9 @@
     let rawData = { laki: [], perempuan: [] };
     let filteredData = [];
 
+    // OTOMATIS MEMBUKA LOGIN MODAL SAAT HALAMAN DIBUKA
     document.addEventListener("DOMContentLoaded", () => {
+      openLoginModal(); // Pop-up login langsung terbuka saat dibuka
       loadData('laki');
     });
 
