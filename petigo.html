@@ -595,13 +595,16 @@
   <span class="home-text">LUMBU</span>
 </a>
 
-<!-- POPUP LOGIN (Aman ditaruh di paling bawah) -->
-<div id="loginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+<!-- POPUP LOGIN (Sudah Diperbaiki) -->
+<div id="loginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden transition-all duration-300">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-md p-8 relative">
-        <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl">
+        
+        <!-- Tombol Close Modal -->
+        <button type="button" onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
+        <!-- Header Modal -->
         <div class="text-center mb-6">
             <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl mb-3">
                 <i class="fa-solid fa-user-shield"></i>
@@ -610,6 +613,7 @@
             <p class="text-xs text-slate-500 mt-1">Masukkan akun untuk akses data</p>
         </div>
 
+        <!-- Form Login -->
         <form onsubmit="handleLogin(event)" class="space-y-4">
             <div id="errorMessage" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3 rounded-xl">
                 Username atau password salah!
@@ -630,41 +634,30 @@
 </div>
 
 <script>
-    const USERNAME_VALID = "admin";
-    const PASSWORD_VALID = "admin123";
-
+    // Fungsi untuk Buka Form Login
     function openLoginModal() {
-        const modal = document.getElementById("loginModal");
-        modal.classList.remove("hidden");
-        setTimeout(() => modal.classList.remove("opacity-0"), 10);
+        document.getElementById("loginModal").classList.remove("hidden");
     }
 
+    // Fungsi untuk Tutup Form Login
     function closeLoginModal() {
-        const modal = document.getElementById("loginModal");
-        modal.classList.add("opacity-0");
-        setTimeout(() => modal.classList.add("hidden"), 300);
+        document.getElementById("loginModal").classList.add("hidden");
     }
 
+    // Fungsi Submit Form
     function handleLogin(e) {
         e.preventDefault();
         const u = document.getElementById("usernameInput").value.trim();
         const p = document.getElementById("passwordInput").value;
         const err = document.getElementById("errorMessage");
 
-        if (u === USERNAME_VALID && p === PASSWORD_VALID) {
-            localStorage.setItem("app_logged_in", "true");
+        if (u === "admin" && p === "admin123") {
             alert("Login Berhasil!");
             closeLoginModal();
-            location.reload(); // Refresh halaman untuk perbarui akses
+            // Lakukan tindakan lanjutan setelah login sukses di sini...
         } else {
             err.classList.remove("hidden");
         }
-    }
-
-    function handleLogout() {
-        localStorage.removeItem("app_logged_in");
-        alert("Anda telah keluar.");
-        location.reload();
     }
 </script>
 </body>
