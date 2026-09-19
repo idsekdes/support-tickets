@@ -442,50 +442,62 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Card Demo 1 -->
-                <div onclick="openDemoModal('penduduk')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center">
-                    <div class="w-16 h-16 bg-emerald-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-address-card"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-xl">1. Data Penduduk</h3>
-                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                        Pencarian NIK/Nama instan, filter RT/RW, klasifikasi usia, dan pencatatan mutasi kependudukan.
-                    </p>
-                    <span class="inline-flex items-center gap-2 mt-6 text-xs font-bold text-emerald-600 group-hover:underline">
-                        <span>Coba Simulasi</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </span>
-                </div>
+               <!-- Card Demo 1 -->
+<div onclick="openDemoModal('penduduk')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center flex flex-col justify-between">
+    <div>
+        <div class="w-16 h-16 bg-emerald-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-address-card"></i>
+        </div>
+        <h3 class="font-bold text-slate-900 text-xl">1. Data Penduduk</h3>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+            Pencarian NIK/Nama instan, filter RT/RW, klasifikasi usia, dan pencatatan mutasi kependudukan.
+        </p>
+    </div>
+    
+    <!-- Button Link Demo -->
+    <a href="https://appdesa.my.id/appdemo" onclick="event.stopPropagation();" class="mt-6 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition group-hover:scale-105">
+        <span>Coba Simulasi</span>
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
 
-                <!-- Card Demo 2 -->
-                <div onclick="openDemoModal('surat')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-blue-500 bg-white hover:bg-blue-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-file-signature"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-xl">2. Surat Masuk & Keluar</h3>
-                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                        Cetak surat otomatis (SKU, SKTM, Domisili), penomoran agenda instan, dan TTE ber-QR Code.
-                    </p>
-                    <span class="inline-flex items-center gap-2 mt-6 text-xs font-bold text-blue-600 group-hover:underline">
-                        <span>Coba Simulasi</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </span>
-                </div>
+          <!-- Card Demo 2 -->
+         <div onclick="openDemoModal('surat')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-blue-500 bg-white hover:bg-blue-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center flex flex-col justify-between">
+         <div>
+        <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-file-signature"></i>
+        </div>
+        <h3 class="font-bold text-slate-900 text-xl">2. Surat Masuk & Keluar</h3>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+            Cetak surat otomatis (SKU, SKTM, Domisili), penomoran agenda instan, dan TTE ber-QR Code.
+           </p>
+       </div>
+    
+         <!-- Button Link Demo -->
+         <a href="https://appdesa.my.id/surat" onclick="event.stopPropagation();" class="mt-6 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition group-hover:scale-105">
+        <span>Coba Simulasi</span>
+        <i class="fa-solid fa-arrow-right"></i>
+        </a>
+       </div>
 
-                <!-- Card Demo 3 -->
-                <div onclick="openDemoModal('posyandu')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-rose-500 bg-white hover:bg-rose-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center">
-                    <div class="w-16 h-16 bg-rose-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-heart-pulse"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-xl">3. Posyandu Digital</h3>
-                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                        Pencatatan BB/TB Balita, grafik KMS digital, pemantauan status gizi & pencegahan stunting.
-                    </p>
-                    <span class="inline-flex items-center gap-2 mt-6 text-xs font-bold text-rose-600 group-hover:underline">
-                        <span>Coba Simulasi</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </span>
-                </div>
+     <!-- Card Demo 3 -->
+<div onclick="openDemoModal('posyandu')" class="cursor-pointer group p-8 rounded-3xl border-2 border-slate-200 hover:border-rose-500 bg-white hover:bg-rose-50/20 transition duration-300 shadow-sm hover:shadow-xl text-center flex flex-col justify-between">
+    <div>
+        <div class="w-16 h-16 bg-rose-600 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 class="font-bold text-slate-900 text-xl">3. Posyandu Digital</h3>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+            Pencatatan BB/TB Balita, grafik KMS digital, pemantauan status gizi & pencegahan stunting.
+        </p>
+    </div>
+    
+    <!-- Button Link Demo -->
+    <a href="https://appdesa.my.id/posyandu" onclick="event.stopPropagation();" class="mt-6 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md shadow-rose-500/20 transition group-hover:scale-105">
+        <span>Coba Simulasi</span>
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
             </div>
         </div>
     </section>
