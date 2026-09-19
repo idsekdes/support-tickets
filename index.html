@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
@@ -46,9 +47,22 @@
             border: 1px solid rgba(229, 231, 235, 0.8);
         }
         
-        /* Smooth transition for slideshow */
         .slide-fade {
             transition: opacity 0.7s ease-in-out;
+        }
+
+        /* Mega Menu Dropdown Smooth Transition */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.25s ease-in-out;
+        }
+
+        .group:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -56,7 +70,9 @@
 
     <!-- NAVBAR -->
     <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <!-- PERBAIKAN 1: Tambahkan 'relative' di container navbar agar Mega Menu dapat berpatokan pada kontainer ini -->
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
             <!-- Logo AppDesa -->
             <div class="flex items-center">
                 <a href="#">
@@ -67,25 +83,258 @@
                 </a>
             </div>
             
-            <div class="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
-                <a href="#banner-slider" class="hover:text-emerald-600 transition">Beranda</a>
-                <a href="#tentang" class="hover:text-emerald-600 transition">Tentang</a>
-                <a href="#fitur" class="hover:text-emerald-600 transition">Fitur Unggulan</a>
-                <a href="#demo" class="hover:text-emerald-600 transition">Lihat Demo</a>
-                <a href="#harga" class="hover:text-emerald-600 transition">Paket Layanan</a>
-                <a href="#faq" class="hover:text-emerald-600 transition">FAQ</a>
+            <!-- Desktop Navigation Menu -->
+            <div class="hidden lg:flex items-center gap-7 font-medium text-slate-600 text-sm">
+                <a href="#banner-slider" class="hover:text-emerald-600 transition py-2">Beranda</a>
+                <a href="#tentang" class="hover:text-emerald-600 transition py-2">Tentang</a>
+                
+                <!-- MEGA MENU: FITUR UNGGULAN -->
+                <!-- PERBAIKAN 2: Mengubah 'relative' menjadi 'static' pada item menu ini agar mega menu menggunakan patokan container navbar -->
+                <div class="static group py-6">
+                    <button class="flex items-center gap-1.5 hover:text-emerald-600 transition py-2 font-semibold">
+                        <span>Fitur Unggulan</span>
+                        <i class="fa-solid fa-chevron-down text-xs group-hover:rotate-180 transition-transform duration-200"></i>
+                    </button>
+                    
+                    <!-- PERBAIKAN 3: Ubah class dropdown Mega Menu menggunakan 'absolute top-full left-0 right-0 w-full' -->
+                    <div class="dropdown-menu absolute top-full left-0 right-0 w-full bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden z-50 p-6 md:p-8 mt-1">
+                        <div class="grid grid-cols-12 gap-6">
+                            <!-- Column 1: Kependudukan -->
+                            <div class="col-span-3 space-y-4">
+                                <div class="flex items-center gap-2 text-emerald-600 font-bold text-xs uppercase tracking-wider pb-2 border-b border-slate-100">
+                                    <i class="fa-solid fa-users text-sm"></i>
+                                    <span>Kependudukan</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <a href="#demo" onclick="openDemoModal('penduduk')" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-emerald-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-address-card text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-emerald-600 transition">Pencarian Data Penduduk</p>
+                                            <p class="text-[11px] text-slate-500">Filter NIK, Nama & Dusun instan</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-emerald-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-id-card text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-emerald-600 transition">Surat Keterangan Online</p>
+                                            <p class="text-[11px] text-slate-500">Permohonan mandiri via web</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-emerald-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-house-user text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-emerald-600 transition">Integrasi RT / RW</p>
+                                            <p class="text-[11px] text-slate-500">Pengantar surat tingkat lingkungan</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Column 2: Tata Kelola & Keuangan -->
+                            <div class="col-span-3 space-y-4">
+                                <div class="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider pb-2 border-b border-slate-100">
+                                    <i class="fa-solid fa-file-invoice text-sm"></i>
+                                    <span>Tata Kelola & Administrasi</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <a href="#demo" onclick="openDemoModal('surat')" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-blue-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-envelope-open-text text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-blue-600 transition">Surat Masuk & Keluar</p>
+                                            <p class="text-[11px] text-slate-500">Penomoran otomatis & QR TTE</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-blue-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-chart-pie text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-blue-600 transition">Transparansi APBDes</p>
+                                            <p class="text-[11px] text-slate-500">Grafik realisasi anggaran publik</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-blue-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-box-archive text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-blue-600 transition">Arsip Digital Perdes</p>
+                                            <p class="text-[11px] text-slate-500">Penyimpanan dokumen permanen</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Column 3: Kesehatan & Sosial -->
+                            <div class="col-span-3 space-y-4">
+                                <div class="flex items-center gap-2 text-rose-600 font-bold text-xs uppercase tracking-wider pb-2 border-b border-slate-100">
+                                    <i class="fa-solid fa-heart-pulse text-sm"></i>
+                                    <span>Kesehatan & Sosial</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <a href="#demo" onclick="openDemoModal('posyandu')" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-rose-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-baby text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-rose-600 transition">Posyandu & Stunting</p>
+                                            <p class="text-[11px] text-slate-500">Pencatatan KMS & gizi balita</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-rose-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-hand-holding-hand text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-rose-600 transition">Bansos & Bantuan Desa</p>
+                                            <p class="text-[11px] text-slate-500">Pendataan BLT & PKH akurat</p>
+                                        </div>
+                                    </a>
+                                    <a href="#fitur" class="group/item flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-rose-600 group-hover/item:text-white transition">
+                                            <i class="fa-solid fa-notes-medical text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs group-hover/item:text-rose-600 transition">Posbindu Lansia</p>
+                                            <p class="text-[11px] text-slate-500">Rekam medis lansia desa</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Column 4: Promo / Highlight Feature Card -->
+                            <div class="col-span-3 bg-gradient-to-br from-emerald-600 to-teal-800 rounded-2xl p-5 text-white flex flex-col justify-between">
+                                <div>
+                                    <span class="inline-block bg-white/20 text-emerald-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider mb-3">Fitur Unggulan</span>
+                                    <h4 class="font-bold text-sm leading-snug">WhatsApp Gateway Integrasi</h4>
+                                    <p class="text-[11px] text-emerald-100 mt-2 leading-relaxed">Kirim notifikasi otomatis ke WA warga saat surat selesai dicetak atau informasi desa dikirimkan.</p>
+                                </div>
+                                <a href="https://wa.me/6285150531572?text=Halo%20Admin%20AppDesa,%20saya%20tertarik%20dengan%20fitur%20WhatsApp%20Gateway." target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 bg-white text-emerald-900 font-bold text-xs py-2 px-4 rounded-xl hover:bg-emerald-50 transition">
+                                    <span>Konsultasi WA</span>
+                                    <i class="fa-brands fa-whatsapp text-sm text-emerald-600"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DROPDOWN MENU: PAKET LAYANAN -->
+                <div class="relative group py-6">
+                    <button class="flex items-center gap-1.5 hover:text-emerald-600 transition py-2 font-semibold">
+                        <span>Paket Layanan</span>
+                        <i class="fa-solid fa-chevron-down text-xs group-hover:rotate-180 transition-transform duration-200"></i>
+                    </button>
+
+                    <!-- Standard Vertical Dropdown Menu -->
+                    <div class="dropdown-menu absolute top-full left-0 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50 p-3 space-y-1 mt-1">
+                        <a href="#harga" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition group/sub">
+                            <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center group-hover/sub:bg-emerald-100 group-hover/sub:text-emerald-600 transition">
+                                <i class="fa-solid fa-paper-plane text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Paket Basic / Pemula</p>
+                                <p class="text-[10px] text-slate-500">Administrasi dasar desa kecil</p>
+                            </div>
+                        </a>
+                        <a href="#harga" class="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50/50 transition group/sub border border-emerald-100">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-star text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <p class="font-bold text-xs text-slate-900">Paket Smart Desa</p>
+                                    <span class="bg-emerald-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">POPULER</span>
+                                </div>
+                                <p class="text-[10px] text-slate-500">Layanan full ekosistem & WA</p>
+                            </div>
+                        </a>
+                        <a href="#harga" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition group/sub">
+                            <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center group-hover/sub:bg-purple-100 group-hover/sub:text-purple-600 transition">
+                                <i class="fa-solid fa-building text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-xs text-slate-800">Paket Enterprise / Custom</p>
+                                <p class="text-[10px] text-slate-500">Multi-desa / Tingkat kecamatan</p>
+                            </div>
+                        </a>
+                        <div class="border-t border-slate-100 pt-1 mt-1">
+                            <a href="https://wa.me/6285150531572?text=Halo%20Admin,%20saya%20ingin%20minta%20estimasi%20biaya%20penerapan%20AppDesa." target="_blank" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 font-bold text-xs transition">
+                                <span>Simulasi Estimasi Biaya</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#demo" class="hover:text-emerald-600 transition py-2">Lihat Demo</a>
+                <a href="#faq" class="hover:text-emerald-600 transition py-2">FAQ</a>
             </div>
 
+            <!-- CTA & Mobile Toggle Button -->
             <div class="flex items-center gap-3">
-                <a href="https://wa.me/6285150531572?text=Halo%20Admin%20AppDesa,%20saya%20tertarik%20untuk%20konsultasi%20mengenai%20aplikasi%20digitalisasi%20desa." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center gap-2 text-sm">
+                <a href="https://wa.me/6285150531572?text=Halo%20Admin%20AppDesa,%20saya%20tertarik%20untuk%20konsultasi%20mengenai%20aplikasi%20digitalisasi%20desa." target="_blank" class="hidden sm:flex bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-md shadow-emerald-600/20 items-center gap-2 text-sm">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                     <span>Hubungi Kami</span>
                 </a>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-600 hover:text-emerald-600 text-2xl focus:outline-none">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Menu Nav Dropdown (Responsive Accordion) -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 max-h-[80vh] overflow-y-auto">
+            <a href="#banner-slider" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Beranda</a>
+            <a href="#tentang" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Tentang</a>
+            
+            <!-- Mobile Accordion Fitur -->
+            <div class="border-b border-slate-100 pb-2">
+                <button onclick="toggleMobileSubmenu('fiturSubmenu')" class="w-full flex justify-between items-center py-2 text-slate-700 font-semibold text-left">
+                    <span>Fitur Unggulan</span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </button>
+                <div id="fiturSubmenu" class="hidden pl-4 py-2 space-y-2 bg-slate-50 rounded-xl text-xs">
+                    <a href="#demo" onclick="openDemoModal('penduduk'); toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">1. Data Penduduk & NIK</a>
+                    <a href="#demo" onclick="openDemoModal('surat'); toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">2. Surat Masuk & Keluar (QR TTE)</a>
+                    <a href="#demo" onclick="openDemoModal('posyandu'); toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">3. Posyandu & Stunting Digital</a>
+                    <a href="#fitur" onclick="toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">4. WhatsApp Gateway Auto Notif</a>
+                </div>
+            </div>
+
+            <!-- Mobile Accordion Paket -->
+            <div class="border-b border-slate-100 pb-2">
+                <button onclick="toggleMobileSubmenu('hargaSubmenu')" class="w-full flex justify-between items-center py-2 text-slate-700 font-semibold text-left">
+                    <span>Paket Layanan</span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </button>
+                <div id="hargaSubmenu" class="hidden pl-4 py-2 space-y-2 bg-slate-50 rounded-xl text-xs">
+                    <a href="#harga" onclick="toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">Paket Basic / Pemula</a>
+                    <a href="#harga" onclick="toggleMobileMenu()" class="block py-1.5 text-emerald-700 font-bold">Paket Smart Desa (Rekomendasi)</a>
+                    <a href="#harga" onclick="toggleMobileMenu()" class="block py-1.5 text-slate-700 font-bold">Paket Enterprise Custom</a>
+                </div>
+            </div>
+
+            <a href="#demo" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">Lihat Demo</a>
+            <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-semibold border-b border-slate-100">FAQ</a>
+
+            <a href="https://wa.me/6285150531572" target="_blank" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm mt-4">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Hubungi via WhatsApp</span>
+            </a>
         </div>
     </nav>
 
-    <!-- SLIDESHOW BANNER (HERO SLIDER) DIRECTLY BELOW NAV -->
+    <!-- SLIDESHOW BANNER (HERO SLIDER) -->
     <section id="banner-slider" class="relative w-full bg-slate-900 overflow-hidden">
         <div class="relative w-full h-[220px] sm:h-[380px] md:h-[480px] lg:h-[540px]">
             <!-- Slide 1 -->
@@ -120,7 +369,7 @@
                      onerror="this.onerror=null; this.src='https://placehold.co/1200x500/4f46e5/ffffff?text=Sistem+Pencarian+Data+Penduduk';">
             </div>
 
-            <!-- Slide Nav Buttons -->
+            <!-- Slide Nav Controls -->
             <button onclick="prevSlide()" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-slate-900/50 hover:bg-emerald-600 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition z-10 border border-white/20">
                 <i class="fa-solid fa-chevron-left text-base sm:text-lg"></i>
             </button>
@@ -280,7 +529,7 @@
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                     <h3 class="font-bold text-slate-900 text-lg mb-2">Transparansi APBDes & Keuangan</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">Laporan keuangan desa publik yang ditampilkan secara visual. Memudahkan publikasi anggatan pendapatan dan belanja desa secara akuntabel.</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">Laporan keuangan desa publik yang ditampilkan secara visual. Memudahkan publikasi anggaran pendapatan dan belanja desa secara akuntabel.</p>
                 </div>
 
                 <!-- Feature 5 -->
@@ -483,6 +732,28 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        /* MOBILE MENU CONTROLLER */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark";
+            } else {
+                menu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars";
+            }
+        }
+
+        function toggleMobileSubmenu(id) {
+            const sub = document.getElementById(id);
+            if (sub.classList.contains('hidden')) {
+                sub.classList.remove('hidden');
+            } else {
+                sub.classList.add('hidden');
+            }
+        }
+
         /* SLIDESHOW BANNER CONTROLLER */
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide-item');
