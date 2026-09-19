@@ -14,6 +14,7 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
 
+  <!-- Header / Navbar -->
   <header class="bg-emerald-700 text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-3">
@@ -24,21 +25,30 @@
         </div>
       </div>
 
-      <div class="flex bg-emerald-800 p-1 rounded-xl shadow-inner">
-        <a href="https://appdesa.my.id/" id="tabLaki" onclick="switchGender('laki')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
-    <i class="fa-solid fa-house text-emerald-600"></i> HOME </a>
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex bg-emerald-800 p-1 rounded-xl shadow-inner">
+          <a href="https://appdesa.my.id/" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
+            <i class="fa-solid fa-house text-emerald-600"></i> HOME
+          </a>
+          <button id="tabLaki" onclick="switchGender('laki')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
+            <i class="fa-solid fa-mars text-blue-500"></i> Laki-Laki
+          </button>
+          <button id="tabPerempuan" onclick="switchGender('perempuan')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 text-emerald-100 hover:text-white">
+            <i class="fa-solid fa-venus text-pink-400"></i> Perempuan
+          </button>
+        </div>
 
-        <button id="tabLaki" onclick="switchGender('laki')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
-          <i class="fa-solid fa-mars text-blue-500"></i> Laki-Laki
-        </button>
-        <button id="tabPerempuan" onclick="switchGender('perempuan')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 text-emerald-100 hover:text-white">
-          <i class="fa-solid fa-venus text-pink-400"></i> Perempuan
+        <!-- Tombol Buka Login Modal -->
+        <button type="button" onclick="openLoginModal()" class="px-4 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
         </button>
       </div>
     </div>
   </header>
 
+  <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+    <!-- Ringkasan Statistik -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
         <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg text-xl"><i class="fa-solid fa-address-card"></i></div>
@@ -63,6 +73,7 @@
       </div>
     </div>
 
+    <!-- Filter & Pencarian -->
     <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-grow">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -74,11 +85,13 @@
       </div>
     </div>
 
+    <!-- Status Loading -->
     <div id="loadingState" class="hidden py-12 text-center">
       <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-600 mb-3"></i>
       <p class="text-gray-500 font-medium">Mengambil data dari spreadsheet Dusun 2 Lumbu...</p>
     </div>
 
+    <!-- Status Error -->
     <div id="errorState" class="hidden bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 flex items-center gap-3">
       <i class="fa-solid fa-triangle-exclamation text-xl"></i>
       <div>
@@ -87,6 +100,7 @@
       </div>
     </div>
 
+    <!-- Tabel Data -->
     <div id="tableContainer" class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse text-sm">
@@ -101,6 +115,7 @@
     </div>
   </main>
 
+  <!-- Modal Detail Penduduk -->
   <div id="detailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
       <div class="bg-emerald-700 px-6 py-4 text-white flex justify-between items-center">
@@ -135,10 +150,52 @@
     </div>
   </div>
 
+  <!-- POPUP FORM LOGIN MODAL DENGAN ICON MATA -->
+  <div id="loginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-md p-8 relative">
+      <button type="button" onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl mb-3">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-900">Login Petugas</h3>
+        <p class="text-xs text-slate-500 mt-1">Masukkan akun untuk akses administrator</p>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div id="errorMessage" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3 rounded-xl flex items-center gap-2">
+          <i class="fa-solid fa-circle-exclamation"></i> Username atau password salah!
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Username</label>
+          <input type="text" id="usernameInput" required placeholder="admin" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+          <!-- Input Password dengan Icon Mata -->
+          <div class="relative">
+            <input type="password" id="passwordInput" required placeholder="••••••••" class="w-full pl-4 pr-10 py-2.5 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-emerald-600 transition cursor-pointer">
+              <i id="eyeIcon" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition text-sm cursor-pointer mt-2">
+          Masuk
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
   <div id="toastNotification" class="fixed bottom-6 right-6 bg-gray-900 text-white px-4 py-2.5 rounded-lg shadow-lg text-xs font-medium flex items-center gap-2 opacity-0 transition-opacity duration-300 pointer-events-none z-50">
     <i class="fa-solid fa-circle-check text-emerald-400"></i><span id="toastMessage">Teks berhasil disalin!</span>
   </div>
 
+  <!-- Footer -->
   <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
     Desa Wani Lumbumpetigo Dusun 2 Lumbu &copy; 2026 - Sistem Informasi Penduduk
   </footer>
@@ -150,7 +207,51 @@
     };
 
     let currentGender = 'laki', rawData = { laki: [], perempuan: [] }, filteredData = [];
-    document.addEventListener("DOMContentLoaded", () => loadData('laki'));
+
+    document.addEventListener("DOMContentLoaded", () => {
+      openLoginModal(); // Buka login secara otomatis saat pertama dibuka
+      loadData('laki');
+    });
+
+    // FUNGSI SHOW / HIDE PASSWORD DENGAN ICON MATA
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('passwordInput');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    // FUNGSI MODAL LOGIN
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('errorMessage').classList.add('hidden');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('usernameInput').value.trim();
+      const p = document.getElementById('passwordInput').value;
+      const err = document.getElementById('errorMessage');
+
+      if (u === "admin" && p === "admin123") {
+        showToast("Login Berhasil!");
+        closeLoginModal();
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
 
     function switchGender(gender) {
       if (currentGender === gender) return;
@@ -223,7 +324,6 @@
       document.getElementById('modalNikText').innerText = `NIK: ${nikVal}`;
       document.getElementById('btnCopyNik').setAttribute('onclick', `copyToClipboard('${nikVal}', 'NIK')`);
 
-      // PENANGANAN FOTO (ISI BINGKAI PENUH & FOKUS KEPALA)
       const photoKey = Object.keys(dataObj).find(k => k.toLowerCase().includes('foto') || k.toLowerCase().includes('gambar'));
       const photoUrl = photoKey ? dataObj[photoKey] : null;
       pContainer.innerHTML = (photoUrl && photoUrl.trim().startsWith('http')) 
@@ -249,15 +349,18 @@
     }
 
     function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
+    
     function copyToClipboard(text, label) {
       navigator.clipboard.writeText(text).then(() => showToast(`${label} (${text}) berhasil disalin!`));
     }
+    
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
       document.getElementById('toastMessage').innerText = msg;
       toast.classList.replace('opacity-0', 'opacity-100');
       setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 3000);
     }
+    
     function showLoading(show) { document.getElementById('loadingState').classList.toggle('hidden', !show); document.getElementById('tableContainer').classList.toggle('hidden', show); }
     function showError(show) { document.getElementById('errorState').classList.toggle('hidden', !show); }
 
@@ -274,57 +377,59 @@
       doc.save(`Data_Penduduk_${genderLabel}_Dusun_2_Lumbu.pdf`);
     }
   </script>
-<style>
-.float-home-neon {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 50px;
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 1px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  z-index: 9999;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
-.float-home-neon .home-icon {
-  width: 20px;
-  height: 20px;
-  fill: #00f2fe;
-  transition: transform 0.3s ease;
-}
+  <style>
+  .float-home-neon {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    z-index: 9999;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
 
-.float-home-neon:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: rgba(15, 23, 42, 0.9);
-  border-color: #00f2fe;
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
-  color: #00f2fe;
-}
+  .float-home-neon .home-icon {
+    width: 20px;
+    height: 20px;
+    fill: #00f2fe;
+    transition: transform 0.3s ease;
+  }
 
-.float-home-neon:hover .home-icon {
-  transform: scale(1.2);
-  fill: #00f2fe;
-}
-</style>
-<!-- Tombol Melayang Neon/Glassmorphism -->
-<a href="https://appdesa.my.id/kavatua" class="float-home-neon" title="Kembali ke Home">
-  <svg viewBox="0 0 24 24" class="home-icon">
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-  </svg>
-  <span class="home-text">KAVATUA</span>
-</a>
+  .float-home-neon:hover {
+    transform: translateY(-5px) scale(1.05);
+    background: rgba(15, 23, 42, 0.9);
+    border-color: #00f2fe;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+    color: #00f2fe;
+  }
+
+  .float-home-neon:hover .home-icon {
+    transform: scale(1.2);
+    fill: #00f2fe;
+  }
+  </style>
+
+  <!-- Tombol Melayang Neon/Glassmorphism -->
+  <a href="https://appdesa.my.id/kavatua" class="float-home-neon" title="Kembali ke Home">
+    <svg viewBox="0 0 24 24" class="home-icon">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    <span class="home-text">KAVATUA</span>
+  </a>
 </body>
 </html>
