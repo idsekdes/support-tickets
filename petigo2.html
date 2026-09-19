@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <!-- Tab Navigasi & Tombol Login -->
+      <!-- Tab Navigasi & Tombol Auth -->
       <div class="flex flex-wrap items-center gap-2">
         <div class="flex bg-emerald-800 p-1 rounded-xl shadow-inner">
           <a href="https://appdesa.my.id/" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
@@ -47,14 +47,15 @@
           </button>
         </div>
 
-        <!-- Tombol Buka Login Modal -->
-        <button type="button" onclick="openLoginModal()" class="px-4 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow">
-          <i class="fa-solid fa-right-to-bracket"></i> Login
-        </button>
+        <!-- Tombol Status Auth (Login / Logout) -->
+        <div id="authButtonContainer">
+          <button type="button" onclick="openLoginModal()" class="px-4 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>
+        </div>
       </div>
     </div>
   </header>
-
 
   <!-- Content Container -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
@@ -212,19 +213,16 @@
     </div>
   </div>
 
-  <!-- POPUP FORM LOGIN MODAL WITH EYE ICON -->
-  <div id="loginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <!-- POPUP FORM LOGIN TERKUNCI (TIDAK ADA TOMBOL CLOSE KETIKA UNTESTED) -->
+  <div id="loginModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-md p-8 relative">
-      <button type="button" onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl transition">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
 
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl mb-3">
           <i class="fa-solid fa-user-shield"></i>
         </div>
-        <h3 class="text-2xl font-bold text-slate-900">Login Petugas</h3>
-        <p class="text-xs text-slate-500 mt-1">Masukkan akun untuk akses administrator</p>
+        <h3 class="text-2xl font-bold text-slate-900">Akses Terkunci</h3>
+        <p class="text-xs text-slate-500 mt-1">Silakan login untuk mengakses data Dusun 1 Petigo</p>
       </div>
 
       <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -246,7 +244,7 @@
           </div>
         </div>
         <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition text-sm cursor-pointer mt-2">
-          Masuk
+          Masuk & Buka Data
         </button>
       </form>
     </div>
@@ -272,11 +270,33 @@
     let rawData = { laki: [], perempuan: [] };
     let filteredData = [];
 
-    // OTOMATIS MEMBUKA LOGIN MODAL SAAT HALAMAN DIBUKA
+    // CEK STATUS LOGIN SAAT AWAL DIMUAT
     document.addEventListener("DOMContentLoaded", () => {
-      openLoginModal(); 
-      loadData('laki');
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        document.getElementById('loginModal').classList.add('hidden');
+        updateAuthHeader(true);
+        loadData('laki');
+      } else {
+        openLoginModal();
+        updateAuthHeader(false);
+      }
     });
+
+    function updateAuthHeader(loggedIn) {
+      const container = document.getElementById('authButtonContainer');
+      if (loggedIn) {
+        container.innerHTML = `
+          <button type="button" onclick="handleLogout()" class="px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow cursor-pointer">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>`;
+      } else {
+        container.innerHTML = `
+          <button type="button" onclick="openLoginModal()" class="px-4 py-2.5 bg-emerald-900 hover:bg-emerald-950 text-white rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow cursor-pointer">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>`;
+      }
+    }
 
     // FUNGSI TOGGLE SHOW / HIDE PASSWORD
     function togglePasswordVisibility() {
@@ -299,11 +319,6 @@
       document.getElementById('loginModal').classList.remove('hidden');
     }
 
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.add('hidden');
-      document.getElementById('errorMessage').classList.add('hidden');
-    }
-
     function handleLogin(e) {
       e.preventDefault();
       const u = document.getElementById('usernameInput').value.trim();
@@ -311,11 +326,20 @@
       const err = document.getElementById('errorMessage');
 
       if (u === "admin" && p === "admin123") {
+        sessionStorage.setItem('isLoggedIn', 'true');
         showToast("Login Berhasil!");
-        closeLoginModal();
+        document.getElementById('loginModal').classList.add('hidden');
+        err.classList.add('hidden');
+        updateAuthHeader(true);
+        loadData(currentGender);
       } else {
         err.classList.remove('hidden');
       }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('isLoggedIn');
+      location.reload();
     }
 
     function switchGender(gender) {
@@ -342,10 +366,12 @@
         statLabel.innerText = "Kategori: Perempuan";
       }
 
-      if (!rawData[gender] || rawData[gender].length === 0) {
-        loadData(gender);
-      } else {
-        applyFilters();
+      if (sessionStorage.getItem('isLoggedIn') === 'true') {
+        if (!rawData[gender] || rawData[gender].length === 0) {
+          loadData(gender);
+        } else {
+          applyFilters();
+        }
       }
     }
 
@@ -374,6 +400,11 @@
     }
 
     async function loadData(gender, forceRefresh = false) {
+      if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        openLoginModal();
+        return;
+      }
+
       showLoading(true);
       showError(false);
 

@@ -11,6 +11,52 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    .float-home-neon {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      z-index: 9999;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .float-home-neon .home-icon {
+      width: 20px;
+      height: 20px;
+      fill: #00f2fe;
+      transition: transform 0.3s ease;
+    }
+
+    .float-home-neon:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: rgba(15, 23, 42, 0.9);
+      border-color: #00f2fe;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+      color: #00f2fe;
+    }
+
+    .float-home-neon:hover .home-icon {
+      transform: scale(1.2);
+      fill: #00f2fe;
+    }
+  </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
 
@@ -27,13 +73,13 @@
 
       <div class="flex flex-wrap items-center gap-2">
         <div class="flex bg-emerald-800 p-1 rounded-xl shadow-inner">
-          <a href="https://appdesa.my.id/" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
+          <a href="https://appdesa.my.id/" class="px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 bg-white text-emerald-800 shadow">
             <i class="fa-solid fa-house text-emerald-600"></i> HOME
           </a>
-          <button id="tabLaki" onclick="switchGender('laki')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow">
+          <button id="tabLaki" onclick="switchGender('laki')" class="px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 bg-white text-emerald-800 shadow">
             <i class="fa-solid fa-mars text-blue-500"></i> Laki-Laki
           </button>
-          <button id="tabPerempuan" onclick="switchGender('perempuan')" class="px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 text-emerald-100 hover:text-white">
+          <button id="tabPerempuan" onclick="switchGender('perempuan')" class="px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 text-emerald-100 hover:text-white">
             <i class="fa-solid fa-venus text-pink-400"></i> Perempuan
           </button>
         </div>
@@ -60,7 +106,7 @@
       <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
         <div id="genderIconBox" class="p-3 bg-blue-100 text-blue-600 rounded-lg text-xl"><i id="genderIconStat" class="fa-solid fa-mars"></i></div>
         <div>
-          <p id="statGenderLabel" class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Kategori Aktif</p>
+          <p id="statGenderLabel" class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Kategori: Laki-Laki</p>
           <h3 id="statGenderCount" class="text-2xl font-bold text-gray-800">Laki-Laki</h3>
         </div>
       </div>
@@ -77,11 +123,11 @@
     <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-grow">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-solid fa-magnifying-glass"></i></span>
-        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Cari nama, NIK, No. KK..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm">
+        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Cari nama, NIK, No. KK..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm outline-none">
       </div>
       <div class="flex gap-2">
         <button onclick="exportToPDF()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition flex items-center gap-2 justify-center shadow-sm cursor-pointer"><i class="fa-solid fa-file-pdf"></i> Ekspor PDF</button>
-        <button onclick="loadData(currentGender, true)" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition flex items-center gap-2 justify-center cursor-pointer"><i class="fa-solid fa-rotate"></i> Muat Ulang</button>
+        <button onclick="loadData(currentGender)" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition flex items-center gap-2 justify-center cursor-pointer"><i class="fa-solid fa-rotate"></i> Muat Ulang</button>
       </div>
     </div>
 
@@ -175,7 +221,6 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-          <!-- Input Password dengan Icon Mata -->
           <div class="relative">
             <input type="password" id="passwordInput" required placeholder="••••••••" class="w-full pl-4 pr-10 py-2.5 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
             <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-emerald-600 transition cursor-pointer">
@@ -200,20 +245,29 @@
     Desa Wani Lumbumpetigo Dusun 2 Lumbu &copy; 2026 - Sistem Informasi Penduduk
   </footer>
 
+  <!-- Tombol Melayang Neon/Glassmorphism -->
+  <a href="https://appdesa.my.id/kavatua" class="float-home-neon" title="Kembali ke Home">
+    <svg viewBox="0 0 24 24" class="home-icon">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    <span class="home-text">KAVATUA</span>
+  </a>
+
   <script>
     const CSV_URLS = {
       perempuan: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhmItqd-86LT6lQrhWiPd94ZDZVew1i6WyxYn3t0bA2d21pzyLBKXMiD8b8m90R-CfrUdTMR4Xo4HZ/pub?gid=1217765628&single=true&output=csv",
       laki: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQwYCQLWAu95bP1KdDBa3WwGcUFEyDb23c23JSfkF3BhdxrOHAxfVfsATlUwzq_lmRdoP4kVkbgKo8/pub?gid=580499093&single=true&output=csv"
     };
 
-    let currentGender = 'laki', rawData = { laki: [], perempuan: [] }, filteredData = [];
+    let currentGender = 'laki';
+    let rawData = { laki: [], perempuan: [] };
+    let filteredData = [];
 
     document.addEventListener("DOMContentLoaded", () => {
-      openLoginModal(); // Buka login secara otomatis saat pertama dibuka
+      openLoginModal();
       loadData('laki');
     });
 
-    // FUNGSI SHOW / HIDE PASSWORD DENGAN ICON MATA
     function togglePasswordVisibility() {
       const passInput = document.getElementById('passwordInput');
       const eyeIcon = document.getElementById('eyeIcon');
@@ -229,7 +283,6 @@
       }
     }
 
-    // FUNGSI MODAL LOGIN
     function openLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
     }
@@ -256,42 +309,84 @@
     function switchGender(gender) {
       if (currentGender === gender) return;
       currentGender = gender;
-      document.getElementById('tabLaki').className = gender === 'laki' ? "px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow" : "px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 text-emerald-100 hover:text-white";
-      document.getElementById('tabPerempuan').className = gender === 'perempuan' ? "px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 bg-white text-emerald-800 shadow" : "px-5 py-2.5 rounded-lg font-medium transition flex items-center gap-2 text-emerald-100 hover:text-white";
+      document.getElementById('tabLaki').className = gender === 'laki' ? "px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 bg-white text-emerald-800 shadow" : "px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 text-emerald-100 hover:text-white";
+      document.getElementById('tabPerempuan').className = gender === 'perempuan' ? "px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 bg-white text-emerald-800 shadow" : "px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition flex items-center gap-2 text-emerald-100 hover:text-white";
       document.getElementById('genderIconStat').className = gender === 'laki' ? "fa-solid fa-mars" : "fa-solid fa-venus";
       document.getElementById('genderIconBox').className = gender === 'laki' ? "p-3 bg-blue-100 text-blue-600 rounded-lg text-xl" : "p-3 bg-pink-100 text-pink-600 rounded-lg text-xl";
       document.getElementById('statGenderLabel').innerText = `Kategori: ${gender === 'laki' ? 'Laki-Laki' : 'Perempuan'}`;
-      if (!rawData[gender] || rawData[gender].length === 0) loadData(gender); else applyFilters();
+      
+      if (!rawData[gender] || rawData[gender].length === 0) {
+        loadData(gender);
+      } else {
+        applyFilters();
+      }
     }
 
     async function fetchCSVText(url) {
-      try { const res = await fetch(url); if (res.ok) { const txt = await res.text(); if (txt && !txt.startsWith("<!DOCTYPE")) return txt; } } catch (e) {}
-      try { const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`); if (res.ok) { const txt = await res.text(); if (txt && !txt.startsWith("<!DOCTYPE")) return txt; } } catch (e) {}
+      try { 
+        const res = await fetch(url); 
+        if (res.ok) { 
+          const txt = await res.text(); 
+          if (txt && !txt.startsWith("<!DOCTYPE")) return txt; 
+        } 
+      } catch (e) {}
+      
+      try { 
+        const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`); 
+        if (res.ok) { 
+          const txt = await res.text(); 
+          if (txt && !txt.startsWith("<!DOCTYPE")) return txt; 
+        } 
+      } catch (e) {}
+      
       const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
       return await res.text();
     }
 
     async function loadData(gender) {
-      showLoading(true); showError(false);
+      showLoading(true); 
+      showError(false);
       try {
         const csvText = await fetchCSVText(CSV_URLS[gender]);
         const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-        if (parsed.data && parsed.data.length > 0) { rawData[gender] = parsed.data; applyFilters(); } else throw new Error();
-      } catch (err) { showError(true); } finally { showLoading(false); }
+        if (parsed.data && parsed.data.length > 0) { 
+          rawData[gender] = parsed.data; 
+          applyFilters(); 
+        } else {
+          throw new Error("Data kosong"); 
+        }
+      } catch (err) { 
+        showError(true); 
+      } finally { 
+        showLoading(false); 
+      }
     }
 
     function applyFilters() {
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      filteredData = (rawData[currentGender] || []).filter(item => !q || Object.values(item).some(val => String(val || '').toLowerCase().includes(q)));
-      renderTable(); updateStats();
+      filteredData = (rawData[currentGender] || []).filter(item => 
+        !q || Object.values(item).some(val => String(val || '').toLowerCase().includes(q))
+      );
+      renderTable(); 
+      updateStats();
     }
 
     function renderTable() {
-      const header = document.getElementById('tableHeader'), body = document.getElementById('tableBody'), data = filteredData;
-      header.innerHTML = ''; body.innerHTML = '';
-      if (!data.length) { body.innerHTML = `<tr><td colspan="100%" class="text-center py-8 text-gray-400"><i class="fa-solid fa-folder-open text-3xl mb-2"></i><p>Tidak ada data ditemukan.</p></td></tr>`; return; }
+      const header = document.getElementById('tableHeader');
+      const body = document.getElementById('tableBody');
+      const data = filteredData;
+      
+      header.innerHTML = ''; 
+      body.innerHTML = '';
+
+      if (!data.length) { 
+        body.innerHTML = `<tr><td colspan="100%" class="text-center py-8 text-gray-400"><i class="fa-solid fa-folder-open text-3xl mb-2"></i><p>Tidak ada data ditemukan.</p></td></tr>`; 
+        return; 
+      }
+
       const cols = Object.keys(data[0]);
       header.innerHTML = `<th class="px-4 py-3 border-b text-center w-12">No</th>` + cols.filter(c => c.trim() && !c.toLowerCase().includes('foto')).map(c => `<th class="px-4 py-3 border-b whitespace-nowrap">${c}</th>`).join('');
+
       data.forEach((row, i) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-emerald-50/50 transition cursor-pointer border-b border-gray-100";
@@ -301,6 +396,7 @@
             ? `<td class="px-4 py-3 font-semibold text-emerald-700 hover:underline whitespace-nowrap"><i class="fa-solid fa-user-circle mr-1 text-emerald-500"></i> ${val}</td>`
             : `<td class="px-4 py-3 whitespace-nowrap text-gray-600">${val}</td>`;
         }).join('');
+        
         tr.addEventListener('click', () => openModal(row));
         body.appendChild(tr);
       });
@@ -315,10 +411,12 @@
     }
 
     function openModal(dataObj) {
-      const modal = document.getElementById('detailModal'), pContainer = document.getElementById('modalPhotoContainer');
+      const modal = document.getElementById('detailModal');
+      const pContainer = document.getElementById('modalPhotoContainer');
       const nameKey = Object.keys(dataObj).find(k => k.toLowerCase().includes('nama')) || Object.keys(dataObj)[0];
       const nikKey = Object.keys(dataObj).find(k => k.toLowerCase().includes('nik'));
-      const nameVal = dataObj[nameKey] || '-', nikVal = nikKey ? dataObj[nikKey] : '-';
+      const nameVal = dataObj[nameKey] || '-';
+      const nikVal = nikKey ? dataObj[nikKey] : '-';
 
       document.getElementById('modalName').innerText = nameVal;
       document.getElementById('modalNikText').innerText = `NIK: ${nikVal}`;
@@ -330,8 +428,11 @@
         ? `<img src="${photoUrl.trim()}" alt="${nameVal}" class="w-full h-full object-cover object-top">`
         : `<div class="text-gray-300 text-6xl"><i class="fa-solid fa-user"></i></div>`;
 
-      const gIdentitas = document.getElementById('modalGroupIdentitas'), gSosial = document.getElementById('modalGroupSosial');
-      gIdentitas.innerHTML = ''; gSosial.innerHTML = '';
+      const gIdentitas = document.getElementById('modalGroupIdentitas');
+      const gSosial = document.getElementById('modalGroupSosial');
+      gIdentitas.innerHTML = ''; 
+      gSosial.innerHTML = '';
+      
       const idKeys = ['no_kk', 'kk', 'sex', 'jenis kelamin', 'tempatlahir', 'tempat lahir', 'tanggallahir', 'tanggal lahir', 'umur', 'alamat', 'dusun'];
 
       Object.entries(dataObj).forEach(([key, val]) => {
@@ -342,94 +443,64 @@
         const row = document.createElement('div');
         row.className = "flex justify-between items-center py-1 border-b border-gray-200";
         row.innerHTML = `<span class="text-gray-500 font-medium">${key.replace(/_/g, ' ').toUpperCase()}:</span><span class="font-bold text-gray-800 text-right">${valText} ${copyBtn}</span>`;
-        if (idKeys.some(k => key.toLowerCase().includes(k))) gIdentitas.appendChild(row); else gSosial.appendChild(row);
+        
+        if (idKeys.some(k => key.toLowerCase().includes(k))) {
+          gIdentitas.appendChild(row);
+        } else {
+          gSosial.appendChild(row);
+        }
       });
 
       modal.classList.remove('hidden');
     }
 
-    function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
-    
+    function closeModal() { 
+      document.getElementById('detailModal').classList.add('hidden'); 
+    }
+
     function copyToClipboard(text, label) {
       navigator.clipboard.writeText(text).then(() => showToast(`${label} (${text}) berhasil disalin!`));
     }
-    
+
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
       document.getElementById('toastMessage').innerText = msg;
       toast.classList.replace('opacity-0', 'opacity-100');
       setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 3000);
     }
+
+    function showLoading(show) { 
+      document.getElementById('loadingState').classList.toggle('hidden', !show); 
+      document.getElementById('tableContainer').classList.toggle('hidden', show); 
+    }
     
-    function showLoading(show) { document.getElementById('loadingState').classList.toggle('hidden', !show); document.getElementById('tableContainer').classList.toggle('hidden', show); }
-    function showError(show) { document.getElementById('errorState').classList.toggle('hidden', !show); }
+    function showError(show) { 
+      document.getElementById('errorState').classList.toggle('hidden', !show); 
+    }
 
     function exportToPDF() {
       if (!filteredData.length) return alert("Tidak ada data untuk diekspor.");
       const jsPDF = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;
       const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
       const genderLabel = currentGender === 'laki' ? 'Laki-Laki' : 'Perempuan';
-      doc.setFontSize(13); doc.text(`Data Penduduk ${genderLabel} - Dusun 2 Lumbu`, 14, 12);
+      
+      doc.setFontSize(13); 
+      doc.text(`Data Penduduk ${genderLabel} - Dusun 2 Lumbu`, 14, 12);
+      
       const cols = Object.keys(filteredData[0]).filter(k => !k.toLowerCase().includes('foto'));
       const head = [['No', ...cols.map(c => c.replace(/_/g, ' ').toUpperCase())]];
       const body = filteredData.map((item, index) => [index + 1, ...cols.map(k => item[k] || '-')]);
-      doc.autoTable({ startY: 18, head: head, body: body, styles: { fontSize: 6.5 }, headStyles: { fillColor: [4, 120, 87] } });
+      
+      doc.autoTable({ 
+        startY: 18, 
+        head: head, 
+        body: body, 
+        styles: { fontSize: 6.5 }, 
+        headStyles: { fillColor: [4, 120, 87] } 
+      });
+      
       doc.save(`Data_Penduduk_${genderLabel}_Dusun_2_Lumbu.pdf`);
     }
   </script>
-
-  <style>
-  .float-home-neon {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 50px;
-    color: #fff;
-    text-decoration: none;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    z-index: 9999;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .float-home-neon .home-icon {
-    width: 20px;
-    height: 20px;
-    fill: #00f2fe;
-    transition: transform 0.3s ease;
-  }
-
-  .float-home-neon:hover {
-    transform: translateY(-5px) scale(1.05);
-    background: rgba(15, 23, 42, 0.9);
-    border-color: #00f2fe;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
-    color: #00f2fe;
-  }
-
-  .float-home-neon:hover .home-icon {
-    transform: scale(1.2);
-    fill: #00f2fe;
-  }
-  </style>
-
-  <!-- Tombol Melayang Neon/Glassmorphism -->
-  <a href="https://appdesa.my.id/kavatua" class="float-home-neon" title="Kembali ke Home">
-    <svg viewBox="0 0 24 24" class="home-icon">
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-    </svg>
-    <span class="home-text">KAVATUA</span>
-  </a>
 </body>
 </html>
