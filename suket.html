@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Keterangan Online - AppDesa</title>
+
+    <!-- Favicon AppDesa -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-sans antialiased text-slate-800 bg-slate-50">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo AppDesa -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <img src="https://res.cloudinary.com/di8stbg60/image/upload/v1789833626/logo-appdesa2_xbtreq.png" alt="AppDesa Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105">
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                    <a href="#layanan" class="hover:text-brand-600 transition-colors">Jenis Surat</a>
+                    <a href="#buat-surat" class="hover:text-brand-600 transition-colors">Buat Surat</a>
+                    <a href="#lacak-surat" class="hover:text-brand-600 transition-colors">Lacak Status</a>
+                    <a href="#arsip" class="hover:text-brand-600 transition-colors">Riwayat Administrasi</a>
+                </nav>
+
+                <!-- Action Button -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#buat-surat" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold text-sm text-white bg-brand-600 hover:bg-brand-700 shadow-lg shadow-brand-600/25 transition-all">
+                        <i class="fa-solid fa-plus mr-2"></i> Ajukan Surat Baru
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="menu-btn" type="button" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3">
+            <a href="#layanan" class="block py-2 text-slate-600 hover:text-brand-600 font-medium">Jenis Surat</a>
+            <a href="#buat-surat" class="block py-2 text-slate-600 hover:text-brand-600 font-medium">Buat Surat</a>
+            <a href="#lacak-surat" class="block py-2 text-slate-600 hover:text-brand-600 font-medium">Lacak Status</a>
+            <a href="#arsip" class="block py-2 text-slate-600 hover:text-brand-600 font-medium">Riwayat Administrasi</a>
+            <a href="#buat-surat" class="block w-full text-center mt-4 px-5 py-2.5 rounded-full font-semibold text-sm text-white bg-brand-600">
+                Ajukan Surat Baru
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="bg-gradient-to-b from-brand-50/60 via-white to-slate-50 py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-brand-100 text-brand-800 mb-6">
+                        <i class="fa-solid fa-bolt text-brand-600"></i> Layanan Mandiri Digital
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Layanan <span class="text-brand-600">Surat Keterangan Online</span> Desa
+                    </h1>
+                    <p class="mt-4 text-slate-600 text-lg leading-relaxed">
+                        Pengurusan administrasi surat desa kini dapat dilakukan kapan saja dan di mana saja secara praktis, cepat, dan transparan melalui modul resmi AppDesa.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="#buat-surat" class="px-7 py-3.5 rounded-full font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-xl shadow-brand-600/30 transition-all">
+                            Buat Surat Sekarang
+                        </a>
+                        <a href="#lacak-surat" class="px-7 py-3.5 rounded-full font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 shadow-sm transition-all">
+                            Cek Status Pengajuan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stats Dashboard Preview -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="w-12 h-12 rounded-xl bg-brand-100 text-brand-600 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-file-check"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-slate-900">2.480+</p>
+                        <p class="text-xs text-slate-500 font-medium">Surat Selesai Hari Ini</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-slate-900">&lt; 15 Menit</p>
+                        <p class="text-xs text-slate-500 font-medium">Rata-rata Proses</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-slate-900">12</p>
+                        <p class="text-xs text-slate-500 font-medium">Sedang Diproses</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-slate-900">100%</p>
+                        <p class="text-xs text-slate-500 font-medium">Legalitas TTD Digital</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILIHAN JENIS SURAT -->
+    <section id="layanan" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Pilih Layanan</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Jenis Surat Keterangan</h2>
+                <p class="text-slate-600 text-sm mt-2">Pilih jenis surat keterangan yang ingin Anda ajukan secara online.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card SKTM -->
+                <div class="p-6 rounded-2xl border border-slate-200 hover:border-brand-500 hover:shadow-lg transition-all group bg-white">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Surat Keterangan Tidak Mampu (SKTM)</h3>
+                    <p class="text-slate-600 text-sm mb-4">Diperlukan untuk keperluan beasiswa, bantuan sosial, atau pelayanan kesehatan.</p>
+                    <button onclick="pilihSurat('Surat Keterangan Tidak Mampu (SKTM)')" class="text-brand-600 font-semibold text-sm hover:text-brand-700 inline-flex items-center gap-1">
+                        Pilih Surat <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Card SK Domisili -->
+                <div class="p-6 rounded-2xl border border-slate-200 hover:border-brand-500 hover:shadow-lg transition-all group bg-white">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-house-user"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Surat Keterangan Domisili</h3>
+                    <p class="text-slate-600 text-sm mb-4">Keterangan tempat tinggal resmi warga di wilayah tempat desa berada.</p>
+                    <button onclick="pilihSurat('Surat Keterangan Domisili')" class="text-brand-600 font-semibold text-sm hover:text-brand-700 inline-flex items-center gap-1">
+                        Pilih Surat <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Card SK Usaha -->
+                <div class="p-6 rounded-2xl border border-slate-200 hover:border-brand-500 hover:shadow-lg transition-all group bg-white">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Surat Keterangan Usaha (SKU)</h3>
+                    <p class="text-slate-600 text-sm mb-4">Bukti legalitas usaha skala mikro atau kecil untuk pengajuan kredit usaha atau legalitas.</p>
+                    <button onclick="pilihSurat('Surat Keterangan Usaha (SKU)')" class="text-brand-600 font-semibold text-sm hover:text-brand-700 inline-flex items-center gap-1">
+                        Pilih Surat <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM PENGAJUAN SURAT -->
+    <section id="buat-surat" class="py-16 bg-slate-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-8 sm:p-10">
+                <div class="border-b border-slate-100 pb-6 mb-6">
+                    <h2 class="text-2xl font-bold text-slate-900">Formulir Pengajuan Surat Online</h2>
+                    <p class="text-slate-500 text-sm mt-1">Lengkapi data berikut secara benar sesuai dengan KTP/KK Anda.</p>
+                </div>
+
+                <form id="suratForm" onsubmit="submitForm(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- NIK -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Nomor Induk Kependudukan (NIK)</label>
+                            <input type="text" id="nik" maxlength="16" required placeholder="3201234567890001" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition-all">
+                        </div>
+
+                        <!-- Nama Lengkap -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Lengkap</label>
+                            <input type="text" id="nama" required placeholder="Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition-all">
+                        </div>
+
+                        <!-- Jenis Surat -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Jenis Surat</label>
+                            <select id="jenisSurat" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm bg-white">
+                                <option value="">-- Pilih Jenis Surat --</option>
+                                <option value="Surat Keterangan Tidak Mampu (SKTM)">Surat Keterangan Tidak Mampu (SKTM)</option>
+                                <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
+                                <option value="Surat Keterangan Usaha (SKU)">Surat Keterangan Usaha (SKU)</option>
+                                <option value="Surat Keterangan Bepergian">Surat Keterangan Bepergian</option>
+                            </select>
+                        </div>
+
+                        <!-- Nomor WhatsApp -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Nomor WhatsApp/HP</label>
+                            <input type="tel" id="telepon" required placeholder="081234567890" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Keperluan / Alasan -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Keperluan Pengajuan</label>
+                        <textarea id="keperluan" rows="3" required placeholder="Tuliskan alasan pengajuan surat secara rinci..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition-all"></textarea>
+                    </div>
+
+                    <!-- Lampiran File -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Upload Lampiran (KTP/KK - Format PDF/JPG/PNG)</label>
+                        <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 mb-2"></i>
+                            <p class="text-sm text-slate-600 font-medium">Klik untuk mengunggah dokumen pendukung</p>
+                            <p class="text-xs text-slate-400 mt-1">Maksimal file 2MB</p>
+                            <input type="file" required class="hidden" id="fileInput" onchange="updateFileName(this)">
+                            <p id="fileName" class="text-xs text-brand-600 mt-2 font-semibold"></p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-lg shadow-brand-600/30 transition-all text-base">
+                        Kirim Pengajuan Surat
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION LACAK STATUS -->
+    <section id="lacak-surat" class="py-16 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-xs">Pencarian Resmi</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-1">Lacak Status Surat</h2>
+                <p class="text-slate-600 text-sm mt-2">Masukkan Kode Transaksi/Pengajuan Anda untuk mengecek progres.</p>
+            </div>
+
+            <div class="flex gap-2">
+                <input type="text" id="kodeTrack" placeholder="Contoh: REG-2026-9812" class="flex-1 px-4 py-3.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                <button onclick="lacakSurat()" class="px-6 py-3.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors">
+                    Cek Status
+                </button>
+            </div>
+
+            <!-- Result Box -->
+            <div id="statusResult" class="hidden mt-6 p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Kode Registrasi</p>
+                        <p class="text-base font-bold text-slate-900" id="resKode">REG-2026-9812</p>
+                    </div>
+                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full" id="resStatus">SELESAI</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-600">
+                    <p><strong>Nama Pemohon:</strong> <span id="resNama">Budi Santoso</span></p>
+                    <p><strong>Jenis Surat:</strong> <span id="resJenis">Surat Keterangan Domisili</span></p>
+                    <p><strong>Tanggal Pengajuan:</strong> <span id="resTgl">20 September 2026</span></p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-200">
+                    <button class="w-full py-2.5 bg-brand-600 text-white rounded-lg font-semibold text-sm hover:bg-brand-700 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Unduh Surat (PDF)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <img src="https://res.cloudinary.com/di8stbg60/image/upload/v1789833626/logo-appdesa2_xbtreq.png" alt="AppDesa Logo" class="h-10 w-auto object-contain brightness-200 mb-2">
+                    <p class="text-xs text-slate-500">Sistem Aplikasi Surat Keterangan Digital Desa Terpadu</p>
+                </div>
+                <div class="text-xs text-slate-500 text-center md:text-right">
+                    <p>&copy; 2026 AppDesa. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Toggle Nav Mobile
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Upload File Visual
+        function updateFileName(input) {
+            const fileName = document.getElementById('fileName');
+            if (input.files.length > 0) {
+                fileName.textContent = 'Terpilih: ' + input.files[0].name;
+            }
+        }
+
+        // Auto Pick Jenis Surat dari Card
+        function pilihSurat(namaSurat) {
+            document.getElementById('jenisSurat').value = namaSurat;
+            document.getElementById('buat-surat').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Submit Form Handler Simulation
+        function submitForm(event) {
+            event.preventDefault();
+            const randomCode = 'REG-2026-' + Math.floor(1000 + Math.random() * 9000);
+            alert(`Pengajuan Surat Berhasil!\n\nKode Lacak Anda: ${randomCode}\nSimpan kode ini untuk mengecek status surat.`);
+            
+            // Auto fill Lacak Surat
+            document.getElementById('kodeTrack').value = randomCode;
+            document.getElementById('suratForm').reset();
+            document.getElementById('fileName').textContent = '';
+        }
+
+        // Lacak Surat Handler Simulation
+        function lacakSurat() {
+            const kode = document.getElementById('kodeTrack').value;
+            if(!kode) {
+                alert('Silakan masukkan Kode Registrasi terlebih dahulu.');
+                return;
+            }
+            document.getElementById('statusResult').classList.remove('hidden');
+            document.getElementById('resKode').textContent = kode;
+        }
+    </script>
+</body>
+</html>
