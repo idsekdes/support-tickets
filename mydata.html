@@ -9,7 +9,7 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PapaParse Library untuk Mengolah CSV Google Sheets -->
+    <!-- PapaParse Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -35,7 +35,7 @@
                     <p class="text-indigo-200 text-xs sm:text-sm mt-1">Sistem Informasi Pindah, Meninggal Dunia, dan Status Kependudukan</p>
                 </div>
                 <div class="bg-indigo-700/60 px-4 py-2 rounded-xl text-xs flex items-center gap-2 border border-indigo-400/30 w-fit">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="statusIndicator" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
                     <span id="dataStatus">Mengkoneksikan data...</span>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                 </button>
             </div>
 
-            <!-- Modal Content (Grid Rincian) -->
+            <!-- Modal Content -->
             <div class="p-6 overflow-y-auto space-y-4 flex-grow" id="modalContent">
                 <!-- Data Detail di-render lewat JavaScript -->
             </div>
@@ -154,21 +154,20 @@
 
     <!-- Aplikasi Logika JS -->
     <script>
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPp0Xcv0VC0a0_eBvtjbfrGZdm8hZnTb104FJ1WIia1D-UEJKsLutk3SbDTFlnF6zAt_NZFfRRLn24/pub?gid=0&single=true&output=csv";
-        
+        const PRIMARY_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPp0Xcv0VC0a0_eBvtjbfrGZdm8hZnTb104FJ1WIia1D-UEJKsLutk3SbDTFlnF6zAt_NZFfRRLn24/pub?gid=0&single=true&output=csv";
+        const PROXY_URL = "https://api.allorigins.win/raw?url=" + encodeURIComponent(PRIMARY_URL);
+
         let rawData = [];
         let filteredData = [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchData();
+            fetchDataWithFallback();
             document.getElementById('searchInput').addEventListener('input', applyFilters);
             document.getElementById('categoryFilter').addEventListener('change', applyFilters);
         });
 
-        // Helper fungsi untuk mencari nilai atribut secara fleksibel terlepas dari kapitalisasi kata
         function getVal(row, possibleKeys) {
             for (let key of possibleKeys) {
-                // Cari key dalam row secara case-insensitive
                 const foundKey = Object.keys(row).find(k => k.trim().toLowerCase() === key.toLowerCase());
                 if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null) {
                     return row[foundKey].toString().trim();
@@ -177,27 +176,56 @@
             return '-';
         }
 
-        function fetchData() {
-            Papa.parse(CSV_URL, {
+        // Fungsi dengan fallback otomatis jika koneksi langsung diblokir CORS
+        function fetchDataWithFallback() {
+            parseCSV(PRIMARY_URL, function(success) {
+                if (!success) {
+                    console.warn("Direct CSV fetch failed. Trying CORS Proxy...");
+                    parseCSV(PROXY_URL, function(proxySuccess) {
+                        if (!proxySuccess) {
+                            showErrorState();
+                        }
+                    });
+                }
+            });
+        }
+
+        function parseCSV(url, callback) {
+            Papa.parse(url, {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
                 complete: function(results) {
-                    rawData = results.data;
-                    document.getElementById('dataStatus').innerText = "Terhubung (" + rawData.length + " Data)";
-                    applyFilters();
+                    if (results.data && results.data.length > 0) {
+                        rawData = results.data;
+                        document.getElementById('dataStatus').innerText = "Terhubung (" + rawData.length + " Data)";
+                        document.getElementById('statusIndicator').className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+                        applyFilters();
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
                 },
                 error: function(err) {
-                    document.getElementById('dataStatus').innerText = "Gagal memuat!";
-                    document.getElementById('dataTableBody').innerHTML = `
-                        <tr>
-                            <td colspan="8" class="py-12 text-center text-rose-500">
-                                <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-                                <p>Gagal memuat data dari Spreadsheet CSV.</p>
-                            </td>
-                        </tr>`;
+                    callback(false);
                 }
             });
+        }
+
+        function showErrorState() {
+            document.getElementById('dataStatus').innerText = "Gagal Memuat Data";
+            document.getElementById('statusIndicator').className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+            document.getElementById('dataTableBody').innerHTML = `
+                <tr>
+                    <td colspan="8" class="py-12 text-center text-rose-500">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                        <p class="font-bold">Gagal mengambil data dari Google Sheets.</p>
+                        <p class="text-xs text-slate-500 mt-1">Pastikan spreadsheet sudah di-"Publish to Web" sebagai CSV dan akses diatur ke publik.</p>
+                        <button onclick="fetchDataWithFallback()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs hover:bg-indigo-700 transition">
+                            <i class="fa-solid fa-rotate-right me-1"></i> Coba Lagi
+                        </button>
+                    </td>
+                </tr>`;
         }
 
         function applyFilters() {
@@ -207,11 +235,9 @@
             filteredData = rawData.filter(item => {
                 const statusKependudukan = getVal(item, ['Status Kependudukan', 'STATUS', 'Kategori', 'KETERANGAN', 'Status']).toUpperCase();
                 
-                // Pencarian kata kunci pada seluruh isi baris data
                 const rowString = Object.values(item).join(' ').toLowerCase();
                 const matchesSearch = rowString.includes(searchTerm);
 
-                // Filter berdasarkan Kategori
                 let matchesCategory = false;
                 if (categoryVal === 'ALL') {
                     matchesCategory = statusKependudukan.includes('PINDAH') || statusKependudukan.includes('MENINGGAL');
@@ -251,7 +277,6 @@
                 const kecamatan = getVal(row, ['KECAMATAN', 'Kecamatan']);
                 const status = getVal(row, ['Status Kependudukan', 'STATUS', 'Kategori', 'Status']);
 
-                // Tampilan badge status
                 let badgeClass = "bg-slate-100 text-slate-700";
                 if (status.toUpperCase().includes('PINDAH')) {
                     badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
@@ -291,7 +316,6 @@
             const row = filteredData[index];
             const modalContent = document.getElementById('modalContent');
             
-            // Mengambil bidang-bidang spesifik
             const nama = getVal(row, ['Nama', 'NAMA', 'Nama Lengkap']);
             const status = getVal(row, ['Status Kependudukan', 'STATUS', 'Kategori', 'Status']);
             const kabupaten = getVal(row, ['KABUPATEN', 'Kabupaten']);
