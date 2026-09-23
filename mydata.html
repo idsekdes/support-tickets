@@ -168,7 +168,6 @@
             if (!row) return '-';
             const keys = Object.keys(row);
             
-            // Pencarian nama kolom persis atau mengabaikan spasi/huruf besar-kecil
             const targetKey = keys.find(k => k.trim().toLowerCase() === keyName.trim().toLowerCase());
             
             if (targetKey && row[targetKey] !== undefined && row[targetKey] !== null && row[targetKey].toString().trim() !== '') {
@@ -335,13 +334,36 @@
             const kecamatan = getVal(row, 'KECAMATAN');
             const desa = getVal(row, 'DESA_KELURAHAN');
             const alamat = getVal(row, 'alamat');
-            const tglMeninggal = getVal(row, 'Tanggal Meninggal');
             const jk = getVal(row, 'jenis kelamin');
             const tglLahir = getVal(row, 'tanggal lahir');
             const tmptLahir = getVal(row, 'tempat lahir');
             const status = getVal(row, 'Status Kependudukan');
+            const usia = getVal(row, 'Usia');
+
+            // Logika Penentuan Label & Nilai Tanggal Peristiwa (Pindah / Meninggal)
+            let dateLabel = "Tanggal Peristiwa";
+            let dateValue = "-";
 
             const statusUpper = status.toUpperCase();
+            if (statusUpper.includes('PINDAH')) {
+                dateLabel = "Tanggal Pindah";
+                dateValue = getVal(row, 'Tanggal Pindah');
+            } else if (statusUpper.includes('MENINGGAL')) {
+                dateLabel = "Tanggal Meninggal";
+                dateValue = getVal(row, 'Tanggal Meninggal');
+            } else {
+                // Fallback jika tidak teridentifikasi otomatis
+                const tglPindah = getVal(row, 'Tanggal Pindah');
+                const tglMeninggal = getVal(row, 'Tanggal Meninggal');
+                if (tglPindah !== '-') {
+                    dateLabel = "Tanggal Pindah";
+                    dateValue = tglPindah;
+                } else {
+                    dateLabel = "Tanggal Meninggal";
+                    dateValue = tglMeninggal;
+                }
+            }
+
             let modalBadge = 'bg-slate-100 text-slate-800';
             if (statusUpper.includes('PINDAH')) modalBadge = 'bg-amber-100 text-amber-800';
             else if (statusUpper.includes('MENINGGAL')) modalBadge = 'bg-rose-100 text-rose-800';
@@ -374,8 +396,13 @@
                     </div>
 
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Tanggal Meninggal</span>
-                        <span class="block text-sm font-semibold text-slate-700">${tglMeninggal}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Usia</span>
+                        <span class="block text-sm font-semibold text-slate-700">${usia}</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">${dateLabel}</span>
+                        <span class="block text-sm font-semibold text-slate-700">${dateValue}</span>
                     </div>
 
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
