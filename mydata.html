@@ -13,16 +13,31 @@
     <!-- PapaParse Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        .modal-animate {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Custom scrollbar style */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -69,7 +84,7 @@
                         <i class="fa-solid fa-filter absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                         <select id="categoryFilter" 
                             class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition appearance-none">
-                            <option value="ALL">Semua Status</option>
+                            <option value="ALL">Semua Status (Pindah & Meninggal)</option>
                             <option value="PINDAH">Pindah</option>
                             <option value="MENINGGAL">Meninggal Dunia</option>
                         </select>
@@ -97,9 +112,9 @@
                             <th class="py-4 px-5">NIK</th>
                             <th class="py-4 px-5">KK</th>
                             <th class="py-4 px-5">L/P</th>
+                            <th class="py-4 px-5">Usia</th>
                             <th class="py-4 px-5">Desa/Kelurahan</th>
                             <th class="py-4 px-5">Kecamatan</th>
-                            <th class="py-4 px-5">Kabupaten</th>
                             <th class="py-4 px-5">Status Kependudukan</th>
                             <th class="py-4 px-5 text-center">Aksi</th>
                         </tr>
@@ -121,6 +136,8 @@
     <!-- Modal Rincian Lengkap -->
     <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden modal-animate">
+            
+            <!-- Modal Header -->
             <div class="px-6 py-4 bg-indigo-600 text-white flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-id-card text-xl"></i>
@@ -130,7 +147,13 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-4 flex-grow" id="modalContent"></div>
+
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto space-y-4 flex-grow" id="modalContent">
+                <!-- Data Detail di-render lewat JavaScript -->
+            </div>
+
+            <!-- Modal Footer -->
             <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
                 <button onclick="window.print()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-xs transition flex items-center gap-2">
                     <i class="fa-solid fa-print"></i> Cetak / Save PDF
@@ -163,15 +186,13 @@
             document.getElementById('categoryFilter').addEventListener('change', applyFilters);
         });
 
-        // Helper fungsi pencocokan header presisi
-        function getVal(row, keyName) {
-            if (!row) return '-';
-            const keys = Object.keys(row);
-            
-            const targetKey = keys.find(k => k.trim().toLowerCase() === keyName.trim().toLowerCase());
-            
-            if (targetKey && row[targetKey] !== undefined && row[targetKey] !== null && row[targetKey].toString().trim() !== '') {
-                return row[targetKey].toString().trim();
+        // Helper untuk mencocokkan nama header secara fleksibel
+        function getVal(row, possibleKeys) {
+            for (let key of possibleKeys) {
+                const foundKey = Object.keys(row).find(k => k.trim().toLowerCase() === key.toLowerCase());
+                if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null) {
+                    return row[foundKey].toString().trim();
+                }
             }
             return '-';
         }
@@ -196,10 +217,7 @@
                 skipEmptyLines: true,
                 complete: function(results) {
                     if (results.data && results.data.length > 0) {
-                        rawData = results.data.filter(row => {
-                            return Object.values(row).some(v => v && v.toString().trim() !== '');
-                        });
-
+                        rawData = results.data;
                         document.getElementById('dataStatus').innerText = "Terhubung (" + rawData.length + " Data)";
                         document.getElementById('statusIndicator').className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
                         applyFilters();
@@ -208,7 +226,7 @@
                         callback(false);
                     }
                 },
-                error: function() {
+                error: function(err) {
                     callback(false);
                 }
             });
@@ -222,7 +240,7 @@
                     <td colspan="10" class="py-12 text-center text-rose-500">
                         <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
                         <p class="font-bold">Gagal mengambil data dari Google Sheets.</p>
-                        <p class="text-xs text-slate-500 mt-1">Pastikan publikasi spreadsheet pada mode CSV.</p>
+                        <p class="text-xs text-slate-500 mt-1">Pastikan publikasi Web Google Sheets berada pada mode CSV.</p>
                         <button onclick="fetchDataWithFallback()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs hover:bg-indigo-700 transition">
                             <i class="fa-solid fa-rotate-right me-1"></i> Coba Lagi
                         </button>
@@ -235,18 +253,14 @@
             const categoryVal = document.getElementById('categoryFilter').value.toUpperCase();
 
             filteredData = rawData.filter(item => {
-                const statusKependudukan = getVal(item, 'Status Kependudukan').toUpperCase();
+                const statusKependudukan = getVal(item, ['Status Kependudukan', 'status', 'kategori']).toUpperCase();
                 
-                const rowString = Object.values(item)
-                    .map(v => (v !== null && v !== undefined) ? v.toString() : '')
-                    .join(' ')
-                    .toLowerCase();
-
-                const matchesSearch = searchTerm === '' || rowString.includes(searchTerm);
+                const rowString = Object.values(item).join(' ').toLowerCase();
+                const matchesSearch = rowString.includes(searchTerm);
 
                 let matchesCategory = false;
                 if (categoryVal === 'ALL') {
-                    matchesCategory = true;
+                    matchesCategory = statusKependudukan.includes('PINDAH') || statusKependudukan.includes('MENINGGAL');
                 } else {
                     matchesCategory = statusKependudukan.includes(categoryVal);
                 }
@@ -276,20 +290,19 @@
             }
 
             data.forEach((row, index) => {
-                const nama = getVal(row, 'nama');
-                const nik = getVal(row, 'NIK');
-                const kk = getVal(row, 'KK');
-                const jk = getVal(row, 'jenis kelamin');
-                const desa = getVal(row, 'DESA_KELURAHAN');
-                const kecamatan = getVal(row, 'KECAMATAN');
-                const kabupaten = getVal(row, 'KABUPATEN');
-                const status = getVal(row, 'Status Kependudukan');
+                const nama = getVal(row, ['nama', 'Nama']);
+                const nik = getVal(row, ['NIK', 'nik']);
+                const kk = getVal(row, ['KK', 'kk']);
+                const jk = getVal(row, ['jenis kelamin', 'Jenis Kelamin', 'JK']);
+                const usia = getVal(row, ['Usia', 'usia']);
+                const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan', 'Desa']);
+                const kecamatan = getVal(row, ['KECAMATAN', 'Kecamatan']);
+                const status = getVal(row, ['Status Kependudukan', 'Status']);
 
-                let badgeClass = "bg-slate-100 text-slate-700 border border-slate-200";
-                const statusUpper = status.toUpperCase();
-                if (statusUpper.includes('PINDAH')) {
+                let badgeClass = "bg-slate-100 text-slate-700";
+                if (status.toUpperCase().includes('PINDAH')) {
                     badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
-                } else if (statusUpper.includes('MENINGGAL')) {
+                } else if (status.toUpperCase().includes('MENINGGAL')) {
                     badgeClass = "bg-rose-100 text-rose-800 border border-rose-200";
                 }
 
@@ -305,9 +318,9 @@
                     <td class="py-4 px-5 text-slate-600 font-mono text-xs">${nik}</td>
                     <td class="py-4 px-5 text-slate-600 font-mono text-xs">${kk}</td>
                     <td class="py-4 px-5 text-slate-600 font-medium">${jk}</td>
+                    <td class="py-4 px-5 text-slate-600 font-medium">${usia !== '-' ? usia + ' Th' : '-'}</td>
                     <td class="py-4 px-5 text-slate-600">${desa}</td>
                     <td class="py-4 px-5 text-slate-600">${kecamatan}</td>
-                    <td class="py-4 px-5 text-slate-600">${kabupaten}</td>
                     <td class="py-4 px-5">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">
                             ${status}
@@ -327,122 +340,99 @@
             const row = filteredData[index];
             const modalContent = document.getElementById('modalContent');
             
-            const nama = getVal(row, 'nama');
-            const nik = getVal(row, 'NIK');
-            const kk = getVal(row, 'KK');
-            const kabupaten = getVal(row, 'KABUPATEN');
-            const kecamatan = getVal(row, 'KECAMATAN');
-            const desa = getVal(row, 'DESA_KELURAHAN');
-            const alamat = getVal(row, 'alamat');
-            const jk = getVal(row, 'jenis kelamin');
-            const tglLahir = getVal(row, 'tanggal lahir');
-            const tmptLahir = getVal(row, 'tempat lahir');
-            const status = getVal(row, 'Status Kependudukan');
-            const usia = getVal(row, 'Usia');
-            const suket = getVal(row, 'Suket');
-
-            // Logika Penentuan Label & Nilai Tanggal Peristiwa (Pindah / Meninggal)
-            let dateLabel = "Tanggal Peristiwa";
-            let dateValue = "-";
-
-            const statusUpper = status.toUpperCase();
-            if (statusUpper.includes('PINDAH')) {
-                dateLabel = "Tanggal Pindah";
-                dateValue = getVal(row, 'Tanggal Pindah');
-            } else if (statusUpper.includes('MENINGGAL')) {
-                dateLabel = "Tanggal Meninggal";
-                dateValue = getVal(row, 'Tanggal Meninggal');
-            } else {
-                const tglPindah = getVal(row, 'Tanggal Pindah');
-                const tglMeninggal = getVal(row, 'Tanggal Meninggal');
-                if (tglPindah !== '-') {
-                    dateLabel = "Tanggal Pindah";
-                    dateValue = tglPindah;
-                } else {
-                    dateLabel = "Tanggal Meninggal";
-                    dateValue = tglMeninggal;
-                }
-            }
-
-            let modalBadge = 'bg-slate-100 text-slate-800';
-            if (statusUpper.includes('PINDAH')) modalBadge = 'bg-amber-100 text-amber-800';
-            else if (statusUpper.includes('MENINGGAL')) modalBadge = 'bg-rose-100 text-rose-800';
-
-            // Logika tampilan tombol PDF/Suket
-            let suketHTML = '';
-            if (suket !== '-' && (suket.startsWith('http://') || suket.startsWith('https://'))) {
-                suketHTML = `
-                    <a href="${suket}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold transition text-xs shadow-sm">
-                        <i class="fa-solid fa-file-pdf"></i> Lihat Dokumen
-                    </a>
-                `;
-            } else if (suket !== '-') {
-                suketHTML = `<span class="text-xs font-medium text-slate-700">${suket}</span>`;
-            } else {
-                suketHTML = `<span class="text-xs italic text-slate-400">Tidak ada dokumen</span>`;
-            }
+            const nama = getVal(row, ['nama', 'Nama']);
+            const nik = getVal(row, ['NIK', 'nik']);
+            const kk = getVal(row, ['KK', 'kk']);
+            const kabupaten = getVal(row, ['KABUPATEN', 'Kabupaten']);
+            const kecamatan = getVal(row, ['KECAMATAN', 'Kecamatan']);
+            const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan']);
+            const alamat = getVal(row, ['alamat', 'Alamat']);
+            const dusun = getVal(row, ['dusun', 'Dusun']);
+            const jk = getVal(row, ['jenis kelamin', 'Jenis Kelamin']);
+            const tglLahir = getVal(row, ['tanggal lahir', 'Tanggal Lahir']);
+            const tmptLahir = getVal(row, ['tempat lahir', 'Tempat Lahir']);
+            const status = getVal(row, ['Status Kependudukan', 'Status']);
+            const usia = getVal(row, ['Usia', 'usia']);
+            const tglPindah = getVal(row, ['tanggal pindah', 'Tanggal Pindah', 'TGL PINDAH']);
+            const suket = getVal(row, ['surat keterangan', 'Surat Keterangan', 'SUKET', 'Suket']);
 
             modalContent.innerHTML = `
-                <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 flex items-center justify-between mb-4">
+                <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-100 flex items-center justify-between mb-4">
                     <div>
-                        <h4 class="text-lg font-bold text-slate-800">${nama}</h4>
-                        <p class="text-xs text-slate-500">Jenis Kelamin: ${jk}</p>
+                        <h4 class="text-lg font-bold text-slate-900">${nama}</h4>
+                        <!-- Teks 'Jenis Kelamin' diubah ke Biru Jelas -->
+                        <p class="text-xs font-medium text-blue-700">Jenis Kelamin: <span class="font-semibold text-slate-800">${jk}</span></p>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold ${modalBadge}">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold ${status.toUpperCase().includes('PINDAH') ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}">
                         ${status}
                     </span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    <!-- NIK Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">NIK</span>
-                        <span class="block text-sm font-mono font-semibold text-slate-700">${nik}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">NIK</span>
+                        <span class="block text-sm font-mono font-semibold text-slate-800">${nik}</span>
                     </div>
 
+                    <!-- NOMOR KK Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Nomor KK</span>
-                        <span class="block text-sm font-mono font-semibold text-slate-700">${kk}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">NOMOR KK</span>
+                        <span class="block text-sm font-mono font-semibold text-slate-800">${kk}</span>
                     </div>
 
+                    <!-- TEMPAT, TANGGAL LAHIR Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Tempat, Tanggal Lahir</span>
-                        <span class="block text-sm font-semibold text-slate-700">${tmptLahir}, ${tglLahir}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">TEMPAT, TANGGAL LAHIR</span>
+                        <span class="block text-sm font-semibold text-slate-800">${tmptLahir}, ${tglLahir}</span>
                     </div>
 
+                    <!-- USIA Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Usia</span>
-                        <span class="block text-sm font-semibold text-slate-700">${usia}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">USIA</span>
+                        <span class="block text-sm font-semibold text-slate-800">${usia !== '-' ? usia + ' Tahun' : '-'}</span>
                     </div>
 
+                    <!-- TANGGAL PINDAH Label (jika ada) -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">${dateLabel}</span>
-                        <span class="block text-sm font-semibold text-slate-700">${dateValue}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">TANGGAL PINDAH / CATATAN</span>
+                        <span class="block text-sm font-semibold text-slate-800">${tglPindah !== '-' ? tglPindah : '-'}</span>
                     </div>
 
-                    <!-- Display Kolom Suket dengan Tombol PDF -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex flex-col justify-center">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Surat Keterangan (Suket)</span>
-                        <div class="mt-0.5">${suketHTML}</div>
+                    <!-- SURAT KETERANGAN (SUKET) Label -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">SURAT KETERANGAN (SUKET)</span>
+                        <span class="block text-sm font-semibold ${suket === '-' || suket.toLowerCase().includes('tidak') ? 'text-slate-400 italic' : 'text-slate-800'}">${suket}</span>
                     </div>
 
+                    <!-- ALAMAT Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Alamat</span>
-                        <span class="block text-sm font-semibold text-slate-700">${alamat}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">ALAMAT</span>
+                        <span class="block text-sm font-semibold text-slate-800">${alamat}</span>
                     </div>
 
+                    <!-- DUSUN Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Desa / Kelurahan</span>
-                        <span class="block text-sm font-semibold text-slate-700">${desa}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">DUSUN</span>
+                        <span class="block text-sm font-semibold text-slate-800">${dusun}</span>
                     </div>
 
+                    <!-- DESA / KELURAHAN Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Kecamatan</span>
-                        <span class="block text-sm font-semibold text-slate-700">${kecamatan}</span>
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">DESA / KELURAHAN</span>
+                        <span class="block text-sm font-semibold text-slate-800">${desa}</span>
                     </div>
 
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
-                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Kabupaten</span>
-                        <span class="block text-sm font-semibold text-slate-700">${kabupaten}</span>
+                    <!-- KECAMATAN Label -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">KECAMATAN</span>
+                        <span class="block text-sm font-semibold text-slate-800">${kecamatan}</span>
+                    </div>
+
+                    <!-- KABUPATEN Label -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">KABUPATEN</span>
+                        <span class="block text-sm font-semibold text-slate-800">${kabupaten}</span>
                     </div>
                 </div>
             `;
