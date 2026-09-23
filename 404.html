@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Halaman Tidak Ditemukan | Appdesa</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        sky: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float 9s ease-in-out infinite',
+                        'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .parallax-layer {
+            transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .signal-wave {
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans flex flex-col justify-between overflow-x-hidden selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+    <!-- Header / Navbar Minimalis -->
+    <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 z-20">
+        <div class="flex items-center justify-between">
+            <!-- Brand Logo Appdesa -->
+            <a href="https://appdesa.my.id/" class="flex items-center gap-3 group">
+                <div class="h-10 sm:h-12 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <img 
+                        src="https://res.cloudinary.com/di8stbg60/image/upload/v1789833626/logo-appdesa2_xbtreq.png" 
+                        alt="Appdesa Logo" 
+                        class="h-full w-auto object-contain drop-shadow-sm"
+                        onerror="this.onerror=null; this.src='https://placehold.co/180x50/16a34a/ffffff?text=Appdesa';"
+                    >
+                </div>
+            </a>
+
+            <!-- Right Actions: Dark Mode Toggle & Back to Home -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button 
+                    onclick="toggleDarkMode()" 
+                    title="Beralih Mode Gelap/Terang" 
+                    class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow transition-all"
+                >
+                    <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+
+                <a href="https://appdesa.my.id/" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors bg-white dark:bg-slate-800 px-3.5 sm:px-4 py-2 rounded-full shadow-sm hover:shadow border border-slate-200/80 dark:border-slate-700">
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
+                    <span class="hidden sm:inline">Kembali ke</span> Beranda
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="relative my-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex flex-col items-center justify-center">
+        
+        <!-- Interactive Village Landscape Container -->
+        <div id="landscape" class="relative w-full max-w-3xl h-64 sm:h-72 mb-6 rounded-3xl overflow-hidden bg-gradient-to-b from-sky-100 via-emerald-50/50 to-emerald-100/60 dark:from-slate-900 dark:via-slate-800 dark:to-emerald-950/40 border border-emerald-100 dark:border-slate-800 shadow-inner flex items-center justify-center select-none">
+            
+            <!-- Clouds (Background Layer) -->
+            <div class="parallax-layer absolute inset-0 pointer-events-none" data-speed="-0.03">
+                <div class="absolute top-4 left-[10%] opacity-80 animate-float text-slate-300 dark:text-slate-700">
+                    <i class="fa-solid fa-cloud text-4xl sm:text-5xl text-white dark:text-slate-700 drop-shadow-sm"></i>
+                </div>
+                <div class="absolute top-8 right-[15%] opacity-90 animate-float-slow text-slate-300 dark:text-slate-700">
+                    <i class="fa-solid fa-cloud text-5xl sm:text-6xl text-white dark:text-slate-700 drop-shadow-sm"></i>
+                </div>
+            </div>
+
+            <!-- Digital WiFi Tower / Signal Tower (Midground) -->
+            <div class="parallax-layer absolute bottom-12 right-[20%] sm:right-[25%] pointer-events-none z-10" data-speed="0.02">
+                <div class="relative flex flex-col items-center">
+                    <div class="w-3 h-3 bg-emerald-500 rounded-full signal-wave absolute -top-1"></div>
+                    <i class="fa-solid fa-tower-cell text-3xl sm:text-4xl text-slate-700 dark:text-slate-300"></i>
+                </div>
+            </div>
+
+            <!-- Village Houses & Windmills (Midground) -->
+            <div class="parallax-layer absolute bottom-8 left-[15%] sm:left-[22%] pointer-events-none z-10 flex items-end gap-3" data-speed="0.01">
+                <!-- Windmill -->
+                <div class="relative flex flex-col items-center">
+                    <i class="fa-solid fa-fan text-slate-400 dark:text-slate-500 text-xl animate-spin-slow origin-center mb-[-6px]"></i>
+                    <div class="w-1.5 h-6 bg-slate-400 dark:bg-slate-500 rounded-t-sm"></div>
+                </div>
+                <!-- Small Village House -->
+                <div class="text-brand-800 dark:text-emerald-500 flex items-end gap-1">
+                    <i class="fa-solid fa-house-chimney text-3xl sm:text-4xl"></i>
+                    <i class="fa-solid fa-house text-2xl sm:text-3xl text-emerald-700 dark:text-emerald-600"></i>
+                </div>
+            </div>
+
+            <!-- Green Hills Layer (Foreground Background) -->
+            <svg class="absolute bottom-0 w-[120%] -left-[10%] text-emerald-200/70 dark:text-emerald-950/60 h-24 sm:h-32 pointer-events-none" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,10 1200,60 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+            <svg class="absolute bottom-0 w-[120%] -left-[10%] text-emerald-300/80 dark:text-emerald-900/50 h-16 sm:h-24 pointer-events-none" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,40 C300,100 500,10 750,70 C1000,120 1100,20 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+
+            <!-- Giant 404 Text overlapping with digital style -->
+            <div class="parallax-layer relative z-20 text-center flex flex-col items-center" data-speed="0.05">
+                <div class="flex items-center justify-center gap-1 sm:gap-3">
+                    <span class="text-7xl sm:text-9xl font-black tracking-tighter text-slate-800 dark:text-slate-100 drop-shadow-md">4</span>
+                    
+                    <!-- Interactive Search/Signal Globe Widget for the "0" -->
+                    <div id="interactive-zero" title="Klik untuk mencari sinyal desa!" class="group relative w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-brand-500 to-emerald-700 p-0.5 shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all">
+                        <div class="w-full h-full bg-slate-900/90 rounded-[14px] flex flex-col items-center justify-center text-white p-2 text-center relative overflow-hidden">
+                            <i id="zero-icon" class="fa-solid fa-wifi-slash text-2xl sm:text-4xl text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                            <span id="zero-text" class="text-[9px] sm:text-[11px] font-bold mt-1 text-emerald-200">Sinyal Putus</span>
+                            <div class="absolute -bottom-6 group-hover:bottom-1 transition-all text-[8px] bg-brand-500 text-white font-semibold px-2 py-0.5 rounded-full shadow">
+                                Klik Me!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <span class="text-7xl sm:text-9xl font-black tracking-tighter text-slate-800 dark:text-slate-100 drop-shadow-md">4</span>
+                </div>
+            </div>
+
+            <!-- Foreground Trees -->
+            <div class="parallax-layer absolute -bottom-1 left-4 right-4 sm:left-12 sm:right-12 pointer-events-none z-30 flex justify-between text-emerald-800 dark:text-emerald-600">
+                <div class="flex gap-2 items-end">
+                    <i class="fa-solid fa-tree text-2xl sm:text-3xl text-emerald-700 dark:text-emerald-500"></i>
+                    <i class="fa-solid fa-tree text-3xl sm:text-4xl text-brand-800 dark:text-brand-600"></i>
+                </div>
+                <div class="flex gap-2 items-end">
+                    <i class="fa-solid fa-tree text-3xl sm:text-4xl text-brand-800 dark:text-brand-600"></i>
+                    <i class="fa-solid fa-tree text-xl sm:text-2xl text-emerald-600 dark:text-emerald-500"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message Card -->
+        <div class="text-center max-w-xl mx-auto space-y-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-brand-800 dark:text-brand-300 text-xs sm:text-sm font-semibold border border-emerald-200 dark:border-emerald-800">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                Waduh, Jalan Digital Ini Buntu!
+            </div>
+            
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Halaman Desa Tidak Ditemukan
+            </h1>
+            
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+                Maaf, halaman yang Anda cari mungkin telah dipindahkan, diubah namanya, atau sedang dalam perawatan infrastruktur digital desa.
+            </p>
+
+            <!-- Search Bar directly on 404 page -->
+            <form onsubmit="handleSearch(event)" class="pt-2">
+                <div class="relative max-w-md mx-auto">
+                    <input type="text" id="searchInput" placeholder="Cari layanan desa, berita, atau surat..." class="w-full pl-11 pr-24 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 shadow-sm transition-all text-slate-800 dark:text-slate-100 placeholder-slate-400">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <button type="submit" class="absolute inset-y-1.5 right-1.5 px-4 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1 shadow-sm">
+                        <span>Cari</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Action Buttons -->
+            <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+                <a href="https://appdesa.my.id/" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 transition-all hover:-translate-y-0.5">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Kembali ke Beranda</span>
+                </a>
+                
+                <button onclick="openReportModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm border border-slate-200/80 dark:border-slate-700 shadow-sm transition-all">
+                    <i class="fa-solid fa-circle-exclamation text-amber-500"></i>
+                    <span>Laporkan Masalah</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Links / Popular Services -->
+        <div class="w-full max-w-4xl mt-12 sm:mt-16">
+            <p class="text-center text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-6">
+                Mungkin Anda Mencari Layanan Ini?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- Card 1 -->
+                <a href="https://appdesa.my.id/" class="glass-card p-4 rounded-2xl hover:shadow-md hover:border-brand-300 transition-all group flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-brand-700 dark:text-brand-300 flex items-center justify-center shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-file-signature text-base"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Surat Mandiri</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Pengajuan surat keterangan dan administrasi desa online.</p>
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="https://appdesa.my.id/" class="glass-card p-4 rounded-2xl hover:shadow-md hover:border-brand-300 transition-all group flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 flex items-center justify-center shrink-0 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-newspaper text-base"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">Kabar Desa</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Informasi, pengumuman, dan berita terkini dari desa.</p>
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="https://appdesa.my.id/" class="glass-card p-4 rounded-2xl hover:shadow-md hover:border-brand-300 transition-all group flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-store text-base"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">Lapak Desa</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Produk UMKM dan potensi ekonomi warga lokal.</p>
+                    </div>
+                </a>
+
+                <!-- Card 4 -->
+                <a href="https://appdesa.my.id/" class="glass-card p-4 rounded-2xl hover:shadow-md hover:border-brand-300 transition-all group flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-chart-pie text-base"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Transparansi APBD</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Laporan anggaran dan pembangunan desa secara transparan.</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 z-20">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/60 dark:border-slate-800 pt-6 text-xs text-slate-500 dark:text-slate-400">
+            <p>&copy; <span id="year"></span> Appdesa. Sistem Informasi & Pelayanan Desa Modern.</p>
+            <div class="flex items-center gap-6">
+                <a href="https://appdesa.my.id/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Bantuan</a>
+                <a href="https://appdesa.my.id/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Kebijakan Privasi</a>
+                <a href="https://appdesa.my.id/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Kontak Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Form Laporkan Masalah / Link Rusak -->
+    <div id="reportModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-200">
+            <!-- Close Button -->
+            <button onclick="closeReportModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Laporkan Halaman Rusak</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Bantu kami memperbaiki layanan Appdesa</p>
+                </div>
+            </div>
+
+            <form id="reportForm" onsubmit="submitReport(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">URL yang bermasalah</label>
+                    <input type="text" id="failedUrl" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-600 dark:text-slate-300 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Catatan Tambahan (Opsional)</label>
+                    <textarea id="reportMessage" rows="3" placeholder="Contoh: Saya mengeklik menu Surat Mandiri tetapi halaman ini muncul..." class="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none"></textarea>
+                </div>
+
+                <div id="modalFeedback" class="hidden text-xs p-2.5 rounded-lg font-medium"></div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeReportModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" id="btnSubmitReport" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold transition-colors flex items-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Kirim Laporan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Set Year dynamically
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Fill current failed URL into modal
+        document.getElementById('failedUrl').value = window.location.href;
+
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-moon text-sm';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun text-sm text-amber-400';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize Theme preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').className = 'fa-solid fa-sun text-sm text-amber-400';
+        }
+
+        // Mouse Parallax Effect on Landscape Illustration
+        const landscape = document.getElementById('landscape');
+        const parallaxLayers = document.querySelectorAll('.parallax-layer');
+
+        if (window.innerWidth > 640) {
+            landscape.addEventListener('mousemove', (e) => {
+                const rect = landscape.getBoundingClientRect();
+                const x = e.clientX - rect.left - (rect.width / 2);
+                const y = e.clientY - rect.top - (rect.height / 2);
+
+                parallaxLayers.forEach(layer => {
+                    const speed = parseFloat(layer.getAttribute('data-speed') || 0);
+                    const xOffset = x * speed;
+                    const yOffset = y * speed;
+                    layer.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+                });
+            });
+
+            landscape.addEventListener('mouseleave', () => {
+                parallaxLayers.forEach(layer => {
+                    layer.style.transform = `translate3d(0, 0, 0)`;
+                });
+            });
+        }
+
+        // Interactive Mini-Game / Wifi Connection Restore Easter Egg
+        const zeroBtn = document.getElementById('interactive-zero');
+        const zeroIcon = document.getElementById('zero-icon');
+        const zeroText = document.getElementById('zero-text');
+        let clickCount = 0;
+
+        zeroBtn.addEventListener('click', () => {
+            clickCount++;
+
+            if (clickCount === 1) {
+                zeroIcon.className = 'fa-solid fa-arrows-rotate text-2xl sm:text-4xl text-amber-400 animate-spin';
+                zeroText.textContent = 'Mencari...';
+            } else if (clickCount === 2) {
+                zeroIcon.className = 'fa-solid fa-tower-cell text-2xl sm:text-4xl text-sky-400 animate-pulse';
+                zeroText.textContent = 'Menghubungkan';
+            } else {
+                zeroIcon.className = 'fa-solid fa-wifi text-2xl sm:text-4xl text-emerald-400 animate-bounce';
+                zeroText.textContent = 'Sinyal Terhubung!';
+                zeroBtn.classList.add('ring-4', 'ring-emerald-400/50');
+
+                setTimeout(() => {
+                    alert('🎉 Selamat! Anda berhasil menghubungkan internet desa Appdesa. Silakan jelajahi kembali beranda kami.');
+                }, 300);
+            }
+        });
+
+        // Search Bar Handler
+        function handleSearch(event) {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `https://appdesa.my.id/?s=${encodeURIComponent(query)}`;
+            } else {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        // Modal Report Controls
+        function openReportModal() {
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+            const feedback = document.getElementById('modalFeedback');
+            feedback.classList.add('hidden');
+            document.getElementById('reportMessage').value = '';
+        }
+
+        function submitReport(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('modalFeedback');
+            const btn = document.getElementById('btnSubmitReport');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Memproses...`;
+
+            setTimeout(() => {
+                feedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 block';
+                feedback.textContent = 'Terima kasih! Laporan masalah tautan telah berhasil dikirimkan ke tim teknis Appdesa.';
+                
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Terkirim`;
+
+                setTimeout(() => {
+                    closeReportModal();
+                    btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Kirim Laporan</span>`;
+                }, 2000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
