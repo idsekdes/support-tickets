@@ -35,7 +35,7 @@
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-1">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, NIK, Tempat Lahir, Agama..." 
+        <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, NIK, Tempat Lahir, Agama, Alamat..." 
           class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm">
       </div>
       <button id="refreshBtn" onclick="fetchData()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-sm">
@@ -43,7 +43,7 @@
       </button>
     </div>
 
-    <!-- Tabel Data -->
+    <!-- Tabel Data Utama -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -85,10 +85,11 @@
     </div>
   </div>
 
-  <!-- Modal Detail -->
+  <!-- Modal Detail Terstruktur Lengkap -->
   <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100">
       
+      <!-- Modal Header -->
       <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
@@ -104,10 +105,14 @@
         </button>
       </div>
 
+      <!-- Modal Body -->
       <div class="p-6 overflow-y-auto flex-1" id="modalContent"></div>
 
+      <!-- Modal Footer -->
       <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 flex justify-end">
-        <button onclick="closeModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition-all shadow-sm">Tutup</button>
+        <button onclick="closeModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition-all shadow-sm">
+          Tutup
+        </button>
       </div>
 
     </div>
@@ -116,18 +121,26 @@
   <script>
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vREZSY95ln6CHarbyZ7dbxNjY0GO5-iFpOMvlW_lL-Y8x-zc5dQydA-xjhssQBwwJPsHvlN4VUTqhlA/pub?gid=0&single=true&output=csv";
 
-    // MAPPING LABEL KHUSUS UNTUK MODAL DETAIL
-    const customHeaderLabels = {
-      0: "Nama Lengkap",
-      1: "NIK",
-      2: "No. KK",
-      3: "Jenis Kelamin",
-      4: "Tempat Lahir / Alamat",
-      5: "Tanggal Lahir",
-      6: "Agama",
-      7: "Status Perkawinan",
-      8: "Pekerjaan"
-    };
+    // MAPPING HEADER SESUAI DENGAN URUTAN INDEKS SHEET ANDA
+    const columnLabels = [
+      "Nama Lengkap",     // Index 0
+      "Nomor NIK",        // Index 1
+      "KK",               // Index 2
+      "Jenis Kelamin",    // Index 3
+      "Tempat Lahir",     // Index 4
+      "Tgl Lahir",        // Index 5
+      "Agama",            // Index 6
+      "Pendidikan",       // Index 7
+      "Status",           // Index 8
+      "SHDK",             // Index 9
+      "Alamat",           // Index 10
+      "WNI",              // Index 11
+      "Ayah",             // Index 12
+      "Ibu",              // Index 13
+      "Pekerjaan",        // Index 14
+      "Nomor Urut",       // Index 15
+      "Umur"              // Index 16
+    ];
 
     let allData = [];
     let filteredData = [];
@@ -143,12 +156,12 @@
         complete: function(results) {
           let rawData = results.data;
 
-          // Hapus baris header/sampah bawaan Google Sheet
+          // Hapus baris header dan indeks bawaan Google Sheet
           allData = rawData.filter(row => {
-            const firstCell = String(row[0]).trim();
-            const secondCell = String(row[1]).trim();
-            if (firstCell === '0' || firstCell.toLowerCase().includes('nama lengkap')) return false;
-            if (secondCell === '1' || secondCell.toLowerCase().includes('nik')) return false;
+            const firstCell = String(row[0]).trim().toLowerCase();
+            const secondCell = String(row[1]).trim().toLowerCase();
+            if (firstCell === '0' || firstCell.includes('nama lengkap')) return false;
+            if (secondCell === '1' || secondCell.includes('nik')) return false;
             return true;
           });
 
@@ -185,24 +198,10 @@
         const row = document.createElement('tr');
         row.className = "hover:bg-blue-50/40 transition-colors";
 
-        // PEMETAAN INDEKS YANG SUDAH DIPERBAIKI SESUAI DATA SHEET
         const nama = item[0] || '-';
         const nik = item[1] || '-';
-        
-        // Cari otomatis mana kolom Jenis Kelamin dan mana Tempat Lahir/Alamat
-        let jk = '-';
-        let tempatLahir = '-';
-
-        // Pengecekan cerdas kolom 2, 3, dan 4
-        [item[2], item[3], item[4]].forEach(val => {
-          if (!val) return;
-          const str = String(val).trim();
-          if (str.toLowerCase() === 'laki-laki' || str.toLowerCase() === 'perempuan') {
-            jk = str;
-          } else if (!str.match(/^\d{15,17}$/)) { // Jika bukan nomor NIK/KK 16 digit
-            tempatLahir = str;
-          }
-        });
+        const jk = item[3] || '-';
+        const tempatLahir = item[4] || item[10] || '-';
 
         row.innerHTML = `
           <td class="p-4 text-center text-slate-400 font-medium">${start + index + 1}</td>
@@ -231,6 +230,7 @@
       renderTable();
     });
 
+    // Menampilkan Modal Detail yang Sudah Disesuaikan Urutan Header & Isinya
     function showDetail(index) {
       const item = filteredData[index];
       const modalContent = document.getElementById('modalContent');
@@ -239,19 +239,19 @@
       const gridContainer = document.createElement('div');
       gridContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-3";
 
-      item.forEach((val, idx) => {
-        if (!val || val.toString().trim() === '') return;
+      columnLabels.forEach((label, idx) => {
+        const val = item[idx] !== undefined && item[idx] !== null ? String(item[idx]).trim() : '';
 
-        const label = customHeaderLabels[idx] || `Informasi ${idx + 1}`;
         const detailBox = document.createElement('div');
         detailBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-200/70 flex flex-col justify-between";
 
-        let formattedValue = val;
-        if (String(val).match(/^\d{15,17}$/)) { 
-          formattedValue = `<span class="font-mono bg-blue-100/70 text-blue-800 px-2 py-0.5 rounded-md text-xs font-semibold inline-block">${val}</span>`;
-        } else if (val.toLowerCase() === 'perempuan' || val.toLowerCase() === 'laki-laki') {
-          const isMale = val.toLowerCase() === 'laki-laki';
-          formattedValue = `<span class="inline-flex items-center gap-1.5 font-semibold text-xs ${isMale ? 'text-blue-600' : 'text-pink-600'}">
+        let formattedValue = val || '-';
+
+        if (label.toLowerCase().includes('nik') || label.toLowerCase().includes('kk')) { 
+          if (val) formattedValue = `<span class="font-mono bg-blue-100/70 text-blue-800 px-2 py-0.5 rounded-md text-xs font-semibold inline-block">${val}</span>`;
+        } else if (label.toLowerCase().includes('jenis kelamin')) {
+          const isMale = val.toLowerCase().includes('laki');
+          if (val) formattedValue = `<span class="inline-flex items-center gap-1.5 font-semibold text-xs ${isMale ? 'text-blue-600' : 'text-pink-600'}">
             <i class="fa-solid ${isMale ? 'fa-mars' : 'fa-venus'}"></i> ${val}
           </span>`;
         }
