@@ -85,11 +85,10 @@
     </div>
   </div>
 
-  <!-- Modal Rincian Lengkap Terstruktur -->
+  <!-- Modal Detail -->
   <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100">
       
-      <!-- Modal Header -->
       <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
@@ -105,16 +104,10 @@
         </button>
       </div>
 
-      <!-- Modal Body -->
-      <div class="p-6 overflow-y-auto flex-1" id="modalContent">
-        <!-- Grid Data dimasukkan via Javascript -->
-      </div>
+      <div class="p-6 overflow-y-auto flex-1" id="modalContent"></div>
 
-      <!-- Modal Footer -->
       <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 flex justify-end">
-        <button onclick="closeModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition-all shadow-sm">
-          Tutup
-        </button>
+        <button onclick="closeModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition-all shadow-sm">Tutup</button>
       </div>
 
     </div>
@@ -123,15 +116,24 @@
   <script>
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vREZSY95ln6CHarbyZ7dbxNjY0GO5-iFpOMvlW_lL-Y8x-zc5dQydA-xjhssQBwwJPsHvlN4VUTqhlA/pub?gid=0&single=true&output=csv";
 
-    // MAPPING INDEKS KUSTOM DENGAN HEADER RESMI
-    let headerLabels = {};
+    // MAPPING LABEL KHUSUS UNTUK MODAL DETAIL
+    const customHeaderLabels = {
+      0: "Nama Lengkap",
+      1: "NIK",
+      2: "No. KK",
+      3: "Jenis Kelamin",
+      4: "Tempat Lahir / Alamat",
+      5: "Tanggal Lahir",
+      6: "Agama",
+      7: "Status Perkawinan",
+      8: "Pekerjaan"
+    };
 
     let allData = [];
     let filteredData = [];
     let currentPage = 1;
     const rowsPerPage = 10;
 
-    // Ambil Data
     function fetchData() {
       showLoading(true);
       Papa.parse(SHEET_CSV_URL, {
@@ -141,36 +143,14 @@
         complete: function(results) {
           let rawData = results.data;
 
-          // Process & Bersihkan Baris Sampah ( Header Angka '0', '1', dll )
+          // Hapus baris header/sampah bawaan Google Sheet
           allData = rawData.filter(row => {
             const firstCell = String(row[0]).trim();
             const secondCell = String(row[1]).trim();
-            // Abaikan jika baris bernilai '0', '1', atau judul 'Nama Lengkap' / 'Nomor. NIK'
             if (firstCell === '0' || firstCell.toLowerCase().includes('nama lengkap')) return false;
             if (secondCell === '1' || secondCell.toLowerCase().includes('nik')) return false;
             return true;
           });
-
-          // Ambil nama label secara dinamis jika ada baris header yang valid
-          const headerRow = rawData.find(row => String(row[0]).toLowerCase().includes('nama'));
-          if (headerRow) {
-            headerRow.forEach((label, idx) => {
-              headerLabels[idx] = label;
-            });
-          } else {
-            // Default Mapping Jika Tidak Ditemukan Header
-            headerLabels = {
-              0: "Nama Lengkap",
-              1: "NIK",
-              2: "No. KK / Indeks",
-              3: "Jenis Kelamin",
-              4: "Tempat Lahir / Alamat",
-              5: "Tanggal Lahir",
-              6: "Agama",
-              7: "Status Perkawinan",
-              8: "Pekerjaan"
-            };
-          }
 
           filteredData = [...allData];
           document.getElementById('totalCount').innerText = allData.length;
@@ -180,13 +160,11 @@
         },
         error: function(error) {
           console.error("Gagal memuat data:", error);
-          alert("Terjadi kesalahan saat memuat data.");
           showLoading(false);
         }
       });
     }
 
-    // Render Tabel Penduduk
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       const emptyState = document.getElementById('emptyState');
@@ -207,11 +185,24 @@
         const row = document.createElement('tr');
         row.className = "hover:bg-blue-50/40 transition-colors";
 
-        // Pemetaan nilai kolom sesuai posisi sebenarnya di Sheet Anda
+        // PEMETAAN INDEKS YANG SUDAH DIPERBAIKI SESUAI DATA SHEET
         const nama = item[0] || '-';
         const nik = item[1] || '-';
-        const jk = item[2] || item[3] || '-';
-        const tempatLahir = item[3] || item[4] || '-';
+        
+        // Cari otomatis mana kolom Jenis Kelamin dan mana Tempat Lahir/Alamat
+        let jk = '-';
+        let tempatLahir = '-';
+
+        // Pengecekan cerdas kolom 2, 3, dan 4
+        [item[2], item[3], item[4]].forEach(val => {
+          if (!val) return;
+          const str = String(val).trim();
+          if (str.toLowerCase() === 'laki-laki' || str.toLowerCase() === 'perempuan') {
+            jk = str;
+          } else if (!str.match(/^\d{15,17}$/)) { // Jika bukan nomor NIK/KK 16 digit
+            tempatLahir = str;
+          }
+        });
 
         row.innerHTML = `
           <td class="p-4 text-center text-slate-400 font-medium">${start + index + 1}</td>
@@ -231,7 +222,6 @@
       updatePaginationInfo(start + 1, Math.min(end, filteredData.length), filteredData.length);
     }
 
-    // Pencarian Real-Time
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase();
       filteredData = allData.filter(item => {
@@ -241,7 +231,6 @@
       renderTable();
     });
 
-    // Tampilkan Modal Detail Terstruktur
     function showDetail(index) {
       const item = filteredData[index];
       const modalContent = document.getElementById('modalContent');
@@ -253,15 +242,15 @@
       item.forEach((val, idx) => {
         if (!val || val.toString().trim() === '') return;
 
-        const label = headerLabels[idx] || `Informasi ${idx + 1}`;
+        const label = customHeaderLabels[idx] || `Informasi ${idx + 1}`;
         const detailBox = document.createElement('div');
         detailBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-200/70 flex flex-col justify-between";
 
         let formattedValue = val;
-        if (String(val).match(/^\d{15,17}$/)) { // Format NIK
+        if (String(val).match(/^\d{15,17}$/)) { 
           formattedValue = `<span class="font-mono bg-blue-100/70 text-blue-800 px-2 py-0.5 rounded-md text-xs font-semibold inline-block">${val}</span>`;
-        } else if (val.toLowerCase().includes('perempuan') || val.toLowerCase().includes('laki')) { // Jenis Kelamin
-          const isMale = val.toLowerCase().includes('laki');
+        } else if (val.toLowerCase() === 'perempuan' || val.toLowerCase() === 'laki-laki') {
+          const isMale = val.toLowerCase() === 'laki-laki';
           formattedValue = `<span class="inline-flex items-center gap-1.5 font-semibold text-xs ${isMale ? 'text-blue-600' : 'text-pink-600'}">
             <i class="fa-solid ${isMale ? 'fa-mars' : 'fa-venus'}"></i> ${val}
           </span>`;
@@ -276,18 +265,15 @@
       });
 
       modalContent.appendChild(gridContainer);
-
       document.getElementById('detailModal').classList.remove('hidden');
       document.getElementById('detailModal').classList.add('flex');
     }
 
-    // Tutup Modal
     function closeModal() {
       document.getElementById('detailModal').classList.add('hidden');
       document.getElementById('detailModal').classList.remove('flex');
     }
 
-    // Pagination
     function changePage(direction) {
       const maxPage = Math.ceil(filteredData.length / rowsPerPage);
       if ((direction === -1 && currentPage > 1) || (direction === 1 && currentPage < maxPage)) {
@@ -307,7 +293,6 @@
       if (isLoading) document.getElementById('emptyState').classList.add('hidden');
     }
 
-    // Jalankan pertama kali
     fetchData();
   </script>
 </body>
