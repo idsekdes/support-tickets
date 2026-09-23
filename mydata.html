@@ -339,6 +339,7 @@
             const tmptLahir = getVal(row, 'tempat lahir');
             const status = getVal(row, 'Status Kependudukan');
             const usia = getVal(row, 'Usia');
+            const suket = getVal(row, 'Suket');
 
             // Logika Penentuan Label & Nilai Tanggal Peristiwa (Pindah / Meninggal)
             let dateLabel = "Tanggal Peristiwa";
@@ -352,7 +353,6 @@
                 dateLabel = "Tanggal Meninggal";
                 dateValue = getVal(row, 'Tanggal Meninggal');
             } else {
-                // Fallback jika tidak teridentifikasi otomatis
                 const tglPindah = getVal(row, 'Tanggal Pindah');
                 const tglMeninggal = getVal(row, 'Tanggal Meninggal');
                 if (tglPindah !== '-') {
@@ -367,6 +367,20 @@
             let modalBadge = 'bg-slate-100 text-slate-800';
             if (statusUpper.includes('PINDAH')) modalBadge = 'bg-amber-100 text-amber-800';
             else if (statusUpper.includes('MENINGGAL')) modalBadge = 'bg-rose-100 text-rose-800';
+
+            // Logika tampilan tombol PDF/Suket
+            let suketHTML = '';
+            if (suket !== '-' && (suket.startsWith('http://') || suket.startsWith('https://'))) {
+                suketHTML = `
+                    <a href="${suket}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold transition text-xs shadow-sm">
+                        <i class="fa-solid fa-file-pdf"></i> Lihat Dokumen
+                    </a>
+                `;
+            } else if (suket !== '-') {
+                suketHTML = `<span class="text-xs font-medium text-slate-700">${suket}</span>`;
+            } else {
+                suketHTML = `<span class="text-xs italic text-slate-400">Tidak ada dokumen</span>`;
+            }
 
             modalContent.innerHTML = `
                 <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 flex items-center justify-between mb-4">
@@ -400,9 +414,15 @@
                         <span class="block text-sm font-semibold text-slate-700">${usia}</span>
                     </div>
 
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">${dateLabel}</span>
                         <span class="block text-sm font-semibold text-slate-700">${dateValue}</span>
+                    </div>
+
+                    <!-- Display Kolom Suket dengan Tombol PDF -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex flex-col justify-center">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Surat Keterangan (Suket)</span>
+                        <div class="mt-0.5">${suketHTML}</div>
                     </div>
 
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
