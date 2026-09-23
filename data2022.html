@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pencarian Data Penduduk</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1767107096/logo_donggala-fix-2025_napiej.png">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -23,7 +24,7 @@
           </span>
           Pencarian Data Penduduk
         </h1>
-        <p class="text-sm text-slate-500 mt-1">Sistem informasi pencarian dan pemantauan data kependudukan desa/kelurahan.</p>
+        <p class="text-sm text-slate-500 mt-1">Sistem informasi pencarian dan pemantauan data kependudukan.</p>
       </div>
       <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-semibold text-sm border border-blue-200 self-start md:self-auto flex items-center gap-2">
         <i class="fa-solid fa-database text-xs"></i> Total Data: <span id="totalCount" class="text-blue-900 font-bold">0</span>
@@ -34,7 +35,7 @@
     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-1">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari Berdasarkan Nama, NIK, Alamat, Agama..." 
+        <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, NIK, Tempat Lahir, Agama..." 
           class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm">
       </div>
       <button id="refreshBtn" onclick="fetchData()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-sm">
@@ -52,7 +53,7 @@
               <th class="p-4">Nama Lengkap</th>
               <th class="p-4">NIK</th>
               <th class="p-4">Jenis Kelamin</th>
-              <th class="p-4">Alamat / Wilayah</th>
+              <th class="p-4">Tempat Lahir / Alamat</th>
               <th class="p-4 text-center">Aksi</th>
             </tr>
           </thead>
@@ -120,41 +121,55 @@
   </div>
 
   <script>
-    // Link CSV publik dari Google Sheets milik Anda
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vREZSY95ln6CHarbyZ7dbxNjY0GO5-iFpOMvlW_lL-Y8x-zc5dQydA-xjhssQBwwJPsHvlN4VUTqhlA/pub?gid=0&single=true&output=csv";
 
-    // MAPPING INDEKS / NAMA KOLOM AGAR DIBACA TERSTRUKTUR
-    const FIELD_MAP = {
-      0: "Nama Lengkap",
-      1: "NIK",
-      2: "No. KK",
-      3: "Jenis Kelamin",
-      4: "Alamat / Tempat Lahir",
-      5: "Tanggal Lahir",
-      6: "Agama",
-      7: "Status Perkawinan",
-      8: "Pekerjaan",
-      9: "Kewarganegaraan"
-    };
+    // MAPPING INDEKS KUSTOM DENGAN HEADER RESMI
+    let headerLabels = {};
 
     let allData = [];
     let filteredData = [];
     let currentPage = 1;
     const rowsPerPage = 10;
 
-    // Ambil Data dari Google Sheets
+    // Ambil Data
     function fetchData() {
       showLoading(true);
       Papa.parse(SHEET_CSV_URL, {
         download: true,
-        header: false, // Digunakan false agar indeks urut dan mudah di-mapping
+        header: false,
         skipEmptyLines: true,
         complete: function(results) {
-          allData = results.data;
-          
-          // Hapus baris header jika baris pertama berisi judul kolom
-          if (allData.length > 0 && isNaN(allData[0][1])) {
-            allData.shift();
+          let rawData = results.data;
+
+          // Process & Bersihkan Baris Sampah ( Header Angka '0', '1', dll )
+          allData = rawData.filter(row => {
+            const firstCell = String(row[0]).trim();
+            const secondCell = String(row[1]).trim();
+            // Abaikan jika baris bernilai '0', '1', atau judul 'Nama Lengkap' / 'Nomor. NIK'
+            if (firstCell === '0' || firstCell.toLowerCase().includes('nama lengkap')) return false;
+            if (secondCell === '1' || secondCell.toLowerCase().includes('nik')) return false;
+            return true;
+          });
+
+          // Ambil nama label secara dinamis jika ada baris header yang valid
+          const headerRow = rawData.find(row => String(row[0]).toLowerCase().includes('nama'));
+          if (headerRow) {
+            headerRow.forEach((label, idx) => {
+              headerLabels[idx] = label;
+            });
+          } else {
+            // Default Mapping Jika Tidak Ditemukan Header
+            headerLabels = {
+              0: "Nama Lengkap",
+              1: "NIK",
+              2: "No. KK / Indeks",
+              3: "Jenis Kelamin",
+              4: "Tempat Lahir / Alamat",
+              5: "Tanggal Lahir",
+              6: "Agama",
+              7: "Status Perkawinan",
+              8: "Pekerjaan"
+            };
           }
 
           filteredData = [...allData];
@@ -192,17 +207,18 @@
         const row = document.createElement('tr');
         row.className = "hover:bg-blue-50/40 transition-colors";
 
+        // Pemetaan nilai kolom sesuai posisi sebenarnya di Sheet Anda
         const nama = item[0] || '-';
         const nik = item[1] || '-';
-        const jk = item[3] || '-';
-        const alamat = item[4] || '-';
+        const jk = item[2] || item[3] || '-';
+        const tempatLahir = item[3] || item[4] || '-';
 
         row.innerHTML = `
           <td class="p-4 text-center text-slate-400 font-medium">${start + index + 1}</td>
           <td class="p-4 font-semibold text-blue-600 hover:text-blue-800 cursor-pointer" onclick="showDetail(${start + index})">${nama}</td>
           <td class="p-4 text-slate-600 font-mono text-xs">${nik}</td>
           <td class="p-4 text-slate-600">${jk}</td>
-          <td class="p-4 text-slate-600">${alamat}</td>
+          <td class="p-4 text-slate-600">${tempatLahir}</td>
           <td class="p-4 text-center">
             <button onclick="showDetail(${start + index})" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs rounded-lg font-semibold transition-all border border-blue-200/60 inline-flex items-center gap-1.5">
               <i class="fa-solid fa-eye"></i> Detail
@@ -225,7 +241,7 @@
       renderTable();
     });
 
-    // Tampilkan Modal Terstruktur
+    // Tampilkan Modal Detail Terstruktur
     function showDetail(index) {
       const item = filteredData[index];
       const modalContent = document.getElementById('modalContent');
@@ -237,14 +253,14 @@
       item.forEach((val, idx) => {
         if (!val || val.toString().trim() === '') return;
 
-        const label = FIELD_MAP[idx] || `Informasi ${idx + 1}`;
+        const label = headerLabels[idx] || `Informasi ${idx + 1}`;
         const detailBox = document.createElement('div');
         detailBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-200/70 flex flex-col justify-between";
 
         let formattedValue = val;
-        if (idx === 1) { // NIK
+        if (String(val).match(/^\d{15,17}$/)) { // Format NIK
           formattedValue = `<span class="font-mono bg-blue-100/70 text-blue-800 px-2 py-0.5 rounded-md text-xs font-semibold inline-block">${val}</span>`;
-        } else if (idx === 3) { // Jenis Kelamin
+        } else if (val.toLowerCase().includes('perempuan') || val.toLowerCase().includes('laki')) { // Jenis Kelamin
           const isMale = val.toLowerCase().includes('laki');
           formattedValue = `<span class="inline-flex items-center gap-1.5 font-semibold text-xs ${isMale ? 'text-blue-600' : 'text-pink-600'}">
             <i class="fa-solid ${isMale ? 'fa-mars' : 'fa-venus'}"></i> ${val}
