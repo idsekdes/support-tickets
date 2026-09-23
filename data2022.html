@@ -4,115 +4,159 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pencarian Data Penduduk</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Library untuk membaca data CSV Google Sheet -->
+  <!-- PapaParse untuk membaca data CSV/Sheet -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 min-h-screen">
 
   <div class="max-w-7xl mx-auto p-4 md:p-6">
     <!-- Header -->
-    <header class="mb-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <header class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-users text-blue-600"></i> Pencarian Data Penduduk
+        <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shadow-md shadow-blue-200">
+            <i class="fa-solid fa-users"></i>
+          </span>
+          Pencarian Data Penduduk
         </h1>
-        <p class="text-sm text-slate-500 mt-1">Sistem informasi pencarian dan pemantauan data kependudukan.</p>
+        <p class="text-sm text-slate-500 mt-1">Sistem informasi pencarian dan pemantauan data kependudukan desa/kelurahan.</p>
       </div>
-      <div id="totalBadge" class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm border border-blue-200 self-start md:self-auto">
-        Total Data: <span id="totalCount">0</span>
+      <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-semibold text-sm border border-blue-200 self-start md:self-auto flex items-center gap-2">
+        <i class="fa-solid fa-database text-xs"></i> Total Data: <span id="totalCount" class="text-blue-900 font-bold">0</span>
       </div>
     </header>
 
-    <!-- Kontrol Pencarian & Filter -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4">
+    <!-- Filter & Pencarian -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-1">
-        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, NIK, Alamat, dll..." 
-          class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input type="text" id="searchInput" placeholder="Cari Berdasarkan Nama, NIK, Alamat, Agama..." 
+          class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm">
       </div>
-      <button id="refreshBtn" onclick="fetchData()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all">
+      <button id="refreshBtn" onclick="fetchData()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-sm">
         <i class="fa-solid fa-rotate"></i> Muat Ulang
       </button>
     </div>
 
     <!-- Tabel Data -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr id="tableHeader" class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-semibold">
-              <th class="p-4">No</th>
-              <th class="p-4">Nama / Detail</th>
-              <th class="p-4">Aksi</th>
+            <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase font-semibold tracking-wider">
+              <th class="p-4 w-16 text-center">No</th>
+              <th class="p-4">Nama Lengkap</th>
+              <th class="p-4">NIK</th>
+              <th class="p-4">Jenis Kelamin</th>
+              <th class="p-4">Alamat / Wilayah</th>
+              <th class="p-4 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-slate-100 text-sm">
-            <!-- Data dimasukkan melalui JS -->
+            <!-- Data dimasukkan via JS -->
           </tbody>
         </table>
       </div>
 
-      <!-- State Loading & Kosong -->
-      <div id="loadingState" class="p-8 text-center text-slate-500">
-        <i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600 mb-2"></i>
-        <p>Mengambil data dari Google Sheets...</p>
+      <!-- State Loading & Empty -->
+      <div id="loadingState" class="p-12 text-center text-slate-500">
+        <i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600 mb-3"></i>
+        <p class="font-medium text-slate-700">Mengambil data dari Google Sheets...</p>
       </div>
 
-      <div id="emptyState" class="hidden p-8 text-center text-slate-500">
-        <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-300"></i>
-        <p>Data tidak ditemukan.</p>
+      <div id="emptyState" class="hidden p-12 text-center text-slate-500">
+        <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-300"></i>
+        <p class="font-medium text-slate-600">Data penduduk tidak ditemukan.</p>
       </div>
 
       <!-- Pagination -->
-      <div class="p-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="p-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50">
         <span class="text-sm text-slate-500" id="paginationInfo">Menampilkan 0 dari 0 data</span>
         <div class="flex gap-2">
-          <button id="prevBtn" onclick="changePage(-1)" class="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
-          <button id="nextBtn" onclick="changePage(1)" class="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+          <button id="prevBtn" onclick="changePage(-1)" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">Previous</button>
+          <button id="nextBtn" onclick="changePage(1)" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">Next</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Rincian Lengkap -->
-  <div id="detailModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-        <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-          <i class="fa-solid fa-id-card text-blue-600"></i> Rincian Data Penduduk
-        </h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-xl"></i>
+  <!-- Modal Rincian Lengkap Terstruktur -->
+  <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-address-card"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-base">Rincian Data Penduduk</h3>
+            <p class="text-xs text-slate-400">Informasi detail identitas kependudukan</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center transition-all">
+          <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
-      <div class="p-6 overflow-y-auto flex-1 space-y-4" id="modalContent">
-        <!-- Detail diisi JS -->
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto flex-1" id="modalContent">
+        <!-- Grid Data dimasukkan via Javascript -->
       </div>
-      <div class="p-4 border-t border-slate-200 bg-slate-50 text-right">
-        <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-sm font-semibold">Tutup</button>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 flex justify-end">
+        <button onclick="closeModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium transition-all shadow-sm">
+          Tutup
+        </button>
       </div>
+
     </div>
   </div>
 
   <script>
-    // URL CSV ekspor langsung dari Google Sheet publik Anda
+    // Link CSV publik dari Google Sheets milik Anda
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vREZSY95ln6CHarbyZ7dbxNjY0GO5-iFpOMvlW_lL-Y8x-zc5dQydA-xjhssQBwwJPsHvlN4VUTqhlA/pub?gid=0&single=true&output=csv";
+
+    // MAPPING INDEKS / NAMA KOLOM AGAR DIBACA TERSTRUKTUR
+    const FIELD_MAP = {
+      0: "Nama Lengkap",
+      1: "NIK",
+      2: "No. KK",
+      3: "Jenis Kelamin",
+      4: "Alamat / Tempat Lahir",
+      5: "Tanggal Lahir",
+      6: "Agama",
+      7: "Status Perkawinan",
+      8: "Pekerjaan",
+      9: "Kewarganegaraan"
+    };
 
     let allData = [];
     let filteredData = [];
     let currentPage = 1;
     const rowsPerPage = 10;
 
+    // Ambil Data dari Google Sheets
     function fetchData() {
       showLoading(true);
       Papa.parse(SHEET_CSV_URL, {
         download: true,
-        header: true,
+        header: false, // Digunakan false agar indeks urut dan mudah di-mapping
         skipEmptyLines: true,
         complete: function(results) {
           allData = results.data;
+          
+          // Hapus baris header jika baris pertama berisi judul kolom
+          if (allData.length > 0 && isNaN(allData[0][1])) {
+            allData.shift();
+          }
+
           filteredData = [...allData];
           document.getElementById('totalCount').innerText = allData.length;
           currentPage = 1;
@@ -120,13 +164,14 @@
           showLoading(false);
         },
         error: function(error) {
-          console.error("Gagal memuat CSV:", error);
-          alert("Gagal memuat data dari server Google Sheets.");
+          console.error("Gagal memuat data:", error);
+          alert("Terjadi kesalahan saat memuat data.");
           showLoading(false);
         }
       });
     }
 
+    // Render Tabel Penduduk
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       const emptyState = document.getElementById('emptyState');
@@ -144,21 +189,23 @@
       const paginatedData = filteredData.slice(start, end);
 
       paginatedData.forEach((item, index) => {
-        const keys = Object.keys(item);
-        const primaryText = item[keys[0]] || item[keys[1]] || 'N/A';
-        const secondaryText = item[keys[1]] || '';
-
         const row = document.createElement('tr');
-        row.className = "hover:bg-blue-50/50 transition-colors cursor-pointer";
+        row.className = "hover:bg-blue-50/40 transition-colors";
+
+        const nama = item[0] || '-';
+        const nik = item[1] || '-';
+        const jk = item[3] || '-';
+        const alamat = item[4] || '-';
+
         row.innerHTML = `
-          <td class="p-4 text-slate-500">${start + index + 1}</td>
-          <td class="p-4 font-medium text-blue-600 hover:underline" onclick="showDetail(${start + index})">
-            <div>${primaryText}</div>
-            <div class="text-xs text-slate-400 font-normal">${secondaryText}</div>
-          </td>
-          <td class="p-4">
-            <button onclick="showDetail(${start + index})" class="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs rounded-md font-medium transition-all">
-              <i class="fa-solid fa-eye mr-1"></i> Rincian
+          <td class="p-4 text-center text-slate-400 font-medium">${start + index + 1}</td>
+          <td class="p-4 font-semibold text-blue-600 hover:text-blue-800 cursor-pointer" onclick="showDetail(${start + index})">${nama}</td>
+          <td class="p-4 text-slate-600 font-mono text-xs">${nik}</td>
+          <td class="p-4 text-slate-600">${jk}</td>
+          <td class="p-4 text-slate-600">${alamat}</td>
+          <td class="p-4 text-center">
+            <button onclick="showDetail(${start + index})" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs rounded-lg font-semibold transition-all border border-blue-200/60 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-eye"></i> Detail
             </button>
           </td>
         `;
@@ -168,41 +215,63 @@
       updatePaginationInfo(start + 1, Math.min(end, filteredData.length), filteredData.length);
     }
 
+    // Pencarian Real-Time
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase();
       filteredData = allData.filter(item => {
-        return Object.values(item).some(val => String(val).toLowerCase().includes(query));
+        return item.some(val => String(val).toLowerCase().includes(query));
       });
       currentPage = 1;
       renderTable();
     });
 
+    // Tampilkan Modal Terstruktur
     function showDetail(index) {
       const item = filteredData[index];
       const modalContent = document.getElementById('modalContent');
       modalContent.innerHTML = '';
 
-      Object.entries(item).forEach(([key, value]) => {
-        if(key.trim() !== "") {
-          const detailRow = document.createElement('div');
-          detailRow.className = "flex flex-col border-b border-slate-100 pb-2";
-          detailRow.innerHTML = `
-            <span class="text-xs uppercase font-bold text-slate-400">${key}</span>
-            <span class="text-sm font-semibold text-slate-700">${value || '-'}</span>
-          `;
-          modalContent.appendChild(detailRow);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-3";
+
+      item.forEach((val, idx) => {
+        if (!val || val.toString().trim() === '') return;
+
+        const label = FIELD_MAP[idx] || `Informasi ${idx + 1}`;
+        const detailBox = document.createElement('div');
+        detailBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-200/70 flex flex-col justify-between";
+
+        let formattedValue = val;
+        if (idx === 1) { // NIK
+          formattedValue = `<span class="font-mono bg-blue-100/70 text-blue-800 px-2 py-0.5 rounded-md text-xs font-semibold inline-block">${val}</span>`;
+        } else if (idx === 3) { // Jenis Kelamin
+          const isMale = val.toLowerCase().includes('laki');
+          formattedValue = `<span class="inline-flex items-center gap-1.5 font-semibold text-xs ${isMale ? 'text-blue-600' : 'text-pink-600'}">
+            <i class="fa-solid ${isMale ? 'fa-mars' : 'fa-venus'}"></i> ${val}
+          </span>`;
         }
+
+        detailBox.innerHTML = `
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">${label}</span>
+          <span class="text-sm font-semibold text-slate-800 break-words">${formattedValue}</span>
+        `;
+
+        gridContainer.appendChild(detailBox);
       });
+
+      modalContent.appendChild(gridContainer);
 
       document.getElementById('detailModal').classList.remove('hidden');
       document.getElementById('detailModal').classList.add('flex');
     }
 
+    // Tutup Modal
     function closeModal() {
       document.getElementById('detailModal').classList.add('hidden');
       document.getElementById('detailModal').classList.remove('flex');
     }
 
+    // Pagination
     function changePage(direction) {
       const maxPage = Math.ceil(filteredData.length / rowsPerPage);
       if ((direction === -1 && currentPage > 1) || (direction === 1 && currentPage < maxPage)) {
@@ -219,9 +288,10 @@
 
     function showLoading(isLoading) {
       document.getElementById('loadingState').style.display = isLoading ? 'block' : 'none';
-      if(isLoading) document.getElementById('emptyState').classList.add('hidden');
+      if (isLoading) document.getElementById('emptyState').classList.add('hidden');
     }
 
+    // Jalankan pertama kali
     fetchData();
   </script>
 </body>
