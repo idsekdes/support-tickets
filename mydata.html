@@ -13,9 +13,7 @@
     <!-- PapaParse Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-        }
+        body { font-family: 'Inter', sans-serif; }
         .modal-animate {
             animation: fadeIn 0.2s ease-out forwards;
         }
@@ -23,22 +21,6 @@
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        /* Custom scrollbar style */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
 .float-home-neon {
   position: fixed;
   bottom: 25px;
@@ -87,16 +69,16 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Header & Status Koneksi -->
-    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <header class="bg-indigo-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
+                    <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2">
                         <i class="fa-solid fa-address-book"></i> Pencarian Data Penduduk
                     </h1>
-                    <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Sistem Informasi Pindah, Meninggal Dunia, dan Status Kependudukan</p>
+                    <p class="text-indigo-200 text-xs sm:text-sm mt-1">Sistem Informasi Pindah, Meninggal Dunia, dan Status Kependudukan</p>
                 </div>
-                <div class="bg-indigo-700/60 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2 border border-indigo-400/30 w-fit">
+                <div class="bg-indigo-700/60 px-4 py-2 rounded-xl text-xs flex items-center gap-2 border border-indigo-400/30 w-fit">
                     <span id="statusIndicator" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
                     <span id="dataStatus">Mengkoneksikan data...</span>
                 </div>
@@ -105,7 +87,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
         
         <!-- Filter & Search Section -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-6">
@@ -116,8 +98,8 @@
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Cari Data Penduduk</label>
                     <div class="relative">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="searchInput" placeholder="Cari Nama, NIK, KK, Desa, Kecamatan, Kabupaten, atau Alamat..." 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-sm">
+                        <input type="text" id="searchInput" placeholder="Cari Nama, Desa, Kecamatan, Kabupaten, atau Alamat..." 
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
                     </div>
                 </div>
 
@@ -127,7 +109,7 @@
                     <div class="relative">
                         <i class="fa-solid fa-filter absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                         <select id="categoryFilter" 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition appearance-none text-sm">
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition appearance-none">
                             <option value="ALL">Semua Status (Pindah & Meninggal)</option>
                             <option value="PINDAH">Pindah</option>
                             <option value="MENINGGAL">Meninggal Dunia</option>
@@ -141,36 +123,29 @@
 
         <!-- Info Count -->
         <div class="flex items-center justify-between mb-4 px-1">
-            <span class="text-sm font-semibold text-slate-600" id="resultCount">Menampilkan 0 data</span>
-            <span class="text-xs text-slate-400 hidden sm:inline"><i class="fa-solid fa-circle-info me-1"></i> Klik nama atau tombol rincian untuk melihat data lengkap</span>
+            <span class="text-sm font-medium text-slate-500" id="resultCount">Menampilkan 0 data</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-circle-info me-1"></i> Klik nama untuk melihat modal rincian lengkap</span>
         </div>
 
-        <!-- Tampilan HP / Mobile Mode (Cards) -->
-        <div id="mobileCardsContainer" class="grid grid-cols-1 gap-4 lg:hidden">
-            <!-- Rendered via JS for Mobile -->
-        </div>
-
-        <!-- Tampilan Tablet & Desktop Mode (Table) -->
-        <div class="hidden lg:block bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <!-- Tabel Data Utama -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider">
-                            <th class="py-4 px-4 w-12 text-center">No</th>
-                            <th class="py-4 px-4">Nama Lengkap</th>
-                            <th class="py-4 px-4">NIK</th>
-                            <th class="py-4 px-4">KK</th>
-                            <th class="py-4 px-3 text-center">L/P</th>
-                            <th class="py-4 px-3 text-center">Usia</th>
-                            <th class="py-4 px-4">Desa/Kelurahan</th>
-                            <th class="py-4 px-4">Kecamatan</th>
-                            <th class="py-4 px-4 text-center">Status</th>
-                            <th class="py-4 px-4 text-center">Aksi</th>
+                            <th class="py-4 px-5 w-12">No</th>
+                            <th class="py-4 px-5">Nama Lengkap</th>
+                            <th class="py-4 px-5">L/P</th>
+                            <th class="py-4 px-5">Usia</th>
+                            <th class="py-4 px-5">Desa / Kelurahan</th>
+                            <th class="py-4 px-5">Kecamatan</th>
+                            <th class="py-4 px-5">Status</th>
+                            <th class="py-4 px-5 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="dataTableBody" class="divide-y divide-slate-100 text-sm">
                         <tr>
-                            <td colspan="10" class="py-12 text-center text-slate-400">
+                            <td colspan="8" class="py-12 text-center text-slate-400">
                                 <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-indigo-500"></i>
                                 <p>Mengambil data dari Google Sheets...</p>
                             </td>
@@ -183,14 +158,14 @@
     </main>
 
     <!-- Modal Rincian Lengkap -->
-    <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden modal-animate">
             
             <!-- Modal Header -->
-            <div class="px-5 py-4 bg-indigo-600 text-white flex justify-between items-center">
+            <div class="px-6 py-4 bg-indigo-600 text-white flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-id-card text-xl"></i>
-                    <h3 class="font-semibold text-base sm:text-lg">Rincian Lengkap Penduduk</h3>
+                    <h3 class="font-semibold text-lg">Rincian Lengkap Penduduk</h3>
                 </div>
                 <button onclick="closeModal()" class="text-indigo-200 hover:text-white transition rounded-lg p-1">
                     <i class="fa-solid fa-xmark text-xl"></i>
@@ -198,16 +173,16 @@
             </div>
 
             <!-- Modal Content -->
-            <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-grow" id="modalContent">
+            <div class="p-6 overflow-y-auto space-y-4 flex-grow" id="modalContent">
                 <!-- Data Detail di-render lewat JavaScript -->
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-                <button onclick="window.print()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-xs transition flex items-center gap-2">
+            <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-xs transition flex items-center gap-2">
                     <i class="fa-solid fa-print"></i> Cetak / Save PDF
                 </button>
-                <button onclick="closeModal()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs sm:text-sm transition">
+                <button onclick="closeModal()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm transition">
                     Tutup
                 </button>
             </div>
@@ -221,8 +196,9 @@
         </div>
     </footer>
 
-    <!-- Logika Pemrosesan Data -->
+    <!-- Aplikasi Logika JS -->
     <script>
+        // URL CSV Publik dari Google Sheets Anda
         const PRIMARY_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPp0Xcv0VC0a0_eBvtjbfrGZdm8hZnTb104FJ1WIia1D-UEJKsLutk3SbDTFlnF6zAt_NZFfRRLn24/pub?gid=552015281&single=true&output=csv";
         const PROXY_URL = "https://api.allorigins.win/raw?url=" + encodeURIComponent(PRIMARY_URL);
 
@@ -248,7 +224,7 @@
         function fetchDataWithFallback() {
             parseCSV(PRIMARY_URL, function(success) {
                 if (!success) {
-                    console.warn("Koneksi langsung gagal. Mencoba jalur proxy...");
+                    console.warn("Koneksi langsung gagal (kebijakan CORS browser). Mencoba jalur proxy...");
                     parseCSV(PROXY_URL, function(proxySuccess) {
                         if (!proxySuccess) {
                             showErrorState();
@@ -283,19 +259,17 @@
         function showErrorState() {
             document.getElementById('dataStatus').innerText = "Gagal Memuat Data";
             document.getElementById('statusIndicator').className = "w-2.5 h-2.5 rounded-full bg-rose-500";
-            
-            const errHtml = `
-                <div class="p-8 text-center text-rose-500 bg-white rounded-2xl border border-rose-100 shadow-sm">
-                    <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-                    <p class="font-bold">Gagal mengambil data dari Google Sheets.</p>
-                    <p class="text-xs text-slate-500 mt-1">Pastikan publikasi Web Google Sheets berada pada mode CSV.</p>
-                    <button onclick="fetchDataWithFallback()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs hover:bg-indigo-700 transition">
-                        <i class="fa-solid fa-rotate-right me-1"></i> Coba Lagi
-                    </button>
-                </div>`;
-            
-            document.getElementById('dataTableBody').innerHTML = `<tr><td colspan="10">${errHtml}</td></tr>`;
-            document.getElementById('mobileCardsContainer').innerHTML = errHtml;
+            document.getElementById('dataTableBody').innerHTML = `
+                <tr>
+                    <td colspan="8" class="py-12 text-center text-rose-500">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                        <p class="font-bold">Gagal mengambil data dari Google Sheets.</p>
+                        <p class="text-xs text-slate-500 mt-1">Pastikan Sheet dengan GID 552015281 sudah dipublikasikan sebagai CSV ke Web.</p>
+                        <button onclick="fetchDataWithFallback()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs hover:bg-indigo-700 transition">
+                            <i class="fa-solid fa-rotate-right me-1"></i> Coba Lagi
+                        </button>
+                    </td>
+                </tr>`;
         }
 
         function applyFilters() {
@@ -303,7 +277,7 @@
             const categoryVal = document.getElementById('categoryFilter').value.toUpperCase();
 
             filteredData = rawData.filter(item => {
-                const statusKependudukan = getVal(item, ['Status Kependudukan', 'status', 'kategori']).toUpperCase();
+                const statusKependudukan = getVal(item, ['Status Kependudukan', 'STATUS', 'Kategori', 'KETERANGAN', 'Status']).toUpperCase();
                 
                 const rowString = Object.values(item).join(' ').toLowerCase();
                 const matchesSearch = rowString.includes(searchTerm);
@@ -318,40 +292,34 @@
                 return matchesSearch && matchesCategory;
             });
 
-            renderData(filteredData);
+            renderTable(filteredData);
         }
 
-        function renderData(data) {
+        function renderTable(data) {
             const tbody = document.getElementById('dataTableBody');
-            const mobileContainer = document.getElementById('mobileCardsContainer');
             const countLabel = document.getElementById('resultCount');
-
             tbody.innerHTML = '';
-            mobileContainer.innerHTML = '';
 
             countLabel.innerText = `Menampilkan ${data.length} data`;
 
             if (data.length === 0) {
-                const emptyHtml = `
-                    <div class="p-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
-                        <i class="fa-solid fa-inbox text-3xl mb-2"></i>
-                        <p class="text-sm">Tidak ada data yang cocok dengan pencarian.</p>
-                    </div>`;
-                
-                tbody.innerHTML = `<tr><td colspan="10" class="py-12 text-center text-slate-400"><i class="fa-solid fa-inbox text-3xl mb-2"></i><p>Tidak ada data yang cocok dengan pencarian.</p></td></tr>`;
-                mobileContainer.innerHTML = emptyHtml;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-12 text-center text-slate-400">
+                            <i class="fa-solid fa-inbox text-3xl mb-2"></i>
+                            <p>Tidak ada data yang cocok dengan pencarian.</p>
+                        </td>
+                    </tr>`;
                 return;
             }
 
             data.forEach((row, index) => {
-                const nama = getVal(row, ['nama', 'Nama']);
-                const nik = getVal(row, ['NIK', 'nik']);
-                const kk = getVal(row, ['KK', 'kk']);
-                const jk = getVal(row, ['jenis kelamin', 'Jenis Kelamin', 'JK']);
-                const usia = getVal(row, ['Usia', 'usia']);
-                const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan', 'Desa']);
+                const nama = getVal(row, ['Nama', 'NAMA', 'Nama Lengkap']);
+                const jk = getVal(row, ['jenis kelamin', 'JENIS KELAMIN', 'JK', 'L/P']);
+                const usia = getVal(row, ['Usia', 'USIA', 'Umur']);
+                const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan', 'Desa', 'Kelurahan']);
                 const kecamatan = getVal(row, ['KECAMATAN', 'Kecamatan']);
-                const status = getVal(row, ['Status Kependudukan', 'Status']);
+                const status = getVal(row, ['Status Kependudukan', 'STATUS', 'Kategori', 'Status']);
 
                 let badgeClass = "bg-slate-100 text-slate-700";
                 if (status.toUpperCase().includes('PINDAH')) {
@@ -360,74 +328,31 @@
                     badgeClass = "bg-rose-100 text-rose-800 border border-rose-200";
                 }
 
-                // Render Tablet/Desktop Table Row
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-150";
                 tr.innerHTML = `
-                    <td class="py-3.5 px-4 text-center text-slate-400 text-xs font-semibold">${index + 1}</td>
-                    <td class="py-3.5 px-4 font-bold text-slate-900">
-                        <button onclick="showDetail(${index})" class="text-left text-indigo-600 hover:text-indigo-800 hover:underline focus:outline-none transition">
+                    <td class="py-4 px-5 text-slate-400 text-xs font-semibold">${index + 1}</td>
+                    <td class="py-4 px-5">
+                        <button onclick="showDetail(${index})" class="text-indigo-600 hover:text-indigo-800 font-bold hover:underline text-left cursor-pointer">
                             ${nama}
                         </button>
                     </td>
-                    <td class="py-3.5 px-4 text-slate-600 font-mono text-xs whitespace-nowrap">${nik}</td>
-                    <td class="py-3.5 px-4 text-slate-600 font-mono text-xs whitespace-nowrap">${kk}</td>
-                    <td class="py-3.5 px-3 text-center text-slate-600 text-xs">${jk}</td>
-                    <td class="py-3.5 px-3 text-center text-slate-600 font-medium text-xs">${usia !== '-' ? usia + ' Th' : '-'}</td>
-                    <td class="py-3.5 px-4 text-slate-600 text-xs">${desa}</td>
-                    <td class="py-3.5 px-4 text-slate-600 text-xs">${kecamatan}</td>
-                    <td class="py-3.5 px-4 text-center">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${badgeClass}">
+                    <td class="py-4 px-5 text-slate-600 font-medium">${jk}</td>
+                    <td class="py-4 px-5 text-slate-600 font-medium">${usia !== '-' ? usia + ' Th' : '-'}</td>
+                    <td class="py-4 px-5 text-slate-600">${desa}</td>
+                    <td class="py-4 px-5 text-slate-600">${kecamatan}</td>
+                    <td class="py-4 px-5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">
                             ${status}
                         </span>
                     </td>
-                    <td class="py-3.5 px-4 text-center">
-                        <button onclick="showDetail(${index})" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-xs font-semibold transition active:scale-95">
+                    <td class="py-4 px-5 text-center">
+                        <button onclick="showDetail(${index})" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-xs font-medium transition">
                             <i class="fa-solid fa-eye me-1"></i> Rincian
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
-
-                // Render Mobile Card View
-                const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between gap-3";
-                card.innerHTML = `
-                    <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
-                        <div>
-                            <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">#${index + 1}</span>
-                            <h3 class="text-base font-bold text-slate-900 leading-tight">
-                                <button onclick="showDetail(${index})" class="text-left text-indigo-600 hover:text-indigo-800 hover:underline focus:outline-none transition">
-                                    ${nama}
-                                </button>
-                            </h3>
-                            <p class="text-xs text-blue-700 font-medium mt-0.5">${jk} &bull; ${usia !== '-' ? usia + ' Tahun' : '-'}</p>
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${badgeClass}">
-                            ${status}
-                        </span>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div>
-                            <span class="block text-[10px] font-bold text-blue-700 uppercase">NIK</span>
-                            <span class="font-mono text-slate-800 font-semibold">${nik}</span>
-                        </div>
-                        <div>
-                            <span class="block text-[10px] font-bold text-blue-700 uppercase">KK</span>
-                            <span class="font-mono text-slate-800 font-semibold">${kk}</span>
-                        </div>
-                        <div class="col-span-2 mt-1">
-                            <span class="block text-[10px] font-bold text-blue-700 uppercase">Desa / Kecamatan</span>
-                            <span class="text-slate-800 font-medium">${desa}, ${kecamatan}</span>
-                        </div>
-                    </div>
-
-                    <button onclick="showDetail(${index})" class="w-full mt-1 py-2.5 bg-indigo-50 hover:bg-indigo-100 active:bg-indigo-200 text-indigo-600 rounded-xl text-xs font-bold transition text-center flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-eye"></i> Lihat Rincian Lengkap
-                    </button>
-                `;
-                mobileContainer.appendChild(card);
             });
         }
 
@@ -435,27 +360,23 @@
             const row = filteredData[index];
             const modalContent = document.getElementById('modalContent');
             
-            const nama = getVal(row, ['nama', 'Nama']);
-            const nik = getVal(row, ['NIK', 'nik']);
-            const kk = getVal(row, ['KK', 'kk']);
+            const nama = getVal(row, ['Nama', 'NAMA', 'Nama Lengkap']);
+            const status = getVal(row, ['Status Kependudukan', 'STATUS', 'Kategori', 'Status']);
             const kabupaten = getVal(row, ['KABUPATEN', 'Kabupaten']);
             const kecamatan = getVal(row, ['KECAMATAN', 'Kecamatan']);
-            const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan']);
+            const desa = getVal(row, ['DESA_KELURAHAN', 'Desa/Kelurahan', 'Desa', 'Kelurahan']);
             const alamat = getVal(row, ['alamat', 'Alamat']);
             const dusun = getVal(row, ['dusun', 'Dusun']);
-            const jk = getVal(row, ['jenis kelamin', 'Jenis Kelamin']);
-            const tglLahir = getVal(row, ['tanggal lahir', 'Tanggal Lahir']);
-            const tmptLahir = getVal(row, ['tempat lahir', 'Tempat Lahir']);
-            const status = getVal(row, ['Status Kependudukan', 'Status']);
-            const usia = getVal(row, ['Usia', 'usia']);
-            const tglPindah = getVal(row, ['tanggal pindah', 'Tanggal Pindah', 'TGL PINDAH']);
-            const suket = getVal(row, ['surat keterangan', 'Surat Keterangan', 'SUKET', 'Suket']);
+            const jk = getVal(row, ['jenis kelamin', 'JENIS KELAMIN', 'JK']);
+            const tglLahir = getVal(row, ['tanggal lahir', 'Tanggal Lahir', 'TGL LAHIR']);
+            const tmptLahir = getVal(row, ['tempat lahir', 'Tempat Lahir', 'TMPT LAHIR']);
+            const usia = getVal(row, ['Usia', 'USIA', 'Umur']);
 
             modalContent.innerHTML = `
-                <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-100 flex items-center justify-between mb-4">
+                <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 flex items-center justify-between mb-4">
                     <div>
-                        <h4 class="text-lg font-bold text-slate-900">${nama}</h4>
-                        <p class="text-xs font-medium text-blue-700">Jenis Kelamin: <span class="font-semibold text-slate-800">${jk}</span></p>
+                        <h4 class="text-lg font-bold text-slate-800">${nama}</h4>
+                        <p class="text-xs text-slate-500">${jk} &bull; Usia: ${usia !== '-' ? usia + ' Tahun' : '-'}</p>
                     </div>
                     <span class="px-3 py-1 rounded-full text-xs font-bold ${status.toUpperCase().includes('PINDAH') ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}">
                         ${status}
@@ -463,70 +384,34 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    <!-- NIK Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">NIK</span>
-                        <span class="block text-sm font-mono font-semibold text-slate-800">${nik}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Tempat, Tanggal Lahir</span>
+                        <span class="block text-sm font-semibold text-slate-700">${tmptLahir}, ${tglLahir}</span>
                     </div>
 
-                    <!-- NOMOR KK Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">NOMOR KK</span>
-                        <span class="block text-sm font-mono font-semibold text-slate-800">${kk}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Dusun</span>
+                        <span class="block text-sm font-semibold text-slate-700">${dusun}</span>
                     </div>
 
-                    <!-- TEMPAT, TANGGAL LAHIR Label -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">TEMPAT, TANGGAL LAHIR</span>
-                        <span class="block text-sm font-semibold text-slate-800">${tmptLahir}, ${tglLahir}</span>
-                    </div>
-
-                    <!-- USIA Label -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">USIA</span>
-                        <span class="block text-sm font-semibold text-slate-800">${usia !== '-' ? usia + ' Tahun' : '-'}</span>
-                    </div>
-
-                    <!-- TANGGAL PINDAH Label (jika ada) -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">TANGGAL PINDAH / CATATAN</span>
-                        <span class="block text-sm font-semibold text-slate-800">${tglPindah !== '-' ? tglPindah : '-'}</span>
-                    </div>
-
-                    <!-- SURAT KETERANGAN (SUKET) Label -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">SURAT KETERANGAN (SUKET)</span>
-                        <span class="block text-sm font-semibold ${suket === '-' || suket.toLowerCase().includes('tidak') ? 'text-slate-400 italic' : 'text-slate-800'}">${suket}</span>
-                    </div>
-
-                    <!-- ALAMAT Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">ALAMAT</span>
-                        <span class="block text-sm font-semibold text-slate-800">${alamat}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Alamat</span>
+                        <span class="block text-sm font-semibold text-slate-700">${alamat}</span>
                     </div>
 
-                    <!-- DUSUN Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">DUSUN</span>
-                        <span class="block text-sm font-semibold text-slate-800">${dusun}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Desa / Kelurahan</span>
+                        <span class="block text-sm font-semibold text-slate-700">${desa}</span>
                     </div>
 
-                    <!-- DESA / KELURAHAN Label -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">DESA / KELURAHAN</span>
-                        <span class="block text-sm font-semibold text-slate-800">${desa}</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Kecamatan</span>
+                        <span class="block text-sm font-semibold text-slate-700">${kecamatan}</span>
                     </div>
 
-                    <!-- KECAMATAN Label -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">KECAMATAN</span>
-                        <span class="block text-sm font-semibold text-slate-800">${kecamatan}</span>
-                    </div>
-
-                    <!-- KABUPATEN Label -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <span class="block text-[11px] font-bold text-blue-700 uppercase tracking-wider mb-0.5">KABUPATEN</span>
-                        <span class="block text-sm font-semibold text-slate-800">${kabupaten}</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 md:col-span-2">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Kabupaten</span>
+                        <span class="block text-sm font-semibold text-slate-700">${kabupaten}</span>
                     </div>
                 </div>
             `;
@@ -542,14 +427,12 @@
             if (e.target.id === 'detailModal') closeModal();
         });
     </script>
-
 <!-- Tombol Melayang Neon/Glassmorphism -->
-<a href="https://appdesa.my.id/" class="float-home-neon" title="Kembali ke Home">
+<a href="https://agas88.com/" class="float-home-neon" title="Kembali ke Home">
   <svg viewBox="0 0 24 24" class="home-icon">
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
   </svg>
   <span class="home-text">HOME</span>
 </a>
-
 </body>
 </html>
