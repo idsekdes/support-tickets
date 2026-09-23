@@ -6,6 +6,8 @@
   <title>Pencarian Data Penduduk</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Library untuk membaca data CSV Google Sheet -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 min-h-screen">
 
@@ -14,7 +16,7 @@
     <header class="mb-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid font-bold fa-users text-blue-600"></i> Pencarian Data Penduduk
+          <i class="fa-solid fa-users text-blue-600"></i> Pencarian Data Penduduk
         </h1>
         <p class="text-sm text-slate-500 mt-1">Sistem informasi pencarian dan pemantauan data kependudukan.</p>
       </div>
@@ -27,7 +29,7 @@
     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4">
       <div class="relative flex-1">
         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari berdasarkan NIK, Nama, Alamat, dll..." 
+        <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, NIK, Alamat, dll..." 
           class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all">
       </div>
       <button id="refreshBtn" onclick="fetchData()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all">
@@ -40,15 +42,14 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-semibold">
+            <tr id="tableHeader" class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-semibold">
               <th class="p-4">No</th>
-              <th class="p-4">Nama Lengkap</th>
-              <th class="p-4">NIK</th>
+              <th class="p-4">Nama / Detail</th>
               <th class="p-4">Aksi</th>
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-slate-100 text-sm">
-            <!-- Data akan diisi melalui JavaScript -->
+            <!-- Data dimasukkan melalui JS -->
           </tbody>
         </table>
       </div>
@@ -56,7 +57,7 @@
       <!-- State Loading & Kosong -->
       <div id="loadingState" class="p-8 text-center text-slate-500">
         <i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600 mb-2"></i>
-        <p>Mengambil data dari server...</p>
+        <p>Mengambil data dari Google Sheets...</p>
       </div>
 
       <div id="emptyState" class="hidden p-8 text-center text-slate-500">
@@ -77,7 +78,7 @@
 
   <!-- Modal Rincian Lengkap -->
   <div id="detailModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden">
       <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
         <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
           <i class="fa-solid fa-id-card text-blue-600"></i> Rincian Data Penduduk
@@ -87,7 +88,7 @@
         </button>
       </div>
       <div class="p-6 overflow-y-auto flex-1 space-y-4" id="modalContent">
-        <!-- Rincian data dinamis akan dimasukkan di sini -->
+        <!-- Detail diisi JS -->
       </div>
       <div class="p-4 border-t border-slate-200 bg-slate-50 text-right">
         <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-sm font-semibold">Tutup</button>
@@ -96,36 +97,36 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzLcz-jsj8liPMGkyCvBr1j53aS1J0V3-6l0Mnd4josOBDu0_a1eeWIUkRB-ul6Icpsig/exec";
-    
+    // URL CSV ekspor langsung dari Google Sheet publik Anda
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vREZSY95ln6CHarbyZ7dbxNjY0GO5-iFpOMvlW_lL-Y8x-zc5dQydA-xjhssQBwwJPsHvlN4VUTqhlA/pub?gid=0&single=true&output=csv";
+
     let allData = [];
     let filteredData = [];
     let currentPage = 1;
     const rowsPerPage = 10;
 
-    // Fetch Data dari Apps Script
-    async function fetchData() {
+    function fetchData() {
       showLoading(true);
-      try {
-        const response = await fetch(API_URL);
-        const result = await response.json();
-        
-        // Menyesuaikan struktur data yang didapat
-        allData = Array.isArray(result) ? result : (result.data || []);
-        filteredData = [...allData];
-        
-        document.getElementById('totalCount').innerText = allData.length;
-        currentPage = 1;
-        renderTable();
-      } catch (error) {
-        console.error("Gagal mengambil data:", error);
-        alert("Terjadi kesalahan saat memuat data dari server.");
-      } finally {
-        showLoading(false);
-      }
+      Papa.parse(SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          allData = results.data;
+          filteredData = [...allData];
+          document.getElementById('totalCount').innerText = allData.length;
+          currentPage = 1;
+          renderTable();
+          showLoading(false);
+        },
+        error: function(error) {
+          console.error("Gagal memuat CSV:", error);
+          alert("Gagal memuat data dari server Google Sheets.");
+          showLoading(false);
+        }
+      });
     }
 
-    // Render Tabel
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       const emptyState = document.getElementById('emptyState');
@@ -143,20 +144,21 @@
       const paginatedData = filteredData.slice(start, end);
 
       paginatedData.forEach((item, index) => {
+        const keys = Object.keys(item);
+        const primaryText = item[keys[0]] || item[keys[1]] || 'N/A';
+        const secondaryText = item[keys[1]] || '';
+
         const row = document.createElement('tr');
         row.className = "hover:bg-blue-50/50 transition-colors cursor-pointer";
-        
-        // Ambil kunci nama & NIK secara opsional (fleksibel sesuai format header sheet)
-        const nama = item.Nama || item.nama || item['NAMA LENGKAP'] || item['Nama Lengkap'] || Object.values(item)[1] || 'N/A';
-        const nik = item.NIK || item.nik || Object.values(item)[0] || 'N/A';
-
         row.innerHTML = `
           <td class="p-4 text-slate-500">${start + index + 1}</td>
-          <td class="p-4 font-medium text-blue-600 hover:underline" onclick="showDetail(${start + index})">${nama}</td>
-          <td class="p-4 text-slate-600">${nik}</td>
+          <td class="p-4 font-medium text-blue-600 hover:underline" onclick="showDetail(${start + index})">
+            <div>${primaryText}</div>
+            <div class="text-xs text-slate-400 font-normal">${secondaryText}</div>
+          </td>
           <td class="p-4">
             <button onclick="showDetail(${start + index})" class="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs rounded-md font-medium transition-all">
-              <i class="fa-solid fa-eye mr-1"></i> Detail
+              <i class="fa-solid fa-eye mr-1"></i> Rincian
             </button>
           </td>
         `;
@@ -166,45 +168,41 @@
       updatePaginationInfo(start + 1, Math.min(end, filteredData.length), filteredData.length);
     }
 
-    // Pencarian Real-time
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase();
       filteredData = allData.filter(item => {
-        return Object.values(item).some(val => 
-          String(val).toLowerCase().includes(query)
-        );
+        return Object.values(item).some(val => String(val).toLowerCase().includes(query));
       });
       currentPage = 1;
       renderTable();
     });
 
-    // Tampilkan Modal Rincian
     function showDetail(index) {
       const item = filteredData[index];
       const modalContent = document.getElementById('modalContent');
       modalContent.innerHTML = '';
 
       Object.entries(item).forEach(([key, value]) => {
-        const detailRow = document.createElement('div');
-        detailRow.className = "flex flex-col border-b border-slate-100 pb-2";
-        detailRow.innerHTML = `
-          <span class="text-xs uppercase font-bold text-slate-400">${key}</span>
-          <span class="text-sm font-semibold text-slate-700">${value || '-'}</span>
-        `;
-        modalContent.appendChild(detailRow);
+        if(key.trim() !== "") {
+          const detailRow = document.createElement('div');
+          detailRow.className = "flex flex-col border-b border-slate-100 pb-2";
+          detailRow.innerHTML = `
+            <span class="text-xs uppercase font-bold text-slate-400">${key}</span>
+            <span class="text-sm font-semibold text-slate-700">${value || '-'}</span>
+          `;
+          modalContent.appendChild(detailRow);
+        }
       });
 
       document.getElementById('detailModal').classList.remove('hidden');
       document.getElementById('detailModal').classList.add('flex');
     }
 
-    // Tutup Modal
     function closeModal() {
       document.getElementById('detailModal').classList.add('hidden');
       document.getElementById('detailModal').classList.remove('flex');
     }
 
-    // Pagination
     function changePage(direction) {
       const maxPage = Math.ceil(filteredData.length / rowsPerPage);
       if ((direction === -1 && currentPage > 1) || (direction === 1 && currentPage < maxPage)) {
@@ -224,7 +222,6 @@
       if(isLoading) document.getElementById('emptyState').classList.add('hidden');
     }
 
-    // Inisialisasi awal
     fetchData();
   </script>
 </body>
