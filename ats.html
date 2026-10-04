@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pencarian Data Anak Tidak Sekolah (ATS)</title>
+    <!-- Favicon AppDesa -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -538,10 +542,17 @@
             const countATS = rawATSData.filter(d => d.statusDataATS.toUpperCase().includes('ATS')).length;
             document.getElementById('stat-ats').innerText = countATS;
 
-            const countVerified = rawATSData.filter(d => d.statusVerifikasi.toUpperCase().includes('TERVERIFIKASI')).length;
+            // Helper fleksibel untuk mengecek status terverifikasi
+            const isVerified = (status) => {
+                const s = String(status || '').toUpperCase().trim();
+                if (s.includes('BELUM') || s.includes('TIDAK') || s === '-' || s === '') return false;
+                return s.includes('VERIF') || s.includes('SUDAH') || s.includes('YA') || s.includes('VALID');
+            };
+
+            const countVerified = rawATSData.filter(d => isVerified(d.statusVerifikasi)).length;
             document.getElementById('stat-verified').innerText = countVerified;
 
-            const countUnverified = rawATSData.length - countVerified;
+            const countUnverified = rawATSData.filter(d => !isVerified(d.statusVerifikasi)).length;
             document.getElementById('stat-unverified').innerText = countUnverified;
         }
 
