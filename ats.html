@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Data Anak Tidak Sekolah (ATS)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 border border-slate-700">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Notifikasi</span>
+    </div>
+
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/10 p-3 rounded-2xl backdrop-blur-sm border border-white/20">
+                        <i class="fa-solid fa-graduation-cap text-2xl text-amber-300"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Sistem Data ATS</h1>
+                        <p class="text-xs sm:text-sm text-indigo-200">Database Pencarian Anak Tidak Sekolah & Drop Out</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="btn-sync" onclick="loadDataFromSheets()" class="bg-indigo-600 hover:bg-indigo-800 text-white px-4 py-2 rounded-xl text-sm font-medium transition duration-200 flex items-center gap-2 shadow-sm border border-indigo-500/30">
+                        <i id="sync-icon" class="fa-solid fa-rotate"></i>
+                        <span>Muat Ulang Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Total Terdata</p>
+                    <h3 id="stat-total" class="text-2xl font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-user-xmark"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Status ATS</p>
+                    <h3 id="stat-ats" class="text-2xl font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Terverifikasi</p>
+                    <h3 id="stat-verified" class="text-2xl font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-medium">Belum Verifikasi</p>
+                    <h3 id="stat-unverified" class="text-2xl font-bold text-slate-800">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <!-- Search Box -->
+                <div class="md:col-span-6 lg:col-span-6 relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" placeholder="Cari Nama Anak, NIK, NISN, atau Orang Tua..." oninput="filterData()" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-sm">
+                </div>
+
+                <!-- Status Filter -->
+                <div class="md:col-span-3 lg:col-span-3">
+                    <select id="filter-status" onchange="filterData()" class="w-full py-3 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none cursor-pointer">
+                        <option value="">Semua Status Data ATS</option>
+                        <option value="ATS">ATS (Anak Tidak Sekolah)</option>
+                        <option value="Bersekolah">Bersekolah</option>
+                        <option value="Potensi DO">Potensi Drop Out</option>
+                    </select>
+                </div>
+
+                <!-- Gender Filter -->
+                <div class="md:col-span-3 lg:col-span-3">
+                    <select id="filter-gender" onchange="filterData()" class="w-full py-3 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none cursor-pointer">
+                        <option value="">Semua Jenis Kelamin</option>
+                        <option value="L">Laki-laki (L)</option>
+                        <option value="P">Perempuan (P)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <span id="data-count-label" class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Menampilkan 0 Data</span>
+                <span class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full font-medium">
+                    <i class="fa-solid fa-info-circle mr-1"></i> Klik Nama Anak atau Tombol Detail untuk rincian
+                </span>
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100/70 text-slate-600 text-xs uppercase font-semibold border-b border-slate-200">
+                            <th class="py-3.5 px-4 text-center">No</th>
+                            <th class="py-3.5 px-4">Nama Anak</th>
+                            <th class="py-3.5 px-4">NIK / NISN</th>
+                            <th class="py-3.5 px-4">L/P & Usia</th>
+                            <th class="py-3.5 px-4">Orang Tua</th>
+                            <th class="py-3.5 px-4">Desa/Kecamatan</th>
+                            <th class="py-3.5 px-4 text-center">Status ATS</th>
+                            <th class="py-3.5 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-slate-100 text-sm text-slate-700">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden p-12 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h4 class="text-base font-semibold text-slate-700">Data Tidak Ditemukan</h4>
+                <p class="text-xs text-slate-400 mt-1">Coba sesuaikan kata kunci atau filter pencarian Anda.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Rincian Lengkap (20 Field Full Detail) -->
+    <div id="detail-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transform scale-95 transition-all duration-300" id="modal-card">
+            <!-- Modal Header -->
+            <div class="bg-indigo-700 text-white p-5 sm:p-6 flex items-start justify-between relative">
+                <div>
+                    <span class="inline-block bg-indigo-800 text-indigo-200 text-xs px-2.5 py-0.5 rounded-md font-medium mb-1">Rincian Lengkap Data ATS</span>
+                    <h2 id="modal-nama-anak" class="text-xl sm:text-2xl font-bold tracking-tight">Nama Anak</h2>
+                    <p id="modal-ttl-usia" class="text-xs sm:text-sm text-indigo-200 mt-0.5">Tempat, Tgl Lahir • Usia</p>
+                </div>
+                <button onclick="closeModal()" class="text-indigo-200 hover:text-white p-2 rounded-xl hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-6">
+
+                <!-- Kategori 1: Identitas Diri -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-address-card text-indigo-500"></i> Identitas Diri Anak
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">1. NISN</span>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span id="m-nisn" class="font-mono font-semibold text-slate-800 text-sm">-</span>
+                                <button onclick="copyText('m-nisn')" class="text-xs text-indigo-600 hover:text-indigo-800"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">2. NIK</span>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span id="m-nik" class="font-mono font-semibold text-slate-800 text-sm">-</span>
+                                <button onclick="copyText('m-nik')" class="text-xs text-indigo-600 hover:text-indigo-800"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">3. Nama Anak</span>
+                            <span id="m-nama" class="font-semibold text-slate-800 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">4. Tempat, Tanggal Lahir</span>
+                            <span id="m-ttl" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">5. Jenis Kelamin</span>
+                            <span id="m-jk" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">6. Usia</span>
+                            <span id="m-usia" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kategori 2: Orang Tua & Domisili -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-house-user text-indigo-500"></i> Orang Tua & Domisili
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">7. Nama Ayah</span>
+                            <span id="m-ayah" class="font-semibold text-slate-800 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">8. Nama Ibu</span>
+                            <span id="m-ibu" class="font-semibold text-slate-800 text-sm">-</span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <span class="text-xs text-slate-400 block font-medium">9. Alamat Lengkap</span>
+                            <span id="m-alamat" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">10. Provinsi</span>
+                            <span id="m-provinsi" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">11. Kabupaten / Kota</span>
+                            <span id="m-kabupaten" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">12. Kecamatan</span>
+                            <span id="m-kecamatan" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">13. Desa / Kelurahan</span>
+                            <span id="m-desa" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kategori 3: Status Pendidikan & ATS -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-graduation-cap text-indigo-500"></i> Status Pendidikan & Keterangan ATS
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">14. Status Keaktifan Peserta Didik</span>
+                            <span id="m-status-keaktifan" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">15. Status Peserta Didik</span>
+                            <span id="m-status-pd" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">16. Status Verifikasi</span>
+                            <span id="m-status-verifikasi" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">17. Status Data ATS</span>
+                            <span id="m-status-ats" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <span class="text-xs text-slate-400 block font-medium">18. Alasan Tidak Sekolah</span>
+                            <span id="m-alasan-ats" class="font-semibold text-rose-600 text-sm block mt-0.5">-</span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <span class="text-xs text-slate-400 block font-medium">19. Alasan Lainnya</span>
+                            <span id="m-alasan-lain" class="font-medium text-slate-700 text-sm">-</span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <span class="text-xs text-slate-400 block font-medium">20. Keterangan Tambahan</span>
+                            <span id="m-keterangan" class="font-medium text-slate-700 text-sm bg-white p-3 rounded-lg border border-slate-200 block mt-1">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 p-4 border-t border-slate-100 flex justify-end">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SHEETS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8Mmc8j78PRm6YhUVicJRzZLNvxsEMT8McPTXcVnmYxM7HdiZbGxzc2PO0Irq9ZuUOO1bter0W5X8N/pub?output=csv";
+
+        // Rich Mock Data Fallback
+        const MOCK_DATA = [
+            {
+                nisn: "0123456789", nik: "3201123456780001", namaAnak: "Ahmad Dahlan", ttl: "Bandung, 12 Mei 2008",
+                jk: "L", usia: "16 TAHUN", namaAyah: "Budi Santoso", namaIbu: "Siti Rahmah", alamat: "Jl. Merdeka No. 45 RT 02/05",
+                provinsi: "JAWA BARAT", kabupaten: "KABUPATEN BOGOR", kecamatan: "CIBINONG", desa: "CIBINONG",
+                statusKeaktifan: "Tidak Aktif", statusPesertaDidik: "Drop Out", statusVerifikasi: "Terverifikasi",
+                statusDataATS: "ATS", alasanATS: "Keterbatasan Ekonomi / Biaya", alasanLainnya: "Bekerja membantu orang tua", keterangan: "Perlu pendampingan program Paket B"
+            },
+            {
+                nisn: "0123456790", nik: "3201123456780002", namaAnak: "Siti Aisyah", ttl: "Bogor, 18 Agustus 2010",
+                jk: "P", usia: "14 TAHUN", namaAyah: "Ahmad Hidayat", namaIbu: "Mariana", alamat: "Kampung Baru RT 01/02",
+                provinsi: "JAWA BARAT", kabupaten: "KABUPATEN BOGOR", kecamatan: "CITEUREUP", desa: "PUSPASARI",
+                statusKeaktifan: "Tidak Aktif", statusPesertaDidik: "Putus Sekolah", statusVerifikasi: "Terverifikasi",
+                statusDataATS: "ATS", alasanATS: "Jarak Sekolah Terlalu Jauh", alasanLainnya: "Tidak ada akses transportasi", keterangan: "Diusulkan masuk PKBM terdekat"
+            },
+            {
+                nisn: "0123456791", nik: "3201123456780003", namaAnak: "Rian Hidayat", ttl: "Jakarta, 03 Maret 2007",
+                jk: "L", usia: "17 TAHUN", namaAyah: "Dede Sulaiman", namaIbu: "Fitriani", alamat: "Desa Karanganyar RT 03/01",
+                provinsi: "JAWA BARAT", kabupaten: "KABUPATEN BOGOR", kecamatan: "BABAKAN MADANG", desa: "KADUMANGGU",
+                statusKeaktifan: "Aktif", statusPesertaDidik: "Peserta Didik Aktif", statusVerifikasi: "Belum Verifikasi",
+                statusDataATS: "Bersekolah", alasanATS: "-", alasanLainnya: "-", keterangan: "Masih aktif bersekolah di SMP N 1"
+            }
+        ];
+
+        let rawATSData = [];
+        let filteredATSData = [];
+
+        window.onload = function() {
+            loadDataFromSheets();
+        };
+
+        // Load & Parse Data
+        function loadDataFromSheets() {
+            const syncIcon = document.getElementById('sync-icon');
+            syncIcon.classList.add('fa-spin');
+
+            Papa.parse(GOOGLE_SHEETS_CSV_URL, {
+                download: true,
+                header: false,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    syncIcon.classList.remove('fa-spin');
+                    if (results.data && results.data.length > 0) {
+                        processParsedCSV(results.data);
+                        showToast("Data berhasil diperbarui dari Google Sheets!");
+                    } else {
+                        useFallbackData("Format CSV tidak lengkap.");
+                    }
+                },
+                error: function(err) {
+                    syncIcon.classList.remove('fa-spin');
+                    useFallbackData("Gagal terhubung ke Google Sheets. Menggunakan data sampel.");
+                }
+            });
+        }
+
+        function useFallbackData(msg) {
+            rawATSData = MOCK_DATA;
+            filteredATSData = [...rawATSData];
+            renderTable();
+            updateStatistics();
+            showToast(msg, "info");
+        }
+
+        // Handle standard vs transposed CSV format
+        function processParsedCSV(rows) {
+            let processed = [];
+
+            // Standard Header Check
+            const standardFields = ['nisn', 'nik', 'nama', 'ttl', 'jenis kelamin', 'usia'];
+            const firstRowLower = rows[0].map(c => String(c).toLowerCase().trim());
+            const isStandardHorizontal = standardFields.some(f => firstRowLower.includes(f));
+
+            if (isStandardHorizontal) {
+                const headers = firstRowLower;
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (row.length < 2) continue;
+                    let item = mapRowToFields(headers, row);
+                    processed.push(item);
+                }
+            } else {
+                // Transposed Horizontal (Key-Value per Column)
+                let numColumns = Math.max(...rows.map(r => r.length));
+                for (let col = 1; col < numColumns; col++) {
+                    let item = {};
+                    let keys = [];
+                    let vals = [];
+                    for (let r = 0; r < rows.length; r++) {
+                        keys.push(String(rows[r][0] || '').toLowerCase().trim());
+                        vals.push(rows[r][col] || '');
+                    }
+                    if (keys.length > 0) {
+                        processed.push(mapRowToFields(keys, vals));
+                    }
+                }
+            }
+
+            rawATSData = processed.length > 0 ? processed : MOCK_DATA;
+            filteredATSData = [...rawATSData];
+            renderTable();
+            updateStatistics();
+        }
+
+        function mapRowToFields(headers, values) {
+            const getVal = (keywords) => {
+                for (let i = 0; i < headers.length; i++) {
+                    if (keywords.some(k => headers[i].includes(k))) {
+                        return values[i] ? String(values[i]).trim() : '-';
+                    }
+                }
+                return '-';
+            };
+
+            return {
+                nisn: getVal(['nisn']),
+                nik: getVal(['nik']),
+                namaAnak: getVal(['nama anak', 'nama']),
+                ttl: getVal(['tempat', 'ttl', 'tanggal lahir']),
+                jk: getVal(['jenis kelamin', 'jk', 'l/p']),
+                usia: getVal(['usia', 'umur']),
+                namaAyah: getVal(['nama ayah', 'ayah']),
+                namaIbu: getVal(['nama ibu', 'ibu']),
+                alamat: getVal(['alamat']),
+                provinsi: getVal(['provinsi']),
+                kabupaten: getVal(['kabupaten', 'kota']),
+                kecamatan: getVal(['kecamatan']),
+                desa: getVal(['desa', 'kelurahan']),
+                statusKeaktifan: getVal(['status keaktifan']),
+                statusPesertaDidik: getVal(['status peserta didik']),
+                statusVerifikasi: getVal(['status verifikasi']),
+                statusDataATS: getVal(['status data ats', 'status ats']),
+                alasanATS: getVal(['alasan tidak sekolah', 'alasan ats']),
+                alasanLainnya: getVal(['alasan lainnya']),
+                keterangan: getVal(['keterangan'])
+            };
+        }
+
+        // Render Table Rows with Clickable Names & Buttons
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const emptyState = document.getElementById('empty-state');
+            const dataCountLabel = document.getElementById('data-count-label');
+
+            tbody.innerHTML = '';
+            dataCountLabel.innerText = `Menampilkan ${filteredATSData.length} Data`;
+
+            if (filteredATSData.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            filteredATSData.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-indigo-50/40 transition duration-150 border-b border-slate-100";
+
+                // ATS Status Styling
+                let statusBadge = `<span class="bg-slate-100 text-slate-700 font-medium px-2.5 py-1 rounded-full text-xs">${item.statusDataATS}</span>`;
+                if (item.statusDataATS.toUpperCase().includes('ATS')) {
+                    statusBadge = `<span class="bg-rose-100 text-rose-700 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> ATS</span>`;
+                } else if (item.statusDataATS.toUpperCase().includes('SEKOLAH')) {
+                    statusBadge = `<span class="bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Bersekolah</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 text-center font-mono text-xs text-slate-400">${index + 1}</td>
+                    <td class="py-3.5 px-4">
+                        <button onclick="openModal(${index})" class="text-left font-bold text-indigo-600 hover:text-indigo-900 hover:underline cursor-pointer transition">
+                            ${item.namaAnak}
+                        </button>
+                    </td>
+                    <td class="py-3.5 px-4 font-mono text-xs text-slate-600">
+                        <div>NIK: ${item.nik}</div>
+                        <div class="text-slate-400">NISN: ${item.nisn}</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-xs text-slate-600">
+                        <span class="font-semibold text-slate-800">${item.jk}</span> • ${item.usia}
+                    </td>
+                    <td class="py-3.5 px-4 text-xs text-slate-600">
+                        <div><span class="text-slate-400">A:</span> ${item.namaAyah}</div>
+                        <div><span class="text-slate-400">I:</span> ${item.namaIbu}</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-xs text-slate-600">
+                        <div class="font-medium text-slate-800">${item.desa}</div>
+                        <div class="text-slate-400">${item.kecamatan}</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-center">${statusBadge}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="openModal(${index})" class="bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition duration-200 border border-indigo-200">
+                            <i class="fa-solid fa-eye mr-1"></i> Detail
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Filtering System
+        function filterData() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value.toLowerCase();
+            const genderFilter = document.getElementById('filter-gender').value.toLowerCase();
+
+            filteredATSData = rawATSData.filter(item => {
+                const matchQuery = 
+                    item.namaAnak.toLowerCase().includes(query) ||
+                    item.nik.toLowerCase().includes(query) ||
+                    item.nisn.toLowerCase().includes(query) ||
+                    item.namaAyah.toLowerCase().includes(query) ||
+                    item.namaIbu.toLowerCase().includes(query) ||
+                    item.desa.toLowerCase().includes(query) ||
+                    item.kecamatan.toLowerCase().includes(query);
+
+                const matchStatus = statusFilter === "" || item.statusDataATS.toLowerCase().includes(statusFilter);
+                const matchGender = genderFilter === "" || item.jk.toLowerCase() === genderFilter;
+
+                return matchQuery && matchStatus && matchGender;
+            });
+
+            renderTable();
+        }
+
+        // Update Summary Stats
+        function updateStatistics() {
+            document.getElementById('stat-total').innerText = rawATSData.length;
+            
+            const countATS = rawATSData.filter(d => d.statusDataATS.toUpperCase().includes('ATS')).length;
+            document.getElementById('stat-ats').innerText = countATS;
+
+            const countVerified = rawATSData.filter(d => d.statusVerifikasi.toUpperCase().includes('TERVERIFIKASI')).length;
+            document.getElementById('stat-verified').innerText = countVerified;
+
+            const countUnverified = rawATSData.length - countVerified;
+            document.getElementById('stat-unverified').innerText = countUnverified;
+        }
+
+        // Modal Functionality
+        function openModal(index) {
+            const data = filteredATSData[index];
+            if (!data) return;
+
+            document.getElementById('modal-nama-anak').innerText = data.namaAnak;
+            document.getElementById('modal-ttl-usia').innerText = `${data.ttl} • Usia: ${data.usia}`;
+
+            // Populate 20 Fields
+            document.getElementById('m-nisn').innerText = data.nisn;
+            document.getElementById('m-nik').innerText = data.nik;
+            document.getElementById('m-nama').innerText = data.namaAnak;
+            document.getElementById('m-ttl').innerText = data.ttl;
+            document.getElementById('m-jk').innerText = data.jk === 'L' ? 'Laki-laki (L)' : (data.jk === 'P' ? 'Perempuan (P)' : data.jk);
+            document.getElementById('m-usia').innerText = data.usia;
+
+            document.getElementById('m-ayah').innerText = data.namaAyah;
+            document.getElementById('m-ibu').innerText = data.namaIbu;
+            document.getElementById('m-alamat').innerText = data.alamat;
+            document.getElementById('m-provinsi').innerText = data.provinsi;
+            document.getElementById('m-kabupaten').innerText = data.kabupaten;
+            document.getElementById('m-kecamatan').innerText = data.kecamatan;
+            document.getElementById('m-desa').innerText = data.desa;
+
+            document.getElementById('m-status-keaktifan').innerText = data.statusKeaktifan;
+            document.getElementById('m-status-pd').innerText = data.statusPesertaDidik;
+            document.getElementById('m-status-verifikasi').innerText = data.statusVerifikasi;
+            document.getElementById('m-status-ats').innerText = data.statusDataATS;
+            document.getElementById('m-alasan-ats').innerText = data.alasanATS;
+            document.getElementById('m-alasan-lain').innerText = data.alasanLainnya;
+            document.getElementById('m-keterangan').innerText = data.keterangan;
+
+            // Show Modal Animation
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('modal-card');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('modal-card');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+        }
+
+        // Copy Helper
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            if (!text || text === '-') return;
+            
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast(`Tersalin: ${text}`);
+        }
+
+        // Toast Notification
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+            if (type === "info") {
+                toastIcon.className = "fa-solid fa-circle-info text-amber-400 text-lg";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
