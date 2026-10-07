@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Data DBH Pajak &amp; Retribusi Desa 2026</title>
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-hover: #0b5ed7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            color: #1a252f;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .header h2 {
+            font-size: 1rem;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Style untuk Nama Desa yang bisa diklik */
+        .village-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .village-link:hover {
+            color: var(--primary-hover);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 20px;
+            color: #868e96;
+            display: none;
+        }
+
+        tfoot tr {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        tfoot td {
+            border-top: 2px solid #adb5bd;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            color: #1a252f;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #212529;
+            text-align: right;
+        }
+
+        .badge-total {
+            background-color: #e7f5ff;
+            color: var(--primary-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .badge-total .amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0b5ed7;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>DANA BAGI HASIL PAJAK DAN RETRIBUSI DAERAH KEPADA PEMERINTAH DESA KABUPATEN DONGGALA TAHUN ANGGARAN 2026</h1>
+            <h2>KECAMATAN: TANANTOVEA</h2>
+        </div>
+
+        <!-- Input Pencarian -->
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Ketik nama desa atau No. Kode untuk mencari..." onkeyup="filterTable()">
+        </div>
+
+        <!-- Tabel Data -->
+        <div class="table-responsive">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 10%;">NO.</th>
+                        <th style="width: 50%;">NAMA DESA</th>
+                        <th class="text-right" style="width: 40%;">JUMLAH (Rp)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td class="text-center">107</td>
+                        <td><span class="village-link" onclick="openModal('107', 'WANI I', '17.034.638,25')">WANI I</span></td>
+                        <td class="text-right">17.034.638,25</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">108</td>
+                        <td><span class="village-link" onclick="openModal('108', 'WANI II', '16.669.447,93')">WANI II</span></td>
+                        <td class="text-right">16.669.447,93</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">109</td>
+                        <td><span class="village-link" onclick="openModal('109', 'NUPABOMBA', '17.526.757,37')">NUPABOMBA</span></td>
+                        <td class="text-right">17.526.757,37</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">110</td>
+                        <td><span class="village-link" onclick="openModal('110', 'WOMBO', '15.695.609,13')">WOMBO</span></td>
+                        <td class="text-right">15.695.609,13</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">111</td>
+                        <td><span class="village-link" onclick="openModal('111', 'GUNTARANO', '16.257.051,97')">GUNTARANO</span></td>
+                        <td class="text-right">16.257.051,97</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">112</td>
+                        <td><span class="village-link" onclick="openModal('112', 'BALE', '51.036.213,81')">BALE</span></td>
+                        <td class="text-right">51.036.213,81</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">113</td>
+                        <td><span class="village-link" onclick="openModal('113', 'WOMBO MPANAU', '19.835.268,89')">WOMBO MPANAU</span></td>
+                        <td class="text-right">19.835.268,89</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">114</td>
+                        <td><span class="village-link" onclick="openModal('114', 'WOMBO KALONGGO', '15.588.274,29')">WOMBO KALONGGO</span></td>
+                        <td class="text-right">15.588.274,29</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">115</td>
+                        <td><span class="village-link" onclick="openModal('115', 'WANI TIGA', '16.078.858,29')">WANI TIGA</span></td>
+                        <td class="text-right">16.078.858,29</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">116</td>
+                        <td><span class="village-link" onclick="openModal('116', 'WANI LUMBUMPETIGO', '15.534.885,29')">WANI LUMBUMPETIGO</span></td>
+                        <td class="text-right">15.534.885,29</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-right">TOTAL</td>
+                        <td class="text-right">201.257.005,20</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div id="noResult" class="no-result">
+                Data tidak ditemukan
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup Rincian -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Rincian Data Desa</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-row">
+                    <span class="detail-label">Nomor </span>
+                    <span class="detail-value" id="modalNo">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nama Desa</span>
+                    <span class="detail-value" id="modalDesa">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Kecamatan</span>
+                    <span class="detail-value">Tanantovea</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Kabupaten</span>
+                    <span class="detail-value">Donggala</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tahun Anggaran</span>
+                    <span class="detail-value">2026</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Jenis Alokasi</span>
+                    <span class="detail-value">DBH Pajak & Retribusi</span>
+                </div>
+
+                <div class="badge-total">
+                    <div>Jumlah Diterima</div>
+                    <div class="amount" id="modalJumlah">Rp 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi Pencarian
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const tbody = document.getElementById('tableBody');
+            const tr = tbody.getElementsByTagName('tr');
+            const noResult = document.getElementById('noResult');
+            let hasVisibleRow = false;
+
+            for (let i = 0; i < tr.length; i++) {
+                const tdNo = tr[i].getElementsByTagName('td')[0];
+                const tdDesa = tr[i].getElementsByTagName('td')[1];
+
+                if (tdNo || tdDesa) {
+                    const txtNo = tdNo.textContent || tdNo.innerText;
+                    const txtDesa = tdDesa.textContent || tdDesa.innerText;
+
+                    if (txtNo.toUpperCase().indexOf(filter) > -1 || txtDesa.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        hasVisibleRow = true;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+            if (hasVisibleRow) {
+                noResult.style.display = "none";
+            } else {
+                noResult.style.display = "block";
+            }
+        }
+
+        // Fungsi Buka Modal Detail
+        function openModal(no, desa, jumlah) {
+            document.getElementById('modalNo').innerText = no;
+            document.getElementById('modalDesa').innerText = desa;
+            document.getElementById('modalJumlah').innerText = 'Rp ' + jumlah;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        // Fungsi Tutup Modal
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Tutup modal jika mengklik di luar area modal (overlay)
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+</html>
