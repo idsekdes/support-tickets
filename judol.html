@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pencarian Data Google Sheets</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-color);
+      text-align: center;
+    }
+
+    .search-box {
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-height: 600px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.925rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #475569;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .clickable-name {
+      color: var(--primary-color);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .clickable-name:hover {
+      color: var(--primary-hover);
+    }
+
+    .copyable-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #64748b;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .copy-btn:hover {
+      background-color: #e2e8f0;
+      color: var(--primary-color);
+    }
+
+    .status-msg {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+    }
+
+    .info-count {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #64748b;
+      text-align: right;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 550px;
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      color: var(--text-color);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      max-height: 65vh;
+      overflow-y: auto;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .detail-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .detail-value-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.2rem;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      color: var(--text-color);
+      word-break: break-word;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 1100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Data Warga Terdeksi Judol</h1>
+    
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Ketik untuk mencari data..." 
+        disabled
+      />
+    </div>
+
+    <div class="table-container">
+      <table id="dataTable">
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody">
+          <tr>
+            <td class="status-msg">Memuat data dari Google Sheets...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-count" id="infoCount"></div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Rincian Lengkap</h2>
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Teks berhasil disalin!</div>
+
+  <script>
+    const primaryCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQC50U4sGvxoPtrBE5UJ1I0M04KINb4m7jzHdfnD4oy9mOwRo0DIkOW2OJGVLbPu2AMkWP6RebPgqRQ/pub?gid=1974931994&single=true&output=csv';
+    const fallbackCsvUrl = 'https://corsproxy.io/?' + encodeURIComponent(primaryCsvUrl);
+
+    let rawData = [];
+    let headers = [];
+
+    const searchInput = document.getElementById('searchInput');
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+    const infoCount = document.getElementById('infoCount');
+    const detailModal = document.getElementById('detailModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalContent = document.getElementById('modalContent');
+    const toast = document.getElementById('toast');
+
+    const copyIconSvg = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    `;
+
+    function loadData(url, isRetry = false) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results.data && results.data.length > 0) {
+            rawData = results.data;
+            headers = results.meta.fields || Object.keys(results.data[0]);
+            
+            renderHeader();
+            renderTable(rawData);
+            
+            searchInput.disabled = false;
+            searchInput.placeholder = "Ketik kata kunci pencarian...";
+            searchInput.focus();
+          } else {
+            tableBody.innerHTML = '<tr><td class="status-msg">Data kosong atau format spreadsheet tidak valid.</td></tr>';
+          }
+        },
+        error: function(err) {
+          console.warn('Gagal memuat URL:', url, err);
+          if (!isRetry) {
+            loadData(fallbackCsvUrl, true);
+          } else {
+            tableBody.innerHTML = '<tr><td class="status-msg">Gagal memuat data. Pastikan Google Sheet Anda diatur ke "Dipublikasikan ke Web".</td></tr>';
+          }
+        }
+      });
+    }
+
+    loadData(primaryCsvUrl);
+
+    function renderHeader() {
+      tableHead.innerHTML = '';
+      const tr = document.createElement('tr');
+      headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        tr.appendChild(th);
+      });
+      tableHead.appendChild(tr);
+    }
+
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+
+      if (data.length === 0) {
+        tableBody.innerHTML = `<tr><td class="status-msg" colspan="${headers.length || 1}">Tidak ada data yang cocok dengan pencarian.</td></tr>`;
+        infoCount.textContent = 'Menampilkan 0 data';
+        return;
+      }
+
+      data.forEach((row) => {
+        const tr = document.createElement('tr');
+
+        headers.forEach(header => {
+          const td = document.createElement('td');
+          const value = row[header] !== undefined && row[header] !== '' ? row[header] : '-';
+          const headerLower = header.toLowerCase();
+
+          // Pemicu Klik Nama untuk Modal
+          if (headerLower.includes('nama')) {
+            const span = document.createElement('span');
+            span.className = 'clickable-name';
+            span.textContent = value;
+            span.addEventListener('click', () => showModal(row));
+            td.appendChild(span);
+          } 
+          // Pemicu Ikon Salin di Tabel untuk NIK dan KK
+          else if (headerLower.includes('nik') || headerLower.includes('kk')) {
+            const container = document.createElement('div');
+            container.className = 'copyable-container';
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = value;
+
+            if (value !== '-') {
+              const copyBtn = document.createElement('button');
+              copyBtn.className = 'copy-btn';
+              copyBtn.title = `Salin ${header}`;
+              copyBtn.innerHTML = copyIconSvg;
+              copyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                copyToClipboard(value, header);
+              });
+              container.appendChild(textSpan);
+              container.appendChild(copyBtn);
+            } else {
+              container.appendChild(textSpan);
+            }
+
+            td.appendChild(container);
+          } 
+          else {
+            td.textContent = value;
+          }
+
+          tr.appendChild(td);
+        });
+
+        tableBody.appendChild(tr);
+      });
+
+      infoCount.textContent = `Menampilkan ${data.length} dari ${rawData.length} data`;
+    }
+
+    // Modal Rincian Lengkap dengan Tombol Salin di Setiap Baris Data
+    function showModal(row) {
+      modalContent.innerHTML = '';
+      headers.forEach(header => {
+        const item = document.createElement('div');
+        item.className = 'detail-item';
+
+        const label = document.createElement('div');
+        label.className = 'detail-label';
+        label.textContent = header;
+
+        const valWrapper = document.createElement('div');
+        valWrapper.className = 'detail-value-wrapper';
+
+        const val = document.createElement('div');
+        val.className = 'detail-value';
+        const cellValue = row[header] !== undefined && row[header] !== '' ? row[header] : '-';
+        val.textContent = cellValue;
+
+        valWrapper.appendChild(val);
+
+        // Tambahkan tombol salin jika nilainya ada (bukan '-')
+        if (cellValue !== '-') {
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'copy-btn';
+          copyBtn.title = `Salin ${header}`;
+          copyBtn.innerHTML = copyIconSvg;
+          copyBtn.addEventListener('click', () => {
+            copyToClipboard(cellValue, header);
+          });
+          valWrapper.appendChild(copyBtn);
+        }
+
+        item.appendChild(label);
+        item.appendChild(valWrapper);
+        modalContent.appendChild(item);
+      });
+
+      detailModal.classList.add('active');
+    }
+
+    closeModalBtn.addEventListener('click', () => detailModal.classList.remove('active'));
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) detailModal.classList.remove('active');
+    });
+
+    function copyToClipboard(text, fieldName) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`${fieldName} berhasil disalin!`);
+      }).catch(err => {
+        console.error('Gagal menyalin:', err);
+      });
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    searchInput.addEventListener('input', function() {
+      const keyword = this.value.toLowerCase().trim();
+
+      if (!keyword) {
+        renderTable(rawData);
+        return;
+      }
+
+      const filteredData = rawData.filter(row => {
+        return headers.some(header => {
+          const cellValue = row[header] ? row[header].toString().toLowerCase() : '';
+          return cellValue.includes(keyword);
+        });
+      });
+
+      renderTable(filteredData);
+    });
+  </script>
+</body>
+</html>
