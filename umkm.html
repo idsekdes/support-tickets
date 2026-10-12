@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', Times, serif, Arial, sans-serif;
             background-color: #f3f4f6;
             color: #000;
         }
@@ -21,54 +21,56 @@
 
         th, td {
             border: 1px solid #000000;
-            padding: 6px 8px;
-            font-size: 13px;
+            padding: 5px 6px;
+            font-size: 12px;
             vertical-align: middle;
             text-align: center;
+            line-height: 1.2;
         }
 
         th {
-            background-color: #cce5ff;
+            background-color: #dbeafe;
             font-weight: bold;
             color: #000;
         }
 
         .editable:hover {
-            background-color: #fdf6b2;
+            background-color: #fef08a;
             cursor: pointer;
         }
 
         .editable:focus {
             background-color: #fef08a;
-            outline: 2px solid #3b82f6;
+            outline: 2px solid #2563eb;
         }
 
-        /* SVG Stamp & Signature Styling */
+        /* Signature Container Layout */
         .stamp-container {
             position: relative;
             display: inline-block;
-            width: 190px;
-            height: 120px;
+            width: 240px;
+            height: 110px;
         }
 
         .stamp-image {
             position: absolute;
-            left: -35px;
-            top: -25px;
-            width: 165px;
-            height: 165px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 230px;
+            max-height: 105px;
+            object-fit: contain;
             pointer-events: none;
-            opacity: 0.88;
-            mix-blend-mode: multiply;
         }
 
         @media print {
             @page {
-                size: landscape;
-                margin: 10mm;
+                size: A4 landscape;
+                margin: 8mm;
             }
             body {
                 background-color: #ffffff;
+                padding: 0;
             }
             .no-print {
                 display: none !important;
@@ -77,12 +79,19 @@
                 box-shadow: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                width: 100% !important;
+                max-width: none !important;
             }
             table {
                 font-size: 11px;
             }
             th, td {
-                padding: 4px 6px;
+                padding: 4px 5px;
+            }
+            th {
+                background-color: #dbeafe !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
         }
     </style>
@@ -91,136 +100,94 @@
 
     <div class="max-w-7xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-md no-print">
         <div>
-            <h1 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-table text-blue-600 mr-2"></i>Kelola Data Penanaman Modal 2026</h1>
-            <p class="text-sm text-gray-500">Klik langsung pada teks sel atau tanda tangan untuk mengedit, atau cetak ke PDF.</p>
+            <h1 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-file-invoice text-blue-600 mr-2"></i>Daftar Penanaman Modal 2026</h1>
+            <p class="text-xs text-gray-500 mt-1">Klik langsung pada sel/teks untuk mengedit data, atau gunakan tombol cetak ke PDF.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-            <button onclick="addRow()" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+            <button onclick="addRow()" class="bg-green-600 hover:bg-green-700 text-white font-medium px-3 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-plus"></i> Tambah Baris
             </button>
-            <button onclick="document.getElementById('stampUploader').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-file-image"></i> Unggah Stempel/Tanda Tangan
+            <button onclick="document.getElementById('stampUploader').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-upload"></i> Unggah TTD Baru
             </button>
             <input type="file" id="stampUploader" accept="image/*" class="hidden" onchange="uploadCustomStamp(event)">
-            <button onclick="resetData()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+            <button onclick="resetData()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-3 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-rotate-right"></i> Reset Default
             </button>
-            <button onclick="exportPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-file-pdf"></i> Ekspor / Cetak PDF
+            <button onclick="exportPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm font-bold">
+                <i class="fa-solid fa-print"></i> Cetak / Ekspor PDF
             </button>
         </div>
     </div>
 
     <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-lg print-container overflow-x-auto">
         
-        <!-- Document Title -->
-        <div class="text-center mb-6">
-            <h2 class="text-lg md:text-xl font-bold uppercase tracking-wide text-black editable inline-block px-2 py-1" contenteditable="true">Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</h2>
+        <!-- Header Title -->
+        <div class="text-center mb-5">
+            <h2 class="text-base md:text-lg font-bold uppercase tracking-wide text-black editable inline-block px-2 py-1" contenteditable="true">Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</h2>
         </div>
 
+        <!-- Main Data Table -->
         <table id="dataTable">
             <thead>
                 <tr>
-                    <th rowspan="2" class="w-12">No.</th>
-                    <th rowspan="2" class="min-w-[160px]">Nama Pelaku Usaha</th>
-                    <th rowspan="2" class="min-w-[150px]">NIB atau Izin Legalitas Lainnya</th>
+                    <th rowspan="2" class="w-10">No.</th>
+                    <th rowspan="2" class="min-w-[150px]">Nama Pelaku Usaha</th>
+                    <th rowspan="2" class="min-w-[140px]">NIB atau Izin Legalitas Lainnya</th>
                     <th rowspan="2" class="min-w-[140px]">Alamat Lokasi Usaha (RT/RW)</th>
                     <th colspan="5">Sektor Jenis Usaha</th>
                     <th rowspan="2" class="min-w-[130px]">Perkiraan Jumlah Modal Usaha/Aset Awal</th>
-                    <th rowspan="2" class="min-w-[110px]">Jumlah Tenaga Kerja yang di Serap</th>
-                    <th rowspan="2" class="w-20">Ket</th>
-                    <th rowspan="2" class="w-12 no-print">Aksi</th>
+                    <th rowspan="2" class="min-w-[100px]">Jumlah Tenaga Kerja yang di Serap</th>
+                    <th rowspan="2" class="w-16">Ket</th>
+                    <th rowspan="2" class="w-10 no-print">Aksi</th>
                 </tr>
                 <tr>
                     <th class="min-w-[120px]">Kuliner</th>
                     <th class="min-w-[100px]">Perdagangan</th>
-                    <th class="min-w-[80px]">Jasa</th>
+                    <th class="min-w-[70px]">Jasa</th>
                     <th class="min-w-[90px]">Kerajinan</th>
-                    <th class="min-w-[80px]">Lain-lain</th>
+                    <th class="min-w-[70px]">Lain-lain</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Data rows injected via JS -->
+                <!-- Rows injected via JavaScript -->
             </tbody>
         </table>
 
-        <div class="mt-8 flex justify-end">
+        <div class="mt-6 flex justify-end">
             <div class="text-center w-80 pr-4">
-                <!-- Place & Date Line -->
+                <!-- Location & Date -->
                 <p class="text-sm font-normal text-black editable" contenteditable="true">Wani Lumbumpetigo, 13 Oktober 2026</p>
                 
                 <!-- Position Title -->
-                <p class="text-sm font-normal text-black mt-1 editable" contenteditable="true">Kepala Desa Wani Lumbumpetigo</p>
+                <p class="text-sm font-normal text-black mt-0.5 editable" contenteditable="true">Kepala Desa Wani Lumbumpetigo</p>
                 
-                <!-- Stamp & Signature Graphic Box -->
+                <!-- Signature Image Box -->
                 <div class="stamp-container my-1 flex items-center justify-center">
-                    <div id="stampWrapper" class="relative">
-                        <!-- Simulated Official Stamp & Signature SVG -->
-                        <svg id="defaultStampSvg" class="stamp-image" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Outer Double Circle -->
-                            <circle cx="100" cy="100" r="92" stroke="#2b317e" stroke-width="3" fill="none" />
-                            <circle cx="100" cy="100" r="85" stroke="#2b317e" stroke-width="1.5" fill="none" />
-                            <circle cx="100" cy="100" r="58" stroke="#2b317e" stroke-width="1.5" fill="none" opacity="0.9"/>
-                            
-                            <!-- Circular Text Path 1 (Upper Outer) -->
-                            <path id="textPathOuter" d="M 22,100 A 78,78 0 1,1 178,100" fill="none"/>
-                            <text font-size="10.5" font-weight="bold" fill="#2b317e" letter-spacing="1">
-                                <textPath href="#textPathOuter" startOffset="50%" text-anchor="middle">
-                                    PEMERINTAH KABUPATEN DONGGALA
-                                </textPath>
-                            </text>
-                            
-                            <!-- Circular Text Path 2 (Lower Outer) -->
-                            <path id="textPathLower" d="M 178,100 A 78,78 0 0,1 22,100" fill="none"/>
-                            <text font-size="10.5" font-weight="bold" fill="#2b317e" letter-spacing="1">
-                                <textPath href="#textPathLower" startOffset="50%" text-anchor="middle">
-                                    ★ KECAMATAN TANANTOVEA ★
-                                </textPath>
-                            </text>
-
-                            <!-- Inner Circle Text -->
-                            <path id="textPathInner" d="M 46,100 A 54,54 0 1,1 154,100" fill="none"/>
-                            <text font-size="9" font-weight="bold" fill="#2b317e" letter-spacing="0.5">
-                                <textPath href="#textPathInner" startOffset="50%" text-anchor="middle">
-                                    KEPALA DESA
-                                </textPath>
-                            </text>
-                            
-                            <text x="100" y="122" font-size="8.5" font-weight="bold" fill="#2b317e" text-anchor="middle">
-                                WANI LUMBUMPETIGO
-                            </text>
-
-                            <!-- Blue Ink Wet Signature Graphic Overlay -->
-                            <g stroke="#1e2570" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
-                                <path d="M 65,125 C 75,95 85,75 95,115 C 105,155 110,85 125,105 C 135,120 120,135 145,110 C 155,100 170,115 175,125" />
-                                <path d="M 80,105 C 100,105 130,100 160,115" stroke-width="2.5" />
-                                <path d="M 115,85 L 125,140" stroke-width="2" />
-                            </g>
-                        </svg>
-                        <img id="customStampImg" class="stamp-image hidden object-contain" alt="Stamp" />
+                    <div id="stampWrapper" class="relative w-full h-full">
+                        <img id="customStampImg" class="stamp-image object-contain" src="https://res.cloudinary.com/kshynbri/image/upload/v1791844361/TTD_AMIR_RAMANG-removebg-preview.png" alt="Tanda Tangan AMIR RAMANG" onerror="this.onerror=null; this.src='https://placehold.co/220x100/ffffff/000000?text=TTD+Amir+Ramang';" />
                     </div>
                 </div>
 
-                <!-- Leader Name -->
+                <!-- Leader Name (Bold & Underline) -->
                 <p class="text-sm font-bold text-black uppercase underline tracking-wider editable" contenteditable="true">AMIR RAMANG</p>
             </div>
         </div>
-        
-        <div class="mt-4 text-xs text-gray-500 no-print">
-            <p><i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> Tip: Teks nama, tanggal, dan jabatan pada tanda tangan dapat diedit langsung. Gunakan tombol 'Unggah Stempel' jika ingin memakai gambar tanda tangan/stempel sendiri.</p>
-        </div>
+
     </div>
 
     <script>
+        const defaultSignatureUrl = "https://res.cloudinary.com/kshynbri/image/upload/v1791844361/TTD_AMIR_RAMANG-removebg-preview.png";
+
         const initialData = [
-            { no: 1, nama: "ADE IRMA OKTAVIANA", nib: "No..336/SKU/PEM-DWLP/IX/2025", alamat: "Jl.Kayuriva Dusun II", kuliner: "Jenis usaha Kuliner :Kue Basah dan Kue Kering", perdagangan: "-", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 2,000,000", tenaga: "2 Orang", ket: "Aktif" },
-            { no: 2, nama: "CARMINA", nib: "", alamat: "Jl.Kayuriva Dusun II", kuliner: "Jual Kue Keliling", perdagangan: "-", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 1,000,000", tenaga: "-", ket: "Aktif" },
-            { no: 3, nama: "MELDA KURNIAWATI", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
-            { no: 4, nama: "NADIA", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
-            { no: 5, nama: "RISNAWATI", nib: "", alamat: "Jl.Kayuriva Dusun III", kuliner: "-", perdagangan: "Pedagang Pasar", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 10,000,000", tenaga: "3 Orang", ket: "Aktif" },
-            { no: 6, nama: "NISMA", nib: "No..336/SKU/PEM-DWLP/IX/2030", alamat: "Jl.Kayuriva Dusun II", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
-            { no: 7, nama: "ANWAR RAMANG", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "-", jasa: "-", kerajinan: "Kerajinan Kayu Ebony", lain: "-", modal: "Rp 5,000,000", tenaga: "-", ket: "Aktif" },
-            { no: 8, nama: "BADRIA<br>RIRIN", nib: "", alamat: "Jl.Kayuriva Dusun II", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
+            { no: 1, nama: "ADE IRMA OKTAVIANA", nib: "No..336/SKU/PEM-DWLP/IX/2025", alamat: "JL.Kayuriva Dusun II", kuliner: "Jenis usaha Kuliner :Kue Basah dan Kue Kering", perdagangan: "-", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 2,000,000", tenaga: "2 Orang", ket: "Aktif" },
+            { no: 2, nama: "CARMINA", nib: "", alamat: "JL.Kayuriva Dusun II", kuliner: "Jual Kue Keliling", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "Rp 1,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 3, nama: "MELDA KURNIAWATI", nib: "", alamat: "JL.Latsitarda Dusun I", kuliner: "", perdagangan: "Kios Campuran", jasa: "", kerajinan: "", lain: "", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 4, nama: "NADIA", nib: "", alamat: "JL.Latsitarda Dusun I", kuliner: "", perdagangan: "Kios Campuran", jasa: "", kerajinan: "", lain: "", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 5, nama: "RISNAWATI", nib: "", alamat: "JL.Kayuriva Dusun III", kuliner: "", perdagangan: "Pedagang Pasar", jasa: "", kerajinan: "", lain: "", modal: "Rp 10,000,000", tenaga: "3 Orang", ket: "Aktif" },
+            { no: 6, nama: "NISMA", nib: "No..336/SKU/PEM-DWLP/IX/2030", alamat: "JL.Kayuriva Dusun II", kuliner: "", perdagangan: "Kios Campuran", jasa: "", kerajinan: "", lain: "", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 7, nama: "ANWAR RAMANG", nib: "", alamat: "JL.Latsitarda Dusun I", kuliner: "", perdagangan: "", jasa: "", kerajinan: "Kerajinan Kayu Ebony", lain: "", modal: "Rp 5,000,000", tenaga: "", ket: "Aktif" },
+            { no: 8, nama: "BADRIA<br>RIRIN", nib: "", alamat: "JL.Kayuriva Dusun II", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
             { no: 9, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
             { no: 10, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
             { no: 11, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
@@ -242,11 +209,11 @@
                     <td class="editable text-center" contenteditable="true">${item.jasa}</td>
                     <td class="editable text-left" contenteditable="true">${item.kerajinan}</td>
                     <td class="editable text-center" contenteditable="true">${item.lain}</td>
-                    <td class="editable text-right px-3" contenteditable="true">${item.modal}</td>
+                    <td class="editable text-right px-2" contenteditable="true">${item.modal}</td>
                     <td class="editable text-center" contenteditable="true">${item.tenaga}</td>
                     <td class="editable text-center" contenteditable="true">${item.ket}</td>
                     <td class="no-print text-center">
-                        <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 px-2 py-1 rounded transition" title="Hapus Baris">
+                        <button onclick="deleteRow(this)" class="text-red-500 hover:text-red-700 px-1 py-1 rounded transition" title="Hapus Baris">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -269,11 +236,11 @@
                 <td class="editable text-center" contenteditable="true"></td>
                 <td class="editable text-left" contenteditable="true"></td>
                 <td class="editable text-center" contenteditable="true"></td>
-                <td class="editable text-right px-3" contenteditable="true"></td>
+                <td class="editable text-right px-2" contenteditable="true"></td>
                 <td class="editable text-center" contenteditable="true"></td>
                 <td class="editable text-center" contenteditable="true"></td>
                 <td class="no-print text-center">
-                    <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 px-2 py-1 rounded transition" title="Hapus Baris">
+                    <button onclick="deleteRow(this)" class="text-red-500 hover:text-red-700 px-1 py-1 rounded transition" title="Hapus Baris">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </td>
@@ -301,23 +268,16 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const customImg = document.getElementById('customStampImg');
-                    const defaultSvg = document.getElementById('defaultStampSvg');
                     customImg.src = e.target.result;
-                    customImg.classList.remove('hidden');
-                    defaultSvg.classList.add('hidden');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         function resetData() {
-            if(confirm("Apakah Anda yakin ingin mereset data dan stempel ke bentuk semula?")) {
-                loadTableData(initialData);
-                const customImg = document.getElementById('customStampImg');
-                const defaultSvg = document.getElementById('defaultStampSvg');
-                customImg.classList.add('hidden');
-                defaultSvg.classList.remove('hidden');
-            }
+            loadTableData(initialData);
+            const customImg = document.getElementById('customStampImg');
+            customImg.src = defaultSignatureUrl;
         }
 
         function exportPDF() {
