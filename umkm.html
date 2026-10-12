@@ -43,6 +43,25 @@
             outline: 2px solid #3b82f6;
         }
 
+        /* SVG Stamp & Signature Styling */
+        .stamp-container {
+            position: relative;
+            display: inline-block;
+            width: 190px;
+            height: 120px;
+        }
+
+        .stamp-image {
+            position: absolute;
+            left: -35px;
+            top: -25px;
+            width: 165px;
+            height: 165px;
+            pointer-events: none;
+            opacity: 0.88;
+            mix-blend-mode: multiply;
+        }
+
         @media print {
             @page {
                 size: landscape;
@@ -73,16 +92,20 @@
     <div class="max-w-7xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-md no-print">
         <div>
             <h1 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-table text-blue-600 mr-2"></i>Kelola Data Penanaman Modal 2026</h1>
-            <p class="text-sm text-gray-500">Klik langsung pada sel tabel untuk mengedit data, tambah baris, atau cetak ke PDF.</p>
+            <p class="text-sm text-gray-500">Klik langsung pada teks sel atau tanda tangan untuk mengedit, atau cetak ke PDF.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-            <button onclick="addRow()" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+            <button onclick="addRow()" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-plus"></i> Tambah Baris
             </button>
-            <button onclick="resetData()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+            <button onclick="document.getElementById('stampUploader').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-file-image"></i> Unggah Stempel/Tanda Tangan
+            </button>
+            <input type="file" id="stampUploader" accept="image/*" class="hidden" onchange="uploadCustomStamp(event)">
+            <button onclick="resetData()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-rotate-right"></i> Reset Default
             </button>
-            <button onclick="exportPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+            <button onclick="exportPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-file-pdf"></i> Ekspor / Cetak PDF
             </button>
         </div>
@@ -92,7 +115,7 @@
         
         <!-- Document Title -->
         <div class="text-center mb-6">
-            <h2 class="text-lg md:text-xl font-bold uppercase tracking-wide text-black" contenteditable="true">Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</h2>
+            <h2 class="text-lg md:text-xl font-bold uppercase tracking-wide text-black editable inline-block px-2 py-1" contenteditable="true">Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</h2>
         </div>
 
         <table id="dataTable">
@@ -117,12 +140,74 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Data rows will be injected via JavaScript -->
+                <!-- Data rows injected via JS -->
             </tbody>
         </table>
+
+        <div class="mt-8 flex justify-end">
+            <div class="text-center w-80 pr-4">
+                <!-- Place & Date Line -->
+                <p class="text-sm font-normal text-black editable" contenteditable="true">Wani Lumbumpetigo, 13 Oktober 2026</p>
+                
+                <!-- Position Title -->
+                <p class="text-sm font-normal text-black mt-1 editable" contenteditable="true">Kepala Desa Wani Lumbumpetigo</p>
+                
+                <!-- Stamp & Signature Graphic Box -->
+                <div class="stamp-container my-1 flex items-center justify-center">
+                    <div id="stampWrapper" class="relative">
+                        <!-- Simulated Official Stamp & Signature SVG -->
+                        <svg id="defaultStampSvg" class="stamp-image" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Outer Double Circle -->
+                            <circle cx="100" cy="100" r="92" stroke="#2b317e" stroke-width="3" fill="none" />
+                            <circle cx="100" cy="100" r="85" stroke="#2b317e" stroke-width="1.5" fill="none" />
+                            <circle cx="100" cy="100" r="58" stroke="#2b317e" stroke-width="1.5" fill="none" opacity="0.9"/>
+                            
+                            <!-- Circular Text Path 1 (Upper Outer) -->
+                            <path id="textPathOuter" d="M 22,100 A 78,78 0 1,1 178,100" fill="none"/>
+                            <text font-size="10.5" font-weight="bold" fill="#2b317e" letter-spacing="1">
+                                <textPath href="#textPathOuter" startOffset="50%" text-anchor="middle">
+                                    PEMERINTAH KABUPATEN DONGGALA
+                                </textPath>
+                            </text>
+                            
+                            <!-- Circular Text Path 2 (Lower Outer) -->
+                            <path id="textPathLower" d="M 178,100 A 78,78 0 0,1 22,100" fill="none"/>
+                            <text font-size="10.5" font-weight="bold" fill="#2b317e" letter-spacing="1">
+                                <textPath href="#textPathLower" startOffset="50%" text-anchor="middle">
+                                    ★ KECAMATAN TANANTOVEA ★
+                                </textPath>
+                            </text>
+
+                            <!-- Inner Circle Text -->
+                            <path id="textPathInner" d="M 46,100 A 54,54 0 1,1 154,100" fill="none"/>
+                            <text font-size="9" font-weight="bold" fill="#2b317e" letter-spacing="0.5">
+                                <textPath href="#textPathInner" startOffset="50%" text-anchor="middle">
+                                    KEPALA DESA
+                                </textPath>
+                            </text>
+                            
+                            <text x="100" y="122" font-size="8.5" font-weight="bold" fill="#2b317e" text-anchor="middle">
+                                WANI LUMBUMPETIGO
+                            </text>
+
+                            <!-- Blue Ink Wet Signature Graphic Overlay -->
+                            <g stroke="#1e2570" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+                                <path d="M 65,125 C 75,95 85,75 95,115 C 105,155 110,85 125,105 C 135,120 120,135 145,110 C 155,100 170,115 175,125" />
+                                <path d="M 80,105 C 100,105 130,100 160,115" stroke-width="2.5" />
+                                <path d="M 115,85 L 125,140" stroke-width="2" />
+                            </g>
+                        </svg>
+                        <img id="customStampImg" class="stamp-image hidden object-contain" alt="Stamp" />
+                    </div>
+                </div>
+
+                <!-- Leader Name -->
+                <p class="text-sm font-bold text-black uppercase underline tracking-wider editable" contenteditable="true">AMIR RAMANG</p>
+            </div>
+        </div>
         
         <div class="mt-4 text-xs text-gray-500 no-print">
-            <p><i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> Tip: Kolom dapat disesuaikan langsung dengan mengklik teks di dalam sel.</p>
+            <p><i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> Tip: Teks nama, tanggal, dan jabatan pada tanda tangan dapat diedit langsung. Gunakan tombol 'Unggah Stempel' jika ingin memakai gambar tanda tangan/stempel sendiri.</p>
         </div>
     </div>
 
@@ -210,9 +295,28 @@
             }
         }
 
+        function uploadCustomStamp(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const customImg = document.getElementById('customStampImg');
+                    const defaultSvg = document.getElementById('defaultStampSvg');
+                    customImg.src = e.target.result;
+                    customImg.classList.remove('hidden');
+                    defaultSvg.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         function resetData() {
-            if(confirm("Apakah Anda yakin ingin mereset data ke bentuk semula?")) {
+            if(confirm("Apakah Anda yakin ingin mereset data dan stempel ke bentuk semula?")) {
                 loadTableData(initialData);
+                const customImg = document.getElementById('customStampImg');
+                const defaultSvg = document.getElementById('defaultStampSvg');
+                customImg.classList.add('hidden');
+                defaultSvg.classList.remove('hidden');
             }
         }
 
@@ -220,7 +324,6 @@
             window.print();
         }
 
-        // Initialize table on load
         window.onload = function() {
             loadTableData(initialData);
         }
