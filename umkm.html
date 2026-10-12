@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #000;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            font-size: 13px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        th {
+            background-color: #cce5ff;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .editable:hover {
+            background-color: #fdf6b2;
+            cursor: pointer;
+        }
+
+        .editable:focus {
+            background-color: #fef08a;
+            outline: 2px solid #3b82f6;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 10mm;
+            }
+            body {
+                background-color: #ffffff;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-container {
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            table {
+                font-size: 11px;
+            }
+            th, td {
+                padding: 4px 6px;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-md no-print">
+        <div>
+            <h1 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-table text-blue-600 mr-2"></i>Kelola Data Penanaman Modal 2026</h1>
+            <p class="text-sm text-gray-500">Klik langsung pada sel tabel untuk mengedit data, tambah baris, atau cetak ke PDF.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <button onclick="addRow()" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> Tambah Baris
+            </button>
+            <button onclick="resetData()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> Reset Default
+            </button>
+            <button onclick="exportPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i> Ekspor / Cetak PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-lg print-container overflow-x-auto">
+        
+        <!-- Document Title -->
+        <div class="text-center mb-6">
+            <h2 class="text-lg md:text-xl font-bold uppercase tracking-wide text-black" contenteditable="true">Daftar Permintaan Data Penanaman Modal dan Pelaku Usaha Tahun 2026</h2>
+        </div>
+
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="w-12">No.</th>
+                    <th rowspan="2" class="min-w-[160px]">Nama Pelaku Usaha</th>
+                    <th rowspan="2" class="min-w-[150px]">NIB atau Izin Legalitas Lainnya</th>
+                    <th rowspan="2" class="min-w-[140px]">Alamat Lokasi Usaha (RT/RW)</th>
+                    <th colspan="5">Sektor Jenis Usaha</th>
+                    <th rowspan="2" class="min-w-[130px]">Perkiraan Jumlah Modal Usaha/Aset Awal</th>
+                    <th rowspan="2" class="min-w-[110px]">Jumlah Tenaga Kerja yang di Serap</th>
+                    <th rowspan="2" class="w-20">Ket</th>
+                    <th rowspan="2" class="w-12 no-print">Aksi</th>
+                </tr>
+                <tr>
+                    <th class="min-w-[120px]">Kuliner</th>
+                    <th class="min-w-[100px]">Perdagangan</th>
+                    <th class="min-w-[80px]">Jasa</th>
+                    <th class="min-w-[90px]">Kerajinan</th>
+                    <th class="min-w-[80px]">Lain-lain</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Data rows will be injected via JavaScript -->
+            </tbody>
+        </table>
+        
+        <div class="mt-4 text-xs text-gray-500 no-print">
+            <p><i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> Tip: Kolom dapat disesuaikan langsung dengan mengklik teks di dalam sel.</p>
+        </div>
+    </div>
+
+    <script>
+        const initialData = [
+            { no: 1, nama: "ADE IRMA OKTAVIANA", nib: "No..336/SKU/PEM-DWLP/IX/2025", alamat: "Jl.Kayuriva Dusun II", kuliner: "Jenis usaha Kuliner :Kue Basah dan Kue Kering", perdagangan: "-", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 2,000,000", tenaga: "2 Orang", ket: "Aktif" },
+            { no: 2, nama: "CARMINA", nib: "", alamat: "Jl.Kayuriva Dusun II", kuliner: "Jual Kue Keliling", perdagangan: "-", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 1,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 3, nama: "MELDA KURNIAWATI", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 4, nama: "NADIA", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 5, nama: "RISNAWATI", nib: "", alamat: "Jl.Kayuriva Dusun III", kuliner: "-", perdagangan: "Pedagang Pasar", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 10,000,000", tenaga: "3 Orang", ket: "Aktif" },
+            { no: 6, nama: "NISMA", nib: "No..336/SKU/PEM-DWLP/IX/2030", alamat: "Jl.Kayuriva Dusun II", kuliner: "-", perdagangan: "Kios Campuran", jasa: "-", kerajinan: "-", lain: "-", modal: "Rp 3,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 7, nama: "ANWAR RAMANG", nib: "", alamat: "Jl.Latsitarda Dusun I", kuliner: "-", perdagangan: "-", jasa: "-", kerajinan: "Kerajinan Kayu Ebony", lain: "-", modal: "Rp 5,000,000", tenaga: "-", ket: "Aktif" },
+            { no: 8, nama: "BADRIA<br>RIRIN", nib: "", alamat: "Jl.Kayuriva Dusun II", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
+            { no: 9, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
+            { no: 10, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
+            { no: 11, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" },
+            { no: 12, nama: "", nib: "", alamat: "", kuliner: "", perdagangan: "", jasa: "", kerajinan: "", lain: "", modal: "", tenaga: "", ket: "" }
+        ];
+
+        function loadTableData(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="editable font-medium" contenteditable="true">${index + 1}</td>
+                    <td class="editable text-left uppercase" contenteditable="true">${item.nama}</td>
+                    <td class="editable text-left" contenteditable="true">${item.nib}</td>
+                    <td class="editable text-left" contenteditable="true">${item.alamat}</td>
+                    <td class="editable text-left" contenteditable="true">${item.kuliner}</td>
+                    <td class="editable text-left" contenteditable="true">${item.perdagangan}</td>
+                    <td class="editable text-center" contenteditable="true">${item.jasa}</td>
+                    <td class="editable text-left" contenteditable="true">${item.kerajinan}</td>
+                    <td class="editable text-center" contenteditable="true">${item.lain}</td>
+                    <td class="editable text-right px-3" contenteditable="true">${item.modal}</td>
+                    <td class="editable text-center" contenteditable="true">${item.tenaga}</td>
+                    <td class="editable text-center" contenteditable="true">${item.ket}</td>
+                    <td class="no-print text-center">
+                        <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 px-2 py-1 rounded transition" title="Hapus Baris">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addRow() {
+            const tbody = document.getElementById('tableBody');
+            const rowCount = tbody.rows.length + 1;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="editable font-medium" contenteditable="true">${rowCount}</td>
+                <td class="editable text-left uppercase" contenteditable="true"></td>
+                <td class="editable text-left" contenteditable="true"></td>
+                <td class="editable text-left" contenteditable="true"></td>
+                <td class="editable text-left" contenteditable="true"></td>
+                <td class="editable text-left" contenteditable="true"></td>
+                <td class="editable text-center" contenteditable="true"></td>
+                <td class="editable text-left" contenteditable="true"></td>
+                <td class="editable text-center" contenteditable="true"></td>
+                <td class="editable text-right px-3" contenteditable="true"></td>
+                <td class="editable text-center" contenteditable="true"></td>
+                <td class="editable text-center" contenteditable="true"></td>
+                <td class="no-print text-center">
+                    <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 px-2 py-1 rounded transition" title="Hapus Baris">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            updateRowNumbers();
+        }
+
+        function deleteRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            updateRowNumbers();
+        }
+
+        function updateRowNumbers() {
+            const tbody = document.getElementById('tableBody');
+            for (let i = 0; i < tbody.rows.length; i++) {
+                tbody.rows[i].cells[0].innerText = i + 1;
+            }
+        }
+
+        function resetData() {
+            if(confirm("Apakah Anda yakin ingin mereset data ke bentuk semula?")) {
+                loadTableData(initialData);
+            }
+        }
+
+        function exportPDF() {
+            window.print();
+        }
+
+        // Initialize table on load
+        window.onload = function() {
+            loadTableData(initialData);
+        }
+    </script>
+</body>
+</html>
