@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petugas Pemungut PBB Desa Se-Kecamatan Tanantovea</title>
+    <!-- Favicon AppDesa -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            min-height: 100vh;
+        }
+        .header-pattern {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
+            box-shadow: 0 10px 25px -5px rgba(3, 105, 161, 0.4);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -10px rgba(2, 132, 199, 0.25);
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Header Section -->
+    <header class="header-pattern text-white pt-8 pb-12 px-4 sm:px-6 relative overflow-hidden rounded-b-[2.5rem] md:rounded-b-[3.5rem] border-b-4 border-amber-400">
+        <!-- Decorative Background Wave/Shapes -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-sky-400 opacity-20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-blue-300 opacity-20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <!-- Top Subtitle Badge -->
+            <div class="inline-flex items-center gap-2 bg-amber-400 text-sky-950 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm uppercase tracking-wider mb-4 shadow-md">
+                <i class="fa-solid fa-map-location-dot"></i> Kabupaten Donggala
+            </div>
+            
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white drop-shadow-md mb-3 leading-tight">
+                Petugas Pemungut <span class="text-amber-300 underline decoration-wavy decoration-2 underline-offset-8">PBB</span>
+            </h1>
+            
+            <p class="text-lg sm:text-2xl font-semibold text-sky-100 max-w-2xl mx-auto tracking-wide">
+                Desa Se-Kecamatan Tanantovea
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 -mt-6 sm:-mt-8 relative z-20 pb-16">
+        
+        <!-- Search & Filter Bar -->
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg mb-8 border border-white/50 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full sm:w-96">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-sky-500">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="searchInput" placeholder="Cari nama desa atau nama petugas..." 
+                    class="w-full pl-11 pr-4 py-3 bg-sky-50/70 border border-sky-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+            </div>
+            <div class="text-xs sm:text-sm text-sky-900 font-semibold bg-sky-100 px-4 py-3 rounded-xl w-full sm:w-auto text-center">
+                <i class="fa-solid fa-users text-sky-600 mr-1.5"></i> Total: <span id="totalCount">10</span> Desa Terdaftar
+            </div>
+        </div>
+
+        <!-- Cards Grid Container -->
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <!-- Data Cards will be populated via JavaScript -->
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4">
+            <div class="text-5xl text-sky-300 mb-3">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700">Desa atau Petugas Tidak Ditemukan</h3>
+            <p class="text-sm text-slate-400 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer Banner / Motivational Quote -->
+    <footer class="bg-sky-900 text-white py-8 px-4 border-t-4 border-amber-400">
+        <div class="max-w-4xl mx-auto text-center flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="bg-sky-800 p-4 rounded-2xl shadow-inner border border-sky-700">
+                <i class="fa-solid fa-handshake-angle text-3xl text-amber-400"></i>
+            </div>
+            <div>
+                <h4 class="text-base sm:text-lg font-bold text-amber-300">Bayar PBB Bersama Membangun Desa</h4>
+                <p class="text-xs sm:text-sm text-sky-200 mt-1">PBB untuk Desa, Desa untuk Kita Semua. Mari taat pajak demi kemajuan daerah kita tercinta.</p>
+            </div>
+        </div>
+        <div class="text-center text-xs text-sky-400 mt-6 pt-4 border-t border-sky-800/60">
+            &copy; 2026 Kecamatan Tanantovea &bull; Kabupaten Donggala
+        </div>
+    </footer>
+
+    <!-- JavaScript Data and Interaction Logic -->
+    <script>
+        // Data Petugas PBB Kecamatan Tanantovea
+        const petugasData = [
+            {
+                id: 1,
+                desa: "Desa Bale",
+                nama: "Rahmat",
+                hp: "082211800489",
+                badgeColor: "bg-emerald-600",
+                badgeBorder: "border-emerald-700",
+                cardBorder: "border-emerald-500",
+                headerBg: "bg-emerald-700"
+            },
+            {
+                id: 2,
+                desa: "Desa Guntarano",
+                nama: "YULIASTRIAWATI",
+                hp: "085241293122",
+                badgeColor: "bg-sky-600",
+                badgeBorder: "border-sky-700",
+                cardBorder: "border-sky-500",
+                headerBg: "bg-sky-700"
+            },
+            {
+                id: 3,
+                desa: "Desa Nupabomba",
+                nama: "Moh Rizal",
+                hp: "082195278564",
+                badgeColor: "bg-amber-600",
+                badgeBorder: "border-amber-700",
+                cardBorder: "border-amber-500",
+                headerBg: "bg-amber-600"
+            },
+            {
+                id: 4,
+                desa: "Desa Wombo Mpanau",
+                nama: "Alia Hardiati Utami",
+                hp: "082349239824",
+                badgeColor: "bg-purple-600",
+                badgeBorder: "border-purple-700",
+                cardBorder: "border-purple-500",
+                headerBg: "bg-purple-700"
+            },
+            {
+                id: 5,
+                desa: "Desa Wombo",
+                nama: "Winda",
+                hp: "082125205554",
+                badgeColor: "bg-teal-600",
+                badgeBorder: "border-teal-700",
+                cardBorder: "border-teal-500",
+                headerBg: "bg-teal-700"
+            },
+            {
+                id: 6,
+                desa: "Desa Wombo Kalonggo",
+                nama: "Anhar",
+                hp: "081245053397",
+                badgeColor: "bg-rose-600",
+                badgeBorder: "border-rose-700",
+                cardBorder: "border-rose-500",
+                headerBg: "bg-rose-700"
+            },
+            {
+                id: 7,
+                desa: "Desa Wani Satu",
+                nama: "Paharudin",
+                hp: "085397984020",
+                badgeColor: "bg-amber-500",
+                badgeBorder: "border-amber-600",
+                cardBorder: "border-amber-400",
+                headerBg: "bg-amber-500"
+            },
+            {
+                id: 8,
+                desa: "Desa Wani Dua",
+                nama: "Kamal Fasya",
+                hp: "082396023291",
+                badgeColor: "bg-blue-600",
+                badgeBorder: "border-blue-700",
+                cardBorder: "border-blue-500",
+                headerBg: "bg-blue-700"
+            },
+            {
+                id: 9,
+                desa: "Desa Wani Lumbumpetigo",
+                nama: "Sairman",
+                hp: "082149424644",
+                badgeColor: "bg-emerald-700",
+                badgeBorder: "border-emerald-800",
+                cardBorder: "border-emerald-600",
+                headerBg: "bg-emerald-800"
+            },
+            {
+                id: 10,
+                desa: "Desa Wani Tiga",
+                nama: "Imran",
+                hp: "085143629989",
+                badgeColor: "bg-red-600",
+                badgeBorder: "border-red-700",
+                cardBorder: "border-red-500",
+                headerBg: "bg-red-600"
+            }
+        ];
+
+        // Format phone number for WhatsApp link (converts 08... to 628...)
+        function formatWhatsAppNumber(phone) {
+            let cleaned = phone.replace(/\D/g, '');
+            if (cleaned.startsWith('0')) {
+                cleaned = '62' + cleaned.substring(1);
+            }
+            return cleaned;
+        }
+
+        // Render Cards Function
+        function renderCards(dataToRender) {
+            const grid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const totalCount = document.getElementById('totalCount');
+
+            grid.innerHTML = '';
+            totalCount.textContent = dataToRender.length;
+
+            if (dataToRender.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            dataToRender.forEach(item => {
+                const waNumber = formatWhatsAppNumber(item.hp);
+                const waMessage = encodeURIComponent(`Halo Bapak/Ibu ${item.nama}, petugas pemungut PBB ${item.desa}, saya ingin menanyakan mengenai pembayaran PBB.`);
+                const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
+
+                const cardHtml = `
+                    <div class="bg-white rounded-3xl card-shadow overflow-hidden border-2 ${item.cardBorder} flex flex-col">
+                        <!-- Card Header with Number & Village Name -->
+                        <div class="${item.headerBg} text-white px-5 py-4 flex items-center justify-between shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <span class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black text-lg text-white shadow-inner border border-white/30">
+                                    ${item.id}
+                                </span>
+                                <h2 class="text-lg sm:text-xl font-bold tracking-wide">${item.desa}</h2>
+                            </div>
+                            <span class="text-xs uppercase bg-black/20 px-2.5 py-1 rounded-lg font-medium tracking-wider text-white/90">
+                                Petugas PBB
+                            </span>
+                        </div>
+
+                        <!-- Card Body Content -->
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4 bg-gradient-to-b from-white to-sky-50/30">
+                            
+                            <!-- Officer Name Info -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl flex-shrink-0 shadow-sm border border-sky-200">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Nama Petugas</p>
+                                    <p class="text-base sm:text-lg font-bold text-slate-800 mt-0.5">${item.nama}</p>
+                                </div>
+                            </div>
+
+                            <!-- Phone Number Info -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl flex-shrink-0 shadow-sm border border-emerald-200">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Nomor HP</p>
+                                    <p class="text-base sm:text-lg font-semibold text-slate-700 font-mono tracking-wide mt-0.5">${item.hp}</p>
+                                </div>
+                            </div>
+
+                            <!-- Action Button (WhatsApp) -->
+                            <div class="pt-2">
+                                <a href="${waLink}" target="_blank" rel="noopener noreferrer" 
+                                    class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5">
+                                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                                    <span>Hubungi via WhatsApp</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        // Initialize render on load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards(petugasData);
+
+            // Search Filter Logic
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const keyword = e.target.value.toLowerCase().trim();
+                const filteredData = petugasData.filter(item => 
+                    item.desa.toLowerCase().includes(keyword) || 
+                    item.nama.toLowerCase().includes(keyword) ||
+                    item.hp.includes(keyword)
+                );
+                renderCards(filteredData);
+            });
+        });
+    </script>
+</body>
+</html>
