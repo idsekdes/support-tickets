@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Titik Koordinat Gedung KDKMP</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 550px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #1a365d;
+            font-size: 22px;
+            text-align: center;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3182ce;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .btn-gps {
+            width: 100%;
+            background-color: #38a169;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-gps:hover {
+            background-color: #2f855a;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-submit:hover {
+            background-color: #2b6cb0;
+        }
+        .map-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #3182ce;
+            text-decoration: none;
+        }
+        .map-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Data Koordinat Lokasi Gedung KDKMP</h2>
+    <p class="subtitle">Pendataan Titik Lokasi Pengerjaan yang Belum Terdaftar di Daerah</p>
+
+    <form id="kdkmpForm" onsubmit="simpanData(event)">
+        <!-- Informasi Gedung -->
+        <div class="form-group">
+            <label for="nama_lokasi">Nama Gedung / Pengerjaan KDKMP</label>
+            <input type="text" id="nama_lokasi" placeholder="Contoh: Gedung KDKMP Serbaguna" required>
+        </div>
+
+        <!-- Wilayah (Desa & Kab/Kota/Provinsi) -->
+        <div class="row">
+            <div class="form-group">
+                <label for="nama_desa">Nama Desa / Kelurahan</label>
+                <input type="text" id="nama_desa" placeholder="Contoh: Desa Sukamaju" required>
+            </div>
+            <div class="form-group">
+                <label for="daerah">Kabupaten / Kota & Provinsi</label>
+                <input type="text" id="daerah" placeholder="Contoh: Kab. Bogor, Jawa Barat" required>
+            </div>
+        </div>
+
+        <!-- Status Lokasi Pembangunan -->
+        <div class="form-group">
+            <label for="status_pembangunan">Status Lokasi Pembangunan</label>
+            <select id="status_pembangunan" required>
+                <option value="" disabled selected>-- Pilih Status Lokasi --</option>
+                <option value="Sudah siap lokasi">Sudah siap lokasi</option>
+                <option value="Belum siap lokasi">Belum siap lokasi</option>
+                <option value="Sementara proses pembangunan">Sementara proses pembangunan</option>
+                <option value="Sudah terealisasi / sudah selesai pembangunan">Sudah terealisasi / sudah selesai pembangunan</option>
+            </select>
+        </div>
+
+        <!-- Tombol Deteksi Otomatis GPS -->
+        <button type="button" class="btn-gps" onclick="dapatkanGPS()">
+            📍 Ambil Koordinat Otomatis (GPS)
+        </button>
+
+        <!-- Titik Koordinat -->
+        <div class="row">
+            <div class="form-group">
+                <label for="latitude">Latitude (Lintang)</label>
+                <input type="text" id="latitude" placeholder="-6.123456" required>
+            </div>
+            <div class="form-group">
+                <label for="longitude">Longitude (Bujur)</label>
+                <input type="text" id="longitude" placeholder="106.823456" required>
+            </div>
+        </div>
+
+        <!-- Catatan -->
+        <div class="form-group">
+            <label for="catatan">Catatan / Keterangan Lokasi (Opsional)</label>
+            <textarea id="catatan" rows="3" placeholder="Akses jalan, kondisi lahan, atau patokan lokasi..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Simpan & Kirim Data</button>
+        <a id="gmapsLink" class="map-link" href="#" target="_blank" style="display: none;">🗺️ Buka Lokasi di Google Maps</a>
+    </form>
+</div>
+
+<script>
+    // Fungsi untuk mendapatkan koordinat otomatis menggunakan Geolocation API
+    function dapatkanGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+
+                    updateGmapsLink(lat, lng);
+                    alert("Koordinat berhasil ditemukan!");
+                },
+                (error) => {
+                    alert("Gagal mengambil lokasi GPS. Pastikan izin lokasi/GPS pada perangkat Anda sudah diaktifkan.");
+                }
+            );
+        } else {
+            alert("Browser Anda tidak mendukung fitur Geolocation.");
+        }
+    }
+
+    // Update link Google Maps
+    function updateGmapsLink(lat, lng) {
+        const link = document.getElementById('gmapsLink');
+        link.href = `https://www.google.com/maps?q=${lat},${lng}`;
+        link.style.display = 'block';
+    }
+
+    // Event listener saat latitude / longitude diisi manual
+    document.getElementById('latitude').addEventListener('input', checkManualInput);
+    document.getElementById('longitude').addEventListener('input', checkManualInput);
+
+    function checkManualInput() {
+        const lat = document.getElementById('latitude').value;
+        const lng = document.getElementById('longitude').value;
+        if (lat && lng) {
+            updateGmapsLink(lat, lng);
+        }
+    }
+
+    // Fungsi Form Submit
+    function simpanData(event) {
+        event.preventDefault();
+        const nama = document.getElementById('nama_lokasi').value;
+        const desa = document.getElementById('nama_desa').value;
+        const daerah = document.getElementById('daerah').value;
+        const status = document.getElementById('status_pembangunan').value;
+        const lat = document.getElementById('latitude').value;
+        const lng = document.getElementById('longitude').value;
+
+        alert(`Data Koordinat Gedung KDKMP Berhasil Disimpan!\n\nNama Gedung: ${nama}\nDesa: ${desa}\nKab/Kota & Prov: ${daerah}\nStatus Pembangunan: ${status}\nKoordinat: ${lat}, ${lng}`);
+    }
+</script>
+  <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzLaUsb3DUBIYhPgSHObNuSWd749ERw1V3i4zvvPtU7IdsLTa9wv-ECRpXRG-3C-ip/exec";
+
+function simpanData(event) {
+    event.preventDefault();
+
+    const formData = {
+        nama_lokasi: document.getElementById('nama_lokasi').value,
+        nama_desa: document.getElementById('nama_desa').value,
+        daerah: document.getElementById('daerah').value,
+        status_pembangunan: document.getElementById('status_pembangunan').value,
+        latitude: document.getElementById('latitude').value,
+        longitude: document.getElementById('longitude').value,
+        catatan: document.getElementById('catatan').value
+    };
+
+    const submitBtn = document.querySelector('.btn-submit');
+    submitBtn.innerText = "Mengirim Data...";
+    submitBtn.disabled = true;
+
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(() => {
+        alert("Data berhasil dikirim dan direkap ke Google Sheets!");
+        document.getElementById('kdkmpForm').reset();
+        document.getElementById('gmapsLink').style.display = 'none';
+    })
+    .catch(error => {
+        alert("Terjadi kesalahan saat mengirim data.");
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        submitBtn.innerText = "Simpan & Kirim Data";
+        submitBtn.disabled = false;
+    });
+}
+</script>
+</body>
+</html>
