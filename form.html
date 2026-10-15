@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Input Titik Koordinat Gedung KDKMP</title>
-    <!-- Favicon AppDesa -->
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
-    <link rel="shortcut icon" type="image/x-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
-    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
     <style>
         * {
             box-sizing: border-box;
@@ -29,6 +25,15 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 550px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo-img {
+            max-width: 120px;
+            height: auto;
+            object-fit: contain;
         }
         h2 {
             margin-top: 0;
@@ -139,6 +144,11 @@
 <body>
 
 <div class="container">
+    <!-- Logo KDKMP / Organisasi -->
+    <div class="logo-container">
+        <img src="https://res.cloudinary.com/di8stbg60/image/upload/v1792032788/images_kaz6n3.jpg" alt="Logo KDKMP" class="logo-img">
+    </div>
+
     <h2>Data Koordinat Lokasi Gedung KDKMP</h2>
     <p class="subtitle">Pendataan Titik Lokasi Pengerjaan yang Belum Terdaftar di Daerah</p>
 
@@ -207,7 +217,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP5Z7cQnM6PI9Wf6lAHKF7riQmv6FyImDytyBEPc1lf01az0gMFE9KCgMbCzIoThU3/exec";
+    const SCRIPT_URL = "PASANG_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI";
 
     function dapatkanGPS() {
         if (navigator.geolocation) {
@@ -265,7 +275,7 @@
         submitBtn.innerText = "Mengirim Data...";
         submitBtn.disabled = true;
 
-        if (SCRIPT_URL === "PASANG_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI") {
+        if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwP5Z7cQnM6PI9Wf6lAHKF7riQmv6FyImDytyBEPc1lf01az0gMFE9KCgMbCzIoThU3/exec") {
             alert(`[SIMULASI] Data berhasil disimpan!\n\nNama Gedung: ${formData.nama_lokasi}\nDesa: ${formData.nama_desa}\nStatus: ${formData.status_pembangunan}\nKoordinat: ${formData.latitude}, ${formData.longitude}\n\n(Catatan: Untuk pengiriman otomatis ke spreadsheet target, ganti SCRIPT_URL dengan URL Apps Script Anda).`);
             submitBtn.innerText = "Simpan & Kirim Data";
             submitBtn.disabled = false;
