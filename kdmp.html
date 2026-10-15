@@ -36,7 +36,27 @@
             text-align: center;
             color: #718096;
             font-size: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+        .btn-sheet {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background-color: #107c41;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+        .btn-sheet:hover {
+            background-color: #0b5c30;
         }
         .form-group {
             margin-bottom: 18px;
@@ -118,6 +138,11 @@
     <h2>Data Koordinat Lokasi Gedung KDKMP</h2>
     <p class="subtitle">Pendataan Titik Lokasi Pengerjaan yang Belum Terdaftar di Daerah</p>
 
+    <!-- Tombol Buka Spreadsheet Rekapan -->
+    <a href="https://docs.google.com/spreadsheets/d/1K4FQryEzffSf7JIFKsZ78PWH8qSQ8XdVzUejFD_5O_U/edit?usp=sharing" target="_blank" class="btn-sheet">
+        📊 Buka Spreadsheet Rekapitulasi Data
+    </a>
+
     <form id="kdkmpForm" onsubmit="simpanData(event)">
         <!-- Informasi Gedung -->
         <div class="form-group">
@@ -178,7 +203,8 @@
 </div>
 
 <script>
-    // Fungsi untuk mendapatkan koordinat otomatis menggunakan Geolocation API
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP5Z7cQnM6PI9Wf6lAHKF7riQmv6FyImDytyBEPc1lf01az0gMFE9KCgMbCzIoThU3/exec";
+
     function dapatkanGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -201,14 +227,12 @@
         }
     }
 
-    // Update link Google Maps
     function updateGmapsLink(lat, lng) {
         const link = document.getElementById('gmapsLink');
         link.href = `https://www.google.com/maps?q=${lat},${lng}`;
         link.style.display = 'block';
     }
 
-    // Event listener saat latitude / longitude diisi manual
     document.getElementById('latitude').addEventListener('input', checkManualInput);
     document.getElementById('longitude').addEventListener('input', checkManualInput);
 
@@ -220,61 +244,53 @@
         }
     }
 
-    // Fungsi Form Submit
     function simpanData(event) {
         event.preventDefault();
-        const nama = document.getElementById('nama_lokasi').value;
-        const desa = document.getElementById('nama_desa').value;
-        const daerah = document.getElementById('daerah').value;
-        const status = document.getElementById('status_pembangunan').value;
-        const lat = document.getElementById('latitude').value;
-        const lng = document.getElementById('longitude').value;
 
-        alert(`Data Koordinat Gedung KDKMP Berhasil Disimpan!\n\nNama Gedung: ${nama}\nDesa: ${desa}\nKab/Kota & Prov: ${daerah}\nStatus Pembangunan: ${status}\nKoordinat: ${lat}, ${lng}`);
+        const formData = {
+            nama_lokasi: document.getElementById('nama_lokasi').value,
+            nama_desa: document.getElementById('nama_desa').value,
+            daerah: document.getElementById('daerah').value,
+            status_pembangunan: document.getElementById('status_pembangunan').value,
+            latitude: document.getElementById('latitude').value,
+            longitude: document.getElementById('longitude').value,
+            catatan: document.getElementById('catatan').value
+        };
+
+        const submitBtn = document.querySelector('.btn-submit');
+        submitBtn.innerText = "Mengirim Data...";
+        submitBtn.disabled = true;
+
+        if (SCRIPT_URL === "PASANG_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI") {
+            alert(`[SIMULASI] Data berhasil disimpan!\n\nNama Gedung: ${formData.nama_lokasi}\nDesa: ${formData.nama_desa}\nStatus: ${formData.status_pembangunan}\nKoordinat: ${formData.latitude}, ${formData.longitude}\n\n(Catatan: Untuk pengiriman otomatis ke spreadsheet target, ganti SCRIPT_URL dengan URL Apps Script Anda).`);
+            submitBtn.innerText = "Simpan & Kirim Data";
+            submitBtn.disabled = false;
+            return;
+        }
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(() => {
+            alert("Data berhasil dikirim dan direkap ke Google Sheets!");
+            document.getElementById('kdkmpForm').reset();
+            document.getElementById('gmapsLink').style.display = 'none';
+        })
+        .catch(error => {
+            alert("Terjadi kesalahan saat mengirim data.");
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            submitBtn.innerText = "Simpan & Kirim Data";
+            submitBtn.disabled = false;
+        });
     }
 </script>
-  <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzLaUsb3DUBIYhPgSHObNuSWd749ERw1V3i4zvvPtU7IdsLTa9wv-ECRpXRG-3C-ip/exec";
 
-function simpanData(event) {
-    event.preventDefault();
-
-    const formData = {
-        nama_lokasi: document.getElementById('nama_lokasi').value,
-        nama_desa: document.getElementById('nama_desa').value,
-        daerah: document.getElementById('daerah').value,
-        status_pembangunan: document.getElementById('status_pembangunan').value,
-        latitude: document.getElementById('latitude').value,
-        longitude: document.getElementById('longitude').value,
-        catatan: document.getElementById('catatan').value
-    };
-
-    const submitBtn = document.querySelector('.btn-submit');
-    submitBtn.innerText = "Mengirim Data...";
-    submitBtn.disabled = true;
-
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(() => {
-        alert("Data berhasil dikirim dan direkap ke Google Sheets!");
-        document.getElementById('kdkmpForm').reset();
-        document.getElementById('gmapsLink').style.display = 'none';
-    })
-    .catch(error => {
-        alert("Terjadi kesalahan saat mengirim data.");
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        submitBtn.innerText = "Simpan & Kirim Data";
-        submitBtn.disabled = false;
-    });
-}
-</script>
 </body>
 </html>
