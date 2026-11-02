@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pencarian Data Perangkat Desa Lumbumpetigo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar style */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-md border-b border-indigo-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-indigo-600/30 rounded-xl flex items-center justify-center border border-indigo-400/30 shadow-inner">
+                        <i class="fa-solid fa-users-gear text-2xl text-indigo-300"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                            Pencarian Data Perangkat Desa
+                        </h1>
+                        <p class="text-indigo-200 text-xs sm:text-sm mt-0.5 font-medium flex items-center gap-2">
+                            <span><i class="fa-solid fa-location-dot text-indigo-400"></i> Desa Lumbumpetigo</span>
+                            <span>•</span>
+                            <span>Kec. Tanantovea</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 bg-indigo-900/50 backdrop-blur border border-indigo-700/50 px-4 py-2 rounded-xl text-xs sm:text-sm self-start md:self-auto text-indigo-100 shadow-sm">
+                    <i class="fa-solid fa-building-columns text-amber-400"></i>
+                    <span>Kabupaten Donggala</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Stat Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- Total Perangkat Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Perangkat</p>
+                        <h3 id="statTotal" class="text-2xl font-bold text-slate-800 mt-1">11</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 border border-indigo-100">
+                        <i class="fa-solid fa-address-book text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Terdaftar di SIMDES</span>
+                    <span class="font-semibold text-emerald-600">100% Aktif</span>
+                </div>
+            </div>
+
+            <!-- Laki-laki Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Perangkat Laki-Laki</p>
+                        <h3 id="statMale" class="text-2xl font-bold text-slate-800 mt-1">9</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 border border-blue-100">
+                        <i class="fa-solid fa-mars text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Persentase</span>
+                    <span id="statMalePercent" class="font-semibold text-blue-600">81.8%</span>
+                </div>
+            </div>
+
+            <!-- Perempuan Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Perangkat Perempuan</p>
+                        <h3 id="statFemale" class="text-2xl font-bold text-slate-800 mt-1">2</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600 border border-pink-100">
+                        <i class="fa-solid fa-venus text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Persentase</span>
+                    <span id="statFemalePercent" class="font-semibold text-pink-600">18.2%</span>
+                </div>
+            </div>
+
+            <!-- Total Anggaran Siltap Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Siltap / Bulan</p>
+                        <h3 id="statTotalBudget" class="text-xl font-bold text-emerald-700 mt-1">Rp 23.400.000</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 border border-emerald-100">
+                        <i class="fa-solid fa-wallet text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Penghasilan Tetap</span>
+                    <span class="font-semibold text-slate-700">11 Aparatur</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Panel -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 mb-6">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                
+                <!-- Search Input Bar -->
+                <div class="relative w-full md:w-1/2">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" id="searchInput"
+                        class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-inner"
+                        placeholder="Cari berdasarkan Nama, NIK, Jabatan, SK, atau No HP...">
+                    <button id="clearSearchBtn" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Filters & Action Buttons -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+                    <!-- Dropdown Filter Jenis Kelamin -->
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <label for="genderFilter" class="text-xs font-medium text-slate-600 whitespace-nowrap">Filter Gender:</label>
+                        <select id="genderFilter" class="w-full sm:w-auto bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                            <option value="ALL">Semua Gender</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <button id="resetBtn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 border border-slate-200">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Query Info Badge -->
+            <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+                <div>
+                    Menampilkan <span id="displayedCount" class="font-bold text-indigo-600">11</span> dari <span id="totalCount" class="font-bold text-slate-800">11</span> data
+                </div>
+                <div id="searchBadge" class="hidden bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-medium border border-indigo-100 flex items-center gap-1.5">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Kata kunci: "<span id="keywordText" class="font-semibold"></span>"</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-sm text-slate-700 border-collapse">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-xs tracking-wider">
+                        <tr>
+                            <th scope="col" class="py-4 px-4 text-center w-12 border-r border-slate-200/60">NO</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">NIK</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">Nama Lengkap</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">Jabatan</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap text-center border-r border-slate-200/60">JK</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap text-center border-r border-slate-200/60">Tgl Lahir</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">SK Pengangkatan</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap text-center border-r border-slate-200/60">Nomor HP</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap text-right border-r border-slate-200/60">Siltap (Rp)</th>
+                            <th scope="col" class="py-4 px-4 whitespace-nowrap text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-200/70">
+                        <!-- Rows dynamically populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State Component -->
+            <div id="noDataState" class="hidden p-12 text-center">
+                <div class="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-500">
+                    <i class="fa-solid fa-user-slash text-2xl"></i>
+                </div>
+                <h4 class="text-slate-800 font-bold text-lg">Data Tidak Ditemukan</h4>
+                <p class="text-slate-500 text-sm mt-1 max-w-sm mx-auto">
+                    Tidak ditemukan data yang sesuai dengan pencarian Anda. Silakan coba kata kunci lain.
+                </p>
+                <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Reset Filter
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            &copy; Sistem Informasi Data Aparatur Desa Lumbumpetigo, Kecamatan Tanantovea.
+        </div>
+    </footer>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 transform transition-all">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-500/30 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-id-card text-indigo-200"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg leading-tight" id="modalNama">Detail Perangkat</h3>
+                        <p class="text-xs text-indigo-200" id="modalJabatan">Jabatan</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-300 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4 text-sm text-slate-700">
+                <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <p class="text-xs text-slate-400 font-semibold uppercase">NIK</p>
+                        <p class="font-mono font-bold text-indigo-900 mt-0.5" id="modalNik">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-semibold uppercase">Jenis Kelamin</p>
+                        <p class="font-medium mt-0.5" id="modalJk">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-semibold uppercase">Tanggal Lahir</p>
+                        <p class="font-medium mt-0.5" id="modalTglLahir">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-semibold uppercase">No. Telepon / HP</p>
+                        <p class="font-medium mt-0.5" id="modalHp">-</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div>
+                        <p class="text-xs text-slate-400 font-semibold uppercase">Nomor SK Pengangkatan</p>
+                        <p class="font-medium text-slate-800" id="modalSkNomor">-</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60">
+                        <div>
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Desa</p>
+                            <p class="font-medium text-slate-800" id="modalDesa">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Kecamatan</p>
+                            <p class="font-medium text-slate-800" id="modalKecamatan">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-emerald-600 font-semibold uppercase">Besaran Penghasilan Tetap</p>
+                        <p class="text-xl font-bold text-emerald-800" id="modalGaji">Rp 0</p>
+                    </div>
+                    <i class="fa-solid fa-coins text-2xl text-emerald-500"></i>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-end gap-2">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-sm font-medium transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Data Perangkat Desa Lumbumpetigo (11 Orang lengkap)
+        const villageData = [
+            {
+                no: 1,
+                nik: "7203190507730001",
+                nama: "AMIR RAMANG",
+                jabatan: "KEPALA DESA",
+                jk: "Laki-laki",
+                tglLahir: "05/07/1973",
+                skNomor: "188.45/0689/DPMD/2025",
+                skTanggal: "-",
+                hp: "0852 4128 7554",
+                penghasilan: "2.450.000",
+                penghasilanNum: 2450000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 2,
+                nik: "7203090501750002",
+                nama: "SYAMSUDDIN",
+                jabatan: "SEKRETARIS DESA",
+                jk: "Laki-laki",
+                tglLahir: "05/01/1975",
+                skNomor: "0.02/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0851 5053 1572",
+                penghasilan: "2.250.000",
+                penghasilanNum: 2250000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 3,
+                nik: "7203190703820003",
+                nama: "SAIRMAN",
+                jabatan: "KASI PEMERINTAHAN",
+                jk: "Laki-laki",
+                tglLahir: "07/03/1982",
+                skNomor: "0.06/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0821 4942 4644",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 4,
+                nik: "7203192005660001",
+                nama: "DJIDAL RAGAIYA",
+                jabatan: "KASI KESEJAHTERAAN",
+                jk: "Laki-laki",
+                tglLahir: "20/05/1966",
+                skNomor: "0.07/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0822 1705 2250",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 5,
+                nik: "7203191408000002",
+                nama: "AGUSMAN N R",
+                jabatan: "KASI PELAYANAN",
+                jk: "Laki-laki",
+                tglLahir: "14/08/2000",
+                skNomor: "0.08/SK/PEM-DWLP/2025",
+                skTanggal: "-",
+                hp: "0823-4302-1491",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 6,
+                nik: "7203196608811003",
+                nama: "FITRIA",
+                jabatan: "KAUR TU DAN UMUM",
+                jk: "Perempuan",
+                tglLahir: "26/08/1981",
+                skNomor: "0.04/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0813-4330-2563",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 7,
+                nik: "7203194203930002",
+                nama: "SUNARTIN",
+                jabatan: "KAUR KEUANGAN",
+                jk: "Perempuan",
+                tglLahir: "02/03/1993",
+                skNomor: "0.05/SK/PEM-DWLP/2025",
+                skTanggal: "-",
+                hp: "0831-1560-6797",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 8,
+                nik: "7203192407820002",
+                nama: "AL-ZAHRIN LAHASE",
+                jabatan: "KAUR PERENCANAAN",
+                jk: "Laki-laki",
+                tglLahir: "24/07/1982",
+                skNomor: "0.03/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0822-9292-2077",
+                penghasilan: "2.100.000",
+                penghasilanNum: 2100000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 9,
+                nik: "7203091208730004",
+                nama: "HERMAN L",
+                jabatan: "KEPALA DUSUN I",
+                jk: "Laki-laki",
+                tglLahir: "12/08/1973",
+                skNomor: "0.09/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0859-3164-1980",
+                penghasilan: "2.050.000",
+                penghasilanNum: 2050000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 10,
+                nik: "7203191505680004",
+                nama: "TAJRIN A.L",
+                jabatan: "KEPALA DUSUN II",
+                jk: "Laki-laki",
+                tglLahir: "15/05/1968",
+                skNomor: "0.10/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0878-9216-1007",
+                penghasilan: "2.050.000",
+                penghasilanNum: 2050000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            },
+            {
+                no: 11,
+                nik: "7203191706650003",
+                nama: "RUSLIN DG MAROTJA",
+                jabatan: "KEPALA DUSUN III",
+                jk: "Laki-laki",
+                tglLahir: "17/06/1965",
+                skNomor: "0.11/SK/PEM-DWLP/2024",
+                skTanggal: "-",
+                hp: "0813 4373 6639",
+                penghasilan: "2.050.000",
+                penghasilanNum: 2050000,
+                desa: "LUMBUMPETIGO",
+                kecamatan: "TANANTOVEA"
+            }
+        ];
+
+        // DOM Elements
+        const tableBody = document.getElementById('tableBody');
+        const searchInput = document.getElementById('searchInput');
+        const genderFilter = document.getElementById('genderFilter');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const displayedCountEl = document.getElementById('displayedCount');
+        const totalCountEl = document.getElementById('totalCount');
+        const noDataState = document.getElementById('noDataState');
+        const searchBadge = document.getElementById('searchBadge');
+        const keywordText = document.getElementById('keywordText');
+        
+        // Stat Cards Elements
+        const statTotal = document.getElementById('statTotal');
+        const statMale = document.getElementById('statMale');
+        const statFemale = document.getElementById('statFemale');
+        const statMalePercent = document.getElementById('statMalePercent');
+        const statFemalePercent = document.getElementById('statFemalePercent');
+        const statTotalBudget = document.getElementById('statTotalBudget');
+
+        // Modal Elements
+        const detailModal = document.getElementById('detailModal');
+        const modalNama = document.getElementById('modalNama');
+        const modalJabatan = document.getElementById('modalJabatan');
+        const modalNik = document.getElementById('modalNik');
+        const modalJk = document.getElementById('modalJk');
+        const modalTglLahir = document.getElementById('modalTglLahir');
+        const modalHp = document.getElementById('modalHp');
+        const modalSkNomor = document.getElementById('modalSkNomor');
+        const modalDesa = document.getElementById('modalDesa');
+        const modalKecamatan = document.getElementById('modalKecamatan');
+        const modalGaji = document.getElementById('modalGaji');
+
+        // Helper to format Jabatan badge color
+        function getJabatanBadge(jabatan) {
+            if (jabatan.includes('KEPALA DESA')) {
+                return 'bg-purple-50 text-purple-700 border-purple-200';
+            } else if (jabatan.includes('SEKRETARIS')) {
+                return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+            } else if (jabatan.includes('KASI')) {
+                return 'bg-blue-50 text-blue-700 border-blue-200';
+            } else if (jabatan.includes('KAUR')) {
+                return 'bg-amber-50 text-amber-800 border-amber-200';
+            } else {
+                return 'bg-emerald-50 text-emerald-800 border-emerald-200';
+            }
+        }
+
+        // Render Table Data
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                noDataState.classList.remove('hidden');
+                displayedCountEl.textContent = '0';
+                return;
+            }
+
+            noDataState.classList.add('hidden');
+            displayedCountEl.textContent = data.length;
+
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                const isEven = index % 2 === 0;
+                tr.className = `${isEven ? 'bg-white' : 'bg-slate-50/60'} hover:bg-indigo-50/40 transition-colors border-b border-slate-200/60`;
+                
+                // Format Gender Badge
+                const isMale = item.jk.toLowerCase() === 'laki-laki';
+                const genderBadge = isMale 
+                    ? `<span class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md text-xs font-semibold border border-blue-200"><i class="fa-solid fa-mars text-[10px]"></i> Laki-laki</span>`
+                    : `<span class="inline-flex items-center gap-1 bg-pink-50 text-pink-700 px-2 py-0.5 rounded-md text-xs font-semibold border border-pink-200"><i class="fa-solid fa-venus text-[10px]"></i> Perempuan</span>`;
+
+                // Format Phone & WhatsApp Link
+                const rawPhone = item.hp.replace(/[^0-9]/g, '');
+                const waPhone = rawPhone.startsWith('0') ? '62' + rawPhone.slice(1) : rawPhone;
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 text-center font-semibold text-slate-500 border-r border-slate-200/60">${index + 1}</td>
+                    <td class="py-3.5 px-4 font-mono text-xs font-bold text-slate-800 border-r border-slate-200/60 whitespace-nowrap">
+                        <div class="flex items-center justify-between gap-1">
+                            <span>${item.nik}</span>
+                            <button onclick="copyToClipboard('${item.nik}')" title="Salin NIK" class="text-slate-400 hover:text-indigo-600 text-xs p-1">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap border-r border-slate-200/60">${item.nama}</td>
+                    <td class="py-3.5 px-4 whitespace-nowrap border-r border-slate-200/60">
+                        <span class="inline-block px-2.5 py-1 rounded-lg text-xs font-semibold border ${getJabatanBadge(item.jabatan)}">
+                            ${item.jabatan}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap border-r border-slate-200/60">${genderBadge}</td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap border-r border-slate-200/60 text-xs font-medium text-slate-600">${item.tglLahir}</td>
+                    <td class="py-3.5 px-4 whitespace-nowrap border-r border-slate-200/60 font-mono text-xs text-indigo-950 font-medium">${item.skNomor}</td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap border-r border-slate-200/60">
+                        <a href="https://wa.me/${waPhone}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-emerald-700 hover:text-emerald-900 hover:underline bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> ${item.hp}
+                        </a>
+                    </td>
+                    <td class="py-3.5 px-4 text-right whitespace-nowrap border-r border-slate-200/60 font-bold text-emerald-700">
+                        Rp ${item.penghasilan}
+                    </td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                        <button onclick='openModal(${JSON.stringify(item)})' class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold border border-indigo-200 transition-colors inline-flex items-center gap-1">
+                            <i class="fa-solid fa-eye"></i> Detail
+                        </button>
+                    </td>
+                `;
+
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Calculate and Update Statistics Cards
+        function updateStats() {
+            const total = villageData.length;
+            totalCountEl.textContent = total;
+            statTotal.textContent = total;
+
+            const maleCount = villageData.filter(d => d.jk.toLowerCase() === 'laki-laki').length;
+            const femaleCount = villageData.filter(d => d.jk.toLowerCase() === 'perempuan').length;
+
+            statMale.textContent = maleCount;
+            statFemale.textContent = femaleCount;
+
+            statMalePercent.textContent = `${((maleCount / total) * 100).toFixed(1)}%`;
+            statFemalePercent.textContent = `${((femaleCount / total) * 100).toFixed(1)}%`;
+
+            // Calculate total monthly salary sum
+            const sumBudget = villageData.reduce((acc, curr) => acc + curr.penghasilanNum, 0);
+            statTotalBudget.textContent = `Rp ${sumBudget.toLocaleString('id-ID')}`;
+        }
+
+        // Filter and Search Logic
+        function filterData() {
+            const query = searchInput.value.toLowerCase().trim();
+            const selectedGender = genderFilter.value;
+
+            if (query.length > 0) {
+                clearSearchBtn.classList.remove('hidden');
+                searchBadge.classList.remove('hidden');
+                keywordText.textContent = query;
+            } else {
+                clearSearchBtn.classList.add('hidden');
+                searchBadge.classList.add('hidden');
+            }
+
+            const filtered = villageData.filter(item => {
+                const matchesGender = (selectedGender === 'ALL') || (item.jk === selectedGender);
+
+                const cleanHp = item.hp.replace(/[\s-]/g, '');
+                const cleanQuery = query.replace(/[\s-]/g, '');
+
+                const matchesQuery = 
+                    item.nik.toLowerCase().includes(query) ||
+                    item.nama.toLowerCase().includes(query) ||
+                    item.jabatan.toLowerCase().includes(query) ||
+                    item.skNomor.toLowerCase().includes(query) ||
+                    item.hp.toLowerCase().includes(query) ||
+                    cleanHp.includes(cleanQuery);
+
+                return matchesGender && matchesQuery;
+            });
+
+            renderTable(filtered);
+        }
+
+        // Reset All Filters
+        function resetFilters() {
+            searchInput.value = '';
+            genderFilter.value = 'ALL';
+            filterData();
+        }
+
+        // Open Detail Modal
+        function openModal(item) {
+            modalNama.textContent = item.nama;
+            modalJabatan.textContent = item.jabatan;
+            modalNik.textContent = item.nik;
+            modalJk.textContent = item.jk;
+            modalTglLahir.textContent = item.tglLahir;
+            modalHp.textContent = item.hp;
+            modalSkNomor.textContent = item.skNomor;
+            modalDesa.textContent = item.desa;
+            modalKecamatan.textContent = item.kecamatan;
+            modalGaji.textContent = `Rp ${item.penghasilan}`;
+            
+            detailModal.classList.remove('hidden');
+        }
+
+        // Close Detail Modal
+        function closeModal() {
+            detailModal.classList.add('hidden');
+        }
+
+        // Copy NIK Helper
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            // Subtle toast message notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs shadow-lg z-50 flex items-center gap-2';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> NIK ${text} berhasil disalin!`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // Event Listeners initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTable(villageData);
+            updateStats();
+        });
+
+        searchInput.addEventListener('input', filterData);
+        genderFilter.addEventListener('change', filterData);
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterData();
+            searchInput.focus();
+        });
+        resetBtn.addEventListener('click', resetFilters);
+
+        // Close modal when clicking outside box
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeModal();
+        });
+    </script>
+</body>
+</html>
