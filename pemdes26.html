@@ -192,6 +192,7 @@
                     <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-xs tracking-wider">
                         <tr>
                             <th scope="col" class="py-4 px-4 text-center w-12 border-r border-slate-200/60">NO</th>
+                            <th scope="col" class="py-4 px-4 text-center w-16 border-r border-slate-200/60">FOTO</th>
                             <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">NIK</th>
                             <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">Nama Lengkap</th>
                             <th scope="col" class="py-4 px-4 whitespace-nowrap border-r border-slate-200/60">Jabatan</th>
@@ -252,6 +253,13 @@
             </div>
             
             <div class="p-6 space-y-4 text-sm text-slate-700">
+                <!-- Foto di dalam Modal -->
+                <div class="flex justify-center mb-2">
+                    <div class="relative w-28 h-28 rounded-2xl overflow-hidden border-4 border-indigo-50 shadow-md bg-slate-100">
+                        <img id="modalFoto" src="" alt="Foto Perangkat" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div>
                         <p class="text-xs text-slate-400 font-semibold uppercase">NIK</p>
@@ -307,7 +315,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Data Perangkat Desa Lumbumpetigo (11 Orang lengkap)
+        // Data Perangkat Desa Lumbumpetigo (11 Orang lengkap dengan properti foto)
         const villageData = [
             {
                 no: 1,
@@ -322,7 +330,8 @@
                 penghasilan: "2.450.000",
                 penghasilanNum: 2450000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 2,
@@ -337,7 +346,8 @@
                 penghasilan: "2.250.000",
                 penghasilanNum: 2250000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 3,
@@ -352,7 +362,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 4,
@@ -367,7 +378,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 5,
@@ -382,7 +394,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 6,
@@ -397,7 +410,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 7,
@@ -412,7 +426,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 8,
@@ -427,7 +442,8 @@
                 penghasilan: "2.100.000",
                 penghasilanNum: 2100000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 9,
@@ -442,7 +458,8 @@
                 penghasilan: "2.050.000",
                 penghasilanNum: 2050000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 10,
@@ -457,7 +474,8 @@
                 penghasilan: "2.050.000",
                 penghasilanNum: 2050000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80"
             },
             {
                 no: 11,
@@ -472,7 +490,8 @@
                 penghasilan: "2.050.000",
                 penghasilanNum: 2050000,
                 desa: "LUMBUMPETIGO",
-                kecamatan: "TANANTOVEA"
+                kecamatan: "TANANTOVEA",
+                foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80"
             }
         ];
 
@@ -508,6 +527,7 @@
         const modalDesa = document.getElementById('modalDesa');
         const modalKecamatan = document.getElementById('modalKecamatan');
         const modalGaji = document.getElementById('modalGaji');
+        const modalFoto = document.getElementById('modalFoto');
 
         // Helper to format Jabatan badge color
         function getJabatanBadge(jabatan) {
@@ -554,6 +574,11 @@
 
                 tr.innerHTML = `
                     <td class="py-3.5 px-4 text-center font-semibold text-slate-500 border-r border-slate-200/60">${index + 1}</td>
+                    <td class="py-3.5 px-3 text-center border-r border-slate-200/60">
+                        <div class="w-10 h-10 rounded-full overflow-hidden mx-auto border border-slate-300 shadow-sm bg-slate-100 flex items-center justify-center">
+                            <img src="${item.foto}" alt="${item.nama}" class="w-full h-full object-cover">
+                        </div>
+                    </td>
                     <td class="py-3.5 px-4 font-mono text-xs font-bold text-slate-800 border-r border-slate-200/60 whitespace-nowrap">
                         <div class="flex items-center justify-between gap-1">
                             <span>${item.nik}</span>
@@ -604,54 +629,43 @@
 
             statMalePercent.textContent = `${((maleCount / total) * 100).toFixed(1)}%`;
             statFemalePercent.textContent = `${((femaleCount / total) * 100).toFixed(1)}%`;
-
-            // Calculate total monthly salary sum
-            const sumBudget = villageData.reduce((acc, curr) => acc + curr.penghasilanNum, 0);
-            statTotalBudget.textContent = `Rp ${sumBudget.toLocaleString('id-ID')}`;
         }
 
         // Filter and Search Logic
         function filterData() {
-            const query = searchInput.value.toLowerCase().trim();
+            const keyword = searchInput.value.toLowerCase().trim();
             const selectedGender = genderFilter.value;
 
-            if (query.length > 0) {
+            if (keyword) {
                 clearSearchBtn.classList.remove('hidden');
-                searchBadge.classList.remove('hidden');
-                keywordText.textContent = query;
             } else {
                 clearSearchBtn.classList.add('hidden');
-                searchBadge.classList.add('hidden');
             }
 
             const filtered = villageData.filter(item => {
-                const matchesGender = (selectedGender === 'ALL') || (item.jk === selectedGender);
+                const matchKeyword = 
+                    item.nama.toLowerCase().includes(keyword) ||
+                    item.nik.toLowerCase().includes(keyword) ||
+                    item.jabatan.toLowerCase().includes(keyword) ||
+                    item.skNomor.toLowerCase().includes(keyword) ||
+                    item.hp.toLowerCase().includes(keyword);
 
-                const cleanHp = item.hp.replace(/[\s-]/g, '');
-                const cleanQuery = query.replace(/[\s-]/g, '');
+                const matchGender = selectedGender === 'ALL' || item.jk === selectedGender;
 
-                const matchesQuery = 
-                    item.nik.toLowerCase().includes(query) ||
-                    item.nama.toLowerCase().includes(query) ||
-                    item.jabatan.toLowerCase().includes(query) ||
-                    item.skNomor.toLowerCase().includes(query) ||
-                    item.hp.toLowerCase().includes(query) ||
-                    cleanHp.includes(cleanQuery);
-
-                return matchesGender && matchesQuery;
+                return matchKeyword && matchGender;
             });
+
+            if (keyword || selectedGender !== 'ALL') {
+                searchBadge.classList.remove('hidden');
+                keywordText.textContent = keyword ? keyword : `Gender: ${selectedGender}`;
+            } else {
+                searchBadge.classList.add('hidden');
+            }
 
             renderTable(filtered);
         }
 
-        // Reset All Filters
-        function resetFilters() {
-            searchInput.value = '';
-            genderFilter.value = 'ALL';
-            filterData();
-        }
-
-        // Open Detail Modal
+        // Modal Handlers
         function openModal(item) {
             modalNama.textContent = item.nama;
             modalJabatan.textContent = item.jabatan;
@@ -663,51 +677,41 @@
             modalDesa.textContent = item.desa;
             modalKecamatan.textContent = item.kecamatan;
             modalGaji.textContent = `Rp ${item.penghasilan}`;
-            
+            modalFoto.src = item.foto;
+
             detailModal.classList.remove('hidden');
         }
 
-        // Close Detail Modal
         function closeModal() {
             detailModal.classList.add('hidden');
         }
 
-        // Copy NIK Helper
-        function copyToClipboard(text) {
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            
-            // Subtle toast message notification
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs shadow-lg z-50 flex items-center gap-2';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> NIK ${text} berhasil disalin!`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
+        function resetFilters() {
+            searchInput.value = '';
+            genderFilter.value = 'ALL';
+            clearSearchBtn.classList.add('hidden');
+            searchBadge.classList.add('hidden');
+            renderTable(villageData);
         }
 
-        // Event Listeners initialization
-        window.addEventListener('DOMContentLoaded', () => {
-            renderTable(villageData);
-            updateStats();
-        });
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`NIK ${text} berhasil disalin ke clipboard!`);
+            });
+        }
 
+        // Event Listeners
         searchInput.addEventListener('input', filterData);
         genderFilter.addEventListener('change', filterData);
         clearSearchBtn.addEventListener('click', () => {
             searchInput.value = '';
             filterData();
-            searchInput.focus();
         });
         resetBtn.addEventListener('click', resetFilters);
 
-        // Close modal when clicking outside box
-        detailModal.addEventListener('click', (e) => {
-            if (e.target === detailModal) closeModal();
-        });
+        // Initial Load
+        updateStats();
+        renderTable(villageData);
     </script>
 </body>
 </html>
