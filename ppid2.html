@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPID Desa Wani Lumbumpetigo - Daftar Informasi Publik (DIP)</title>
+    <!-- Google Fonts & FontAwesome untuk Ikon -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --gradient-blue: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            --primary-green: #065f46;
+            --accent-green: #059669;
+            --light-green-bg: #ecfdf5;
+            --bg-body: #f3f4f6;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --footer-bg: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Banner Top */
+        .top-hero-wrapper {
+            padding: 20px 0 10px;
+        }
+
+        .top-hero {
+            background: var(--gradient-blue);
+            color: #ffffff;
+            text-align: center;
+            padding: 36px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .top-hero h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .top-hero p {
+            font-size: 0.875rem;
+            color: #e0e7ff;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            margin-top: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--primary-green);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background: #fef3c7;
+            border: 2px solid #d97706;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d97706;
+            font-size: 1.1rem;
+        }
+
+        .btn-web-desa {
+            background: var(--primary-blue);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-web-desa:hover {
+            background: #172554;
+        }
+
+        /* Main Card Container */
+        .main-wrapper {
+            padding: 24px 0 48px;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Green Banner Inside Card */
+        .dip-header-banner {
+            background: var(--primary-green);
+            color: #ffffff;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dip-header-banner h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .dip-header-banner p {
+            font-size: 0.85rem;
+            color: #d1fae5;
+        }
+
+        /* Tabs Kategori Informasi */
+        .info-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text-dark);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn .badge-count {
+            background: #f3f4f6;
+            color: var(--text-muted);
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-green);
+            color: #ffffff;
+            border-color: var(--accent-green);
+        }
+
+        .tab-btn.active .badge-count {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        /* Klaster Cards Grid */
+        .klaster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .klaster-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .klaster-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .klaster-card.active {
+            background: var(--light-green-bg);
+            border: 1.5px solid var(--accent-green);
+        }
+
+        .klaster-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .icon-green { background: #dcfce7; color: #15803d; }
+        .icon-blue { background: #dbeafe; color: #1d4ed8; }
+        .icon-amber { background: #fef3c7; color: #b45309; }
+        .icon-purple { background: #f3e8ff; color: #7e22ce; }
+
+        .klaster-info h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .klaster-info span {
+            display: inline-block;
+            margin-top: 2px;
+            font-size: 0.72rem;
+            background: #f3f4f6;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .klaster-card.active .klaster-info span {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Filter Box */
+        .filter-box {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+
+        .filter-group {
+            margin-bottom: 14px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .filter-group label i {
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent-green);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn-cari {
+            background: var(--accent-green);
+            color: #ffffff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-cari:hover {
+            background: var(--primary-green);
+        }
+
+        .btn-reset {
+            background: #ffffff;
+            color: var(--text-dark);
+            border: 1px solid #d1d5db;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-reset:hover {
+            background: #f3f4f6;
+        }
+
+        /* Table Section */
+        .table-responsive {
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            padding: 14px 16px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            font-size: 0.85rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .doc-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .doc-author {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-kategori {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: #e0f2fe;
+            color: #0369a1;
+            margin-bottom: 4px;
+        }
+
+        .badge-kategori.dikecualikan {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .klaster-sub {
+            display: block;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .btn-unduh {
+            background: var(--primary-blue);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .btn-unduh:hover {
+            background: #172554;
+        }
+
+        /* Floating Accessibility Button */
+        .accessibility-btn {
+            position: fixed;
+            right: 16px;
+            top: 40%;
+            width: 44px;
+            height: 44px;
+            background: var(--accent-green);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 99;
+            border: none;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--footer-bg);
+            color: #9ca3af;
+            padding: 48px 0 24px;
+            font-size: 0.85rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            margin-bottom: 36px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+        }
+
+        .footer-brand span {
+            color: #38bdf8;
+        }
+
+        footer h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 8px;
+        }
+
+        footer ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        footer ul li a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.78rem;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+
+        .btn-scroll-top {
+            background: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Hero Banner -->
+    <div class="container top-hero-wrapper">
+        <div class="top-hero">
+            <div class="hero-badge">
+                <i class="fa-solid fa-shield-halved"></i> Akuntabilitas & Transparansi Publik
+            </div>
+            <h1>Pejabat Pengelola Informasi & Dokumentasi</h1>
+            <p>Layanan Satu Pintu Keterbukaan Informasi Publik Terpadu Pemerintah Desa Wani Lumbumpetigo secara Non-Diskriminatif dan Ramah Disabilitas.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <span>PPID WANI LUMBUMPETIGO</span>
+            </a>
+            <a href="#" class="btn-web-desa">
+                <i class="fa-solid fa-arrow-left"></i> Web Desa
+            </a>
+        </div>
+    </nav>
+
+    <!-- Floating Accessibility Button -->
+    <button class="accessibility-btn" title="Fitur Ramah Disabilitas" onclick="alert('Mode Aksesibilitas / Pembaca Layar Siap Digunakan')">
+        <i class="fa-solid fa-wheelchair"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main class="container main-wrapper">
+        <div class="main-card">
+            
+            <!-- Header Hijau DIP -->
+            <div class="dip-header-banner">
+                <h2><i class="fa-solid fa-book-open"></i> Daftar Informasi Publik (DIP) (Dokumen PPID)</h2>
+                <p>Katalog resmi berkas dan informasi publik Pemerintah Desa Wani Lumbumpetigo yang dapat diakses dan diunduh warga secara terbuka.</p>
+            </div>
+
+            <!-- Tabs Kategori -->
+            <div class="info-tabs">
+                <button class="tab-btn active" onclick="filterByTab('all', this)">
+                    <i class="fa-solid fa-layer-group"></i> Semua Informasi <span class="badge-count">13</span>
+                </button>
+                <button class="tab-btn" onclick="filterByTab('Informasi Berkala', this)">
+                    <i class="fa-regular fa-clock"></i> Informasi Berkala <span class="badge-count">0</span>
+                </button>
+                <button class="tab-btn" onclick="filterByTab('Informasi Setiap Saat', this)">
+                    <i class="fa-solid fa-folder-open"></i> Informasi Setiap Saat <span class="badge-count">12</span>
+                </button>
+                <button class="tab-btn" onclick="filterByTab('Informasi Dikecualikan', this)">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Informasi Dikecualikan <span class="badge-count">1</span>
+                </button>
+            </div>
+
+            <!-- Klaster Dokumen Cards -->
+            <div class="klaster-grid">
+                <div class="klaster-card">
+                    <div class="klaster-icon icon-green"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <div class="klaster-info">
+                        <h4>Keuangan</h4>
+                        <span>1 Dokumen</span>
+                    </div>
+                </div>
+                <div class="klaster-card">
+                    <div class="klaster-icon icon-blue"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="klaster-info">
+                        <h4>Perencanaan</h4>
+                        <span>3 Dokumen</span>
+                    </div>
+                </div>
+                <div class="klaster-card">
+                    <div class="klaster-icon icon-amber"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div class="klaster-info">
+                        <h4>Pengadaan</h4>
+                        <span>0 Berkas</span>
+                    </div>
+                </div>
+                <div class="klaster-card active">
+                    <div class="klaster-icon icon-purple"><i class="fa-solid fa-shield-cat"></i></div>
+                    <div class="klaster-info">
+                        <h4>PPID Desa</h4>
+                        <span>13 Dokumen</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Filter Pencarian -->
+            <div class="filter-box">
+                <div class="filter-group">
+                    <label for="filterKategori"><i class="fa-solid fa-filter"></i> Kategori Informasi</label>
+                    <select id="filterKategori" class="filter-select">
+                        <option value="all">-- Semua Kategori --</option>
+                        <option value="Informasi Berkala">Informasi Berkala</option>
+                        <option value="Informasi Setiap Saat">Informasi Setiap Saat</option>
+                        <option value="Informasi Dikecualikan">Informasi Dikecualikan</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterKlaster"><i class="fa-solid fa-folder"></i> Klaster Dokumen</label>
+                    <select id="filterKlaster" class="filter-select">
+                        <option value="Dokumen PPID" selected>Dokumen PPID</option>
+                        <option value="Keuangan">Keuangan</option>
+                        <option value="Perencanaan">Perencanaan</option>
+                        <option value="Pengadaan">Pengadaan</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterTahun"><i class="fa-regular fa-calendar"></i> Tahun</label>
+                    <select id="filterTahun" class="filter-select">
+                        <option value="all">-- Semua Tahun --</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="button" class="btn-cari" onclick="applyFilters()">
+                        <i class="fa-solid fa-magnifying-glass"></i> Cari
+                    </button>
+                    <button type="button" class="btn-reset" onclick="resetFilters()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabel Daftar Dokumen -->
+            <div class="table-responsive">
+                <table id="dipTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">No</th>
+                            <th>Judul Dokumen Informasi Publik</th>
+                            <th style="width: 190px;">Klaster & Kategori</th>
+                            <th style="width: 90px;">Tahun</th>
+                            <th style="width: 150px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>1</td>
+                            <td>
+                                <span class="doc-title">Pamflet Alur Permohonan Informasi</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>2</td>
+                            <td>
+                                <span class="doc-title">Perdes tentang Keterbukaan Informasi Publik Desa</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>3</td>
+                            <td>
+                                <span class="doc-title">SK Penujukan Pejabat Pengelola Informasi Publik</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>4</td>
+                            <td>
+                                <span class="doc-title">SOP Fasilitasi Sengketa Informasi</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>5</td>
+                            <td>
+                                <span class="doc-title">SOP Penanganan Keberatan Informasi Publik</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>6</td>
+                            <td>
+                                <span class="doc-title">SOP Permohonan Informasi</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>7</td>
+                            <td>
+                                <span class="doc-title">HIMBAUAN</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>8</td>
+                            <td>
+                                <span class="doc-title">SOP Uji Konsekuensi Informasi Publik</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>9</td>
+                            <td>
+                                <span class="doc-title">SOP Penyusunan Daftar Informasi dan Dokumentasi Publik (DDIP)</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>10</td>
+                            <td>
+                                <span class="doc-title">Alur Permohonan</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>11</td>
+                            <td>
+                                <span class="doc-title">SOP Pengarsipan Dokumen</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Dikecualikan" data-tahun="2026">
+                            <td>12</td>
+                            <td>
+                                <span class="doc-title">Peraturan Daftar Informasi Publik Yang Dikecualikan</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori dikecualikan">Informasi Dikecualikan</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                        <tr data-kategori="Informasi Setiap Saat" data-tahun="2026">
+                            <td>13</td>
+                            <td>
+                                <span class="doc-title">Perdes PPID</span>
+                                <span class="doc-author"><i class="fa-regular fa-building"></i> Pemdes Wani Lumbumpetigo</span>
+                            </td>
+                            <td>
+                                <span class="badge-kategori">Informasi Setiap Saat</span>
+                                <span class="klaster-sub">Dokumen PPID</span>
+                            </td>
+                            <td>2026</td>
+                            <td><a href="#" class="btn-unduh"><i class="fa-solid fa-download"></i> Unduh Berkas</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <div class="brand-logo" style="width: 30px; height: 30px; font-size: 0.9rem;">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        Wani <span>Lumbumpetigo</span>
+                    </div>
+                    <p>Pejabat Pengelola Informasi dan Dokumentasi (PPID) Pemerintah Desa Wani Lumbumpetigo. Terwujudnya pelayanan publik yang inklusif, akuntabel, dan transparan sesuai UU KIP.</p>
+                </div>
+
+                <div>
+                    <h4>Layanan Publikasi</h4>
+                    <ul>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Profil & Maklumat PPID</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Daftar Informasi Publik (DIP)</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Regulasi KIP Terkini</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Publikasi & Pengumuman</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>E-Services PPID</h4>
+                    <ul>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Permohonan Informasi</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Pengajuan Keberatan</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Cek Status Tiket</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Hubungi Sekretariat</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-location-dot" style="color: #38bdf8; width: 16px;"></i> Kantor Kades Wani Lumbumpetigo</li>
+                        <li><i class="fa-solid fa-envelope" style="color: #38bdf8; width: 16px;"></i> ppid@wanilumbumpetigo.desa.id</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 PPID Pemerintah Desa Wani Lumbumpetigo. Hak Cipta Dilindungi.</div>
+                <div class="footer-links">
+                    <a href="#">Dasar Hukum</a>
+                    <span>•</span>
+                    <a href="#">Maklumat Pelayanan</a>
+                    <button class="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Kembali ke atas">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Interaktif Filter Tabel -->
+    <script>
+        function filterByTab(kategori, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            document.getElementById('filterKategori').value = kategori;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const kategori = document.getElementById('filterKategori').value;
+            const tahun = document.getElementById('filterTahun').value;
+            const rows = document.querySelectorAll('#dipTable tbody tr');
+
+            rows.forEach(row => {
+                const rowKat = row.getAttribute('data-kategori');
+                const rowTahun = row.getAttribute('data-tahun');
+
+                const matchKat = (kategori === 'all' || rowKat === kategori);
+                const matchTahun = (tahun === 'all' || rowTahun === tahun);
+
+                row.style.display = (matchKat && matchTahun) ? '' : 'none';
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('filterKategori').value = 'all';
+            document.getElementById('filterKlaster').value = 'Dokumen PPID';
+            document.getElementById('filterTahun').value = 'all';
+            
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === 0);
+            });
+            applyFilters();
+        }
+    </script>
+</body>
+</html>
