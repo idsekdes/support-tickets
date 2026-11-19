@@ -56,7 +56,7 @@
     }
 
     .dwlp-header-info {
-      max-width: 760px;
+      max-width: 680px;
     }
 
     .dwlp-instansi {
@@ -85,12 +85,13 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      align-items: center;
     }
 
     .dwlp-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       padding: 10px 16px;
       border-radius: 8px;
       font-size: 13.5px;
@@ -99,6 +100,17 @@
       cursor: pointer;
       border: none;
       transition: all 0.2s ease;
+    }
+
+    .dwlp-btn-back {
+      background: #f59e0b;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    .dwlp-btn-back:hover {
+      background: #d97706;
+      transform: translateY(-1px);
     }
 
     .dwlp-btn-light {
@@ -309,8 +321,11 @@
         <p class="dwlp-subtitle">Penugasan mengikuti Bimbingan Teknis Pelaku di Desa (KPM, TPK, dan Kader Posyandu)</p>
       </div>
       <div class="dwlp-actions">
+        <a href="https://appdesa.my.id/bimtek" class="dwlp-btn dwlp-btn-back">
+          &#8592; Kembali
+        </a>
         <a href="https://drive.google.com/file/d/1NHAFD-aTr-_-5VBu-Z1SFtCZtGC3IdiX/view" target="_blank" rel="noopener" class="dwlp-btn dwlp-btn-outline">
-          Buka Layar Penuh
+          Layar Penuh
         </a>
         <a href="https://drive.google.com/uc?export=download&id=1NHAFD-aTr-_-5VBu-Z1SFtCZtGC3IdiX" target="_blank" rel="noopener" class="dwlp-btn dwlp-btn-light">
           Unduh PDF
