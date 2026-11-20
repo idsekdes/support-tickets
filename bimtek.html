@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rekap Hasil Bimtek Tahun 2025</title>
   <!-- FAVICON -->
   <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Rekap Hasil Bimtek Tahun 2025</title>
   <style>
     * {
       box-sizing: border-box;
@@ -23,6 +23,37 @@
     .wrapper {
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    /* Baris Navigasi Pojok Atas */
+    .top-bar {
+      display: flex;
+      justify-content: flex-start; /* Ubah ke flex-end jika ingin di pojok kanan atas */
+      margin-bottom: 16px;
+    }
+
+    .btn-kembali {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #164438;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 10px 18px;
+      border-radius: 3px;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-kembali:hover {
+      background-color: #1e594a;
+    }
+
+    .btn-kembali:active {
+      transform: translateY(1px);
     }
 
     /* Card Bagian Atas (Ringkasan & Surat Tugas) */
@@ -259,6 +290,16 @@
 <body>
 
   <div class="wrapper">
+    <!-- Tombol Kembali Pojok Atas -->
+    <div class="top-bar">
+      <a href="https://lumbumpetigo.berdesa.id/public/" class="btn-kembali">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        KEMBALI
+      </a>
+    </div>
+
     <!-- Kotak Atas: Rekapitulasi & Surat Tugas -->
     <div class="summary-card">
       <div class="page-title">Rekap Hasil Bimtek Tahun 2025</div>
@@ -292,15 +333,13 @@
       <div class="summary-section">
         <div class="st-title">Surat Tugas</div>
         <div class="st-buttons">
-          <a href="https://appdesa.my.id/st" class="btn-action btn-lihat">
-            <!-- Ikon Mata -->
+          <a href="#" class="btn-action btn-lihat">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
             </svg>
             LIHAT SURAT TUGAS
           </a>
           <button type="button" class="btn-action btn-hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus Surat Tugas ini?')">
-            <!-- Ikon Tempat Sampah -->
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
             </svg>
@@ -323,7 +362,7 @@
             <th style="width: 13%;"></th>
           </tr>
         </thead>
-        <tbody>
+         <tbody>
           <tr>
             <td>7203194303830001</td>
             <td>ISNAWATI</td>
