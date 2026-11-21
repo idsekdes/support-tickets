@@ -1,0 +1,349 @@
+<style>
+  /* Container Utama agar aman di Template Blogspot */
+  .kpm-dashboard-wrapper {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  }
+
+  /* Judul & Subjudul */
+  .kpm-header {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .kpm-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #222222;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .kpm-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #666666;
+  }
+
+  /* Area Grafik (Chart) */
+  .kpm-chart-scroll {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .kpm-chart-container {
+    display: flex;
+    min-width: 550px;
+    height: 240px;
+    position: relative;
+    padding-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  /* Label Sumbu Y Vertikal */
+  .kpm-y-title {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    font-size: 12px;
+    color: #666666;
+    margin-right: 10px;
+  }
+
+  /* Angka Sumbu Y (0 - 125) */
+  .kpm-y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+    padding-right: 10px;
+    font-size: 11px;
+    color: #666666;
+    height: 200px;
+  }
+  .kpm-y-axis span {
+    line-height: 0;
+  }
+
+  /* Area Grid & Batang Grafik */
+  .kpm-plot-area {
+    flex: 1;
+    height: 200px;
+    position: relative;
+    border-bottom: 1px solid #333333;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    background: repeating-linear-gradient(
+      to bottom,
+      #e6e6e6 0px,
+      #e6e6e6 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  }
+
+  /* Grup Batang per Bulan */
+  .kpm-bar-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    height: 100%;
+    position: relative;
+    width: 45%;
+  }
+
+  /* Masing-masing Batang */
+  .kpm-bar {
+    width: 46px;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    transition: opacity 0.2s;
+  }
+  .kpm-bar:hover {
+    opacity: 0.85;
+  }
+  .kpm-bar-label {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 700;
+    color: #222222;
+    white-space: nowrap;
+  }
+
+  /* Warna Kategori */
+  .bg-remaja { background-color: #2da8ff; }
+  .bg-keluarga { background-color: #4b47b8; }
+  .bg-bumil { background-color: #00e374; }
+  .bg-anak { background-color: #ff6933; }
+
+  /* Label Bulan Sumbu X */
+  .kpm-x-label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 12px;
+    color: #444444;
+  }
+
+  /* Legenda Grafik */
+  .kpm-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px 22px;
+    margin: 25px 0 15px 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #333333;
+  }
+  .kpm-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .kpm-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* Watermark Kanan Bawah Grafik */
+  .kpm-credit {
+    text-align: right;
+    font-size: 10px;
+    color: #999999;
+    margin-bottom: 10px;
+  }
+
+  /* Tabel Data Responsif */
+  .kpm-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e0e0e0;
+  }
+  .kpm-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+    font-size: 12.5px;
+    text-align: left;
+  }
+  .kpm-table th {
+    background-color: #ffffff;
+    color: #222222;
+    font-weight: 600;
+    text-align: center;
+    padding: 14px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+  }
+  .kpm-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    color: #333333;
+  }
+  .kpm-table th:last-child,
+  .kpm-table td:last-child {
+    border-right: none;
+  }
+  .kpm-table tr:last-child td {
+    border-bottom: none;
+  }
+  .kpm-table tbody tr:hover {
+    background-color: #f9fafb;
+  }
+</style>
+
+<div class="kpm-dashboard-wrapper">
+  <!-- Header -->
+  <div class="kpm-header">
+    <h2>PERFORMA KPM</h2>
+    <p>MELDA KURNIAWATI (7203195601890002)</p>
+  </div>
+
+  <!-- Grafik Batang -->
+  <div class="kpm-chart-scroll">
+    <div class="kpm-chart-container">
+      <div class="kpm-y-title">Skor Pantauan</div>
+      <div class="kpm-y-axis">
+        <span>125</span>
+        <span>100</span>
+        <span>75</span>
+        <span>50</span>
+        <span>25</span>
+        <span>0</span>
+      </div>
+
+      <div class="kpm-plot-area">
+        <!-- Grup Nov 2026 (Skala max 125, jadi tinggi% = nilai / 125 * 100) -->
+        <div class="kpm-bar-group">
+          <div class="kpm-bar bg-remaja" style="height: 59.12%;">
+            <span class="kpm-bar-label">73.9%</span>
+          </div>
+          <div class="kpm-bar bg-keluarga" style="height: 35.36%;">
+            <span class="kpm-bar-label">44.2%</span>
+          </div>
+          <div class="kpm-bar bg-bumil" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
+          </div>
+          <div class="kpm-bar bg-anak" style="height: 74.4%;">
+            <span class="kpm-bar-label">93.0%</span>
+          </div>
+          <div class="kpm-x-label">Nov 2026</div>
+        </div>
+
+        <!-- Grup Okt 2026 -->
+        <div class="kpm-bar-group">
+          <div class="kpm-bar bg-remaja" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
+          </div>
+          <div class="kpm-bar bg-keluarga" style="height: 50%;">
+            <span class="kpm-bar-label">62.5%</span>
+          </div>
+          <!-- Kosong/0% untuk Bumil pada Okt 2026 -->
+          <div class="kpm-bar bg-bumil" style="height: 0%;"></div>
+          <div class="kpm-bar bg-anak" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
+          </div>
+          <div class="kpm-x-label">Okt 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legenda -->
+  <div class="kpm-legend">
+    <div class="kpm-legend-item">
+      <span class="kpm-dot bg-remaja"></span> PANTAUAN REMAJA PUTRI
+    </div>
+    <div class="kpm-legend-item">
+      <span class="kpm-dot bg-keluarga"></span> PANTAUAN KELUARGA SASARAN
+    </div>
+    <div class="kpm-legend-item">
+      <span class="kpm-dot bg-bumil"></span> PANTAUAN IBU HAMIL DAN NIFAS
+    </div>
+    <div class="kpm-legend-item">
+      <span class="kpm-dot bg-anak"></span> PANTAUAN ANAK 0 - 59 BULAN
+    </div>
+  </div>
+
+  <div class="kpm-credit">Highcharts.com</div>
+
+  <!-- Tabel Data -->
+  <div class="kpm-table-responsive">
+    <table class="kpm-table">
+      <thead>
+        <tr>
+          <th>BULAN/TAHUN</th>
+          <th>SASARAN</th>
+          <th>TOTAL PANTAUAN</th>
+          <th>TERPANTAU</th>
+          <th>%</th>
+          <th>UPDATE PERHITUNGAN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nov 2026</td>
+          <td>Remaja Putri</td>
+          <td>46</td>
+          <td>34</td>
+          <td>73,91%</td>
+          <td>21 November 2026 pukul 14.32</td>
+        </tr>
+        <tr>
+          <td>Nov 2026</td>
+          <td>Keluarga Sasaran</td>
+          <td>86</td>
+          <td>38</td>
+          <td>44,19%</td>
+          <td>21 November 2026 pukul 14.32</td>
+        </tr>
+        <tr>
+          <td>Nov 2026</td>
+          <td>Ibu Hamil dan Nifas</td>
+          <td>10</td>
+          <td>10</td>
+          <td>100%</td>
+          <td>21 November 2026 pukul 14.32</td>
+        </tr>
+        <tr>
+          <td>Nov 2026</td>
+          <td>Anak 0 - 59 Bulan</td>
+          <td>86</td>
+          <td>80</td>
+          <td>93,02%</td>
+          <td>21 November 2026 pukul 14.32</td>
+        </tr>
+        <tr>
+          <td>Okt 2026</td>
+          <td>Remaja Putri</td>
+          <td>14</td>
+          <td>14</td>
+          <td>100%</td>
+          <td>29 Oktober 2026 pukul 08.38</td>
+        </tr>
+        <tr>
+          <td>Okt 2026</td>
+          <td>Keluarga Sasaran</td>
+          <td>32</td>
+          <td>20</td>
+          <td>62,5%</td>
+          <td>29 Oktober 2026 pukul 08.38</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
