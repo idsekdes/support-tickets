@@ -1084,5 +1084,44 @@ body { background: #e8e8e8; }
     </iframe>
   </div>
 </div>
+<script>
+function fitPagesToScreen() {
+  const pages = document.querySelectorAll('.page');
+  // Sisakan jarak 24px di kiri-kanan layar agar tidak terlalu mepet
+  const availableWidth = document.documentElement.clientWidth - 24; 
+
+  pages.forEach(page => {
+    // Bungkus .page ke dalam .page-wrapper jika belum dibungkus
+    let wrapper = page.parentElement;
+    if (!wrapper.classList.contains('page-wrapper')) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'page-wrapper';
+      page.parentNode.insertBefore(wrapper, page);
+      wrapper.appendChild(page);
+    }
+
+    // Ambil ukuran asli halaman dari inline style (misal 1920x1080)
+    const origWidth = page.offsetWidth || 1920;
+    const origHeight = page.offsetHeight || 1080;
+
+    // Hitung rasio pengecilan (maksimal 1 agar tidak membesar melebihi ukuran asli)
+    const scale = Math.min(1, availableWidth / origWidth);
+
+    // Terapkan skala dan sesuaikan tinggi wrapper agar tidak ada ruang kosong berlebih di bawah slide
+    page.style.transform = `scale(${scale})`;
+    wrapper.style.height = `${origHeight * scale}px`;
+    
+    // Posisikan tepat di tengah wrapper
+    const scaledWidth = origWidth * scale;
+    wrapper.style.display = 'block';
+    page.style.marginLeft = `${Math.max(0, (document.documentElement.clientWidth - scaledWidth) / 2)}px`;
+  });
+}
+
+// Jalankan saat halaman selesai dimuat dan saat ukuran layar/browser diubah
+window.addEventListener('DOMContentLoaded', fitPagesToScreen);
+window.addEventListener('load', fitPagesToScreen);
+window.addEventListener('resize', fitPagesToScreen);
+</script>
 </body>
 </html>
