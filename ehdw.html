@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
     <title>Lembar Kerja e-HDW - Syam Digital | Solusi Digital Hasil Maksimal</title>
     
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
@@ -18,7 +16,7 @@
     <!-- Font Awesome 6 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- SheetJS (xlsx) CDN untuk Ekspor & Impor Excel -->
+    <!-- SheetJS (xlsx) CDN untuk Ekspor & Impor Excel Multi-Sheet -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
     <script>
@@ -36,6 +34,8 @@
                             pinkLight: '#FFF0F7',
                             maroon: '#5D1049',
                             maroonDark: '#3E0830',
+                            green: '#1B4332',
+                            greenLight: '#2D6A4F',
                             gold: '#FFD700',
                             goldDark: '#E6B800',
                         }
@@ -75,7 +75,7 @@
             body {
                 background: white !important;
                 color: black !important;
-                font-size: 11px !important;
+                font-size: 10px !important;
             }
             .no-print {
                 display: none !important;
@@ -94,7 +94,7 @@
             }
             th, td {
                 border: 1px solid #333 !important;
-                padding: 4px 6px !important;
+                padding: 4px 5px !important;
             }
             thead th {
                 background-color: #f3f4f6 !important;
@@ -104,7 +104,7 @@
         }
     </style>
 </head>
-<body class="bg-pink-50/60 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-pink-50/70 text-slate-800 antialiased min-h-screen flex flex-col">
 
     <!-- HEADER UTAMA: TERINSPIRASI BANNER SYAM DIGITAL - e-HDW -->
     <header class="bg-gradient-to-r from-[#FF69B4] via-[#F06292] to-[#5D1049] text-white shadow-lg border-b-4 border-[#FFD700] sticky top-0 z-40 no-print">
@@ -127,10 +127,10 @@
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-white drop-shadow-sm">
-                                    <span class="text-[#5D1049] bg-white/90 px-1.5 py-0.5 rounded-md mr-0.5">e</span>HDW
+                                    <span class="text-[#5D1049] bg-white/95 px-1.5 py-0.5 rounded-md mr-0.5">e</span>HDW
                                 </span>
-                                <span class="bg-[#5D1049] text-[#FFD700] text-xs font-bold px-2.5 py-0.5 rounded-full border border-[#FFD700]/50 uppercase tracking-wider">
-                                    Lembar Kerja Pendataan
+                                <span class="bg-[#1B4332] text-[#FFD700] text-xs font-bold px-2.5 py-0.5 rounded-full border border-[#FFD700]/60 uppercase tracking-wider shadow-xs">
+                                    5 Sasaran Resmi Kemendesa
                                 </span>
                             </div>
                             <p class="text-xs sm:text-sm font-semibold text-[#FFD700] tracking-wide mt-0.5 drop-shadow">
@@ -149,7 +149,7 @@
                     </div>
 
                     <!-- Tombol Panduan Sinkronisasi -->
-                    <button onclick="openModal('syncGuideModal')" class="flex items-center gap-1.5 bg-[#5D1049]/80 hover:bg-[#5D1049] text-white border border-pink-300/40 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm cursor-pointer" title="Panduan Input ke Portal Kemendesa">
+                    <button onclick="openModal('syncGuideModal')" class="flex items-center gap-1.5 bg-[#1B4332] hover:bg-[#2D6A4F] text-white border border-[#FFD700]/50 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm cursor-pointer" title="Panduan Input ke Portal Kemendesa">
                         <i class="fa-solid fa-circle-info text-[#FFD700]"></i>
                         <span class="hidden sm:inline">Panduan e-HDW</span>
                     </button>
@@ -193,113 +193,131 @@
                     </div>
                 </div>
 
-                <!-- Status Server Portal Kemendesa -->
-                <div class="flex items-center gap-3 bg-pink-50 border border-pink-200 px-3.5 py-2 rounded-xl w-full md:w-auto justify-between md:justify-start">
-                    <div class="flex items-center gap-2">
+                <!-- Banner Akses Langsung Portal Kemendesa -->
+                <div class="flex items-center gap-3 bg-gradient-to-r from-[#1B4332] to-[#2D6A4F] text-white border border-[#FFD700]/60 px-4 py-2.5 rounded-xl w-full md:w-auto justify-between md:justify-start shadow-xs">
+                    <div class="flex items-center gap-2.5">
                         <span class="relative flex h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFD700] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#FFD700]"></span>
                         </span>
                         <div>
-                            <p class="text-[11px] font-bold text-[#5D1049]">Portal Target Sinkronisasi</p>
-                            <p class="text-[11px] text-slate-600 font-mono">ehdw.kemendesa.go.id</p>
+                            <p class="text-[11px] font-bold text-[#FFD700]">Sinkronisasi Portal Resmi</p>
+                            <p class="text-[11px] text-emerald-100 font-mono">ehdw.kemendesa.go.id</p>
                         </div>
                     </div>
-                    <a href="https://ehdw.kemendesa.go.id/app-pendataan/" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-[#F06292] hover:text-[#5D1049] underline">
-                        Buka <i class="fa-solid fa-external-link-alt ml-0.5"></i>
+                    <a href="https://ehdw.kemendesa.go.id/app-pendataan/" target="_blank" rel="noopener noreferrer" class="text-xs font-extrabold bg-[#FFD700] text-[#5D1049] px-2.5 py-1 rounded-lg hover:bg-amber-300 transition">
+                        Login <i class="fa-solid fa-external-link-alt ml-0.5"></i>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- DASHBOARD RINGKASAN STATISTIK REAL-TIME -->
-        <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-            <!-- Total Sasaran -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-[#5D1049] flex flex-col justify-between">
-                <div class="flex items-center justify-between text-[#5D1049] mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Total Sasaran</span>
-                    <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <i class="fa-solid fa-users text-sm"></i>
+        <!-- DASHBOARD RINGKASAN STATISTIK REAL-TIME (6 KARTU RINGKASAN + RATA-RATA KONVERGENSI) -->
+        <section class="space-y-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <!-- 1. Total Semua Sasaran -->
+                <div onclick="switchTab('ALL')" class="cursor-pointer bg-white hover:bg-pink-50/50 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-[#5D1049] flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-[#5D1049] mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Total Sasaran</span>
+                        <div class="w-8 h-8 rounded-full bg-[#5D1049] text-[#FFD700] flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-layer-group text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statTotal" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Seluruh 5 kategori</p>
                     </div>
                 </div>
-                <div>
-                    <p id="statTotal" class="text-2xl font-extrabold text-slate-800">0</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Jiwa terdata di lembar kerja</p>
+
+                <!-- 2. Keluarga Sasaran -->
+                <div onclick="switchTab('Keluarga')" class="cursor-pointer bg-white hover:bg-emerald-50/40 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-[#1B4332] flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-[#1B4332] mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Keluarga Sasaran</span>
+                        <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-people-roof text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statKeluarga" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">KK Berisiko / Prioritas</p>
+                    </div>
+                </div>
+
+                <!-- 3. Sasaran Anak 0-59 Bulan -->
+                <div onclick="switchTab('Anak')" class="cursor-pointer bg-white hover:bg-sky-50/40 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-sky-600 flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-sky-700 mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Anak 0-59 Bln</span>
+                        <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-baby text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statAnak" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Baduta & Balita</p>
+                    </div>
+                </div>
+
+                <!-- 4. Sasaran Remaja Putri -->
+                <div onclick="switchTab('Rematri')" class="cursor-pointer bg-white hover:bg-purple-50/40 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-purple-600 flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-purple-700 mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Remaja Putri</span>
+                        <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-person-dress text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statRematri" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Skrining & TTD Rematri</p>
+                    </div>
+                </div>
+
+                <!-- 5. Calon Pengantin -->
+                <div onclick="switchTab('Catin')" class="cursor-pointer bg-white hover:bg-amber-50/40 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-amber-500 flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-amber-700 mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Calon Pengantin</span>
+                        <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-handshake text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statCatin" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Elsimil & Pranikah</p>
+                    </div>
+                </div>
+
+                <!-- 6. Ibu Hamil dan Nifas -->
+                <div onclick="switchTab('BumilNifas')" class="cursor-pointer bg-white hover:bg-pink-50/50 transition rounded-2xl p-3.5 shadow-sm border-l-4 border-[#FF69B4] flex flex-col justify-between">
+                    <div class="flex items-center justify-between text-[#F06292] mb-2">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider">Bumil & Nifas</span>
+                        <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-person-pregnant text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="statBumilNifas" class="text-2xl font-extrabold text-slate-800">0</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Ibu Hamil & Ibu Nifas</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Ibu Hamil (Bumil) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-[#FF69B4] flex flex-col justify-between">
-                <div class="flex items-center justify-between text-[#F06292] mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Ibu Hamil</span>
-                    <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <i class="fa-solid fa-person-pregnant text-sm"></i>
+            <!-- Bar Indikator Rata-Rata Konvergensi Layanan Desa -->
+            <div class="bg-gradient-to-r from-[#5D1049] via-[#701458] to-[#1B4332] text-white rounded-2xl px-4 py-3 shadow-sm border border-[#FFD700]/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-white/10 border border-[#FFD700]/40 flex items-center justify-center text-[#FFD700]">
+                        <i class="fa-solid fa-chart-pie text-base"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-[#FFD700]">Rata-Rata Capaian Konvergensi Layanan Desa</p>
+                        <p class="text-xs text-pink-100">
+                            <span id="statLengkapCount" class="font-bold text-white">0 dari 0</span> sasaran telah menerima 100% paket layanan konvergensi.
+                        </p>
                     </div>
                 </div>
-                <div>
-                    <p id="statBumil" class="text-2xl font-extrabold text-slate-800">0</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Sasaran Bumil / KEK</p>
-                </div>
-            </div>
-
-            <!-- Baduta (0-23 Bulan) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-sky-500 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-sky-600 mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Baduta (0-23 Bln)</span>
-                    <div class="w-8 h-8 rounded-lg bg-sky-100 flex items-center justify-center">
-                        <i class="fa-solid fa-baby text-sm"></i>
+                <div class="flex items-center gap-3 w-full sm:w-64">
+                    <div class="w-full bg-white/20 rounded-full h-2.5 overflow-hidden">
+                        <div id="statProgressBar" class="bg-[#FFD700] h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
-                </div>
-                <div>
-                    <p id="statBaduta" class="text-2xl font-extrabold text-slate-800">0</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">1000 HPK Prioritas</p>
-                </div>
-            </div>
-
-            <!-- Balita (24-59 Bulan) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-indigo-500 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-indigo-600 mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Balita (24-59 Bln)</span>
-                    <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                        <i class="fa-solid fa-child-reaching text-sm"></i>
-                    </div>
-                </div>
-                <div>
-                    <p id="statBalita" class="text-2xl font-extrabold text-slate-800">0</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Anak usia 2 - 5 tahun</p>
-                </div>
-            </div>
-
-            <!-- Calon Pengantin (Catin) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-amber-500 flex flex-col justify-between">
-                <div class="flex items-center justify-between text-amber-600 mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Calon Pengantin</span>
-                    <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
-                        <i class="fa-solid fa-rings-wedding text-sm"></i>
-                    </div>
-                </div>
-                <div>
-                    <p id="statCatin" class="text-2xl font-extrabold text-slate-800">0</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Pendampingan Pranikah</p>
-                </div>
-            </div>
-
-            <!-- Konvergensi Layanan -->
-            <div class="bg-gradient-to-br from-[#5D1049] to-[#3E0830] text-white rounded-2xl p-4 shadow-sm border-l-4 border-[#FFD700] flex flex-col justify-between">
-                <div class="flex items-center justify-between text-[#FFD700] mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider">Konvergensi</span>
-                    <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                        <i class="fa-solid fa-chart-pie text-sm"></i>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-baseline gap-1.5">
-                        <p id="statKonvergensi" class="text-2xl font-extrabold text-[#FFD700]">0%</p>
-                        <span id="statLengkapCount" class="text-[11px] text-pink-200">(0 Lengkap)</span>
-                    </div>
-                    <div class="w-full bg-white/20 rounded-full h-1.5 mt-1.5">
-                        <div id="statProgressBar" class="bg-[#FFD700] h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
+                    <span id="statKonvergensi" class="font-display font-extrabold text-lg text-[#FFD700] min-w-[48px] text-right">0%</span>
                 </div>
             </div>
         </section>
@@ -307,38 +325,54 @@
         <!-- AREA LEMBAR KERJA / SPREADSHEET INTERAKTIF -->
         <section class="bg-white rounded-2xl shadow-md border border-pink-200 overflow-hidden spreadsheet-container">
             
-            <!-- MULTI-SHEET TABS (ALA EXCEL) -->
-            <div class="bg-pink-100/80 border-b border-pink-200 px-3 pt-2.5 flex items-center justify-between flex-wrap gap-2 no-print">
+            <!-- MULTI-SHEET TABS SESUAI 5 MENU RESMI e-HDW KEMENDESA -->
+            <div class="bg-pink-100/90 border-b border-pink-200 px-3 pt-2.5 flex items-center justify-between flex-wrap gap-2 no-print">
                 <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0" id="sheetTabs">
-                    <button onclick="switchTab('ALL')" data-tab="ALL" class="tab-btn active-tab px-4 py-2 rounded-t-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition cursor-pointer bg-white text-[#5D1049] border-t-2 border-x border-pink-200 shadow-sm">
+                    <!-- Tab Semua Sasaran -->
+                    <button onclick="switchTab('ALL')" data-tab="ALL" class="tab-btn active-tab px-3.5 py-2 rounded-t-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer bg-white text-[#5D1049] border-t-2 border-x border-pink-200 shadow-sm whitespace-nowrap">
                         <i class="fa-solid fa-table-cells text-[#F06292]"></i>
                         <span>Semua Sasaran</span>
-                        <span id="badgeALL" class="bg-pink-100 text-[#5D1049] px-1.5 py-0.5 rounded-full text-[11px]">0</span>
+                        <span id="badgeALL" class="bg-pink-100 text-[#5D1049] px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                     </button>
-                    <button onclick="switchTab('Bumil')" data-tab="Bumil" class="tab-btn px-4 py-2 rounded-t-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition cursor-pointer text-slate-600 hover:bg-white/60">
-                        <i class="fa-solid fa-person-pregnant text-pink-600"></i>
-                        <span>Ibu Hamil</span>
-                        <span id="badgeBumil" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[11px]">0</span>
+
+                    <!-- Tab 1: Keluarga Sasaran -->
+                    <button onclick="switchTab('Keluarga')" data-tab="Keluarga" class="tab-btn px-3.5 py-2 rounded-t-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-slate-700 hover:bg-white/60 whitespace-nowrap">
+                        <span class="w-5 h-5 rounded-full bg-[#1B4332] text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-people-roof"></i></span>
+                        <span>Keluarga Sasaran</span>
+                        <span id="badgeKeluarga" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                     </button>
-                    <button onclick="switchTab('Baduta')" data-tab="Baduta" class="tab-btn px-4 py-2 rounded-t-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition cursor-pointer text-slate-600 hover:bg-white/60">
-                        <i class="fa-solid fa-baby text-sky-600"></i>
-                        <span>Baduta (0-23 Bln)</span>
-                        <span id="badgeBaduta" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[11px]">0</span>
+
+                    <!-- Tab 2: Sasaran Anak 0-59 Bulan -->
+                    <button onclick="switchTab('Anak')" data-tab="Anak" class="tab-btn px-3.5 py-2 rounded-t-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-slate-700 hover:bg-white/60 whitespace-nowrap">
+                        <span class="w-5 h-5 rounded-full bg-[#1B4332] text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-baby"></i></span>
+                        <span>Sasaran Anak 0-59 Bulan</span>
+                        <span id="badgeAnak" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                     </button>
-                    <button onclick="switchTab('Balita')" data-tab="Balita" class="tab-btn px-4 py-2 rounded-t-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition cursor-pointer text-slate-600 hover:bg-white/60">
-                        <i class="fa-solid fa-child-reaching text-indigo-600"></i>
-                        <span>Balita (24-59 Bln)</span>
-                        <span id="badgeBalita" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[11px]">0</span>
+
+                    <!-- Tab 3: Sasaran Remaja Putri -->
+                    <button onclick="switchTab('Rematri')" data-tab="Rematri" class="tab-btn px-3.5 py-2 rounded-t-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-slate-700 hover:bg-white/60 whitespace-nowrap">
+                        <span class="w-5 h-5 rounded-full bg-[#1B4332] text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-person-dress"></i></span>
+                        <span>Sasaran Remaja Putri</span>
+                        <span id="badgeRematri" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                     </button>
-                    <button onclick="switchTab('Catin')" data-tab="Catin" class="tab-btn px-4 py-2 rounded-t-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition cursor-pointer text-slate-600 hover:bg-white/60">
-                        <i class="fa-solid fa-rings-wedding text-amber-600"></i>
+
+                    <!-- Tab 4: Calon Pengantin -->
+                    <button onclick="switchTab('Catin')" data-tab="Catin" class="tab-btn px-3.5 py-2 rounded-t-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-slate-700 hover:bg-white/60 whitespace-nowrap">
+                        <span class="w-5 h-5 rounded-full bg-[#1B4332] text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-handshake"></i></span>
                         <span>Calon Pengantin</span>
-                        <span id="badgeCatin" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[11px]">0</span>
+                        <span id="badgeCatin" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                    </button>
+
+                    <!-- Tab 5: Ibu Hamil dan Nifas -->
+                    <button onclick="switchTab('BumilNifas')" data-tab="BumilNifas" class="tab-btn px-3.5 py-2 rounded-t-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-slate-700 hover:bg-white/60 whitespace-nowrap">
+                        <span class="w-5 h-5 rounded-full bg-[#1B4332] text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-person-pregnant"></i></span>
+                        <span>Ibu Hamil dan Nifas</span>
+                        <span id="badgeBumilNifas" class="bg-white/80 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                     </button>
                 </div>
 
-                <!-- Tombol Input Modal Lengkap -->
-                <button onclick="openEntryModal()" class="mb-1.5 bg-gradient-to-r from-[#5D1049] to-[#7c1662] hover:from-[#3E0830] hover:to-[#5D1049] text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl shadow-sm flex items-center gap-2 transition cursor-pointer border border-[#FFD700]/40">
+                <!-- Tombol Input Modal Dinamis -->
+                <button onclick="openEntryModal()" class="mb-1.5 bg-gradient-to-r from-[#5D1049] to-[#7c1662] hover:from-[#3E0830] hover:to-[#5D1049] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-2 transition cursor-pointer border border-[#FFD700]/50">
                     <i class="fa-solid fa-plus-circle text-[#FFD700]"></i>
                     <span>Input Data Baru (Formulir)</span>
                 </button>
@@ -359,8 +393,8 @@
                         <i class="fa-solid fa-trash-can"></i> Hapus Terpilih (<span id="selectedCount">0</span>)
                     </button>
                     <div class="h-5 w-px bg-slate-200 mx-1 hidden sm:block"></div>
-                    <button onclick="loadSampleData()" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer" title="Isi Contoh Data Pendataan Desa">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> Isi Contoh Data
+                    <button onclick="resetToSampleData()" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer" title="Muat Ulang Contoh Data 5 Kategori">
+                        <i class="fa-solid fa-rotate text-amber-600"></i> Reset Data Contoh
                     </button>
                     <button onclick="confirmClearSheet()" class="px-3 py-1.5 bg-white hover:bg-rose-50 text-slate-500 hover:text-rose-600 border border-slate-200 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer" title="Kosongkan Semua Data">
                         <i class="fa-solid fa-broom"></i> Bersihkan
@@ -369,8 +403,8 @@
 
                 <!-- Grup Ekspor & Impor File -->
                 <div class="flex flex-wrap items-center gap-1.5">
-                    <button onclick="exportToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition cursor-pointer">
-                        <i class="fa-solid fa-file-excel"></i> Ekspor Excel (.xlsx)
+                    <button onclick="exportToExcel()" class="px-3 py-1.5 bg-[#1B4332] hover:bg-[#2D6A4F] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition cursor-pointer" title="Unduh Excel dengan 5 Sheet Kategori Terpisah">
+                        <i class="fa-solid fa-file-excel text-[#FFD700]"></i> Ekspor Excel Multi-Sheet (.xlsx)
                     </button>
                     <button onclick="exportToCSV()" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition cursor-pointer">
                         <i class="fa-solid fa-file-csv"></i> CSV
@@ -379,64 +413,37 @@
                         <i class="fa-solid fa-print text-[#FFD700]"></i> Cetak / PDF
                     </button>
                     <label class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
-                        <i class="fa-solid fa-file-import"></i> Impor File
+                        <i class="fa-solid fa-file-import"></i> Impor Excel/CSV
                         <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv,.json" onchange="handleFileImport(event)" class="hidden">
                     </label>
                 </div>
             </div>
 
             <!-- BARIS PENCARIAN & FILTER -->
-            <div class="px-3 py-2.5 bg-pink-50/40 border-b border-pink-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 no-print">
+            <div class="px-3 py-2.5 bg-pink-50/50 border-b border-pink-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 no-print">
                 <div class="relative flex-grow max-w-md">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari NIK, Nama Sasaran, Nama Ibu/Suami, atau Dusun/RT..." class="w-full pl-8 pr-3 py-1.5 text-xs sm:text-sm rounded-lg border border-pink-200 focus:border-[#5D1049] focus:ring-1 focus:ring-[#5D1049] outline-none bg-white">
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari NIK, No. KK, Nama Sasaran, Ibu/Sekolah, atau Dusun/RT..." class="w-full pl-8 pr-3 py-1.5 text-xs sm:text-sm rounded-lg border border-pink-200 focus:border-[#5D1049] focus:ring-1 focus:ring-[#5D1049] outline-none bg-white">
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-[11px] font-bold text-[#5D1049] hidden md:inline">Filter Konvergensi:</span>
                     <select id="filterStatusLayanan" onchange="renderTable()" class="text-xs px-3 py-1.5 rounded-lg border border-pink-200 bg-white text-slate-700 font-medium outline-none focus:border-[#5D1049]">
-                        <option value="ALL">Semua Status Layanan</option>
+                        <option value="ALL">Semua Status Konvergensi</option>
                         <option value="LENGKAP">Lengkap (100% Konvergensi)</option>
                         <option value="BELUM">Belum Lengkap (&lt; 100%)</option>
-                    </select>
-
-                    <select id="filterRisiko" onchange="renderTable()" class="text-xs px-3 py-1.5 rounded-lg border border-pink-200 bg-white text-slate-700 font-medium outline-none focus:border-[#5D1049]">
-                        <option value="ALL">Semua Status Gizi / Risiko</option>
-                        <option value="NORMAL">Normal / Aman</option>
-                        <option value="RISIKO">Indikasi Risiko / Perlu Intervensi</option>
                     </select>
                 </div>
             </div>
 
-            <!-- TABEL SPREADSHEET INTERAKTIF -->
-            <div class="overflow-x-auto spreadsheet-scroll max-h-[560px]">
+            <!-- TABEL SPREADSHEET DINAMIS PER SHEET / KATEGORI -->
+            <div class="overflow-x-auto spreadsheet-scroll max-h-[580px]">
                 <table class="w-full text-left border-collapse text-xs whitespace-nowrap" id="ehdwTable">
-                    <thead class="bg-gradient-to-r from-[#5D1049] to-[#7a1660] text-white sticky top-0 z-20 shadow-sm">
-                        <tr>
-                            <th class="p-2.5 text-center w-9 no-print border-r border-white/15">
-                                <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="rounded accent-[#FFD700] cursor-pointer">
-                            </th>
-                            <th class="p-2.5 text-center w-10 border-r border-white/15 font-bold">No</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold">Kategori</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold min-w-[145px]">NIK Sasaran (16 Digit)</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold min-w-[160px]">Nama Lengkap Sasaran</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold">Tgl Lahir / HPL</th>
-                            <th class="p-2.5 text-center border-r border-white/15 font-bold bg-white/10" title="Dihitung otomatis dari Tanggal Lahir">Umur (Bln)</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold min-w-[120px]">Dusun / RT-RW</th>
-                            <th class="p-2.5 border-r border-white/15 font-bold">Status Gizi / Kondisi</th>
-                            <!-- 6 Indikator Layanan Konvergensi e-HDW -->
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Pemeriksaan Kehamilan / Buku KIA">KIA</th>
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Tablet Tambah Darah (TTD) / Gizi">TTD/Gizi</th>
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Imunisasi Dasar / Layanan Kesehatan">Imunisasi</th>
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Pemantauan Tumbuh Kembang / Posyandu">Posyandu</th>
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Akses Air Minum Layak & Sanitasi">Air/Sanitasi</th>
-                            <th class="p-2 text-center border-r border-white/15 font-bold bg-[#F06292]/40" title="Kepemilikan Jaminan Kesehatan (BPJS/JKN)">JKN/BPJS</th>
-                            <!-- Formula Otomatis Skor Konvergensi -->
-                            <th class="p-2.5 text-center border-r border-white/15 font-bold bg-amber-500/30 text-[#FFD700]">Capaian Layanan</th>
-                            <th class="p-2.5 text-center font-bold no-print sticky right-0 bg-[#5D1049] shadow-[-4px_0_8px_rgba(0,0,0,0.15)]">Aksi & Salin e-HDW</th>
-                        </tr>
+                    <thead id="tableHead" class="bg-gradient-to-r from-[#5D1049] to-[#7a1660] text-white sticky top-0 z-20 shadow-sm">
+                        <!-- Header tabel dirender dinamis sesuai tab aktif -->
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-pink-100 bg-white">
-                        <!-- Baris data dirender secara dinamis oleh JavaScript -->
+                        <!-- Baris data dirender dinamis sesuai tab aktif -->
                     </tbody>
                 </table>
             </div>
@@ -445,7 +452,7 @@
             <div class="bg-pink-50/80 border-t border-pink-200 px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-600 no-print">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-lightbulb text-amber-500"></i>
-                    <span><strong>Tips Cepat:</strong> Klik langsung pada sel teks/tanggal untuk mengedit, centang kotak layanan untuk hitung konvergensi otomatis, atau klik <strong>Salin e-HDW</strong> untuk tempel ke portal Kemendesa.</span>
+                    <span><strong>Tips Kerja KPM:</strong> Pilih tab kategori di atas untuk melihat kolom spesifik e-HDW, ubah status layanan langsung di tabel, lalu klik <strong>Salin Data e-HDW</strong> untuk ditempel ke portal Kemendesa.</span>
                 </div>
                 <div class="font-semibold text-[#5D1049]">
                     Menampilkan <span id="visibleRowCount">0</span> dari <span id="totalRowCount">0</span> baris data
@@ -471,10 +478,10 @@
         </div>
     </footer>
 
-    <!-- MODAL 1: FORMULIR INPUT / EDIT DATA LENGKAP -->
+    <!-- MODAL 1: FORMULIR INPUT / EDIT DATA DINAMIS SESUAI 5 KATEGORI SASARAN -->
     <div id="entryModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl shadow-2xl border-2 border-[#FF69B4] max-w-2xl w-full overflow-hidden my-8 animate-fade-in">
-            <div class="bg-gradient-to-r from-[#5D1049] to-[#F06292] px-5 py-3.5 text-white flex items-center justify-between">
+        <div class="bg-white rounded-2xl shadow-2xl border-2 border-[#FF69B4] max-w-2xl w-full overflow-hidden my-8">
+            <div class="bg-gradient-to-r from-[#5D1049] via-[#7c1662] to-[#1B4332] px-5 py-3.5 text-white flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <i class="fa-solid fa-file-pen text-[#FFD700] text-lg"></i>
                     <h3 id="entryModalTitle" class="font-display font-bold text-base sm:text-lg">Formulir Input Sasaran e-HDW</h3>
@@ -484,96 +491,31 @@
                 </button>
             </div>
 
-            <form id="entryForm" onsubmit="saveEntryForm(event)" class="p-5 space-y-4 text-xs sm:text-sm">
+            <form id="entryForm" onsubmit="saveEntryForm(event)" class="p-5 space-y-4 text-xs sm:text-sm max-h-[80vh] overflow-y-auto">
                 <input type="hidden" id="formRowId">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">Kategori Sasaran *</label>
-                        <select id="formKategori" required class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none bg-pink-50/30 font-semibold">
-                            <option value="Bumil">Ibu Hamil (Bumil)</option>
-                            <option value="Baduta">Anak 0-23 Bulan (Baduta)</option>
-                            <option value="Balita">Anak 24-59 Bulan (Balita)</option>
-                            <option value="Catin">Calon Pengantin (Catin)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">NIK Sasaran (16 Digit) *</label>
-                        <input type="text" id="formNik" maxlength="16" pattern="[0-9]{16}" required placeholder="Contoh: 3201123456780001" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
-                    </div>
+                <!-- Pemilih Kategori Sasaran Resmi e-HDW -->
+                <div class="bg-pink-50 p-3 rounded-xl border border-pink-200">
+                    <label class="block font-extrabold text-[#5D1049] mb-1.5 uppercase tracking-wider text-xs">Pilih Kategori Sasaran e-HDW *</label>
+                    <select id="formKategori" onchange="renderDynamicFormFields()" required class="w-full px-3 py-2.5 rounded-xl border-2 border-[#5D1049]/30 focus:border-[#5D1049] outline-none bg-white font-bold text-[#5D1049]">
+                        <option value="Keluarga">1. KELUARGA SASARAN</option>
+                        <option value="Anak">2. SASARAN ANAK 0-59 BULAN</option>
+                        <option value="Rematri">3. SASARAN REMAJA PUTRI</option>
+                        <option value="Catin">4. CALON PENGANTIN</option>
+                        <option value="BumilNifas">5. IBU HAMIL DAN NIFAS</option>
+                    </select>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">Nama Lengkap Sasaran *</label>
-                        <input type="text" id="formNama" required placeholder="Nama sesuai KTP / KK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">Tanggal Lahir / Perkiraan HPL *</label>
-                        <input type="date" id="formTglLahir" required class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
-                    </div>
+                <!-- Area Field Dinamis sesuai Kategori yang dipilih -->
+                <div id="dynamicFormFields" class="space-y-4">
+                    <!-- Dirender otomatis oleh renderDynamicFormFields() -->
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">Alamat Dusun / RT-RW *</label>
-                        <input type="text" id="formDusun" required placeholder="Contoh: Dusun Krajan RT 02 / RW 01" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-[#5D1049] mb-1">Status Gizi / Indikasi Kesehatan</label>
-                        <select id="formStatusGizi" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
-                            <option value="Normal">Normal / Sehat</option>
-                            <option value="KEK / Risiko Tinggi">KEK / Risiko Tinggi (Bumil/Catin)</option>
-                            <option value="Gizi Kurang / Stunting">Gizi Kurang / Indikasi Stunting</option>
-                            <option value="Gizi Buruk">Gizi Buruk (Perlu Rujukan)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Checklist 6 Indikator Layanan Konvergensi -->
-                <div class="bg-pink-50/70 p-3.5 rounded-xl border border-pink-200">
-                    <p class="font-bold text-[#5D1049] mb-2.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check text-[#F06292]"></i>
-                        <span>Indikator Capaian Layanan Konvergensi e-HDW:</span>
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkKia" class="w-4 h-4 accent-[#5D1049]">
-                            <span>1. Pemeriksaan Kehamilan / Buku KIA</span>
-                        </label>
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkTtd" class="w-4 h-4 accent-[#5D1049]">
-                            <span>2. Tablet Tambah Darah (TTD) / PMT Gizi</span>
-                        </label>
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkImunisasi" class="w-4 h-4 accent-[#5D1049]">
-                            <span>3. Imunisasi Dasar / Pemeriksaan Medis</span>
-                        </label>
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkPosyandu" class="w-4 h-4 accent-[#5D1049]">
-                            <span>4. Pemantauan Tumbuh Kembang / Posyandu</span>
-                        </label>
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkSanitasi" class="w-4 h-4 accent-[#5D1049]">
-                            <span>5. Akses Air Bersih & Jamban Sehat</span>
-                        </label>
-                        <label class="flex items-center gap-2 bg-white p-2 rounded-lg border border-pink-100 cursor-pointer hover:bg-pink-50">
-                            <input type="checkbox" id="chkBpjs" class="w-4 h-4 accent-[#5D1049]">
-                            <span>6. Kepemilikan Jaminan Kesehatan (JKN/BPJS)</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-bold text-[#5D1049] mb-1">Catatan Pendampingan Kader (Opsional)</label>
-                    <input type="text" id="formCatatan" placeholder="Contoh: Sudah diberikan PMT pemulihan, jadwal posyandu bulan depan..." class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
-                </div>
-
-                <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-pink-100">
+                <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-pink-100">
                     <button type="button" onclick="closeModal('entryModal')" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 font-semibold hover:bg-slate-50 cursor-pointer">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-[#5D1049] to-[#F06292] text-white font-bold shadow-md hover:opacity-95 cursor-pointer flex items-center gap-2">
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#5D1049] to-[#F06292] text-white font-bold shadow-md hover:opacity-95 cursor-pointer flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk text-[#FFD700]"></i>
                         <span>Simpan Data Sasaran</span>
                     </button>
@@ -585,7 +527,7 @@
     <!-- MODAL 2: PANDUAN SINKRONISASI KE PORTAL RESMI e-HDW KEMENDESA -->
     <div id="syncGuideModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl border-2 border-[#FFD700] max-w-lg w-full overflow-hidden">
-            <div class="bg-[#5D1049] px-5 py-3.5 text-white flex items-center justify-between">
+            <div class="bg-gradient-to-r from-[#5D1049] to-[#1B4332] px-5 py-3.5 text-white flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-cloud-arrow-up text-[#FFD700]"></i>
                     <h3 class="font-display font-bold text-base">Panduan Sinkronisasi ke Portal e-HDW</h3>
@@ -595,12 +537,12 @@
                 </button>
             </div>
             <div class="p-5 space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                <p class="font-semibold text-[#5D1049]">Alur Kerja Cepat Kader KPM / HDW:</p>
+                <p class="font-bold text-[#5D1049]">Alur Kerja Cepat Kader KPM / HDW (5 Sasaran Resmi):</p>
                 <ol class="list-decimal pl-5 space-y-2">
-                    <li><strong>Input & Verifikasi Offline/Lokal:</strong> Gunakan Lembar Kerja <em>Syam Digital</em> ini untuk merekap seluruh data sasaran (Bumil, Baduta, Balita, Catin) di lapangan. Data tersimpan otomatis di perangkat Anda.</li>
-                    <li><strong>Buka Portal Resmi Kemendesa:</strong> Klik tombol kuning <strong>"Login Portal e-HDW Kemendesa"</strong> di pojok kanan atas untuk membuka halaman <code class="bg-pink-100 text-[#5D1049] px-1.5 py-0.5 rounded">ehdw.kemendesa.go.id/app-pendataan/</code> di tab baru.</li>
-                    <li><strong>Gunakan Fitur Salin Cepat:</strong> Klik tombol <span class="bg-pink-100 text-[#5D1049] font-bold px-1.5 py-0.5 rounded"><i class="fa-solid fa-clipboard"></i> Salin e-HDW</span> pada baris sasaran untuk menyalin NIK & ringkasan layanan, lalu tempel (Paste) langsung ke formulir web e-HDW Kemendesa.</li>
-                    <li><strong>Arsip Laporan Desa:</strong> Gunakan tombol <strong>Ekspor Excel (.xlsx)</strong> atau <strong>Cetak / PDF</strong> sebagai lampiran laporan rembuk stunting dan pertanggungjawaban KPM Desa.</li>
+                    <li><strong>Pilih Tab Sasaran:</strong> Gunakan 5 tab resmi (<em>Keluarga Sasaran, Anak 0-59 Bulan, Remaja Putri, Calon Pengantin, Ibu Hamil & Nifas</em>) untuk merekap data hasil kunjungan lapangan.</li>
+                    <li><strong>Login Portal Kemendesa:</strong> Klik tombol kuning <strong>"Login Portal e-HDW Kemendesa"</strong> di pojok kanan atas untuk membuka <code class="bg-pink-100 text-[#5D1049] px-1.5 py-0.5 rounded">ehdw.kemendesa.go.id/app-pendataan/</code> di tab baru.</li>
+                    <li><strong>Salin Data Baris e-HDW:</strong> Klik tombol <span class="bg-pink-100 text-[#5D1049] font-bold px-1.5 py-0.5 rounded"><i class="fa-solid fa-clipboard"></i> Salin Data e-HDW</span> pada baris sasaran untuk menyalin NIK, identitas, dan status indikator layanan, lalu tempel ke formulir portal Kemendesa.</li>
+                    <li><strong>Ekspor Excel Multi-Sheet:</strong> Klik <strong>Ekspor Excel Multi-Sheet (.xlsx)</strong> untuk mengunduh file Excel dengan 5 lembar kerja (sheet) terpisah sesuai kategori e-HDW.</li>
                 </ol>
                 <div class="pt-3 flex justify-end gap-2 border-t border-pink-100">
                     <button onclick="closeModal('syncGuideModal')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 cursor-pointer">Tutup</button>
@@ -635,84 +577,197 @@
 
     <script>
         // =========================================================================
-        // STATE & KONFIGURASI UTAMA APLIKASI LEMBAR KERJA e-HDW - SYAM DIGITAL
+        // KONFIGURASI SKEMA 5 KATEGORI SASARAN RESMI e-HDW KEMENDESA
         // =========================================================================
-        const STORAGE_KEY_DATA = 'ehdw_syam_digital_records_v1';
-        const STORAGE_KEY_META = 'ehdw_syam_digital_meta_v1';
+        const STORAGE_KEY_DATA = 'ehdw_syam_digital_5sasaran_v2';
+        const STORAGE_KEY_META = 'ehdw_syam_digital_meta_v2';
+
+        const CATEGORY_META = {
+            Keluarga: {
+                label: 'Keluarga Sasaran',
+                shortLabel: 'Keluarga',
+                icon: 'fa-people-roof',
+                badgeClass: 'bg-emerald-100 text-[#1B4332] border-emerald-300',
+                indicators: [
+                    { key: 'ind1', label: 'Jamban Sehat', fullLabel: 'Kepemilikan Jamban Sehat' },
+                    { key: 'ind2', label: 'Air Layak', fullLabel: 'Akses Air Minum Layak' },
+                    { key: 'ind3', label: 'JKN / BPJS', fullLabel: 'Kepemilikan JKN / BPJS' },
+                    { key: 'ind4', label: 'Pendampingan KK', fullLabel: 'Pendampingan Keluarga (TPK)' }
+                ]
+            },
+            Anak: {
+                label: 'Sasaran Anak 0-59 Bulan',
+                shortLabel: 'Anak 0-59 Bln',
+                icon: 'fa-baby',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-300',
+                indicators: [
+                    { key: 'ind1', label: 'Imunisasi Dasar', fullLabel: 'Imunisasi Dasar Lengkap' },
+                    { key: 'ind2', label: 'BB/TB Posyandu', fullLabel: 'Pengukuran BB/TB Rutin Posyandu' },
+                    { key: 'ind3', label: 'Vit A & Obat Cacing', fullLabel: 'Vitamin A & Obat Cacing' },
+                    { key: 'ind4', label: 'Konseling Gizi/PMT', fullLabel: 'Konseling Gizi / PMT' }
+                ]
+            },
+            Rematri: {
+                label: 'Sasaran Remaja Putri',
+                shortLabel: 'Remaja Putri',
+                icon: 'fa-person-dress',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-300',
+                indicators: [
+                    { key: 'ind1', label: 'Konsumsi TTD', fullLabel: 'Konsumsi TTD (Tablet Tambah Darah)' },
+                    { key: 'ind2', label: 'Periksa Anemia/Hb', fullLabel: 'Pemeriksaan Anemia / Hb' },
+                    { key: 'ind3', label: 'Edukasi Kespro/Gizi', fullLabel: 'Edukasi Kesehatan Reproduksi & Gizi' }
+                ]
+            },
+            Catin: {
+                label: 'Calon Pengantin',
+                shortLabel: 'Calon Pengantin',
+                icon: 'fa-handshake',
+                badgeClass: 'bg-amber-100 text-amber-800 border-amber-300',
+                indicators: [
+                    { key: 'ind1', label: 'Periksa Kes & Hb', fullLabel: 'Pemeriksaan Kesehatan & Hb' },
+                    { key: 'ind2', label: 'Konseling/Elsimil', fullLabel: 'Konseling Pranikah / Elsimil' },
+                    { key: 'ind3', label: 'Suplementasi/TTD', fullLabel: 'Suplementasi Gizi / TTD' }
+                ]
+            },
+            BumilNifas: {
+                label: 'Ibu Hamil dan Nifas',
+                shortLabel: 'Bumil & Nifas',
+                icon: 'fa-person-pregnant',
+                badgeClass: 'bg-pink-100 text-pink-800 border-pink-300',
+                indicators: [
+                    { key: 'ind1', label: 'ANC / Kunjungan KF', fullLabel: 'Pemeriksaan ANC / Kunjungan Nifas (KF)' },
+                    { key: 'ind2', label: 'TTD / Vit A Nifas', fullLabel: 'Konsumsi TTD / Vitamin A Nifas' },
+                    { key: 'ind3', label: 'Kelas Bumil/Menyusui', fullLabel: 'Kelas Ibu Hamil / Konseling Menyusui' }
+                ]
+            }
+        };
+
+        // Data Contoh Realistis untuk Masing-Masing dari 5 Kategori Sasaran
+        const SAMPLE_RECORDS = [
+            // 1. KELUARGA SASARAN
+            {
+                id: 'fam_1',
+                kategori: 'Keluarga',
+                noKk: '3201051408120001',
+                nik: '3201051205880003',
+                nama: 'Ahmad Fauzi',
+                dusun: 'Dusun Krajan RT 01/01',
+                ind1: true, ind2: true, ind3: true, ind4: true,
+                catatan: 'Keluarga memiliki anak baduta, sanitasi & air bersih memadai'
+            },
+            {
+                id: 'fam_2',
+                kategori: 'Keluarga',
+                noKk: '3201052209150004',
+                nik: '3201050809900002',
+                nama: 'Budi Santoso',
+                dusun: 'Dusun Mawar RT 03/02',
+                ind1: false, ind2: true, ind3: true, ind4: true,
+                catatan: 'Masih menumpang jamban tetangga, diusulkan bantuan jambanisasi DD'
+            },
+            // 2. SASARAN ANAK 0-59 BULAN
+            {
+                id: 'anak_1',
+                kategori: 'Anak',
+                nik: '3201051211250001',
+                nama: 'Muhammad Rayyan',
+                tglLahir: '2025-11-12',
+                jenisKelamin: 'Laki-laki',
+                namaIbu: 'Siti Aminah',
+                dusun: 'Dusun Krajan RT 02/01',
+                statusGizi: 'Gizi Baik / Normal',
+                ind1: true, ind2: true, ind3: true, ind4: true,
+                catatan: 'Rutin datang ke Posyandu Mawar setiap bulan'
+            },
+            {
+                id: 'anak_2',
+                kategori: 'Anak',
+                nik: '3201054804240003',
+                nama: 'Aisyah Putri',
+                tglLahir: '2024-04-08',
+                jenisKelamin: 'Perempuan',
+                namaIbu: 'Rina Marlina',
+                dusun: 'Dusun Melati RT 04/02',
+                statusGizi: 'Gizi Kurang / Risiko Stunting',
+                ind1: true, ind2: true, ind3: false, ind4: true,
+                catatan: 'Mendapat PMT lokal desa 90 hari, jadwal Vit A bulan depan'
+            },
+            // 3. SASARAN REMAJA PUTRI
+            {
+                id: 'rem_1',
+                kategori: 'Rematri',
+                nik: '3201055507100002',
+                nama: 'Zahra Aulia Putri',
+                tglLahir: '2010-07-15',
+                asalSekolah: 'SMPN 1 Merdeka / Dusun Krajan',
+                dusun: 'Dusun Krajan RT 01/01',
+                ind1: true, ind2: true, ind3: true,
+                catatan: 'Hb 12.8 g/dL (Normal), rutin minum TTD setiap Jumat di sekolah'
+            },
+            {
+                id: 'rem_2',
+                kategori: 'Rematri',
+                nik: '3201056202090005',
+                nama: 'Nabila Khairunnisa',
+                tglLahir: '2009-02-22',
+                asalSekolah: 'SMAN 1 Merdeka / Dusun Kenanga',
+                dusun: 'Dusun Kenanga RT 02/03',
+                ind1: true, ind2: false, ind3: true,
+                catatan: 'Belum cek Hb semester ini, dijadwalkan skrining Puskesmas'
+            },
+            // 4. CALON PENGANTIN
+            {
+                id: 'catin_1',
+                kategori: 'Catin',
+                nik: '3201055009020007',
+                nama: 'Nadia Safitri',
+                jenisKelamin: 'Perempuan',
+                tglRencanaNikah: '2026-12-20',
+                dusun: 'Dusun Kenanga RT 02/03',
+                ind1: true, ind2: true, ind3: true,
+                catatan: 'Sertifikat Elsimil terbit, LiLA 24.5 cm (Normal)'
+            },
+            {
+                id: 'catin_2',
+                kategori: 'Catin',
+                nik: '3201051404000009',
+                nama: 'Rizky Ramadhan',
+                jenisKelamin: 'Laki-laki',
+                tglRencanaNikah: '2026-12-20',
+                dusun: 'Dusun Melati RT 01/02',
+                ind1: true, ind2: true, ind3: false,
+                catatan: 'Pasangan Nadia Safitri, sudah konseling pranikah di KUA & Puskesmas'
+            },
+            // 5. IBU HAMIL DAN NIFAS
+            {
+                id: 'bumil_1',
+                kategori: 'BumilNifas',
+                nik: '3201055408950002',
+                nama: 'Siti Aminah',
+                subStatus: 'Ibu Hamil',
+                usiaKehamilanNifas: '26 Minggu',
+                dusun: 'Dusun Krajan RT 01/01',
+                statusRisiko: 'Normal / Tidak Berisiko',
+                ind1: true, ind2: true, ind3: true,
+                catatan: 'ANC Terpadu K4 lengkap, rutin ikut Kelas Ibu Hamil'
+            },
+            {
+                id: 'bumil_2',
+                kategori: 'BumilNifas',
+                nik: '3201056103980005',
+                nama: 'Dewi Lestari',
+                subStatus: 'Ibu Nifas',
+                usiaKehamilanNifas: 'Hari ke-14 (KF2)',
+                dusun: 'Dusun Mawar RT 02/02',
+                statusRisiko: 'Riwayat KEK / Anemia',
+                ind1: true, ind2: true, ind3: false,
+                catatan: 'Sudah dapat kapsul Vitamin A nifas, perlu konseling menyusui lanjutan'
+            }
+        ];
 
         let records = [];
         let activeTab = 'ALL';
         let selectedIds = new Set();
-
-        // Data Contoh Pendataan Desa (Siap Pakai untuk Simulasi / Pelatihan KPM)
-        const SAMPLE_RECORDS = [
-            {
-                id: 'rec_1',
-                kategori: 'Bumil',
-                nik: '3201055408950002',
-                nama: 'Siti Aminah',
-                tglLahir: '1995-08-14',
-                dusun: 'Dusun Krajan RT 01/01',
-                statusGizi: 'Normal',
-                kia: true, ttd: true, imunisasi: true, posyandu: true, sanitasi: true, bpjs: true,
-                catatan: 'Usia kehamilan 24 minggu, rutin periksa di Bidan Desa'
-            },
-            {
-                id: 'rec_2',
-                kategori: 'Bumil',
-                nik: '3201056103980005',
-                nama: 'Rina Marlina',
-                tglLahir: '1998-03-21',
-                dusun: 'Dusun Melati RT 03/02',
-                statusGizi: 'KEK / Risiko Tinggi',
-                kia: true, ttd: true, imunisasi: false, posyandu: true, sanitasi: true, bpjs: false,
-                catatan: 'LiLA 22.5 cm (KEK), sedang proses aktivasi BPJS PBI'
-            },
-            {
-                id: 'rec_3',
-                kategori: 'Baduta',
-                nik: '3201051211250001',
-                nama: 'Muhammad Rayyan',
-                tglLahir: '2025-11-12',
-                dusun: 'Dusun Krajan RT 02/01',
-                statusGizi: 'Normal',
-                kia: true, ttd: true, imunisasi: true, posyandu: true, sanitasi: true, bpjs: true,
-                catatan: 'ASI Eksklusif lulus, timbang rutin di Posyandu Mawar'
-            },
-            {
-                id: 'rec_4',
-                kategori: 'Baduta',
-                nik: '3201054804250003',
-                nama: 'Aisyah Putri',
-                tglLahir: '2025-04-08',
-                dusun: 'Dusun Mawar RT 04/02',
-                statusGizi: 'Gizi Kurang / Stunting',
-                kia: true, ttd: true, imunisasi: true, posyandu: true, sanitasi: false, bpjs: true,
-                catatan: 'Mendapat PMT lokal desa 90 hari, jamban masih menumpang'
-            },
-            {
-                id: 'rec_5',
-                kategori: 'Balita',
-                nik: '3201051906230004',
-                nama: 'Dimas Pratama',
-                tglLahir: '2023-06-19',
-                dusun: 'Dusun Melati RT 01/02',
-                statusGizi: 'Normal',
-                kia: true, ttd: true, imunisasi: true, posyandu: true, sanitasi: true, bpjs: true,
-                catatan: 'Tumbuh kembang sesuai umur, hadir PAUD'
-            },
-            {
-                id: 'rec_6',
-                kategori: 'Catin',
-                nik: '3201055009020007',
-                nama: 'Nadia Safitri',
-                tglLahir: '2002-09-10',
-                dusun: 'Dusun Kenanga RT 02/03',
-                statusGizi: 'Normal',
-                kia: true, ttd: true, imunisasi: true, posyandu: false, sanitasi: true, bpjs: true,
-                catatan: 'Sudah skrining Elsimil & konseling pranikah Puskesmas'
-            }
-        ];
 
         // =========================================================================
         // INISIALISASI SAAT HALAMAN DIMUAT
@@ -752,7 +807,6 @@
                 if (raw) {
                     records = JSON.parse(raw);
                 } else {
-                    // Jika baru pertama kali dibuka, muat data contoh agar langsung terlihat siap pakai
                     records = JSON.parse(JSON.stringify(SAMPLE_RECORDS));
                     saveRecords(false);
                 }
@@ -774,16 +828,16 @@
                 const now = new Date();
                 const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 badge.textContent = `Tersimpan (${jam})`;
-            }, 350);
+            }, 300);
         }
 
         // =========================================================================
-        // KALKULASI FORMULA OTOMATIS (UMUR BULAN & SKOR KONVERGENSI LAYANAN)
+        // KALKULASI FORMULA OTOMATIS (UMUR BULAN, USIA TAHUN & SKOR KONVERGENSI)
         // =========================================================================
         function calculateAgeInMonths(tglLahirStr) {
-            if (!tglLahirStr) return '-';
+            if (!tglLahirStr) return 0;
             const birth = new Date(tglLahirStr);
-            if (isNaN(birth.getTime())) return '-';
+            if (isNaN(birth.getTime())) return 0;
             const today = new Date();
             let months = (today.getFullYear() - birth.getFullYear()) * 12;
             months -= birth.getMonth();
@@ -794,16 +848,23 @@
             return months < 0 ? 0 : months;
         }
 
+        function calculateAgeInYears(tglLahirStr) {
+            if (!tglLahirStr) return '-';
+            const months = calculateAgeInMonths(tglLahirStr);
+            return Math.floor(months / 12);
+        }
+
         function calculateServiceScore(rec) {
-            const indicators = [rec.kia, rec.ttd, rec.imunisasi, rec.posyandu, rec.sanitasi, rec.bpjs];
-            const fulfilled = indicators.filter(Boolean).length;
-            const total = indicators.length;
+            const meta = CATEGORY_META[rec.kategori];
+            if (!meta) return { fulfilled: 0, total: 1, percent: 0 };
+            const total = meta.indicators.length;
+            const fulfilled = meta.indicators.filter(ind => Boolean(rec[ind.key])).length;
             const percent = Math.round((fulfilled / total) * 100);
             return { fulfilled, total, percent };
         }
 
         // =========================================================================
-        // RENDER DASHBOARD STATISTIK & TABEL SPREADSHEET
+        // RENDER DASHBOARD STATISTIK & TABEL SPREADSHEET DINAMIS
         // =========================================================================
         function renderAll() {
             updateDashboardStats();
@@ -812,10 +873,11 @@
 
         function updateDashboardStats() {
             const total = records.length;
-            const bumil = records.filter(r => r.kategori === 'Bumil').length;
-            const baduta = records.filter(r => r.kategori === 'Baduta').length;
-            const balita = records.filter(r => r.kategori === 'Balita').length;
-            const catin = records.filter(r => r.kategori === 'Catin').length;
+            const cKeluarga = records.filter(r => r.kategori === 'Keluarga').length;
+            const cAnak = records.filter(r => r.kategori === 'Anak').length;
+            const cRematri = records.filter(r => r.kategori === 'Rematri').length;
+            const cCatin = records.filter(r => r.kategori === 'Catin').length;
+            const cBumilNifas = records.filter(r => r.kategori === 'BumilNifas').length;
 
             let totalPercentSum = 0;
             let lengkapCount = 0;
@@ -829,20 +891,23 @@
             const avgKonvergensi = total > 0 ? Math.round(totalPercentSum / total) : 0;
 
             document.getElementById('statTotal').textContent = total;
-            document.getElementById('statBumil').textContent = bumil;
-            document.getElementById('statBaduta').textContent = baduta;
-            document.getElementById('statBalita').textContent = balita;
-            document.getElementById('statCatin').textContent = catin;
+            document.getElementById('statKeluarga').textContent = cKeluarga;
+            document.getElementById('statAnak').textContent = cAnak;
+            document.getElementById('statRematri').textContent = cRematri;
+            document.getElementById('statCatin').textContent = cCatin;
+            document.getElementById('statBumilNifas').textContent = cBumilNifas;
+
             document.getElementById('statKonvergensi').textContent = `${avgKonvergensi}%`;
-            document.getElementById('statLengkapCount').textContent = `(${lengkapCount}/${total} Lengkap)`;
+            document.getElementById('statLengkapCount').textContent = `${lengkapCount} dari ${total}`;
             document.getElementById('statProgressBar').style.width = `${avgKonvergensi}%`;
 
             // Update badge pada tab sheet
             document.getElementById('badgeALL').textContent = total;
-            document.getElementById('badgeBumil').textContent = bumil;
-            document.getElementById('badgeBaduta').textContent = baduta;
-            document.getElementById('badgeBalita').textContent = balita;
-            document.getElementById('badgeCatin').textContent = catin;
+            document.getElementById('badgeKeluarga').textContent = cKeluarga;
+            document.getElementById('badgeAnak').textContent = cAnak;
+            document.getElementById('badgeRematri').textContent = cRematri;
+            document.getElementById('badgeCatin').textContent = cCatin;
+            document.getElementById('badgeBumilNifas').textContent = cBumilNifas;
         }
 
         function switchTab(tabName) {
@@ -850,10 +915,10 @@
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 if (btn.dataset.tab === tabName) {
                     btn.classList.add('bg-white', 'text-[#5D1049]', 'border-t-2', 'border-x', 'border-pink-200', 'shadow-sm', 'font-bold');
-                    btn.classList.remove('text-slate-600', 'hover:bg-white/60', 'font-semibold');
+                    btn.classList.remove('text-slate-700', 'hover:bg-white/60', 'font-semibold');
                 } else {
                     btn.classList.remove('bg-white', 'text-[#5D1049]', 'border-t-2', 'border-x', 'border-pink-200', 'shadow-sm', 'font-bold');
-                    btn.classList.add('text-slate-600', 'hover:bg-white/60', 'font-semibold');
+                    btn.classList.add('text-slate-700', 'hover:bg-white/60', 'font-semibold');
                 }
             });
             renderTable();
@@ -862,36 +927,28 @@
         function getFilteredRecords() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const statusFilter = document.getElementById('filterStatusLayanan').value;
-            const risikoFilter = document.getElementById('filterRisiko').value;
 
             return records.filter(rec => {
-                // Filter Tab Kategori
                 if (activeTab !== 'ALL' && rec.kategori !== activeTab) return false;
 
-                // Filter Pencarian
                 if (query) {
-                    const matchNik = (rec.nik || '').toLowerCase().includes(query);
-                    const matchNama = (rec.nama || '').toLowerCase().includes(query);
-                    const matchDusun = (rec.dusun || '').toLowerCase().includes(query);
-                    const matchCatatan = (rec.catatan || '').toLowerCase().includes(query);
-                    if (!matchNik && !matchNama && !matchDusun && !matchCatatan) return false;
+                    const searchable = [
+                        rec.nik, rec.noKk, rec.nama, rec.namaIbu,
+                        rec.asalSekolah, rec.dusun, rec.subStatus, rec.catatan
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    if (!searchable.includes(query)) return false;
                 }
 
-                // Filter Status Layanan
                 const score = calculateServiceScore(rec);
                 if (statusFilter === 'LENGKAP' && score.percent < 100) return false;
                 if (statusFilter === 'BELUM' && score.percent === 100) return false;
-
-                // Filter Status Gizi / Risiko
-                const isNormal = (rec.statusGizi || 'Normal') === 'Normal';
-                if (risikoFilter === 'NORMAL' && !isNormal) return false;
-                if (risikoFilter === 'RISIKO' && isNormal) return false;
 
                 return true;
             });
         }
 
         function renderTable() {
+            const thead = document.getElementById('tableHead');
             const tbody = document.getElementById('tableBody');
             const filtered = getFilteredRecords();
 
@@ -899,16 +956,20 @@
             document.getElementById('totalRowCount').textContent = records.length;
             document.getElementById('selectedCount').textContent = selectedIds.size;
 
+            // 1. RENDER HEADER KOLOM DINAMIS BERDASARKAN TAB AKTIF
+            thead.innerHTML = buildTableHeader(activeTab);
+
+            // 2. RENDER BODY BARIS DINAMIS
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="17" class="py-12 text-center text-slate-500">
+                        <td colspan="16" class="py-12 text-center text-slate-500">
                             <div class="flex flex-col items-center justify-center gap-2">
                                 <div class="w-12 h-12 rounded-full bg-pink-100 text-[#F06292] flex items-center justify-center text-xl">
                                     <i class="fa-solid fa-folder-open"></i>
                                 </div>
-                                <p class="font-bold text-slate-700">Tidak ada data sasaran pada tampilan ini</p>
-                                <p class="text-xs">Klik tombol <strong>"Baris Baru"</strong> atau <strong>"Input Data Baru (Formulir)"</strong> untuk mulai mendata.</p>
+                                <p class="font-bold text-slate-700">Belum ada data pada kategori ini</p>
+                                <p class="text-xs">Klik tombol <strong>"Baris Baru"</strong> atau <strong>"Input Data Baru (Formulir)"</strong> untuk menambahkan data.</p>
                             </div>
                         </td>
                     </tr>
@@ -916,131 +977,340 @@
                 return;
             }
 
-            tbody.innerHTML = filtered.map((rec, index) => {
-                const ageMonths = calculateAgeInMonths(rec.tglLahir);
-                const ageDisplay = (rec.kategori === 'Bumil' || rec.kategori === 'Catin') 
-                    ? `${Math.floor(ageMonths / 12)} Thn` 
-                    : `${ageMonths} Bln`;
-
-                const score = calculateServiceScore(rec);
-                const isSelected = selectedIds.has(rec.id);
-
-                // Badge Warna Kategori
-                const catColors = {
-                    'Bumil': 'bg-pink-100 text-pink-800 border-pink-300',
-                    'Baduta': 'bg-sky-100 text-sky-800 border-sky-300',
-                    'Balita': 'bg-indigo-100 text-indigo-800 border-indigo-300',
-                    'Catin': 'bg-amber-100 text-amber-800 border-amber-300'
-                };
-                const catBadgeClass = catColors[rec.kategori] || 'bg-slate-100 text-slate-800';
-
-                // Badge Warna Status Gizi
-                const isNormal = rec.statusGizi === 'Normal';
-                const giziBadgeClass = isNormal 
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                    : 'bg-rose-50 text-rose-700 border-rose-300 font-bold';
-
-                // Badge Skor Capaian Layanan
-                let scoreBadgeClass = 'bg-rose-100 text-rose-800 border-rose-300';
-                if (score.percent === 100) scoreBadgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
-                else if (score.percent >= 60) scoreBadgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
-
-                return `
-                    <tr class="hover:bg-pink-50/60 transition-colors ${isSelected ? 'bg-amber-50/70' : ''}">
-                        <!-- Checkbox Pilih Baris -->
-                        <td class="p-2 text-center no-print border-r border-pink-100">
-                            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleRowSelect('${rec.id}')" class="rounded accent-[#5D1049] cursor-pointer">
-                        </td>
-
-                        <!-- Nomor Urut -->
-                        <td class="p-2 text-center font-bold text-slate-500 border-r border-pink-100">${index + 1}</td>
-
-                        <!-- Kategori (Inline Select) -->
-                        <td class="p-2 border-r border-pink-100">
-                            <select onchange="updateField('${rec.id}', 'kategori', this.value)" class="px-2 py-1 rounded-lg border text-[11px] font-bold cursor-pointer outline-none ${catBadgeClass}">
-                                <option value="Bumil" ${rec.kategori === 'Bumil' ? 'selected' : ''}>Ibu Hamil</option>
-                                <option value="Baduta" ${rec.kategori === 'Baduta' ? 'selected' : ''}>Baduta</option>
-                                <option value="Balita" ${rec.kategori === 'Balita' ? 'selected' : ''}>Balita</option>
-                                <option value="Catin" ${rec.kategori === 'Catin' ? 'selected' : ''}>Catin</option>
-                            </select>
-                        </td>
-
-                        <!-- NIK (Inline Edit) -->
-                        <td class="p-2 border-r border-pink-100 font-mono">
-                            <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK" class="cell-editable w-36 px-1.5 py-1 bg-transparent text-slate-800">
-                        </td>
-
-                        <!-- Nama Sasaran (Inline Edit) -->
-                        <td class="p-2 border-r border-pink-100 font-semibold">
-                            <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Lengkap" class="cell-editable w-40 px-1.5 py-1 bg-transparent text-slate-900">
-                        </td>
-
-                        <!-- Tanggal Lahir / HPL -->
-                        <td class="p-2 border-r border-pink-100">
-                            <input type="date" value="${rec.tglLahir || ''}" onchange="updateField('${rec.id}', 'tglLahir', this.value)" class="cell-editable px-1.5 py-1 bg-transparent text-slate-700 text-[11px]">
-                        </td>
-
-                        <!-- Umur Otomatis -->
-                        <td class="p-2 text-center border-r border-pink-100 bg-pink-50/40 font-bold text-[#5D1049]">
-                            ${ageDisplay}
-                        </td>
-
-                        <!-- Dusun / RT-RW -->
-                        <td class="p-2 border-r border-pink-100">
-                            <input type="text" value="${escapeHtml(rec.dusun)}" onchange="updateField('${rec.id}', 'dusun', this.value)" placeholder="Dusun / RT" class="cell-editable w-36 px-1.5 py-1 bg-transparent text-slate-700">
-                        </td>
-
-                        <!-- Status Gizi / Kondisi -->
-                        <td class="p-2 border-r border-pink-100">
-                            <select onchange="updateField('${rec.id}', 'statusGizi', this.value)" class="px-2 py-1 rounded-lg border text-[11px] cursor-pointer outline-none ${giziBadgeClass}">
-                                <option value="Normal" ${rec.statusGizi === 'Normal' ? 'selected' : ''}>Normal</option>
-                                <option value="KEK / Risiko Tinggi" ${rec.statusGizi === 'KEK / Risiko Tinggi' ? 'selected' : ''}>KEK / Risiko Tinggi</option>
-                                <option value="Gizi Kurang / Stunting" ${rec.statusGizi === 'Gizi Kurang / Stunting' ? 'selected' : ''}>Gizi Kurang / Stunting</option>
-                                <option value="Gizi Buruk" ${rec.statusGizi === 'Gizi Buruk' ? 'selected' : ''}>Gizi Buruk</option>
-                            </select>
-                        </td>
-
-                        <!-- 6 Checkbox Layanan Konvergensi -->
-                        ${renderCheckboxCell(rec, 'kia')}
-                        ${renderCheckboxCell(rec, 'ttd')}
-                        ${renderCheckboxCell(rec, 'imunisasi')}
-                        ${renderCheckboxCell(rec, 'posyandu')}
-                        ${renderCheckboxCell(rec, 'sanitasi')}
-                        ${renderCheckboxCell(rec, 'bpjs')}
-
-                        <!-- Formula Skor Capaian Layanan -->
-                        <td class="p-2 text-center border-r border-pink-100 bg-amber-50/40">
-                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-[11px] font-extrabold ${scoreBadgeClass}">
-                                ${score.fulfilled}/${score.total} (${score.percent}%)
-                            </span>
-                        </td>
-
-                        <!-- Tombol Aksi & Salin ke e-HDW -->
-                        <td class="p-2 text-center no-print sticky right-0 bg-white/95 backdrop-blur-xs shadow-[-4px_0_8px_rgba(0,0,0,0.04)]">
-                            <div class="flex items-center justify-center gap-1">
-                                <button onclick="copyRowForEhdw('${rec.id}')" class="px-2 py-1 rounded-lg bg-pink-100 hover:bg-[#5D1049] text-[#5D1049] hover:text-[#FFD700] font-bold text-[11px] transition flex items-center gap-1 cursor-pointer" title="Salin Data Baris untuk ditempel ke Portal e-HDW Kemendesa">
-                                    <i class="fa-solid fa-clipboard"></i>
-                                    <span>Salin e-HDW</span>
-                                </button>
-                                <button onclick="openEntryModal('${rec.id}')" class="p-1.5 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 transition cursor-pointer" title="Edit Detail Lengkap">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button onclick="deleteSingleRow('${rec.id}')" class="p-1.5 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-500 hover:text-rose-600 transition cursor-pointer" title="Hapus Baris">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            tbody.innerHTML = filtered.map((rec, index) => buildTableRow(rec, index, activeTab)).join('');
         }
 
-        function renderCheckboxCell(rec, field) {
-            const checked = Boolean(rec[field]);
+        function buildTableHeader(tab) {
+            const commonStart = `
+                <th class="p-2.5 text-center w-9 no-print border-r border-white/15">
+                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="rounded accent-[#FFD700] cursor-pointer">
+                </th>
+                <th class="p-2.5 text-center w-10 border-r border-white/15 font-bold">No</th>
+            `;
+            const commonEnd = `
+                <th class="p-2.5 text-center border-r border-white/15 font-bold bg-amber-500/30 text-[#FFD700]">Status Konvergensi</th>
+                <th class="p-2.5 text-center font-bold no-print sticky right-0 bg-[#5D1049] shadow-[-4px_0_8px_rgba(0,0,0,0.15)]">Aksi & Salin e-HDW</th>
+            `;
+
+            if (tab === 'Keluarga') {
+                return `<tr>
+                    ${commonStart}
+                    <th class="p-2.5 border-r border-white/15 font-bold">No. KK (16 Digit)</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">NIK Kepala Keluarga</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Kepala Keluarga</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Dusun / RT / RW</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Kepemilikan Jamban Sehat</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Akses Air Minum Layak</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Kepemilikan JKN/BPJS</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Pendampingan Keluarga</th>
+                    ${commonEnd}
+                </tr>`;
+            }
+
+            if (tab === 'Anak') {
+                return `<tr>
+                    ${commonStart}
+                    <th class="p-2.5 border-r border-white/15 font-bold">NIK Anak</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Anak</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Tgl Lahir</th>
+                    <th class="p-2.5 text-center border-r border-white/15 font-bold bg-white/10">Umur (Bln)</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Jenis Kelamin</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Ibu</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Imunisasi Dasar Lengkap</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">BB/TB Rutin Posyandu</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Vit A & Obat Cacing</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Konseling Gizi / PMT</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Status Gizi</th>
+                    ${commonEnd}
+                </tr>`;
+            }
+
+            if (tab === 'Rematri') {
+                return `<tr>
+                    ${commonStart}
+                    <th class="p-2.5 border-r border-white/15 font-bold">NIK</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Remaja Putri</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Tgl Lahir</th>
+                    <th class="p-2.5 text-center border-r border-white/15 font-bold bg-white/10">Usia (Thn)</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Asal Sekolah / Desa</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Konsumsi TTD</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Pemeriksaan Anemia / Hb</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Edukasi Kespro & Gizi</th>
+                    ${commonEnd}
+                </tr>`;
+            }
+
+            if (tab === 'Catin') {
+                return `<tr>
+                    ${commonStart}
+                    <th class="p-2.5 border-r border-white/15 font-bold">NIK</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Calon Pengantin</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Jenis Kelamin</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Rencana Tgl Nikah</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Pemeriksaan Kesehatan & Hb</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Konseling Pranikah / Elsimil</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Suplementasi Gizi / TTD</th>
+                    ${commonEnd}
+                </tr>`;
+            }
+
+            if (tab === 'BumilNifas') {
+                return `<tr>
+                    ${commonStart}
+                    <th class="p-2.5 border-r border-white/15 font-bold">NIK</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Nama Ibu</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Status (Hamil / Nifas)</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Usia Kehamilan / Hari Nifas</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Pemeriksaan ANC / Kunjungan KF</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Konsumsi TTD / Vit A Nifas</th>
+                    <th class="p-2 text-center border-r border-white/15 font-bold bg-[#1B4332]">Kelas Ibu Hamil / Menyusui</th>
+                    <th class="p-2.5 border-r border-white/15 font-bold">Status Risiko KEK/Anemia</th>
+                    ${commonEnd}
+                </tr>`;
+            }
+
+            // Default: Tab 'ALL' (Semua Sasaran)
+            return `<tr>
+                ${commonStart}
+                <th class="p-2.5 border-r border-white/15 font-bold">Kategori Sasaran</th>
+                <th class="p-2.5 border-r border-white/15 font-bold">NIK / No. KK</th>
+                <th class="p-2.5 border-r border-white/15 font-bold">Nama Sasaran</th>
+                <th class="p-2.5 border-r border-white/15 font-bold">Keterangan Utama (Umur/Status/Sekolah)</th>
+                <th class="p-2.5 border-r border-white/15 font-bold">Dusun / RT-RW</th>
+                <th class="p-2.5 border-r border-white/15 font-bold bg-[#1B4332]">Ringkasan Paket Layanan e-HDW</th>
+                ${commonEnd}
+            </tr>`;
+        }
+
+        function renderYesNoSelect(rec, field) {
+            const val = Boolean(rec[field]);
+            const cls = val 
+                ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-bold' 
+                : 'bg-rose-50 text-rose-700 border-rose-200 font-semibold';
             return `
-                <td class="p-2 text-center border-r border-pink-100 ${checked ? 'bg-emerald-50/40' : ''}">
-                    <input type="checkbox" ${checked ? 'checked' : ''} onchange="updateField('${rec.id}', '${field}', this.checked)" class="w-4 h-4 rounded accent-[#5D1049] cursor-pointer">
+                <td class="p-2 text-center border-r border-pink-100">
+                    <select onchange="updateField('${rec.id}', '${field}', this.value === 'true')" class="px-2 py-1 rounded-lg border text-[11px] cursor-pointer outline-none ${cls}">
+                        <option value="true" ${val ? 'selected' : ''}>Ya</option>
+                        <option value="false" ${!val ? 'selected' : ''}>Tidak</option>
+                    </select>
                 </td>
+            `;
+        }
+
+        function buildTableRow(rec, index, tab) {
+            const score = calculateServiceScore(rec);
+            const isSelected = selectedIds.has(rec.id);
+
+            let scoreBadgeClass = 'bg-rose-100 text-rose-800 border-rose-300';
+            if (score.percent === 100) scoreBadgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+            else if (score.percent >= 50) scoreBadgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
+
+            const rowStart = `
+                <td class="p-2 text-center no-print border-r border-pink-100">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleRowSelect('${rec.id}')" class="rounded accent-[#5D1049] cursor-pointer">
+                </td>
+                <td class="p-2 text-center font-bold text-slate-500 border-r border-pink-100">${index + 1}</td>
+            `;
+
+            const rowEnd = `
+                <td class="p-2 text-center border-r border-pink-100 bg-amber-50/40">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-[11px] font-extrabold ${scoreBadgeClass}">
+                        ${score.fulfilled}/${score.total} (${score.percent}%)
+                    </span>
+                </td>
+                <td class="p-2 text-center no-print sticky right-0 bg-white/95 backdrop-blur-xs shadow-[-4px_0_8px_rgba(0,0,0,0.04)]">
+                    <div class="flex items-center justify-center gap-1">
+                        <button onclick="copyRowForEhdw('${rec.id}')" class="px-2.5 py-1 rounded-lg bg-pink-100 hover:bg-[#5D1049] text-[#5D1049] hover:text-[#FFD700] font-bold text-[11px] transition flex items-center gap-1 cursor-pointer" title="Salin format data untuk ditempel ke Portal e-HDW Kemendesa">
+                            <i class="fa-solid fa-clipboard"></i>
+                            <span>Salin Data e-HDW</span>
+                        </button>
+                        <button onclick="openEntryModal('${rec.id}')" class="p-1.5 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 transition cursor-pointer" title="Edit Detail Lengkap">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteSingleRow('${rec.id}')" class="p-1.5 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-500 hover:text-rose-600 transition cursor-pointer" title="Hapus Baris">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            let middleCells = '';
+
+            if (tab === 'Keluarga') {
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.noKk)}" maxlength="16" onchange="updateField('${rec.id}', 'noKk', this.value)" placeholder="16 Digit No. KK" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK KK" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-semibold">
+                        <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Kepala Keluarga" class="cell-editable w-40 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="text" value="${escapeHtml(rec.dusun)}" onchange="updateField('${rec.id}', 'dusun', this.value)" placeholder="Dusun / RT / RW" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    ${renderYesNoSelect(rec, 'ind1')}
+                    ${renderYesNoSelect(rec, 'ind2')}
+                    ${renderYesNoSelect(rec, 'ind3')}
+                    ${renderYesNoSelect(rec, 'ind4')}
+                `;
+            } else if (tab === 'Anak') {
+                const ageBln = calculateAgeInMonths(rec.tglLahir);
+                const giziCls = (rec.statusGizi || '').includes('Normal') ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-300 font-bold';
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK Anak" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-semibold">
+                        <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Anak" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="date" value="${rec.tglLahir || ''}" onchange="updateField('${rec.id}', 'tglLahir', this.value)" class="cell-editable px-1.5 py-1 bg-transparent text-[11px]">
+                    </td>
+                    <td class="p-2 text-center border-r border-pink-100 bg-sky-50/50 font-bold text-sky-800">
+                        ${rec.tglLahir ? `${ageBln} Bln` : '-'}
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <select onchange="updateField('${rec.id}', 'jenisKelamin', this.value)" class="px-2 py-1 rounded-lg border border-slate-200 bg-white text-[11px] outline-none">
+                            <option value="Laki-laki" ${rec.jenisKelamin === 'Laki-laki' ? 'selected' : ''}>Laki-laki</option>
+                            <option value="Perempuan" ${rec.jenisKelamin === 'Perempuan' ? 'selected' : ''}>Perempuan</option>
+                        </select>
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="text" value="${escapeHtml(rec.namaIbu)}" onchange="updateField('${rec.id}', 'namaIbu', this.value)" placeholder="Nama Ibu Kandung" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    ${renderYesNoSelect(rec, 'ind1')}
+                    ${renderYesNoSelect(rec, 'ind2')}
+                    ${renderYesNoSelect(rec, 'ind3')}
+                    ${renderYesNoSelect(rec, 'ind4')}
+                    <td class="p-2 border-r border-pink-100">
+                        <select onchange="updateField('${rec.id}', 'statusGizi', this.value)" class="px-2 py-1 rounded-lg border text-[11px] outline-none ${giziCls}">
+                            <option value="Gizi Baik / Normal" ${rec.statusGizi === 'Gizi Baik / Normal' ? 'selected' : ''}>Gizi Baik / Normal</option>
+                            <option value="Gizi Kurang / Risiko Stunting" ${rec.statusGizi === 'Gizi Kurang / Risiko Stunting' ? 'selected' : ''}>Gizi Kurang / Risiko Stunting</option>
+                            <option value="Gizi Buruk / Stunting" ${rec.statusGizi === 'Gizi Buruk / Stunting' ? 'selected' : ''}>Gizi Buruk / Stunting</option>
+                        </select>
+                    </td>
+                `;
+            } else if (tab === 'Rematri') {
+                const usiaThn = calculateAgeInYears(rec.tglLahir);
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-semibold">
+                        <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Remaja Putri" class="cell-editable w-40 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="date" value="${rec.tglLahir || ''}" onchange="updateField('${rec.id}', 'tglLahir', this.value)" class="cell-editable px-1.5 py-1 bg-transparent text-[11px]">
+                    </td>
+                    <td class="p-2 text-center border-r border-pink-100 bg-purple-50/50 font-bold text-purple-800">
+                        ${usiaThn !== '-' ? `${usiaThn} Thn` : '-'}
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="text" value="${escapeHtml(rec.asalSekolah)}" onchange="updateField('${rec.id}', 'asalSekolah', this.value)" placeholder="Nama Sekolah / Dusun" class="cell-editable w-44 px-1.5 py-1 bg-transparent">
+                    </td>
+                    ${renderYesNoSelect(rec, 'ind1')}
+                    ${renderYesNoSelect(rec, 'ind2')}
+                    ${renderYesNoSelect(rec, 'ind3')}
+                `;
+            } else if (tab === 'Catin') {
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-semibold">
+                        <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Calon Pengantin" class="cell-editable w-40 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <select onchange="updateField('${rec.id}', 'jenisKelamin', this.value)" class="px-2 py-1 rounded-lg border border-slate-200 bg-white text-[11px] outline-none">
+                            <option value="Perempuan" ${rec.jenisKelamin === 'Perempuan' ? 'selected' : ''}>Perempuan</option>
+                            <option value="Laki-laki" ${rec.jenisKelamin === 'Laki-laki' ? 'selected' : ''}>Laki-laki</option>
+                        </select>
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="date" value="${rec.tglRencanaNikah || ''}" onchange="updateField('${rec.id}', 'tglRencanaNikah', this.value)" class="cell-editable px-1.5 py-1 bg-transparent text-[11px]">
+                    </td>
+                    ${renderYesNoSelect(rec, 'ind1')}
+                    ${renderYesNoSelect(rec, 'ind2')}
+                    ${renderYesNoSelect(rec, 'ind3')}
+                `;
+            } else if (tab === 'BumilNifas') {
+                const riskCls = (rec.statusRisiko || '').includes('Normal') ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-300 font-bold';
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100 font-mono">
+                        <input type="text" value="${escapeHtml(rec.nik)}" maxlength="16" onchange="updateField('${rec.id}', 'nik', this.value)" placeholder="16 Digit NIK" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-semibold">
+                        <input type="text" value="${escapeHtml(rec.nama)}" onchange="updateField('${rec.id}', 'nama', this.value)" placeholder="Nama Ibu" class="cell-editable w-40 px-1.5 py-1 bg-transparent">
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <select onchange="updateField('${rec.id}', 'subStatus', this.value)" class="px-2 py-1 rounded-lg border border-pink-200 bg-pink-50 text-[#5D1049] font-bold text-[11px] outline-none">
+                            <option value="Ibu Hamil" ${rec.subStatus === 'Ibu Hamil' ? 'selected' : ''}>Ibu Hamil</option>
+                            <option value="Ibu Nifas" ${rec.subStatus === 'Ibu Nifas' ? 'selected' : ''}>Ibu Nifas</option>
+                        </select>
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        <input type="text" value="${escapeHtml(rec.usiaKehamilanNifas)}" onchange="updateField('${rec.id}', 'usiaKehamilanNifas', this.value)" placeholder="Contoh: 24 Minggu / Hari ke-7" class="cell-editable w-36 px-1.5 py-1 bg-transparent">
+                    </td>
+                    ${renderYesNoSelect(rec, 'ind1')}
+                    ${renderYesNoSelect(rec, 'ind2')}
+                    ${renderYesNoSelect(rec, 'ind3')}
+                    <td class="p-2 border-r border-pink-100">
+                        <select onchange="updateField('${rec.id}', 'statusRisiko', this.value)" class="px-2 py-1 rounded-lg border text-[11px] outline-none ${riskCls}">
+                            <option value="Normal / Tidak Berisiko" ${rec.statusRisiko === 'Normal / Tidak Berisiko' ? 'selected' : ''}>Normal / Tidak Berisiko</option>
+                            <option value="KEK (Kurang Energi Kronis)" ${rec.statusRisiko === 'KEK (Kurang Energi Kronis)' ? 'selected' : ''}>KEK (Kurang Energi Kronis)</option>
+                            <option value="Anemia (Hb < 11 g/dL)" ${rec.statusRisiko === 'Anemia (Hb < 11 g/dL)' ? 'selected' : ''}>Anemia (Hb &lt; 11 g/dL)</option>
+                            <option value="Riwayat KEK / Anemia" ${rec.statusRisiko === 'Riwayat KEK / Anemia' ? 'selected' : ''}>Riwayat KEK / Anemia</option>
+                        </select>
+                    </td>
+                `;
+            } else {
+                // Tab 'ALL' (Semua Sasaran - Ringkasan Lintas Kategori)
+                const meta = CATEGORY_META[rec.kategori] || CATEGORY_META.Keluarga;
+                let detailInfo = '-';
+                if (rec.kategori === 'Keluarga') detailInfo = `No. KK: ${rec.noKk || '-'}`;
+                else if (rec.kategori === 'Anak') detailInfo = `Umur: ${calculateAgeInMonths(rec.tglLahir)} Bln • Ibu: ${rec.namaIbu || '-'}`;
+                else if (rec.kategori === 'Rematri') detailInfo = `Usia: ${calculateAgeInYears(rec.tglLahir)} Thn • ${rec.asalSekolah || '-'}`;
+                else if (rec.kategori === 'Catin') detailInfo = `${rec.jenisKelamin || '-'} • Nikah: ${rec.tglRencanaNikah || '-'}`;
+                else if (rec.kategori === 'BumilNifas') detailInfo = `${rec.subStatus || 'Ibu Hamil'} (${rec.usiaKehamilanNifas || '-'})`;
+
+                const indBadges = meta.indicators.map(ind => {
+                    const ok = Boolean(rec[ind.key]);
+                    return `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] mr-1 ${ok ? 'bg-emerald-100 text-emerald-800 font-semibold' : 'bg-slate-100 text-slate-400 line-through'}">${ind.label}</span>`;
+                }).join('');
+
+                middleCells = `
+                    <td class="p-2 border-r border-pink-100">
+                        <button onclick="switchTab('${rec.kategori}')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold cursor-pointer hover:opacity-80 ${meta.badgeClass}">
+                            <i class="fa-solid ${meta.icon}"></i>
+                            <span>${meta.label}</span>
+                        </button>
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-mono text-slate-700">
+                        ${escapeHtml(rec.nik || rec.noKk || '-')}
+                    </td>
+                    <td class="p-2 border-r border-pink-100 font-bold text-slate-900">
+                        ${escapeHtml(rec.nama || '(Tanpa Nama)')}
+                    </td>
+                    <td class="p-2 border-r border-pink-100 text-slate-600">
+                        ${escapeHtml(detailInfo)}
+                    </td>
+                    <td class="p-2 border-r border-pink-100 text-slate-600">
+                        ${escapeHtml(rec.dusun || '-')}
+                    </td>
+                    <td class="p-2 border-r border-pink-100">
+                        ${indBadges}
+                    </td>
+                `;
+            }
+
+            return `
+                <tr class="hover:bg-pink-50/60 transition-colors ${isSelected ? 'bg-amber-50/70' : ''}">
+                    ${rowStart}
+                    ${middleCells}
+                    ${rowEnd}
+                </tr>
             `;
         }
 
@@ -1056,28 +1326,36 @@
             }
         }
 
-        function addBlankRow() {
-            const defaultCategory = activeTab === 'ALL' ? 'Bumil' : activeTab;
-            const newRecord = {
+        function createDefaultRecord(kategori) {
+            const base = {
                 id: 'rec_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-                kategori: defaultCategory,
+                kategori,
                 nik: '',
                 nama: '',
-                tglLahir: '',
                 dusun: '',
-                statusGizi: 'Normal',
-                kia: false,
-                ttd: false,
-                imunisasi: false,
-                posyandu: false,
-                sanitasi: false,
-                bpjs: false,
+                ind1: false,
+                ind2: false,
+                ind3: false,
+                ind4: false,
                 catatan: ''
             };
+
+            if (kategori === 'Keluarga') return { ...base, noKk: '' };
+            if (kategori === 'Anak') return { ...base, tglLahir: '', jenisKelamin: 'Laki-laki', namaIbu: '', statusGizi: 'Gizi Baik / Normal' };
+            if (kategori === 'Rematri') return { ...base, tglLahir: '', asalSekolah: '' };
+            if (kategori === 'Catin') return { ...base, jenisKelamin: 'Perempuan', tglRencanaNikah: '' };
+            if (kategori === 'BumilNifas') return { ...base, subStatus: 'Ibu Hamil', usiaKehamilanNifas: '', statusRisiko: 'Normal / Tidak Berisiko' };
+            return base;
+        }
+
+        function addBlankRow() {
+            const targetCat = activeTab === 'ALL' ? 'Keluarga' : activeTab;
+            const newRecord = createDefaultRecord(targetCat);
             records.unshift(newRecord);
             saveRecords();
-            renderAll();
-            showToast('Baris baru ditambahkan di bagian atas tabel.', 'success');
+            if (activeTab === 'ALL') switchTab(targetCat);
+            else renderAll();
+            showToast(`Baris baru ditambahkan pada kategori ${CATEGORY_META[targetCat].label}.`, 'success');
         }
 
         function duplicateSelectedRows() {
@@ -1093,7 +1371,8 @@
             }));
             records = [...clones, ...records];
             selectedIds.clear();
-            document.getElementById('selectAllCheckbox').checked = false;
+            const selAll = document.getElementById('selectAllCheckbox');
+            if (selAll) selAll.checked = false;
             saveRecords();
             renderAll();
             showToast(`${clones.length} baris berhasil diduplikat.`, 'success');
@@ -1102,7 +1381,7 @@
         function deleteSingleRow(id) {
             openConfirmModal(
                 'Hapus Baris Sasaran?',
-                'Data sasaran ini akan dihapus dari lembar kerja.',
+                'Data sasaran ini akan dihapus permanen dari lembar kerja.',
                 () => {
                     records = records.filter(r => r.id !== id);
                     selectedIds.delete(id);
@@ -1121,11 +1400,12 @@
             const count = selectedIds.size;
             openConfirmModal(
                 `Hapus ${count} Baris Terpilih?`,
-                'Semua data yang dicentang akan dihapus permanen dari lembar kerja ini.',
+                'Semua data yang dicentang akan dihapus dari lembar kerja ini.',
                 () => {
                     records = records.filter(r => !selectedIds.has(r.id));
                     selectedIds.clear();
-                    document.getElementById('selectAllCheckbox').checked = false;
+                    const selAll = document.getElementById('selectAllCheckbox');
+                    if (selAll) selAll.checked = false;
                     saveRecords();
                     renderAll();
                     showToast(`${count} baris data berhasil dihapus.`, 'info');
@@ -1136,11 +1416,10 @@
         function confirmClearSheet() {
             openConfirmModal(
                 'Bersihkan Seluruh Lembar Kerja?',
-                'Tindakan ini akan mengosongkan seluruh tabel data pendataan. Pastikan Anda sudah mengekspor cadangan Excel jika diperlukan.',
+                'Tindakan ini akan mengosongkan seluruh tabel data dari ke-5 kategori sasaran.',
                 () => {
                     records = [];
                     selectedIds.clear();
-                    document.getElementById('selectAllCheckbox').checked = false;
                     saveRecords();
                     renderAll();
                     showToast('Lembar kerja telah dikosongkan.', 'info');
@@ -1148,19 +1427,16 @@
             );
         }
 
-        function loadSampleData() {
+        function resetToSampleData() {
             openConfirmModal(
-                'Muat Contoh Data Pendataan Desa?',
-                'Data contoh (Bumil, Baduta, Balita, Catin) akan ditambahkan ke lembar kerja Anda.',
+                'Reset & Muat Data Contoh 5 Kategori?',
+                'Data saat ini akan diganti dengan data contoh realistis untuk seluruh 5 sasaran resmi e-HDW.',
                 () => {
-                    const freshSamples = SAMPLE_RECORDS.map(s => ({
-                        ...JSON.parse(JSON.stringify(s)),
-                        id: 'rec_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)
-                    }));
-                    records = [...freshSamples, ...records];
+                    records = JSON.parse(JSON.stringify(SAMPLE_RECORDS));
+                    selectedIds.clear();
                     saveRecords();
                     renderAll();
-                    showToast('6 contoh data pendataan desa berhasil ditambahkan.', 'success');
+                    showToast('Data contoh 5 kategori sasaran e-HDW berhasil dimuat!', 'success');
                 }
             );
         }
@@ -1182,60 +1458,261 @@
         }
 
         // =========================================================================
-        // FORMULIR INPUT / EDIT LENGKAP (MODAL)
+        // FORMULIR INPUT / EDIT DINAMIS SESUAI 5 KATEGORI SASARAN
         // =========================================================================
         function openEntryModal(editId = null) {
-            const form = document.getElementById('entryForm');
-            form.reset();
             document.getElementById('formRowId').value = '';
+            const catSelect = document.getElementById('formKategori');
 
             if (editId) {
                 const rec = records.find(r => r.id === editId);
                 if (!rec) return;
-                document.getElementById('entryModalTitle').textContent = 'Edit Data Sasaran e-HDW';
+                document.getElementById('entryModalTitle').textContent = `Edit Data: ${CATEGORY_META[rec.kategori].label}`;
                 document.getElementById('formRowId').value = rec.id;
-                document.getElementById('formKategori').value = rec.kategori;
-                document.getElementById('formNik').value = rec.nik;
-                document.getElementById('formNama').value = rec.nama;
-                document.getElementById('formTglLahir').value = rec.tglLahir;
-                document.getElementById('formDusun').value = rec.dusun;
-                document.getElementById('formStatusGizi').value = rec.statusGizi || 'Normal';
-                document.getElementById('chkKia').checked = Boolean(rec.kia);
-                document.getElementById('chkTtd').checked = Boolean(rec.ttd);
-                document.getElementById('chkImunisasi').checked = Boolean(rec.imunisasi);
-                document.getElementById('chkPosyandu').checked = Boolean(rec.posyandu);
-                document.getElementById('chkSanitasi').checked = Boolean(rec.sanitasi);
-                document.getElementById('chkBpjs').checked = Boolean(rec.bpjs);
-                document.getElementById('formCatatan').value = rec.catatan || '';
+                catSelect.value = rec.kategori;
+                catSelect.disabled = true;
+                renderDynamicFormFields(rec);
             } else {
-                document.getElementById('entryModalTitle').textContent = 'Tambah Sasaran Baru e-HDW';
-                if (activeTab !== 'ALL') {
-                    document.getElementById('formKategori').value = activeTab;
-                }
+                document.getElementById('entryModalTitle').textContent = 'Tambah Data Sasaran Baru e-HDW';
+                catSelect.disabled = false;
+                if (activeTab !== 'ALL') catSelect.value = activeTab;
+                renderDynamicFormFields(null);
             }
 
             openModal('entryModal');
         }
 
+        function renderDynamicFormFields(existingRec = null) {
+            const kat = document.getElementById('formKategori').value;
+            const meta = CATEGORY_META[kat];
+            const container = document.getElementById('dynamicFormFields');
+
+            const v = (key, fallback = '') => existingRec && existingRec[key] !== undefined ? existingRec[key] : fallback;
+
+            let specificHtml = '';
+
+            if (kat === 'Keluarga') {
+                specificHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nomor Kartu Keluarga (No. KK) *</label>
+                            <input type="text" id="f_noKk" value="${escapeHtml(v('noKk'))}" maxlength="16" required placeholder="16 Digit No. KK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">NIK Kepala Keluarga *</label>
+                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Kepala Keluarga *</label>
+                            <input type="text" id="f_nama" value="${escapeHtml(v('nama'))}" required placeholder="Nama Lengkap Kepala Keluarga" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Dusun / RT / RW *</label>
+                            <input type="text" id="f_dusun" value="${escapeHtml(v('dusun'))}" required placeholder="Contoh: Dusun Krajan RT 01/01" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                `;
+            } else if (kat === 'Anak') {
+                specificHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">NIK Anak *</label>
+                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK Anak" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Lengkap Anak *</label>
+                            <input type="text" id="f_nama" value="${escapeHtml(v('nama'))}" required placeholder="Nama Anak" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Tanggal Lahir *</label>
+                            <input type="date" id="f_tglLahir" value="${v('tglLahir')}" required class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Jenis Kelamin</label>
+                            <select id="f_jenisKelamin" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                                <option value="Laki-laki" ${v('jenisKelamin') === 'Laki-laki' ? 'selected' : ''}>Laki-laki</option>
+                                <option value="Perempuan" ${v('jenisKelamin') === 'Perempuan' ? 'selected' : ''}>Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Ibu Kandung *</label>
+                            <input type="text" id="f_namaIbu" value="${escapeHtml(v('namaIbu'))}" required placeholder="Nama Ibu" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Dusun / RT / RW</label>
+                            <input type="text" id="f_dusun" value="${escapeHtml(v('dusun'))}" placeholder="Contoh: Dusun Melati RT 02/01" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Status Gizi Anak</label>
+                            <select id="f_statusGizi" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                                <option value="Gizi Baik / Normal" ${v('statusGizi') === 'Gizi Baik / Normal' ? 'selected' : ''}>Gizi Baik / Normal</option>
+                                <option value="Gizi Kurang / Risiko Stunting" ${v('statusGizi') === 'Gizi Kurang / Risiko Stunting' ? 'selected' : ''}>Gizi Kurang / Risiko Stunting</option>
+                                <option value="Gizi Buruk / Stunting" ${v('statusGizi') === 'Gizi Buruk / Stunting' ? 'selected' : ''}>Gizi Buruk / Stunting</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            } else if (kat === 'Rematri') {
+                specificHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">NIK Remaja Putri *</label>
+                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Remaja Putri *</label>
+                            <input type="text" id="f_nama" value="${escapeHtml(v('nama'))}" required placeholder="Nama Lengkap" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Tanggal Lahir *</label>
+                            <input type="date" id="f_tglLahir" value="${v('tglLahir')}" required class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Asal Sekolah / Desa *</label>
+                            <input type="text" id="f_asalSekolah" value="${escapeHtml(v('asalSekolah'))}" required placeholder="Contoh: SMPN 1 / Dusun Krajan" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                `;
+            } else if (kat === 'Catin') {
+                specificHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">NIK Calon Pengantin *</label>
+                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Calon Pengantin *</label>
+                            <input type="text" id="f_nama" value="${escapeHtml(v('nama'))}" required placeholder="Nama Lengkap Catin" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Jenis Kelamin</label>
+                            <select id="f_jenisKelamin" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                                <option value="Perempuan" ${v('jenisKelamin') === 'Perempuan' ? 'selected' : ''}>Perempuan</option>
+                                <option value="Laki-laki" ${v('jenisKelamin') === 'Laki-laki' ? 'selected' : ''}>Laki-laki</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Rencana Tgl Nikah *</label>
+                            <input type="date" id="f_tglRencanaNikah" value="${v('tglRencanaNikah')}" required class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Dusun / RT-RW</label>
+                            <input type="text" id="f_dusun" value="${escapeHtml(v('dusun'))}" placeholder="Alamat Dusun" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                `;
+            } else if (kat === 'BumilNifas') {
+                specificHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">NIK Ibu *</label>
+                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Nama Ibu *</label>
+                            <input type="text" id="f_nama" value="${escapeHtml(v('nama'))}" required placeholder="Nama Lengkap Ibu" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Status Sasaran</label>
+                            <select id="f_subStatus" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-semibold">
+                                <option value="Ibu Hamil" ${v('subStatus') === 'Ibu Hamil' ? 'selected' : ''}>Ibu Hamil</option>
+                                <option value="Ibu Nifas" ${v('subStatus') === 'Ibu Nifas' ? 'selected' : ''}>Ibu Nifas</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Usia Kehamilan / Hari Nifas *</label>
+                            <input type="text" id="f_usiaKehamilanNifas" value="${escapeHtml(v('usiaKehamilanNifas'))}" required placeholder="Contoh: 24 Minggu / Hari ke-10" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-[#5D1049] mb-1">Status Risiko KEK/Anemia</label>
+                            <select id="f_statusRisiko" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                                <option value="Normal / Tidak Berisiko" ${v('statusRisiko') === 'Normal / Tidak Berisiko' ? 'selected' : ''}>Normal / Tidak Berisiko</option>
+                                <option value="KEK (Kurang Energi Kronis)" ${v('statusRisiko') === 'KEK (Kurang Energi Kronis)' ? 'selected' : ''}>KEK (Kurang Energi Kronis)</option>
+                                <option value="Anemia (Hb < 11 g/dL)" ${v('statusRisiko') === 'Anemia (Hb < 11 g/dL)' ? 'selected' : ''}>Anemia (Hb &lt; 11 g/dL)</option>
+                                <option value="Riwayat KEK / Anemia" ${v('statusRisiko') === 'Riwayat KEK / Anemia' ? 'selected' : ''}>Riwayat KEK / Anemia</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Checklist Indikator Layanan Spesifik Kategori
+            const indicatorsHtml = meta.indicators.map(ind => `
+                <label class="flex items-center gap-2.5 bg-white p-2.5 rounded-xl border border-pink-200 cursor-pointer hover:bg-pink-50 transition">
+                    <input type="checkbox" id="f_${ind.key}" ${v(ind.key, false) ? 'checked' : ''} class="w-4 h-4 accent-[#1B4332]">
+                    <span class="font-semibold text-slate-800">${ind.fullLabel}</span>
+                </label>
+            `).join('');
+
+            container.innerHTML = `
+                ${specificHtml}
+                <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200">
+                    <p class="font-bold text-[#1B4332] mb-2.5 flex items-center gap-1.5 text-xs">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Indikator Layanan Konvergensi (${meta.label}):</span>
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        ${indicatorsHtml}
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-[#5D1049] mb-1">Catatan Pendampingan Kader (Opsional)</label>
+                    <input type="text" id="f_catatan" value="${escapeHtml(v('catatan'))}" placeholder="Catatan hasil kunjungan lapangan..." class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none">
+                </div>
+            `;
+        }
+
         function saveEntryForm(event) {
             event.preventDefault();
             const editId = document.getElementById('formRowId').value;
+            const kat = document.getElementById('formKategori').value;
+            const meta = CATEGORY_META[kat];
 
             const payload = {
-                kategori: document.getElementById('formKategori').value,
-                nik: document.getElementById('formNik').value.trim(),
-                nama: document.getElementById('formNama').value.trim(),
-                tglLahir: document.getElementById('formTglLahir').value,
-                dusun: document.getElementById('formDusun').value.trim(),
-                statusGizi: document.getElementById('formStatusGizi').value,
-                kia: document.getElementById('chkKia').checked,
-                ttd: document.getElementById('chkTtd').checked,
-                imunisasi: document.getElementById('chkImunisasi').checked,
-                posyandu: document.getElementById('chkPosyandu').checked,
-                sanitasi: document.getElementById('chkSanitasi').checked,
-                bpjs: document.getElementById('chkBpjs').checked,
-                catatan: document.getElementById('formCatatan').value.trim()
+                kategori: kat,
+                nik: document.getElementById('f_nik')?.value.trim() || '',
+                nama: document.getElementById('f_nama')?.value.trim() || '',
+                dusun: document.getElementById('f_dusun')?.value.trim() || '',
+                catatan: document.getElementById('f_catatan')?.value.trim() || ''
             };
+
+            // Ambil indikator dinamis
+            meta.indicators.forEach(ind => {
+                payload[ind.key] = Boolean(document.getElementById(`f_${ind.key}`)?.checked);
+            });
+
+            // Ambil field spesifik kategori
+            if (kat === 'Keluarga') {
+                payload.noKk = document.getElementById('f_noKk').value.trim();
+            } else if (kat === 'Anak') {
+                payload.tglLahir = document.getElementById('f_tglLahir').value;
+                payload.jenisKelamin = document.getElementById('f_jenisKelamin').value;
+                payload.namaIbu = document.getElementById('f_namaIbu').value.trim();
+                payload.statusGizi = document.getElementById('f_statusGizi').value;
+            } else if (kat === 'Rematri') {
+                payload.tglLahir = document.getElementById('f_tglLahir').value;
+                payload.asalSekolah = document.getElementById('f_asalSekolah').value.trim();
+                if (!payload.dusun) payload.dusun = payload.asalSekolah;
+            } else if (kat === 'Catin') {
+                payload.jenisKelamin = document.getElementById('f_jenisKelamin').value;
+                payload.tglRencanaNikah = document.getElementById('f_tglRencanaNikah').value;
+            } else if (kat === 'BumilNifas') {
+                payload.subStatus = document.getElementById('f_subStatus').value;
+                payload.usiaKehamilanNifas = document.getElementById('f_usiaKehamilanNifas').value.trim();
+                payload.statusRisiko = document.getElementById('f_statusRisiko').value;
+            }
 
             if (editId) {
                 const idx = records.findIndex(r => r.id === editId);
@@ -1252,7 +1729,8 @@
             }
 
             saveRecords();
-            renderAll();
+            if (activeTab !== 'ALL' && activeTab !== kat) switchTab(kat);
+            else renderAll();
             closeModal('entryModal');
         }
 
@@ -1263,26 +1741,26 @@
             const rec = records.find(r => r.id === id);
             if (!rec) return;
 
+            const meta = CATEGORY_META[rec.kategori];
             const score = calculateServiceScore(rec);
-            const layananList = [
-                rec.kia ? 'KIA: Ya' : 'KIA: Tidak',
-                rec.ttd ? 'TTD/Gizi: Ya' : 'TTD/Gizi: Tidak',
-                rec.imunisasi ? 'Imunisasi: Ya' : 'Imunisasi: Tidak',
-                rec.posyandu ? 'Posyandu: Ya' : 'Posyandu: Tidak',
-                rec.sanitasi ? 'Air/Sanitasi: Ya' : 'Air/Sanitasi: Tidak',
-                rec.bpjs ? 'JKN/BPJS: Ya' : 'JKN/BPJS: Tidak'
-            ].join(' | ');
+            const indikatorStr = meta.indicators.map(ind => `${ind.fullLabel}: ${rec[ind.key] ? 'Ya' : 'Tidak'}`).join(' | ');
 
-            const textToCopy = `NIK: ${rec.nik || '-'} | Nama: ${rec.nama || '-'} | Kategori: ${rec.kategori} | Tgl Lahir: ${rec.tglLahir || '-'} | Dusun: ${rec.dusun || '-'} | Status: ${rec.statusGizi} | Capaian: ${score.fulfilled}/${score.total} (${score.percent}%) [${layananList}]`;
+            let extraInfo = '';
+            if (rec.kategori === 'Keluarga') extraInfo = `No. KK: ${rec.noKk || '-'} | Dusun: ${rec.dusun || '-'}`;
+            else if (rec.kategori === 'Anak') extraInfo = `Tgl Lahir: ${rec.tglLahir || '-'} (${calculateAgeInMonths(rec.tglLahir)} Bln) | JK: ${rec.jenisKelamin} | Ibu: ${rec.namaIbu || '-'} | Gizi: ${rec.statusGizi}`;
+            else if (rec.kategori === 'Rematri') extraInfo = `Tgl Lahir: ${rec.tglLahir || '-'} (${calculateAgeInYears(rec.tglLahir)} Thn) | Sekolah/Desa: ${rec.asalSekolah || '-'}`;
+            else if (rec.kategori === 'Catin') extraInfo = `JK: ${rec.jenisKelamin} | Rencana Nikah: ${rec.tglRencanaNikah || '-'}`;
+            else if (rec.kategori === 'BumilNifas') extraInfo = `Status: ${rec.subStatus} (${rec.usiaKehamilanNifas || '-'}) | Risiko: ${rec.statusRisiko}`;
 
-            // Menggunakan fallback textarea + document.execCommand('copy') agar kompatibel di iframe
+            const textToCopy = `[${meta.label.toUpperCase()}] NIK: ${rec.nik || '-'} | Nama: ${rec.nama || '-'} | ${extraInfo} | Konvergensi: ${score.fulfilled}/${score.total} (${score.percent}%) -> ${indikatorStr}`;
+
             const tempInput = document.createElement('textarea');
             tempInput.value = textToCopy;
             document.body.appendChild(tempInput);
             tempInput.select();
             try {
                 document.execCommand('copy');
-                showToast(`Data "${rec.nama || rec.nik}" disalin! Siap ditempel ke portal e-HDW Kemendesa.`, 'success');
+                showToast(`Data "${rec.nama || rec.nik}" (${meta.shortLabel}) disalin! Siap ditempel ke portal e-HDW Kemendesa.`, 'success');
             } catch (err) {
                 showToast('Gagal menyalin otomatis. Silakan salin manual dari tabel.', 'warning');
             }
@@ -1290,29 +1768,87 @@
         }
 
         // =========================================================================
-        // EKSPOR EXCEL (.XLSX), CSV, IMPOR FILE & CETAK LAPORAN
+        // EKSPOR EXCEL MULTI-SHEET (.XLSX), CSV, IMPOR FILE & CETAK LAPORAN
         // =========================================================================
-        function prepareExportRows() {
-            return records.map((r, i) => {
+        function formatRowsForCategory(kat) {
+            const subset = records.filter(r => r.kategori === kat);
+            return subset.map((r, i) => {
                 const score = calculateServiceScore(r);
+                if (kat === 'Keluarga') {
+                    return {
+                        'No': i + 1,
+                        'No. KK': r.noKk || '',
+                        'NIK Kepala Keluarga': r.nik || '',
+                        'Nama Kepala Keluarga': r.nama || '',
+                        'Dusun / RT / RW': r.dusun || '',
+                        'Kepemilikan Jamban Sehat': r.ind1 ? 'Ya' : 'Tidak',
+                        'Akses Air Minum Layak': r.ind2 ? 'Ya' : 'Tidak',
+                        'Kepemilikan JKN/BPJS': r.ind3 ? 'Ya' : 'Tidak',
+                        'Pendampingan Keluarga': r.ind4 ? 'Ya' : 'Tidak',
+                        'Status Konvergensi': `${score.fulfilled}/${score.total} (${score.percent}%)`,
+                        'Catatan': r.catatan || ''
+                    };
+                }
+                if (kat === 'Anak') {
+                    return {
+                        'No': i + 1,
+                        'NIK Anak': r.nik || '',
+                        'Nama Anak': r.nama || '',
+                        'Tgl Lahir': r.tglLahir || '',
+                        'Umur (Bulan)': calculateAgeInMonths(r.tglLahir),
+                        'Jenis Kelamin': r.jenisKelamin || '',
+                        'Nama Ibu': r.namaIbu || '',
+                        'Imunisasi Dasar Lengkap': r.ind1 ? 'Ya' : 'Tidak',
+                        'Pengukuran BB/TB Rutin Posyandu': r.ind2 ? 'Ya' : 'Tidak',
+                        'Vitamin A & Obat Cacing': r.ind3 ? 'Ya' : 'Tidak',
+                        'Konseling Gizi / PMT': r.ind4 ? 'Ya' : 'Tidak',
+                        'Status Gizi': r.statusGizi || '',
+                        'Status Konvergensi': `${score.fulfilled}/${score.total} (${score.percent}%)`,
+                        'Catatan': r.catatan || ''
+                    };
+                }
+                if (kat === 'Rematri') {
+                    return {
+                        'No': i + 1,
+                        'NIK': r.nik || '',
+                        'Nama Remaja Putri': r.nama || '',
+                        'Tgl Lahir': r.tglLahir || '',
+                        'Usia (Tahun)': calculateAgeInYears(r.tglLahir),
+                        'Asal Sekolah / Desa': r.asalSekolah || '',
+                        'Konsumsi TTD': r.ind1 ? 'Ya' : 'Tidak',
+                        'Pemeriksaan Anemia / Hb': r.ind2 ? 'Ya' : 'Tidak',
+                        'Edukasi Kesehatan Reproduksi & Gizi': r.ind3 ? 'Ya' : 'Tidak',
+                        'Status Konvergensi': `${score.fulfilled}/${score.total} (${score.percent}%)`,
+                        'Catatan': r.catatan || ''
+                    };
+                }
+                if (kat === 'Catin') {
+                    return {
+                        'No': i + 1,
+                        'NIK': r.nik || '',
+                        'Nama Calon Pengantin': r.nama || '',
+                        'Jenis Kelamin': r.jenisKelamin || '',
+                        'Rencana Tgl Nikah': r.tglRencanaNikah || '',
+                        'Pemeriksaan Kesehatan & Hb': r.ind1 ? 'Ya' : 'Tidak',
+                        'Konseling Pranikah / Elsimil': r.ind2 ? 'Ya' : 'Tidak',
+                        'Suplementasi Gizi / TTD': r.ind3 ? 'Ya' : 'Tidak',
+                        'Status Konvergensi': `${score.fulfilled}/${score.total} (${score.percent}%)`,
+                        'Catatan': r.catatan || ''
+                    };
+                }
+                // BumilNifas
                 return {
                     'No': i + 1,
-                    'Kategori Sasaran': r.kategori,
-                    'NIK': r.nik,
-                    'Nama Lengkap': r.nama,
-                    'Tanggal Lahir / HPL': r.tglLahir,
-                    'Umur (Bulan)': calculateAgeInMonths(r.tglLahir),
-                    'Dusun / RT-RW': r.dusun,
-                    'Status Gizi / Kondisi': r.statusGizi,
-                    '1. Pemeriksaan KIA': r.kia ? 'Ya' : 'Tidak',
-                    '2. TTD / PMT Gizi': r.ttd ? 'Ya' : 'Tidak',
-                    '3. Imunisasi': r.imunisasi ? 'Ya' : 'Tidak',
-                    '4. Posyandu': r.posyandu ? 'Ya' : 'Tidak',
-                    '5. Air Bersih & Sanitasi': r.sanitasi ? 'Ya' : 'Tidak',
-                    '6. JKN / BPJS': r.bpjs ? 'Ya' : 'Tidak',
-                    'Skor Layanan': `${score.fulfilled}/${score.total}`,
-                    'Persentase Konvergensi (%)': `${score.percent}%`,
-                    'Catatan Kader': r.catatan || ''
+                    'NIK': r.nik || '',
+                    'Nama Ibu': r.nama || '',
+                    'Status (Ibu Hamil / Ibu Nifas)': r.subStatus || '',
+                    'Usia Kehamilan / Hari Nifas': r.usiaKehamilanNifas || '',
+                    'Pemeriksaan ANC / Kunjungan Nifas (KF)': r.ind1 ? 'Ya' : 'Tidak',
+                    'Konsumsi TTD / Vitamin A Nifas': r.ind2 ? 'Ya' : 'Tidak',
+                    'Kelas Ibu Hamil / Konseling Menyusui': r.ind3 ? 'Ya' : 'Tidak',
+                    'Status Risiko KEK/Anemia': r.statusRisiko || '',
+                    'Status Konvergensi': `${score.fulfilled}/${score.total} (${score.percent}%)`,
+                    'Catatan': r.catatan || ''
                 };
             });
         }
@@ -1323,36 +1859,70 @@
                 return;
             }
             if (typeof XLSX === 'undefined') {
-                showToast('Library Excel sedang dimuat, coba beberapa detik lagi.', 'warning');
+                showToast('Library Excel sedang dimuat, silakan coba beberapa detik lagi.', 'warning');
                 return;
             }
 
-            const rows = prepareExportRows();
-            const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Pendataan_eHDW');
 
-            // Buat sheet per kategori jika ada datanya
-            ['Bumil', 'Baduta', 'Balita', 'Catin'].forEach(kat => {
-                const subRows = rows.filter(r => r['Kategori Sasaran'] === kat);
-                if (subRows.length > 0) {
-                    const wsSub = XLSX.utils.json_to_sheet(subRows);
-                    XLSX.utils.book_append_sheet(workbook, wsSub, kat);
-                }
+            // Sheet 1: Rekap Gabungan Semua Sasaran
+            const allRows = records.map((r, i) => {
+                const meta = CATEGORY_META[r.kategori];
+                const score = calculateServiceScore(r);
+                return {
+                    'No': i + 1,
+                    'Kategori Sasaran': meta.label,
+                    'NIK / No. KK': r.nik || r.noKk || '',
+                    'Nama Sasaran': r.nama || '',
+                    'Dusun / Sekolah / Keterangan': r.dusun || r.asalSekolah || r.subStatus || '',
+                    'Indikator Terpenuhi': `${score.fulfilled} dari ${score.total}`,
+                    'Persentase Konvergensi': `${score.percent}%`,
+                    'Catatan': r.catatan || ''
+                };
+            });
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(allRows), 'Rekap_Semua_Sasaran');
+
+            // Buat 5 Sheet terpisah sesuai 5 kategori sasaran resmi e-HDW
+            const sheetConfig = [
+                { key: 'Keluarga', name: '1_Keluarga_Sasaran' },
+                { key: 'Anak', name: '2_Anak_0_59_Bulan' },
+                { key: 'Rematri', name: '3_Remaja_Putri' },
+                { key: 'Catin', name: '4_Calon_Pengantin' },
+                { key: 'BumilNifas', name: '5_Ibu_Hamil_Nifas' }
+            ];
+
+            sheetConfig.forEach(sc => {
+                const rows = formatRowsForCategory(sc.key);
+                const ws = rows.length > 0 
+                    ? XLSX.utils.json_to_sheet(rows) 
+                    : XLSX.utils.json_to_sheet([{ Info: `Belum ada data pada kategori ${sc.name}` }]);
+                XLSX.utils.book_append_sheet(workbook, ws, sc.name);
             });
 
             const desaName = (document.getElementById('metaDesa').value.trim() || 'Desa').replace(/\s+/g, '_');
             const dateStr = new Date().toISOString().slice(0, 10);
-            XLSX.writeFile(workbook, `Lembar_Kerja_eHDW_${desaName}_${dateStr}.xlsx`);
-            showToast('File Excel (.xlsx) berhasil diunduh!', 'success');
+            XLSX.writeFile(workbook, `Lembar_Kerja_eHDW_5Sasaran_${desaName}_${dateStr}.xlsx`);
+            showToast('File Excel Multi-Sheet (.xlsx) berhasil diunduh!', 'success');
         }
 
         function exportToCSV() {
-            if (records.length === 0) {
-                showToast('Tidak ada data untuk diekspor ke CSV.', 'warning');
+            const targetCat = activeTab === 'ALL' ? 'Keluarga' : activeTab;
+            const rows = activeTab === 'ALL' 
+                ? records.map((r, i) => ({
+                    No: i + 1,
+                    Kategori: CATEGORY_META[r.kategori]?.label || r.kategori,
+                    NIK: r.nik || '',
+                    Nama: r.nama || '',
+                    Keterangan: r.dusun || r.asalSekolah || r.subStatus || '',
+                    Konvergensi: `${calculateServiceScore(r).percent}%`
+                }))
+                : formatRowsForCategory(targetCat);
+
+            if (rows.length === 0) {
+                showToast('Tidak ada data pada tab aktif untuk diekspor ke CSV.', 'warning');
                 return;
             }
-            const rows = prepareExportRows();
+
             const headers = Object.keys(rows[0]);
             const csvLines = [
                 headers.join(','),
@@ -1362,7 +1932,7 @@
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `Lembar_Kerja_eHDW_${new Date().toISOString().slice(0, 10)}.csv`;
+            link.download = `eHDW_${activeTab}_${new Date().toISOString().slice(0, 10)}.csv`;
             link.click();
             URL.revokeObjectURL(url);
             showToast('File CSV berhasil diunduh!', 'success');
@@ -1377,39 +1947,81 @@
 
             reader.onload = function(e) {
                 try {
-                    let importedData = [];
                     if (ext === 'json') {
-                        importedData = JSON.parse(e.target.result);
+                        const parsed = JSON.parse(e.target.result);
+                        if (Array.isArray(parsed)) {
+                            records = [...parsed, ...records];
+                            saveRecords();
+                            renderAll();
+                            showToast(`Berhasil mengimpor ${parsed.length} data JSON!`, 'success');
+                        }
                     } else {
                         const workbook = XLSX.read(e.target.result, { type: 'binary' });
-                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                        const jsonRows = XLSX.utils.sheet_to_json(firstSheet);
+                        let totalImported = 0;
 
-                        importedData = jsonRows.map((row, idx) => ({
-                            id: 'imp_' + Date.now() + '_' + idx,
-                            kategori: row['Kategori Sasaran'] || row['Kategori'] || 'Bumil',
-                            nik: String(row['NIK'] || ''),
-                            nama: row['Nama Lengkap'] || row['Nama'] || '',
-                            tglLahir: row['Tanggal Lahir / HPL'] || row['Tanggal Lahir'] || '',
-                            dusun: row['Dusun / RT-RW'] || row['Dusun'] || '',
-                            statusGizi: row['Status Gizi / Kondisi'] || 'Normal',
-                            kia: String(row['1. Pemeriksaan KIA'] || '').toLowerCase() === 'ya',
-                            ttd: String(row['2. TTD / PMT Gizi'] || '').toLowerCase() === 'ya',
-                            imunisasi: String(row['3. Imunisasi'] || '').toLowerCase() === 'ya',
-                            posyandu: String(row['4. Posyandu'] || '').toLowerCase() === 'ya',
-                            sanitasi: String(row['5. Air Bersih & Sanitasi'] || '').toLowerCase() === 'ya',
-                            bpjs: String(row['6. JKN / BPJS'] || '').toLowerCase() === 'ya',
-                            catatan: row['Catatan Kader'] || ''
-                        }));
-                    }
+                        workbook.SheetNames.forEach(sheetName => {
+                            if (sheetName === 'Rekap_Semua_Sasaran') return;
+                            const jsonRows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+                            if (!jsonRows.length || jsonRows[0].Info) return;
 
-                    if (Array.isArray(importedData) && importedData.length > 0) {
-                        records = [...importedData, ...records];
+                            let detectedCat = 'Keluarga';
+                            if (sheetName.includes('Anak')) detectedCat = 'Anak';
+                            else if (sheetName.includes('Remaja')) detectedCat = 'Rematri';
+                            else if (sheetName.includes('Calon') || sheetName.includes('Catin')) detectedCat = 'Catin';
+                            else if (sheetName.includes('Hamil') || sheetName.includes('Nifas')) detectedCat = 'BumilNifas';
+
+                            jsonRows.forEach((row, idx) => {
+                                const rec = createDefaultRecord(detectedCat);
+                                rec.id = 'imp_' + Date.now() + '_' + totalImported + '_' + idx;
+                                rec.nik = String(row['NIK'] || row['NIK Kepala Keluarga'] || row['NIK Anak'] || '');
+                                rec.nama = row['Nama Kepala Keluarga'] || row['Nama Anak'] || row['Nama Remaja Putri'] || row['Nama Calon Pengantin'] || row['Nama Ibu'] || row['Nama'] || '';
+                                rec.catatan = row['Catatan'] || '';
+
+                                if (detectedCat === 'Keluarga') {
+                                    rec.noKk = String(row['No. KK'] || '');
+                                    rec.dusun = row['Dusun / RT / RW'] || '';
+                                    rec.ind1 = String(row['Kepemilikan Jamban Sehat'] || '').toLowerCase() === 'ya';
+                                    rec.ind2 = String(row['Akses Air Minum Layak'] || '').toLowerCase() === 'ya';
+                                    rec.ind3 = String(row['Kepemilikan JKN/BPJS'] || '').toLowerCase() === 'ya';
+                                    rec.ind4 = String(row['Pendampingan Keluarga'] || '').toLowerCase() === 'ya';
+                                } else if (detectedCat === 'Anak') {
+                                    rec.tglLahir = row['Tgl Lahir'] || '';
+                                    rec.jenisKelamin = row['Jenis Kelamin'] || 'Laki-laki';
+                                    rec.namaIbu = row['Nama Ibu'] || '';
+                                    rec.statusGizi = row['Status Gizi'] || 'Gizi Baik / Normal';
+                                    rec.ind1 = String(row['Imunisasi Dasar Lengkap'] || '').toLowerCase() === 'ya';
+                                    rec.ind2 = String(row['Pengukuran BB/TB Rutin Posyandu'] || '').toLowerCase() === 'ya';
+                                    rec.ind3 = String(row['Vitamin A & Obat Cacing'] || '').toLowerCase() === 'ya';
+                                    rec.ind4 = String(row['Konseling Gizi / PMT'] || '').toLowerCase() === 'ya';
+                                } else if (detectedCat === 'Rematri') {
+                                    rec.tglLahir = row['Tgl Lahir'] || '';
+                                    rec.asalSekolah = row['Asal Sekolah / Desa'] || '';
+                                    rec.ind1 = String(row['Konsumsi TTD'] || '').toLowerCase() === 'ya';
+                                    rec.ind2 = String(row['Pemeriksaan Anemia / Hb'] || '').toLowerCase() === 'ya';
+                                    rec.ind3 = String(row['Edukasi Kesehatan Reproduksi & Gizi'] || '').toLowerCase() === 'ya';
+                                } else if (detectedCat === 'Catin') {
+                                    rec.jenisKelamin = row['Jenis Kelamin'] || 'Perempuan';
+                                    rec.tglRencanaNikah = row['Rencana Tgl Nikah'] || '';
+                                    rec.ind1 = String(row['Pemeriksaan Kesehatan & Hb'] || '').toLowerCase() === 'ya';
+                                    rec.ind2 = String(row['Konseling Pranikah / Elsimil'] || '').toLowerCase() === 'ya';
+                                    rec.ind3 = String(row['Suplementasi Gizi / TTD'] || '').toLowerCase() === 'ya';
+                                } else if (detectedCat === 'BumilNifas') {
+                                    rec.subStatus = row['Status (Ibu Hamil / Ibu Nifas)'] || 'Ibu Hamil';
+                                    rec.usiaKehamilanNifas = row['Usia Kehamilan / Hari Nifas'] || '';
+                                    rec.statusRisiko = row['Status Risiko KEK/Anemia'] || 'Normal / Tidak Berisiko';
+                                    rec.ind1 = String(row['Pemeriksaan ANC / Kunjungan Nifas (KF)'] || '').toLowerCase() === 'ya';
+                                    rec.ind2 = String(row['Konsumsi TTD / Vitamin A Nifas'] || '').toLowerCase() === 'ya';
+                                    rec.ind3 = String(row['Kelas Ibu Hamil / Konseling Menyusui'] || '').toLowerCase() === 'ya';
+                                }
+
+                                records.unshift(rec);
+                                totalImported++;
+                            });
+                        });
+
                         saveRecords();
                         renderAll();
-                        showToast(`Berhasil mengimpor ${importedData.length} baris data!`, 'success');
-                    } else {
-                        showToast('Format file tidak memiliki data yang valid.', 'warning');
+                        showToast(`Berhasil mengimpor ${totalImported} baris data dari file Excel/CSV!`, 'success');
                     }
                 } catch (err) {
                     console.error(err);
@@ -1427,8 +2039,9 @@
             const kec = document.getElementById('metaKecamatan').value || '-';
             const kader = document.getElementById('metaKader').value || '-';
             const tgl = new Date().toLocaleDateString('id-ID', { dateStyle: 'full' });
+            const tabLabel = activeTab === 'ALL' ? 'Semua Sasaran' : CATEGORY_META[activeTab].label;
 
-            document.getElementById('printMetaInfo').textContent = `Desa: ${desa} | Kec/Kab: ${kec} | Kader KPM: ${kader} | Dicetak: ${tgl}`;
+            document.getElementById('printMetaInfo').textContent = `Kategori: ${tabLabel} | Desa: ${desa} | Kec/Kab: ${kec} | Kader KPM: ${kader} | Dicetak: ${tgl}`;
             window.print();
         }
 
@@ -1461,13 +2074,13 @@
             const styles = {
                 success: 'bg-[#5D1049] text-white border-l-4 border-[#FFD700]',
                 warning: 'bg-amber-600 text-white border-l-4 border-white',
-                info: 'bg-slate-800 text-white border-l-4 border-[#FF69B4]'
+                info: 'bg-[#1B4332] text-white border-l-4 border-[#FFD700]'
             };
 
             const icons = {
                 success: 'fa-circle-check text-[#FFD700]',
                 warning: 'fa-triangle-exclamation text-white',
-                info: 'fa-circle-info text-[#FF69B4]'
+                info: 'fa-circle-info text-[#FFD700]'
             };
 
             toast.className = `${styles[type] || styles.info} px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2.5 max-w-sm transition-all duration-300 pointer-events-auto`;
