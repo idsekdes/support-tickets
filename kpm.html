@@ -13,6 +13,30 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.03);
   }
 
+  /* Tombol Kembali */
+  .kpm-top-nav {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  .kpm-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background-color: #f3f4f6;
+    color: #333333 !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .kpm-btn-back:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+  }
+
   /* Judul & Subjudul */
   .kpm-header {
     text-align: center;
@@ -207,8 +231,15 @@
 </style>
 
 <div class="kpm-dashboard-wrapper">
+  <!-- Tombol Kembali -->
+  <div class="kpm-top-nav">
+    <a href="https://lumbumpetigo.berdesa.id/" class="kpm-btn-back">&#8592; Kembali</a>
+  </div>
+
   <!-- Header -->
   <div class="kpm-header">
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
     <h2>PERFORMA KPM</h2>
     <p>MELDA KURNIAWATI (7203195601890002)</p>
   </div>
@@ -227,7 +258,7 @@
       </div>
 
       <div class="kpm-plot-area">
-        <!-- Grup Nov 2026 (Skala max 125, jadi tinggi% = nilai / 125 * 100) -->
+        <!-- Grup Nov 2026 -->
         <div class="kpm-bar-group">
           <div class="kpm-bar bg-remaja" style="height: 59.12%;">
             <span class="kpm-bar-label">73.9%</span>
@@ -252,7 +283,6 @@
           <div class="kpm-bar bg-keluarga" style="height: 50%;">
             <span class="kpm-bar-label">62.5%</span>
           </div>
-          <!-- Kosong/0% untuk Bumil pada Okt 2026 -->
           <div class="kpm-bar bg-bumil" style="height: 0%;"></div>
           <div class="kpm-bar bg-anak" style="height: 80%;">
             <span class="kpm-bar-label">100.0%</span>
