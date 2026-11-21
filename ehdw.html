@@ -154,6 +154,14 @@
                         <span class="hidden sm:inline">Panduan e-HDW</span>
                     </button>
 
+                    <!-- Tombol Cek NIK (appdesa.my.id/data26) -->
+                    <a href="https://appdesa.my.id/data26" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-400 hover:to-teal-500 text-white font-extrabold px-3.5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-xl transition-all transform hover:-translate-y-0.5 border border-[#FFD700]">
+                        <i class="fa-solid fa-id-card text-[#FFD700] text-base"></i>
+                        <span>Cek NIK</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                    </a>
+
                     <!-- Tombol Login Portal Resmi e-HDW Kemendesa -->
                     <a href="https://ehdw.kemendesa.go.id/app-pendataan/" target="_blank" rel="noopener noreferrer" 
                        class="group flex items-center gap-2 bg-gradient-to-r from-[#FFD700] to-amber-400 hover:from-amber-300 hover:to-[#FFD700] text-[#5D1049] font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-xl transition-all transform hover:-translate-y-0.5 border border-white">
@@ -1120,6 +1128,10 @@
                 </td>
                 <td class="p-2 text-center no-print sticky right-0 bg-white/95 backdrop-blur-xs shadow-[-4px_0_8px_rgba(0,0,0,0.04)]">
                     <div class="flex items-center justify-center gap-1">
+                        <button onclick="checkNikForRow('${rec.id}')" class="px-2 py-1 rounded-lg bg-cyan-50 hover:bg-cyan-600 text-cyan-800 hover:text-white border border-cyan-200 font-bold text-[11px] transition flex items-center gap-1 cursor-pointer" title="Salin NIK & buka Cek NIK (appdesa.my.id/data26)">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Cek NIK</span>
+                        </button>
                         <button onclick="copyRowForEhdw('${rec.id}')" class="px-2.5 py-1 rounded-lg bg-pink-100 hover:bg-[#5D1049] text-[#5D1049] hover:text-[#FFD700] font-bold text-[11px] transition flex items-center gap-1 cursor-pointer" title="Salin format data untuk ditempel ke Portal e-HDW Kemendesa">
                             <i class="fa-solid fa-clipboard"></i>
                             <span>Salin Data e-HDW</span>
@@ -1500,7 +1512,10 @@
                         </div>
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">NIK Kepala Keluarga *</label>
-                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                                ${renderModalNikCheckButton()}
+                            </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -1519,7 +1534,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">NIK Anak *</label>
-                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK Anak" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK Anak" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                                ${renderModalNikCheckButton()}
+                            </div>
                         </div>
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">Nama Lengkap Anak *</label>
@@ -1563,7 +1581,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">NIK Remaja Putri *</label>
-                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                                ${renderModalNikCheckButton()}
+                            </div>
                         </div>
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">Nama Remaja Putri *</label>
@@ -1586,7 +1607,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">NIK Calon Pengantin *</label>
-                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                                ${renderModalNikCheckButton()}
+                            </div>
                         </div>
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">Nama Calon Pengantin *</label>
@@ -1616,7 +1640,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">NIK Ibu *</label>
-                            <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" id="f_nik" value="${escapeHtml(v('nik'))}" maxlength="16" required placeholder="16 Digit NIK" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:border-[#5D1049] outline-none font-mono">
+                                ${renderModalNikCheckButton()}
+                            </div>
                         </div>
                         <div>
                             <label class="block font-bold text-[#5D1049] mb-1">Nama Ibu *</label>
@@ -1735,8 +1762,68 @@
         }
 
         // =========================================================================
-        // SALIN CEPAT DATA BARIS UNTUK PORTAL e-HDW KEMENDESA
+        // SALIN CEPAT DATA BARIS & CEK NIK KE PORTAL PENDATAAN DESA
         // =========================================================================
+        const NIK_CHECK_URL = 'https://appdesa.my.id/data26';
+
+        function copyTextToClipboard(text) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            let copied = false;
+            try {
+                copied = document.execCommand('copy');
+            } catch (err) {
+                copied = false;
+            }
+            document.body.removeChild(tempInput);
+            return copied;
+        }
+
+        function renderModalNikCheckButton() {
+            return `
+                <button type="button" onclick="checkNikFromModal()" class="flex-shrink-0 px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer" title="Salin NIK & buka appdesa.my.id/data26">
+                    <i class="fa-solid fa-id-card text-[#FFD700]"></i>
+                    <span>Cek NIK</span>
+                </button>
+            `;
+        }
+
+        function checkNikFromModal() {
+            const nikVal = (document.getElementById('f_nik')?.value || '').trim();
+            window.open(NIK_CHECK_URL, '_blank', 'noopener,noreferrer');
+            if (nikVal) {
+                const copied = copyTextToClipboard(nikVal);
+                showToast(
+                    copied
+                        ? `NIK "${nikVal}" disalin ke clipboard & halaman Cek NIK dibuka!`
+                        : `Halaman Cek NIK dibuka. NIK sasaran: ${nikVal}`,
+                    'success'
+                );
+            } else {
+                showToast('Halaman Cek NIK (appdesa.my.id/data26) dibuka di tab baru.', 'info');
+            }
+        }
+
+        function checkNikForRow(id) {
+            const rec = records.find(r => r.id === id);
+            if (!rec) return;
+            const nikVal = (rec.nik || '').trim();
+            window.open(NIK_CHECK_URL, '_blank', 'noopener,noreferrer');
+            if (nikVal) {
+                const copied = copyTextToClipboard(nikVal);
+                showToast(
+                    copied
+                        ? `NIK "${nikVal}" (${rec.nama || 'Sasaran'}) disalin & tab Cek NIK dibuka!`
+                        : `Tab Cek NIK dibuka untuk ${rec.nama || nikVal}.`,
+                    'success'
+                );
+            } else {
+                showToast('Tab Cek NIK (appdesa.my.id/data26) dibuka. NIK pada baris ini masih kosong.', 'warning');
+            }
+        }
+
         function copyRowForEhdw(id) {
             const rec = records.find(r => r.id === id);
             if (!rec) return;
@@ -1754,17 +1841,11 @@
 
             const textToCopy = `[${meta.label.toUpperCase()}] NIK: ${rec.nik || '-'} | Nama: ${rec.nama || '-'} | ${extraInfo} | Konvergensi: ${score.fulfilled}/${score.total} (${score.percent}%) -> ${indikatorStr}`;
 
-            const tempInput = document.createElement('textarea');
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            try {
-                document.execCommand('copy');
+            if (copyTextToClipboard(textToCopy)) {
                 showToast(`Data "${rec.nama || rec.nik}" (${meta.shortLabel}) disalin! Siap ditempel ke portal e-HDW Kemendesa.`, 'success');
-            } catch (err) {
+            } else {
                 showToast('Gagal menyalin otomatis. Silakan salin manual dari tabel.', 'warning');
             }
-            document.body.removeChild(tempInput);
         }
 
         // =========================================================================
