@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Rekap Hasil Bimtek Tahun 2025</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      padding: 25px;
+      color: #222222;
+    }
+
+    .wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Baris Navigasi Pojok Atas */
+    .top-bar {
+      display: flex;
+      justify-content: flex-start; /* Ubah ke flex-end jika ingin di pojok kanan atas */
+      margin-bottom: 16px;
+    }
+
+    .btn-kembali {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #164438;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 10px 18px;
+      border-radius: 3px;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-kembali:hover {
+      background-color: #1e594a;
+    }
+
+    .btn-kembali:active {
+      transform: translateY(1px);
+    }
+
+    /* Card Bagian Atas (Ringkasan & Surat Tugas) */
+    .summary-card {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      margin-bottom: 22px;
+      border: 1px solid #e0e4e8;
+    }
+
+    .summary-section {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e8eb;
+    }
+
+    .summary-section:last-child {
+      border-bottom: none;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a1a1a;
+      padding: 22px 24px;
+      border-bottom: 1px solid #e5e8eb;
+    }
+
+    /* Bagian Pemenuhan Unsur */
+    .unsur-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .unsur-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: end;
+    }
+
+    .unsur-item {
+      position: relative;
+    }
+
+    /* Garis vertikal abu-abu tebal di samping kolom 2 dan 3 */
+    .unsur-item.with-divider {
+      padding-left: 16px;
+    }
+
+    .unsur-item.with-divider::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      bottom: 2px;
+      width: 7px;
+      background-color: #d3d6d9;
+    }
+
+    .unsur-label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .unsur-status {
+      font-size: 13px;
+      color: #666666;
+    }
+
+    /* Bagian Jumlah Peserta */
+    .jumlah-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .jumlah-value {
+      font-size: 13px;
+      color: #666666;
+    }
+
+    /* Bagian Surat Tugas & Tombol */
+    .st-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 14px;
+    }
+
+    .st-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 9px 18px;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22);
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-action:hover {
+      opacity: 0.92;
+    }
+
+    .btn-action:active {
+      transform: translateY(1px);
+    }
+
+    .btn-lihat {
+      background-color: #164438;
+    }
+
+    .btn-hapus {
+      background-color: #c90016;
+      padding: 9px 22px;
+    }
+
+    /* Card Tabel */
+    .table-card {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      border: 1px solid #e0e4e8;
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    thead th {
+      background-color: #164438;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 16px 20px;
+      text-align: center;
+      border-right: 1px solid #23594a;
+    }
+
+    thead th:last-child {
+      border-right: none;
+    }
+
+    tbody td {
+      padding: 14px 20px;
+      font-size: 14px;
+      color: #222222;
+      border-bottom: 1px solid #e6e9ec;
+      border-right: 1px solid #e6e9ec;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    tbody td:last-child {
+      border-right: none;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f4f3;
+    }
+
+    /* Tombol Sertifikat */
+    .btn-sertifikat {
+      display: inline-block;
+      background-color: #164438;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 9px 22px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-sertifikat:hover {
+      background-color: #1e594a;
+    }
+
+    .btn-sertifikat:active {
+      transform: translateY(1px);
+    }
+
+    /* Responsif untuk layar kecil/HP */
+    @media (max-width: 768px) {
+      .unsur-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .unsur-item.with-divider {
+        padding-left: 0;
+      }
+      .unsur-item.with-divider::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <!-- Tombol Kembali Pojok Atas -->
+    <div class="top-bar">
+      <a href="https://lumbumpetigo.berdesa.id/public/" class="btn-kembali">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        KEMBALI
+      </a>
+    </div>
+
+    <!-- Kotak Atas: Rekapitulasi & Surat Tugas -->
+    <div class="summary-card">
+      <div class="page-title">Rekap Hasil Bimtek Tahun 2026</div>
+
+      <!-- Baris 1: Pemenuhan Unsur -->
+      <div class="summary-section">
+        <div class="unsur-title">Pemenuhan Unsur</div>
+        <div class="unsur-grid">
+          <div class="unsur-item">
+            <div class="unsur-label">Terdapat Unsur KPM</div>
+            <div class="unsur-status">ADA</div>
+          </div>
+          <div class="unsur-item with-divider">
+            <div class="unsur-label">Terdapat Unsur Perangkat Desa atau Admin Desa</div>
+            <div class="unsur-status">ADA</div>
+          </div>
+    
+        </div>
+      </div>
+
+      <!-- Baris 2: Jumlah Peserta -->
+      <div class="summary-section">
+        <div class="jumlah-title">Jumlah Peserta 2 Usur</div>
+        <div class="jumlah-value">2 Orang</div>
+      </div>
+
+      <!-- Baris 3: Surat Tugas -->
+      <div class="summary-section">
+        <div class="st-title">Surat Tugas</div>
+        <div class="st-buttons">
+          <a href="https://appdesa.my.id/st2" class="btn-action btn-lihat">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+            LIHAT SURAT TUGAS
+          </a>
+          <button type="button" class="btn-action btn-hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus Surat Tugas ini?')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+            HAPUS ST
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kotak Bawah: Tabel Peserta -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 17%;">NIK</th>
+            <th style="width: 22%;">Nama</th>
+            <th style="width: 19%;">Jabatan</th>
+            <th style="width: 14%;">Tanggal Lahir</th>
+            <th style="width: 15%;">Phone</th>
+            <th style="width: 13%;"></th>
+          </tr>
+        </thead>
+         <tbody>
+     
+             <tr>
+            <td>7203090501750002</td>
+            <td>SYAMSUDDIN</td>
+            <td>ADMIN DESA Aplikasi e-HDW</td>
+            <td>1975-01-05</td>
+            <td>+62851-5053-1572</td>
+            <td><a href="https://appdesa.my.id/sertifikat" class="btn-sertifikat">SERTIFIKAT</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
