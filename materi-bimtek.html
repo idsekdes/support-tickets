@@ -1,74 +1,125 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Materi AppDesa</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f7f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+  .appdesa-card {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 24px 18px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    font-family: inherit;
+    text-align: center;
+  }
 
-    .button-container {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+  .appdesa-logo {
+    max-width: 110px;
+    height: auto;
+    margin: 0 auto 10px auto;
+    display: block;
+    border-radius: 8px;
+  }
 
-    .btn-link {
-      display: block;
-      text-align: center;
-      background-color: #2563eb;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 14px 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+  .appdesa-title {
+    margin: 0 0 4px 0 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    line-height: 1.3 !important;
+  }
 
-    .btn-link:hover {
-      background-color: #1d4ed8;
-      transform: translateY(-2px);
-    }
+  .appdesa-subtitle {
+    margin: 0 0 16px 0 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #64748b !important;
+    line-height: 1.4 !important;
+  }
 
-    .btn-link:active {
-      transform: translateY(0);
-    }
+  .appdesa-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
 
-    /* Warna berbeda untuk tombol P3S agar menonjol */
-    .btn-special {
-      background-color: #059669;
-    }
+  .appdesa-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
 
-    .btn-special:hover {
-      background-color: #047857;
-    }
-  </style>
-</head>
-<body>
+  .appdesa-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 13px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
 
-  <div class="button-container">
-    <a href="https://appdesa.my.id/materi" target="_blank" rel="noopener noreferrer" class="btn-link">Materi Utama</a>
-    <a href="https://appdesa.my.id/materi1" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 1</a>
-    <a href="https://appdesa.my.id/materi2" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 2</a>
-    <a href="https://appdesa.my.id/materi3" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 3</a>
-    <a href="https://appdesa.my.id/materi4" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 4</a>
-    <a href="https://appdesa.my.id/materi5" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 5</a>
-    <a href="https://appdesa.my.id/materi6" target="_blank" rel="noopener noreferrer" class="btn-link">Materi 6</a>
-    <a href="https://appdesa.my.id/p3s" target="_blank" rel="noopener noreferrer" class="btn-link btn-special">P3S</a>
+  .appdesa-btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+  }
+
+  .appdesa-btn:active {
+    transform: translateY(0);
+  }
+
+  .appdesa-btn-p3s {
+    background-color: #059669;
+  }
+
+  .appdesa-btn-p3s:hover {
+    background-color: #047857;
+  }
+
+  .appdesa-btn-back {
+    background-color: #ffffff;
+    color: #334155 !important;
+    border: 1.5px solid #cbd5e1;
+    box-shadow: none;
+    margin-top: 4px;
+  }
+
+  .appdesa-btn-back:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    transform: translateY(-2px);
+  }
+</style>
+
+<div class="appdesa-card">
+  <!-- Logo eHDW Learning -->
+  <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1795325752/ehdw-learning_zwft1x.png" alt="Logo eHDW Learning" class="appdesa-logo" />
+
+  <!-- Judul & Subjudul -->
+  <h2 class="appdesa-title">eHDW Learning</h2>
+  <p class="appdesa-subtitle">List Materi Bimtek Aplikasi e-HDW</p>
+
+  <!-- Spanduk Bimtek -->
+  <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1795286309/Spanduk_Bimtek_e-HDW_Kabupaten_Donggala_ivyuym.png" alt="Spanduk Bimtek e-HDW Kabupaten Donggala" class="appdesa-banner" />
+
+  <!-- Daftar Tombol Materi -->
+  <div class="appdesa-wrap">
+    <a href="https://appdesa.my.id/materi" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi Utama</a>
+    <a href="https://appdesa.my.id/materi1" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 1</a>
+    <a href="https://appdesa.my.id/materi2" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 2</a>
+    <a href="https://appdesa.my.id/materi3" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 3</a>
+    <a href="https://appdesa.my.id/materi4" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 4</a>
+    <a href="https://appdesa.my.id/materi5" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 5</a>
+    <a href="https://appdesa.my.id/materi6" target="_blank" rel="noopener noreferrer" class="appdesa-btn">Materi 6</a>
+    <a href="https://appdesa.my.id/p3s" target="_blank" rel="noopener noreferrer" class="appdesa-btn appdesa-btn-p3s">P3S</a>
+    <a href="https://lumbumpetigo.berdesa.id/public/" class="appdesa-btn appdesa-btn-back">← Kembali</a>
   </div>
-
-</body>
-</html>
+</div>
