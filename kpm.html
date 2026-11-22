@@ -37,23 +37,18 @@
     border-color: #9ca3af;
   }
 
-  /* Judul & Subjudul */
+  /* Judul */
   .kpm-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
   .kpm-header h2 {
-    margin: 0 0 5px 0;
+    margin: 0;
     font-size: 18px;
     font-weight: 700;
     color: #222222;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-  }
-  .kpm-header p {
-    margin: 0;
-    font-size: 13px;
-    color: #666666;
   }
 
   /* Area Grafik (Chart) */
@@ -165,7 +160,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px 22px;
-    margin: 25px 0 15px 0;
+    margin: 25px 0 10px 0;
     font-size: 11px;
     font-weight: 600;
     color: #333333;
@@ -217,6 +212,7 @@
     border-bottom: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
     color: #333333;
+    vertical-align: middle;
   }
   .kpm-table th:last-child,
   .kpm-table td:last-child {
@@ -228,6 +224,71 @@
   .kpm-table tbody tr:hover {
     background-color: #f9fafb;
   }
+
+  /* Kolom Khusus Tabel Baru */
+  .td-center {
+    text-align: center;
+  }
+  .kpm-btn-action {
+    display: inline-block;
+    background-color: #164e36;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background-color 0.2s;
+  }
+  .kpm-btn-action:hover {
+    background-color: #103b28;
+  }
+  .kpm-btn-nik {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: #3319c9;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background-color 0.2s;
+  }
+  .kpm-btn-nik:hover {
+    background-color: #2712a3;
+  }
+
+  /* Footer Pagination */
+  .kpm-pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #333333;
+    border-top: 1px solid #e0e0e0;
+    background-color: #ffffff;
+  }
+  .kpm-page-select {
+    border: none;
+    border-bottom: 1px solid #999999;
+    background: transparent;
+    font-size: 12px;
+    color: #333333;
+    padding: 2px 4px;
+    margin-left: 6px;
+    cursor: pointer;
+    outline: none;
+  }
 </style>
 
 <div class="kpm-dashboard-wrapper">
@@ -238,10 +299,9 @@
 
   <!-- Header -->
   <div class="kpm-header">
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
     <h2>PERFORMA KPM</h2>
-    <p>MELDA KURNIAWATI (7203195601890002)</p>
   </div>
 
   <!-- Grafik Batang -->
@@ -260,17 +320,17 @@
       <div class="kpm-plot-area">
         <!-- Grup Nov 2026 -->
         <div class="kpm-bar-group">
-          <div class="kpm-bar bg-remaja" style="height: 59.12%;">
-            <span class="kpm-bar-label">73.9%</span>
+          <div class="kpm-bar bg-remaja" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
           </div>
-          <div class="kpm-bar bg-keluarga" style="height: 35.36%;">
-            <span class="kpm-bar-label">44.2%</span>
+          <div class="kpm-bar bg-keluarga" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
           </div>
           <div class="kpm-bar bg-bumil" style="height: 80%;">
             <span class="kpm-bar-label">100.0%</span>
           </div>
-          <div class="kpm-bar bg-anak" style="height: 74.4%;">
-            <span class="kpm-bar-label">93.0%</span>
+          <div class="kpm-bar bg-anak" style="height: 80%;">
+            <span class="kpm-bar-label">100.0%</span>
           </div>
           <div class="kpm-x-label">Nov 2026</div>
         </div>
@@ -316,64 +376,43 @@
     <table class="kpm-table">
       <thead>
         <tr>
-          <th>BULAN/TAHUN</th>
-          <th>SASARAN</th>
-          <th>TOTAL PANTAUAN</th>
-          <th>TERPANTAU</th>
-          <th>%</th>
-          <th>UPDATE PERHITUNGAN</th>
+          <th style="width: 16%;">AKSI</th>
+          <th style="width: 10%;">STATUS</th>
+          <th>NAMA KPM</th>
+          <th style="width: 22%;">NIK KPM</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Nov 2026</td>
-          <td>Remaja Putri</td>
-          <td>46</td>
-          <td>34</td>
-          <td>73,91%</td>
-          <td>21 November 2026 pukul 14.32</td>
-        </tr>
-        <tr>
-          <td>Nov 2026</td>
-          <td>Keluarga Sasaran</td>
-          <td>86</td>
-          <td>38</td>
-          <td>44,19%</td>
-          <td>21 November 2026 pukul 14.32</td>
-        </tr>
-        <tr>
-          <td>Nov 2026</td>
-          <td>Ibu Hamil dan Nifas</td>
-          <td>10</td>
-          <td>10</td>
-          <td>100%</td>
-          <td>21 November 2026 pukul 14.32</td>
-        </tr>
-        <tr>
-          <td>Nov 2026</td>
-          <td>Anak 0 - 59 Bulan</td>
-          <td>86</td>
-          <td>80</td>
-          <td>93,02%</td>
-          <td>21 November 2026 pukul 14.32</td>
-        </tr>
-        <tr>
-          <td>Okt 2026</td>
-          <td>Remaja Putri</td>
-          <td>14</td>
-          <td>14</td>
-          <td>100%</td>
-          <td>29 Oktober 2026 pukul 08.38</td>
-        </tr>
-        <tr>
-          <td>Okt 2026</td>
-          <td>Keluarga Sasaran</td>
-          <td>32</td>
-          <td>20</td>
-          <td>62,5%</td>
-          <td>29 Oktober 2026 pukul 08.38</td>
+          <td class="td-center">
+            <a href="#" class="kpm-btn-action">LIHAT PERFORMA</a>
+          </td>
+          <td class="td-center">AKTIF</td>
+          <td>MELDA KURNIAWATI</td>
+          <td class="td-center">
+            <button type="button" class="kpm-btn-nik" onclick="navigator.clipboard.writeText('7203195601890002'); alert('NIK disalin!');" title="Klik untuk menyalin NIK">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>NIK 7203195601890002</span>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination Bawah Tabel -->
+    <div class="kpm-pagination">
+      <div>
+        Records per page:
+        <select class="kpm-page-select" aria-label="Records per page">
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+      </div>
+      <div>1-1 of 1</div>
+    </div>
   </div>
 </div>
