@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+    <title>List yang sdh Bisa Unduh Sertifikat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        whatsapp: {
+                            DEFAULT: '#25D366',
+                            dark: '#128C7E',
+                            light: '#DCF8C6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-certificate text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">Monitoring Sertifikat</h1>
+                    <p class="text-xs text-slate-500">Kelola & bagikan daftar siap unduh ke WhatsApp</p>
+                </div>
+            </div>
+            <button onclick="openResetModal()" class="text-xs sm:text-sm font-medium text-slate-600 hover:text-rose-600 bg-slate-100 hover:bg-rose-50 px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5" title="Kembalikan daftar ke data awal">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Reset Data Awal</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Kolom Kiri: Manajemen List (7 Kolom di Desktop) -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+            
+            <!-- Card Tambah Data Baru -->
+            <section class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-600"></i>
+                    Tambah Desa Baru ke Daftar
+                </h2>
+                <form id="addForm" onsubmit="handleAddItem(event)" class="flex flex-col sm:flex-row gap-2.5">
+                    <div class="flex-1">
+                        <input type="text" id="newDesaInput" required placeholder="Nama Desa (cth: Desa Makmur)" 
+                            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                    </div>
+                    <div class="sm:w-44">
+                        <input type="text" id="newRoleInput" list="roleOptions" required placeholder="Peran (cth: Admin Desa)" 
+                            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                        <datalist id="roleOptions">
+                            <option value="Admin Desa">
+                            <option value="KPM">
+                            <option value="Admin Desa & KPM">
+                            <option value="Admin">
+                        </datalist>
+                    </div>
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-medium text-sm px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Tambah</span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Card Daftar Desa -->
+            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+                <!-- Toolbar Filter & Pencarian -->
+                <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50 space-y-3">
+                    <div class="flex flex-col sm:flex-row gap-2.5 justify-between">
+                        <!-- Search Input -->
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <input type="text" id="searchInput" oninput="renderList()" placeholder="Cari nama desa atau peran..." 
+                                class="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <!-- Filter Kategori -->
+                        <div class="flex bg-slate-200/70 p-1 rounded-xl text-xs font-medium overflow-x-auto">
+                            <button type="button" onclick="setFilter('ALL')" id="filter-ALL" class="filter-btn flex-1 sm:flex-none px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition-all">Semua</button>
+                            <button type="button" onclick="setFilter('ADMIN')" id="filter-ADMIN" class="filter-btn flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">Admin Desa</button>
+                            <button type="button" onclick="setFilter('KPM')" id="filter-KPM" class="filter-btn flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">KPM</button>
+                        </div>
+                    </div>
+
+                    <!-- Kontrol Pilih Semua & Counter -->
+                    <div class="flex items-center justify-between pt-1 text-xs text-slate-600">
+                        <label class="flex items-center gap-2 cursor-pointer select-none font-medium text-slate-700">
+                            <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this.checked)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer">
+                            <span>Pilih Semua untuk Dibagikan</span>
+                        </label>
+                        <span id="counterBadge" class="bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full">
+                            18 / 18 Terpilih
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Kontainer List Item -->
+                <div id="listContainer" class="divide-y divide-slate-100 max-h-[550px] overflow-y-auto">
+                    <!-- Item dirender via JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Kolom Kanan: Live Preview & Aksi WhatsApp (5 Kolom di Desktop) -->
+        <div class="lg:col-span-5">
+            <div class="sticky top-24 space-y-4">
+                <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-whatsapp text-lg"></i>
+                            <h2 class="text-sm font-semibold">Pratinjau Pesan WhatsApp</h2>
+                        </div>
+                        <span class="text-[11px] bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md">Live Preview</span>
+                    </div>
+                    
+                    <!-- Simulasi Bubble Chat WhatsApp -->
+                    <div class="p-4 bg-[#EFEAE2] relative">
+                        <div class="bg-white p-3.5 rounded-xl rounded-tl-none shadow-sm border border-slate-200/60 text-sm text-slate-800 font-sans whitespace-pre-wrap leading-relaxed max-h-[360px] overflow-y-auto" id="waPreviewBox">
+                            <!-- Preview teks otomatis diisi JS -->
+                        </div>
+                        <div class="mt-2 text-right">
+                            <span class="text-[11px] text-slate-500 italic">*Nomor urut otomatis menyesuaikan item yang dicentang</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Utama -->
+                    <div class="p-4 bg-white border-t border-slate-100 flex flex-col gap-2.5">
+                        <button onclick="shareToWhatsApp()" class="w-full bg-whatsapp hover:bg-whatsapp-dark active:scale-[0.99] text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Share ke WhatsApp</span>
+                        </button>
+                        
+                        <button onclick="copyToClipboard()" class="w-full bg-slate-100 hover:bg-slate-200 active:scale-[0.99] text-slate-700 font-medium py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Salin Teks ke Clipboard</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Edit Item -->
+    <div id="editModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-xl border border-slate-100 transform transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-bold text-slate-900">Edit Data Desa</h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="editForm" onsubmit="saveEditItem(event)" class="space-y-4">
+                <input type="hidden" id="editItemId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Desa</label>
+                    <input type="text" id="editDesaInput" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori / Peran</label>
+                    <input type="text" id="editRoleInput" list="roleOptions" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition-colors">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Reset (Pengganti confirm() bawaan) -->
+    <div id="resetModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-slate-100 text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-1">Reset ke Data Awal?</h3>
+            <p class="text-xs text-slate-500 mb-5">Semua penambahan, edit, atau penghapusan yang Anda lakukan akan dikembalikan ke 18 daftar awal.</p>
+            <div class="flex gap-2">
+                <button onclick="closeResetModal()" class="flex-1 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Batal</button>
+                <button onclick="confirmResetData()" class="flex-1 py-2.5 text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-colors">Ya, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Berhasil disalin!</span>
+    </div>
+
+    <!-- Hidden Textarea untuk fallback copy clipboard -->
+    <textarea id="hiddenCopyArea" class="sr-only" aria-hidden="true"></textarea>
+
+    <script>
+        // Data awal sesuai daftar yang diberikan user
+        const INITIAL_DATA = [
+            { id: 1, desa: "Desa Wani Lumbupetigo", role: "Admin Desa", selected: true },
+            { id: 2, desa: "Desa Manimbaya", role: "Admin Desa", selected: true },
+            { id: 3, desa: "Desa Bukit Indah", role: "KPM", selected: true },
+            { id: 4, desa: "Desa Saloya", role: "KPM", selected: true },
+            { id: 5, desa: "Desa Tovia Tambu", role: "Admin Desa & KPM", selected: true },
+            { id: 6, desa: "Desa Kaliburu", role: "KPM", selected: true },
+            { id: 7, desa: "Desa Salungkaenu", role: "Admin Desa", selected: true },
+            { id: 8, desa: "Desa Dangraa Kec. Pinembani", role: "Admin Desa", selected: true },
+            { id: 9, desa: "Desa Polanto Jaya", role: "Admin Desa", selected: true },
+            { id: 10, desa: "Desa Lenju", role: "Admin Desa", selected: true },
+            { id: 11, desa: "Desa Polando Jaya", role: "Admin Desa", selected: true },
+            { id: 12, desa: "Desa Saloya", role: "Admin", selected: true },
+            { id: 13, desa: "Desa Tavanggeli", role: "Admin", selected: true },
+            { id: 14, desa: "Desa Tibo", role: "KPM", selected: true },
+            { id: 15, desa: "Desa Tibo", role: "Admin", selected: true },
+            { id: 16, desa: "Desa Lampo", role: "Admin", selected: true },
+            { id: 17, desa: "Desa Lalombi", role: "Admin", selected: true },
+            { id: 18, desa: "Desa Siweli", role: "KPM", selected: true }
+        ];
+
+        const STORAGE_KEY = 'sertifikat_desa_list_v1';
+        let items = [];
+        let currentFilter = 'ALL'; // 'ALL', 'ADMIN', 'KPM'
+
+        // Inisialisasi aplikasi saat halaman dimuat
+        function initApp() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                try {
+                    items = JSON.parse(savedData);
+                } catch (e) {
+                    items = JSON.parse(JSON.stringify(INITIAL_DATA));
+                }
+            } else {
+                items = JSON.parse(JSON.stringify(INITIAL_DATA));
+            }
+            renderList();
+        }
+
+        // Simpan ke localStorage
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        }
+
+        // Menentukan warna badge berdasarkan peran
+        function getRoleBadgeStyle(role) {
+            const lower = role.toLowerCase();
+            if (lower.includes('admin') && lower.includes('kpm')) {
+                return 'bg-purple-100 text-purple-800 border-purple-200';
+            } else if (lower.includes('admin')) {
+                return 'bg-blue-100 text-blue-800 border-blue-200';
+            } else if (lower.includes('kpm')) {
+                return 'bg-amber-100 text-amber-800 border-amber-200';
+            }
+            return 'bg-slate-100 text-slate-700 border-slate-200';
+        }
+
+        // Set filter kategori
+        function setFilter(filterType) {
+            currentFilter = filterType;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`filter-${filterType}`);
+            activeBtn.classList.remove('text-slate-600');
+            activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            renderList();
+        }
+
+        // Render daftar item ke DOM
+        function renderList() {
+            const container = document.getElementById('listContainer');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            // Filter item berdasarkan pencarian dan kategori
+            const filteredItems = items.filter(item => {
+                const matchesSearch = item.desa.toLowerCase().includes(searchQuery) || 
+                                      item.role.toLowerCase().includes(searchQuery);
+                if (!matchesSearch) return false;
+
+                if (currentFilter === 'ADMIN') {
+                    return item.role.toLowerCase().includes('admin');
+                } else if (currentFilter === 'KPM') {
+                    return item.role.toLowerCase().includes('kpm');
+                }
+                return true;
+            });
+
+            // Update status checkbox "Pilih Semua"
+            const selectAllCb = document.getElementById('selectAllCheckbox');
+            selectAllCb.checked = items.length > 0 && items.every(i => i.selected);
+
+            // Update Counter Badge
+            const selectedCount = items.filter(i => i.selected).length;
+            document.getElementById('counterBadge').textContent = `${selectedCount} / ${items.length} Terpilih`;
+
+            // Render HTML list
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-slate-400">
+                        <i class="fa-regular fa-folder-open text-3xl mb-2"></i>
+                        <p class="text-sm">Tidak ada data desa yang cocok dengan pencarian.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = filteredItems.map((item, idx) => {
+                    // Cari nomor urut asli di array utama
+                    const originalIndex = items.findIndex(i => i.id === item.id) + 1;
+                    const badgeClass = getRoleBadgeStyle(item.role);
+                    
+                    return `
+                        <div class="p-3.5 sm:px-5 flex items-center justify-between gap-3 hover:bg-slate-50 transition-colors ${!item.selected ? 'opacity-60 bg-slate-50/50' : ''}">
+                            <div class="flex items-center gap-3 min-w-0 flex-1">
+                                <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleItem(${item.id})" 
+                                    class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer shrink-0">
+                                
+                                <span class="text-xs font-semibold text-slate-400 w-5 text-right shrink-0">${originalIndex}.</span>
+                                
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm font-semibold text-slate-800 truncate">${escapeHTML(item.desa)}</p>
+                                    <span class="inline-block mt-1 text-[11px] font-medium px-2 py-0.5 rounded-md border ${badgeClass}">
+                                        ${escapeHTML(item.role)}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button onclick="openEditModal(${item.id})" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit data">
+                                    <i class="fa-solid fa-pen-to-square text-sm"></i>
+                                </button>
+                                <button onclick="deleteItem(${item.id})" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Hapus data">
+                                    <i class="fa-solid fa-trash-can text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            updateWhatsAppPreview();
+        }
+
+        // Format pesan WhatsApp
+        function generateWhatsAppMessage() {
+            const selectedItems = items.filter(item => item.selected);
+            if (selectedItems.length === 0) {
+                return "*List yang sudah bisa unduh sertifikat :*\n\n_(Belum ada desa yang dipilih)_";
+            }
+
+            let text = "*List yang sudah bisa unduh sertifikat :*\n\n";
+            selectedItems.forEach((item, index) => {
+                text += `${index + 1}. ${item.desa}, ${item.role}\n`;
+            });
+            return text.trim();
+        }
+
+        // Update kotak preview WhatsApp
+        function updateWhatsAppPreview() {
+            const previewBox = document.getElementById('waPreviewBox');
+            const rawText = generateWhatsAppMessage();
+            // Ubah *teks* menjadi <strong>teks</strong> khusus untuk tampilan visual HTML
+            const formattedHTML = escapeHTML(rawText).replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+            previewBox.innerHTML = formattedHTML;
+        }
+
+        // Tambah item baru
+        function handleAddItem(e) {
+            e.preventDefault();
+            const desaInput = document.getElementById('newDesaInput');
+            const roleInput = document.getElementById('newRoleInput');
+            
+            const desa = desaInput.value.trim();
+            const role = roleInput.value.trim();
+
+            if (!desa || !role) return;
+
+            const newItem = {
+                id: Date.now(),
+                desa: desa,
+                role: role,
+                selected: true
+            };
+
+            items.push(newItem);
+            saveData();
+            
+            desaInput.value = '';
+            roleInput.value = '';
+            
+            renderList();
+            showToast('Desa berhasil ditambahkan ke daftar!');
+        }
+
+        // Toggle centang satu item
+        function toggleItem(id) {
+            const item = items.find(i => i.id === id);
+            if (item) {
+                item.selected = !item.selected;
+                saveData();
+                renderList();
+            }
+        }
+
+        // Toggle pilih semua
+        function toggleSelectAll(checked) {
+            items.forEach(item => item.selected = checked);
+            saveData();
+            renderList();
+        }
+
+        // Hapus item
+        function deleteItem(id) {
+            items = items.filter(item => item.id !== id);
+            saveData();
+            renderList();
+            showToast('Item dihapus dari daftar', 'fa-trash-can text-rose-400');
+        }
+
+        // Buka modal edit
+        function openEditModal(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('editDesaInput').value = item.desa;
+            document.getElementById('editRoleInput').value = item.role;
+
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Tutup modal edit
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Simpan hasil edit
+        function saveEditItem(e) {
+            e.preventDefault();
+            const id = Number(document.getElementById('editItemId').value);
+            const newDesa = document.getElementById('editDesaInput').value.trim();
+            const newRole = document.getElementById('editRoleInput').value.trim();
+
+            const item = items.find(i => i.id === id);
+            if (item && newDesa && newRole) {
+                item.desa = newDesa;
+                item.role = newRole;
+                saveData();
+                renderList();
+                closeEditModal();
+                showToast('Perubahan berhasil disimpan!');
+            }
+        }
+
+        // Modal Reset Data Awal
+        function openResetModal() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmResetData() {
+            items = JSON.parse(JSON.stringify(INITIAL_DATA));
+            saveData();
+            document.getElementById('searchInput').value = '';
+            setFilter('ALL');
+            closeResetModal();
+            showToast('Daftar dikembalikan ke data awal!');
+        }
+
+        // Share langsung ke WhatsApp
+        function shareToWhatsApp() {
+            const selectedCount = items.filter(i => i.selected).length;
+            if (selectedCount === 0) {
+                showToast('Pilih minimal 1 desa terlebih dahulu!', 'fa-circle-exclamation text-amber-400');
+                return;
+            }
+            const message = generateWhatsAppMessage();
+            const encodedText = encodeURIComponent(message);
+            const waUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // Salin teks ke Clipboard (menggunakan execCommand agar aman di iframe)
+        function copyToClipboard() {
+            const message = generateWhatsAppMessage();
+            const textArea = document.getElementById('hiddenCopyArea');
+            textArea.value = message;
+            textArea.classList.remove('sr-only');
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+
+            try {
+                document.execCommand('copy');
+                showToast('Berhasil disalin!');
+            } catch (err) {
+                showToast('Gagal menyalin teks', 'fa-circle-xmark text-rose-400');
+            }
+            textArea.classList.add('sr-only');
+        }
+
+        // Tampilkan notifikasi Toast
+        let toastTimeout;
+        function showToast(msg, iconClass = 'fa-circle-check text-emerald-400') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = msg;
+            toastIcon.className = `fa-solid ${iconClass}`;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            }, 2500);
+        }
+
+        // Helper mencegah XSS
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag])
+            );
+        }
+
+        // Jalankan saat halaman selesai dimuat
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
