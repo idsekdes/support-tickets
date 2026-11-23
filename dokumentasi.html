@@ -1,0 +1,491 @@
+<style>
+  .galeri-desa-wrapper {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 0 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .galeri-desa-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .galeri-desa-header h2 {
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+    color: #111827;
+  }
+
+  .galeri-desa-header p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #6b7280;
+  }
+
+  .galeri-desa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .galeri-desa-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .galeri-desa-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  }
+
+  .galeri-desa-card img {
+    display: block;
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  .galeri-desa-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .galeri-desa-caption {
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background: #ffffff;
+    border-top: 1px solid #f3f4f6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Lightbox Modal */
+  .galeri-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.88);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .galeri-lightbox.active {
+    display: flex;
+  }
+
+  .galeri-lightbox-content {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .galeri-lightbox-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .galeri-lightbox-title {
+    margin-top: 12px;
+    color: #f9fafb;
+    font-size: 0.95rem;
+  }
+
+  .galeri-lightbox-close {
+    position: fixed;
+    top: 18px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .galeri-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  @media (max-width: 600px) {
+    .galeri-desa-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .galeri-desa-card img {
+      height: 140px;
+    }
+  }
+</style>
+
+<div class="galeri-desa-wrapper">
+  <div class="galeri-desa-header">
+    <h2>Dokumentasi &amp; Kegiatan Desa</h2>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1767107096/logo_donggala-fix-2025_napiej.png">
+    <p>Klik pada foto untuk melihat tampilan penuh</p>
+  </div>
+
+  <div class="galeri-desa-grid" id="galeriDesaGrid">
+    <figure class="galeri-desa-card" data-title="Dokumentasi 1">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680361915/IMAGE22_dvyge7.png" alt="Dokumentasi 1" loading="lazy">
+      <figcaption class="galeri-desa-caption">Dokumentasi 1</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Masjid">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680361918/MASJID33_trxh8h.png" alt="Masjid" loading="lazy">
+      <figcaption class="galeri-desa-caption">Masjid</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BPD">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680361917/BPD44_dhulsn.png" alt="BPD" loading="lazy">
+      <figcaption class="galeri-desa-caption">BPD</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kader">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680361917/KADER8_dmketi.png" alt="Kader" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kader</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Album Kegiatan">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680361917/MYALBUM3_mpknjn.png" alt="Album Kegiatan" loading="lazy">
+      <figcaption class="galeri-desa-caption">Album Kegiatan</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 2021">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/blt2021_xi7raq.png" alt="BLT 2021" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 2021</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Memori Kegiatan">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362557/memory_aagghe.png" alt="Memori Kegiatan" loading="lazy">
+      <figcaption class="galeri-desa-caption">Memori Kegiatan</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT Dana Desa 2021">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/Blt-dd-2021_ebikzw.png" alt="BLT Dana Desa 2021" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT Dana Desa 2021</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Siltap">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/SILTAP-009_e7uwsm.png" alt="Siltap" loading="lazy">
+      <figcaption class="galeri-desa-caption">Siltap</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT DD 21">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/blt-dd21_hob8d0.png" alt="BLT DD 21" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT DD 21</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 2021 (1)">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/blt-2021-1_nzioy6.png" alt="BLT 2021 (1)" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 2021 (1)</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 009">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362556/BLT-009_ddqrbm.png" alt="BLT 009" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 009</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 02">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362555/JUT-02_vqx0s7.png" alt="JUT 02" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 02</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 01">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362555/JUT-01_zvs8hx.png" alt="JUT 01" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 01</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 019">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362555/BLT-019_upb4hk.png" alt="BLT 019" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 019</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Dokumen 1">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362555/DOKUMEN-1_xjaxgh.png" alt="Dokumen 1" loading="lazy">
+      <figcaption class="galeri-desa-caption">Dokumen 1</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 2022">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362555/BLT-2022-01_ynz0xl.png" alt="BLT 2022" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 2022</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 04">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680362554/JUT-04_wlcqnp.png" alt="JUT 04" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 04</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penyaluran BLT">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365937/lagi-blt_zbv2z1.png" alt="Penyaluran BLT" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penyaluran BLT</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Kader 2">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365937/kader2_ezwzli.png" alt="Kegiatan Kader 2" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Kader 2</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Kader 4">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365936/kader4_zk3dam.png" alt="Kegiatan Kader 4" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Kader 4</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Kader 5">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365936/kader5_yxuink.png" alt="Kegiatan Kader 5" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Kader 5</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Pelatihan">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365935/pelatihan_hp4yz6.png" alt="Pelatihan" loading="lazy">
+      <figcaption class="galeri-desa-caption">Pelatihan</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kader 888">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365934/kader888_vs1fpm.png" alt="Kader 888" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kader 888</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Pelatihan 09">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365934/pelatihan09_mxpes6.png" alt="Pelatihan 09" loading="lazy">
+      <figcaption class="galeri-desa-caption">Pelatihan 09</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Pelatihan 2">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365934/pelatihan2_piaorw.png" alt="Pelatihan 2" loading="lazy">
+      <figcaption class="galeri-desa-caption">Pelatihan 2</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Pelatihan 10">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365933/pelatihan10_yql1qa.png" alt="Pelatihan 10" loading="lazy">
+      <figcaption class="galeri-desa-caption">Pelatihan 10</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Pelatihan 44">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365932/pelatihan44_y1s1xw.png" alt="Pelatihan 44" loading="lazy">
+      <figcaption class="galeri-desa-caption">Pelatihan 44</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 65">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365932/stunting65_u6qfvq.png" alt="Penanganan Stunting 65" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 65</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 3">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365932/stunting3_l2r7sy.png" alt="Penanganan Stunting 3" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 3</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 12">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365931/stunting12_dsskpe.png" alt="Penanganan Stunting 12" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 12</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 10">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365931/stunting10_ap6gnx.png" alt="Penanganan Stunting 10" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 10</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365930/stuntingfix_l83zcj.png" alt="Penanganan Stunting" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 22">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365930/stunting22_kw8bvn.png" alt="Penanganan Stunting 22" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 22</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 90">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365930/stunting90_v3ne3b.png" alt="Penanganan Stunting 90" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 90</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Lansia 10">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365928/lansia10_zkxito.png" alt="Kegiatan Lansia 10" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Lansia 10</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Lansia">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365928/lansia_sbmnns.png" alt="Kegiatan Lansia" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Lansia</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Lansia 3">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365928/lansia3_m5bekl.png" alt="Kegiatan Lansia 3" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Lansia 3</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Lansia 209">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365927/lansia209_mbwv51.png" alt="Kegiatan Lansia 209" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Lansia 209</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 0K">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365926/blt0k_gcrdga.png" alt="BLT 0K" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 0K</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 09">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365925/blt-09_yr4qa3.png" alt="BLT 09" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 09</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 899">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365925/blt899_la302u.png" alt="BLT 899" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 899</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT 2020">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365925/blt2020-ok_eeyleg.png" alt="BLT 2020" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT 2020</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT Lanjutan">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365923/blt-lagi_p9nsoz.png" alt="BLT Lanjutan" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT Lanjutan</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 0989">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365923/stunting0989_qmy3pr.png" alt="Penanganan Stunting 0989" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 0989</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="BLT OKK">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365923/blt-okk_sn6ftw.png" alt="BLT OKK" loading="lazy">
+      <figcaption class="galeri-desa-caption">BLT OKK</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 9090">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365922/stunting9090_v1fpqt.png" alt="Penanganan Stunting 9090" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 9090</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 88">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365921/stuntig88_s1lzws.png" alt="Penanganan Stunting 88" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 88</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Penanganan Stunting 999">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680365921/stunting999_vl0oku.png" alt="Penanganan Stunting 999" loading="lazy">
+      <figcaption class="galeri-desa-caption">Penanganan Stunting 999</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 55">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369723/keg-55_x2c7oc.png" alt="Kegiatan Desa 55" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 55</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 98">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369720/kegiatan-98_vc0odz.png" alt="Kegiatan Desa 98" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 98</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 04">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369719/keg-04_jdv6fp.png" alt="Kegiatan Desa 04" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 04</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 02">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369718/keg-02_fr811o.png" alt="Kegiatan Desa 02" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 02</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 98A">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369716/keg-98_vkkusb.png" alt="Kegiatan Desa 98A" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 98A</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 99">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369715/keg-99_twmguk.png" alt="Kegiatan Desa 99" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 99</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 03">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369715/keg-03_nwnhve.png" alt="Kegiatan Desa 03" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 03</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 05">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369715/keg-05_g5zkhf.png" alt="Kegiatan Desa 05" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 05</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan Desa 06">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369713/keg-06_u4hvcr.png" alt="Kegiatan Desa 06" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan Desa 06</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 87">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369712/kegiatan87_q6rjpc.png" alt="Kegiatan 87" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 87</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 990">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369711/keg-990_ufbycw.png" alt="Kegiatan 990" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 990</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 988">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369711/JUT988_fx9vuq.png" alt="JUT 988" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 988</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 098">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369710/keg-098_ii5gkx.png" alt="Kegiatan 098" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 098</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 798">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369709/keg-798_fjb6iw.png" alt="Kegiatan 798" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 798</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 887">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369709/keg-887_qnvycg.png" alt="Kegiatan 887" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 887</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 44">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369709/keg-44_fwy1ps.png" alt="Kegiatan 44" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 44</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 090">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369707/keg-090_kn9kca.png" alt="Kegiatan 090" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 090</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 10">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369707/JUT-10_ni7owm.png" alt="JUT 10" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 10</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 82">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369706/JUT-82_rz0zuv.png" alt="JUT 82" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 82</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="Kegiatan 980">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369706/keg-980_uc0frk.png" alt="Kegiatan 980" loading="lazy">
+      <figcaption class="galeri-desa-caption">Kegiatan 980</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 09">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369705/JUT-09_j1a07c.png" alt="JUT 09" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 09</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 08">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369705/JUT-08_xume04.png" alt="JUT 08" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 08</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 18">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369704/JUT18_grlpjv.png" alt="JUT 18" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 18</figcaption>
+    </figure>
+    <figure class="galeri-desa-card" data-title="JUT 54">
+      <img src="https://res.cloudinary.com/dpr2vc3b0/image/upload/v1680369704/JUT54_wvpq30.png" alt="JUT 54" loading="lazy">
+      <figcaption class="galeri-desa-caption">JUT 54</figcaption>
+    </figure>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="galeri-lightbox" id="galeriLightbox" aria-hidden="true">
+  <button type="button" class="galeri-lightbox-close" id="galeriLightboxClose" aria-label="Tutup">&times;</button>
+  <div class="galeri-lightbox-content">
+    <img id="galeriLightboxImg" src="" alt="">
+    <div class="galeri-lightbox-title" id="galeriLightboxTitle"></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const grid = document.getElementById("galeriDesaGrid");
+    const lightbox = document.getElementById("galeriLightbox");
+    const lightboxImg = document.getElementById("galeriLightboxImg");
+    const lightboxTitle = document.getElementById("galeriLightboxTitle");
+    const closeBtn = document.getElementById("galeriLightboxClose");
+
+    if (!grid || !lightbox) return;
+
+    grid.addEventListener("click", function (e) {
+      const card = e.target.closest(".galeri-desa-card");
+      if (!card) return;
+      const img = card.querySelector("img");
+      if (!img) return;
+
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || "";
+      lightboxTitle.textContent = card.dataset.title || img.alt || "";
+      lightbox.classList.add("active");
+      lightbox.setAttribute("aria-hidden", "false");
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove("active");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && lightbox.classList.contains("active")) {
+        closeLightbox();
+      }
+    });
+  })();
+</script>
