@@ -49,6 +49,15 @@
       </div>
 
       <div class="mb-3">
+        <label class="form-label fw-semibold">Jabatan</label>
+        <select class="form-select" id="jabatan" required>
+          <option value="" disabled selected>-- Pilih Jabatan --</option>
+          <option value="ADMIN DESA">ADMIN DESA</option>
+          <option value="KPM">KPM</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
         <label class="form-label fw-semibold">Pilih File Sertifikat (PDF / JPG / PNG)</label>
         <input type="file" class="form-control" id="fileSertifikat" accept=".pdf,.jpg,.jpeg,.png" required>
         <div class="form-text">Disarankan file PDF di bawah 5 MB atau foto JPG/PNG.</div>
@@ -71,14 +80,16 @@
     <div id="hasilArea" class="text-center my-4 d-none">
       <div class="alert alert-success">
         <h5 class="alert-heading fw-bold">Upload Berhasil!</h5>
-        <p class="mb-0">Sertifikat <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah dikirim dan direkap ke sistem.</p>
+        <p class="mb-0">
+          Sertifikat <strong><span id="resJabatan"></span></strong> — <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah tersimpan dan direkap.
+        </p>
       </div>
       <div class="d-grid gap-2">
         <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuvz8kh_YY0xode24ydq7ubqAr5RS_d0hl6hC371cjTS6VHSqdqPMYCJfMksVBpk4RzP-SVMid5L7F/pubhtml?gid=0&single=true" target="_blank" class="btn btn-outline-primary">
           📊 Cek Rekapitulasi Spreadsheet
         </a>
         <button type="button" class="btn btn-link text-decoration-none mt-2" onclick="resetForm()">
-          + Upload Sertifikat Desa Lainnya
+          + Upload Sertifikat Lainnya
         </button>
       </div>
     </div>
@@ -117,11 +128,16 @@
     document.getElementById('formUpload').classList.add('d-none');
     document.getElementById('loadingArea').classList.remove('d-none');
 
+    const desaVal = document.getElementById('desa').value;
+    const kecamatanVal = document.getElementById('kecamatan').value;
+    const jabatanVal = document.getElementById('jabatan').value;
+
     if (file.type.startsWith('image/')) {
       kompresGambar(file, function(base64Kompres) {
         eksekusiFetch({
-          desa: document.getElementById('desa').value,
-          kecamatan: document.getElementById('kecamatan').value,
+          desa: desaVal,
+          kecamatan: kecamatanVal,
+          jabatan: jabatanVal,
           fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
           mimeType: "image/jpeg",
           fileData: base64Kompres
@@ -131,8 +147,9 @@
       const reader = new FileReader();
       reader.onload = function(event) {
         eksekusiFetch({
-          desa: document.getElementById('desa').value,
-          kecamatan: document.getElementById('kecamatan').value,
+          desa: desaVal,
+          kecamatan: kecamatanVal,
+          jabatan: jabatanVal,
           fileName: file.name,
           mimeType: file.type,
           fileData: event.target.result
@@ -175,7 +192,6 @@
 
   async function eksekusiFetch(payload) {
     try {
-      // mode: "no-cors" mencegah error Failed to fetch akibat redirect Google Apps Script
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
@@ -185,9 +201,9 @@
         body: JSON.stringify(payload)
       });
 
-      // Beri jeda 2.5 detik agar Google Drive selesai menyimpan file
       setTimeout(() => {
         document.getElementById('loadingArea').classList.add('d-none');
+        document.getElementById('resJabatan').innerText = payload.jabatan;
         document.getElementById('resDesa').innerText = payload.desa.trim().toUpperCase();
         document.getElementById('resKecamatan').innerText = payload.kecamatan.trim().toUpperCase();
         document.getElementById('hasilArea').classList.remove('d-none');
