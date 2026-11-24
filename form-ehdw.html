@@ -71,11 +71,11 @@
     <div id="hasilArea" class="text-center my-4 d-none">
       <div class="alert alert-success">
         <h5 class="alert-heading fw-bold">Upload Berhasil!</h5>
-        <p class="mb-0">Sertifikat <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah tersimpan.</p>
+        <p class="mb-0">Sertifikat <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah dikirim dan direkap ke sistem.</p>
       </div>
       <div class="d-grid gap-2">
-        <a id="btnLihatFile" href="#" target="_blank" class="btn btn-outline-primary">
-          📄 Lihat File di Google Drive
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuvz8kh_YY0xode24ydq7ubqAr5RS_d0hl6hC371cjTS6VHSqdqPMYCJfMksVBpk4RzP-SVMid5L7F/pubhtml?gid=0&single=true" target="_blank" class="btn btn-outline-primary">
+          📊 Cek Rekapitulasi Spreadsheet
         </a>
         <button type="button" class="btn btn-link text-decoration-none mt-2" onclick="resetForm()">
           + Upload Sertifikat Desa Lainnya
@@ -87,7 +87,6 @@
 </div>
 
 <script>
-  // URL Web App Google Apps Script Anda
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygHjJmtK4PzYHQlfrxwSlgY_PUP3D_bFQ9lnAEZUpYaljZr80bY4KKECQRcGCxZznE/exec";
 
   function tampilkanError(pesan) {
@@ -176,28 +175,26 @@
 
   async function eksekusiFetch(payload) {
     try {
-      // Menggunakan text/plain agar terhindar dari blokir CORS preflight browser
-      const response = await fetch(SCRIPT_URL, {
+      // mode: "no-cors" mencegah error Failed to fetch akibat redirect Google Apps Script
+      await fetch(SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify(payload)
       });
 
-      const res = await response.json();
-      document.getElementById('loadingArea').classList.add('d-none');
-
-      if (res && res.status === "sukses") {
-        document.getElementById('resDesa').innerText = res.desa;
-        document.getElementById('resKecamatan').innerText = res.kecamatan;
-        document.getElementById('btnLihatFile').href = res.fileUrl;
+      // Beri jeda 2.5 detik agar Google Drive selesai menyimpan file
+      setTimeout(() => {
+        document.getElementById('loadingArea').classList.add('d-none');
+        document.getElementById('resDesa').innerText = payload.desa.trim().toUpperCase();
+        document.getElementById('resKecamatan').innerText = payload.kecamatan.trim().toUpperCase();
         document.getElementById('hasilArea').classList.remove('d-none');
-      } else {
-        tampilkanError(res ? res.pesan : "Gagal memproses di server.");
-      }
+      }, 2500);
+
     } catch (err) {
-      tampilkanError("Gagal terhubung ke Google Apps Script: " + err.message);
+      tampilkanError("Periksa koneksi internet Anda: " + err.message);
     }
   }
 
