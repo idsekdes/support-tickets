@@ -1,320 +1,412 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petugas Pemungut PBB Desa Se-Kecamatan Tanantovea</title>
-    <!-- Favicon AppDesa -->
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
-    <link rel="shortcut icon" type="image/x-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
-    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1789837459/icon-appdesa_zz6dwp.png">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
-            min-height: 100vh;
-        }
-        .header-pattern {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
-            box-shadow: 0 10px 25px -5px rgba(3, 105, 161, 0.4);
-        }
-        .card-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        .card-shadow:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -10px rgba(2, 132, 199, 0.25);
-        }
+<!doctype html>
+<html lang="id"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260729-01-9dad521","C":{"Alfa Slab One":"YACgEYS9sJU_0","Archivo":"YAHO2-t-jNE_0","Arial":"YAGyDp9gliI_0","Canva Sans":"YAFLd8sKbwc_2","Cormorant Garamond":"YAFdJhX-538_0","Courier New":"YAGzXiGs0_8_0","Georgia":"YAGzXkO0pEM_0","Impact":"YAFcfnjI7Vk_0","Inter":"YADSwGZbFSo_0","Iowan Old Style":"YAGNIFa8j9o_0","JetBrains Mono":"YAFdJksXcAk_0","Playfair Display":"YACgEYmuCJE_0","Space Grotesk":"YAHO2sjPCSM_0","Times":"YAGzXW3gftg_0","Times New Roman":"YAGzXW3gftg_0","Trebuchet MS":"YAFcfrglpVA_0","Verdana":"YAGzXTctYtQ_0","Work Sans":"YAGXhLOKv44_0","Yellowtail":"YACgEYG4kG4_0"}}');</script><script src="/_sdk/a27874207e105461.telemetry_sdk.js" integrity="sha512-wgI5N9F7oA2h3vH+benMYIv4wGqTct4nKWakqgvfgRyBLmfYq8q/fi6gkfWKd2hMsyN+VQ/qOAOpxybwkcoxlA=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPBB Desa Wani Lumbumpetigo</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        .sidebar-item.active { background: rgba(255,255,255,0.15); border-right: 3px solid #34d399; }
+        .stat-card { transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); }
+        .bar { transition: height 0.5s ease; }
+        .dark body, .dark .main-bg { background: #1a1a2e !important; color: #e0e0e0; }
+        .dark .card-bg { background: #16213e !important; }
+        .dark .table-row:hover { background: #1a1a2e; }
     </style>
-</head>
-<body class="text-slate-800 flex flex-col min-h-screen">
-
-    <!-- Header Section -->
-    <header class="header-pattern text-white pt-8 pb-12 px-4 sm:px-6 relative overflow-hidden rounded-b-[2.5rem] md:rounded-b-[3.5rem] border-b-4 border-amber-400">
-        <!-- Decorative Background Wave/Shapes -->
-        <div class="absolute -right-16 -top-16 w-64 h-64 bg-sky-400 opacity-20 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-blue-300 opacity-20 rounded-full blur-2xl pointer-events-none"></div>
-
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-            <!-- Top Subtitle Badge -->
-            <div class="inline-flex items-center gap-2 bg-amber-400 text-sky-950 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm uppercase tracking-wider mb-4 shadow-md">
-                <i class="fa-solid fa-map-location-dot"></i> Kabupaten Donggala
-            </div>
-            
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white drop-shadow-md mb-3 leading-tight">
-                Petugas Pemungut <span class="text-amber-300 underline decoration-wavy decoration-2 underline-offset-8">PBB</span>
-            </h1>
-            
-            <p class="text-lg sm:text-2xl font-semibold text-sky-100 max-w-2xl mx-auto tracking-wide">
-                Desa Se-Kecamatan Tanantovea
-            </p>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 -mt-6 sm:-mt-8 relative z-20 pb-16">
-        
-        <!-- Search & Filter Bar -->
-        <div class="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg mb-8 border border-white/50 flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div class="relative w-full sm:w-96">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-sky-500">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="searchInput" placeholder="Cari nama desa atau nama petugas..." 
-                    class="w-full pl-11 pr-4 py-3 bg-sky-50/70 border border-sky-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
-            </div>
-            <div class="text-xs sm:text-sm text-sky-900 font-semibold bg-sky-100 px-4 py-3 rounded-xl w-full sm:w-auto text-center">
-                <i class="fa-solid fa-users text-sky-600 mr-1.5"></i> Total: <span id="totalCount">10</span> Desa Terdaftar
-            </div>
-        </div>
-
-        <!-- Cards Grid Container -->
-        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            <!-- Data Cards will be populated via JavaScript -->
-        </div>
-
-        <!-- Empty State (Hidden by default) -->
-        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl shadow-sm border border-slate-100 mt-4">
-            <div class="text-5xl text-sky-300 mb-3">
-                <i class="fa-solid fa-folder-open"></i>
-            </div>
-            <h3 class="text-lg font-bold text-slate-700">Desa atau Petugas Tidak Ditemukan</h3>
-            <p class="text-sm text-slate-400 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
-        </div>
-
-    </main>
-
-    <!-- Footer Banner / Motivational Quote -->
-    <footer class="bg-sky-900 text-white py-8 px-4 border-t-4 border-amber-400">
-        <div class="max-w-4xl mx-auto text-center flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div class="bg-sky-800 p-4 rounded-2xl shadow-inner border border-sky-700">
-                <i class="fa-solid fa-handshake-angle text-3xl text-amber-400"></i>
-            </div>
-            <div>
-                <h4 class="text-base sm:text-lg font-bold text-amber-300">Bayar PBB Bersama Membangun Desa</h4>
-                <p class="text-xs sm:text-sm text-sky-200 mt-1">PBB untuk Desa, Desa untuk Kita Semua. Mari taat pajak demi kemajuan daerah kita tercinta.</p>
-            </div>
-        </div>
-        <div class="text-center text-xs text-sky-400 mt-6 pt-4 border-t border-sky-800/60">
-            &copy; 2026 Kecamatan Tanantovea &bull; Kabupaten Donggala
-        </div>
-    </footer>
-
-    <!-- JavaScript Data and Interaction Logic -->
-    <script>
-        // Data Petugas PBB Kecamatan Tanantovea
-        const petugasData = [
-            {
-                id: 1,
-                desa: "Desa Bale",
-                nama: "Rahmat",
-                hp: "082211800489",
-                badgeColor: "bg-emerald-600",
-                badgeBorder: "border-emerald-700",
-                cardBorder: "border-emerald-500",
-                headerBg: "bg-emerald-700"
-            },
-            {
-                id: 2,
-                desa: "Desa Guntarano",
-                nama: "YULIASTRIAWATI",
-                hp: "085241293122",
-                badgeColor: "bg-sky-600",
-                badgeBorder: "border-sky-700",
-                cardBorder: "border-sky-500",
-                headerBg: "bg-sky-700"
-            },
-            {
-                id: 3,
-                desa: "Desa Nupabomba",
-                nama: "Moh Rizal",
-                hp: "082195278564",
-                badgeColor: "bg-amber-600",
-                badgeBorder: "border-amber-700",
-                cardBorder: "border-amber-500",
-                headerBg: "bg-amber-600"
-            },
-            {
-                id: 4,
-                desa: "Desa Wombo Mpanau",
-                nama: "Alia Hardiati Utami",
-                hp: "082349239824",
-                badgeColor: "bg-purple-600",
-                badgeBorder: "border-purple-700",
-                cardBorder: "border-purple-500",
-                headerBg: "bg-purple-700"
-            },
-            {
-                id: 5,
-                desa: "Desa Wombo",
-                nama: "Winda",
-                hp: "082125205554",
-                badgeColor: "bg-teal-600",
-                badgeBorder: "border-teal-700",
-                cardBorder: "border-teal-500",
-                headerBg: "bg-teal-700"
-            },
-            {
-                id: 6,
-                desa: "Desa Wombo Kalonggo",
-                nama: "Anhar",
-                hp: "081245053397",
-                badgeColor: "bg-rose-600",
-                badgeBorder: "border-rose-700",
-                cardBorder: "border-rose-500",
-                headerBg: "bg-rose-700"
-            },
-            {
-                id: 7,
-                desa: "Desa Wani Satu",
-                nama: "Paharudin",
-                hp: "085397984020",
-                badgeColor: "bg-amber-500",
-                badgeBorder: "border-amber-600",
-                cardBorder: "border-amber-400",
-                headerBg: "bg-amber-500"
-            },
-            {
-                id: 8,
-                desa: "Desa Wani Dua",
-                nama: "Kamal Fasya",
-                hp: "082396023291",
-                badgeColor: "bg-blue-600",
-                badgeBorder: "border-blue-700",
-                cardBorder: "border-blue-500",
-                headerBg: "bg-blue-700"
-            },
-            {
-                id: 9,
-                desa: "Desa Wani Lumbumpetigo",
-                nama: "Sairman",
-                hp: "082149424644",
-                badgeColor: "bg-emerald-700",
-                badgeBorder: "border-emerald-800",
-                cardBorder: "border-emerald-600",
-                headerBg: "bg-emerald-800"
-            },
-            {
-                id: 10,
-                desa: "Desa Wani Tiga",
-                nama: "Imran",
-                hp: "085143629989",
-                badgeColor: "bg-red-600",
-                badgeBorder: "border-red-700",
-                cardBorder: "border-red-500",
-                headerBg: "bg-red-600"
+  <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#059669',
+                        accent: '#10b981'
+                    }
+                }
             }
+        }
+    </script>
+  <script src="/_sdk/935a53bc2e11fb8d.data_sdk.js" type="text/javascript" integrity="sha512-qr2oyPnEys1WebcOABaRh6hG77r5PWpqeWW6JTKbRJqly/INsfBi31CVNlTmHqjgeLpkVmmHZJUdxSx/32tOFQ=="></script>
+  <script src="/_sdk/6030e540d4419216.resizing_sdk.js" type="text/javascript" integrity="sha512-b5KWzyoXsbWP4smq4sftIi6Kts4YVBpBsz0BwCViwbBJkK64a3/Z6ZMdWA+qnplNcXw4mhZeqvQi3mOosiRJdA=="></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen flex" style="background: rgb(243, 244, 246);"><!-- Sidebar -->
+  <aside id="sidebar" class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 md:relative transition-transform">
+   <div class="p-5 border-b border-blue-700">
+    <div class="flex items-center gap-3">
+     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center"><i data-lucide="landmark" class="w-6 h-6 text-blue-800"></i>
+     </div>
+     <div>
+      <h1 data-template-id="app-title" class="canva-text font-bold text-sm" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 14px;">SIPBB</h1>
+      <p data-template-id="village-name" class="canva-text text-xs text-blue-200" style="color: rgb(191, 219, 254); font-weight: 400; font-style: normal; font-size: 11px;">Desa Wani Lumbumpetigo</p>
+     </div>
+    </div>
+   </div>
+   <nav class="flex-1 py-4 overflow-y-auto"><button onclick="showPage('dashboard')" class="sidebar-item active w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="dashboard"> <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard</span> </button> <button onclick="showPage('taxpayers')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="taxpayers"> <i data-lucide="users" class="w-4 h-4"></i><span>Data Wajib Pajak</span> </button> <button onclick="showPage('payment')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="payment"> <i data-lucide="credit-card" class="w-4 h-4"></i><span>Pembayaran PBB</span> </button> <button onclick="showPage('reports')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="reports"> <i data-lucide="file-text" class="w-4 h-4"></i><span>Laporan</span> </button> <button onclick="showPage('charts')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="charts"> <i data-lucide="bar-chart-2" class="w-4 h-4"></i><span>Grafik</span> </button> <button onclick="showPage('users')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="users"> <i data-lucide="shield" class="w-4 h-4"></i><span>Pengguna</span> </button> <button onclick="showPage('settings')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="settings"> <i data-lucide="settings" class="w-4 h-4"></i><span>Pengaturan</span> </button>
+   </nav>
+  </aside><!-- Main Content -->
+  <div class="flex-1 flex flex-col min-h-screen md:ml-0"><!-- Header -->
+   <header data-template-id="header-bar" class="canva-header bg-white shadow-sm px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-30" style="background: rgb(255, 255, 255);">
+    <div class="flex items-center gap-3"><button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg hover:bg-gray-100"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
+     <div>
+      <h2 data-template-id="header-title" class="canva-text font-semibold text-gray-800" style="color: rgb(30, 58, 95); font-weight: 600; font-style: normal; font-size: 16px;">Sistem Informasi PBB</h2>
+      <p data-template-id="header-year" class="canva-text text-xs text-gray-500" style="color: rgb(107, 114, 128); font-weight: 400; font-style: normal; font-size: 12px;">Tahun Pajak 2026</p>
+     </div>
+    </div>
+    <div class="flex items-center gap-3"><button onclick="toggleDark()" class="p-2 rounded-lg hover:bg-gray-100" aria-label="Toggle dark mode"> <i data-lucide="moon" class="w-5 h-5 text-gray-600"></i> </button> <button class="p-2 rounded-lg hover:bg-gray-100 relative" aria-label="Notifications"> <i data-lucide="bell" class="w-5 h-5 text-gray-600"></i> <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span> </button>
+     <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+      A
+     </div>
+    </div>
+   </header>
+   <main class="flex-1 p-4 md:p-6 bg-gray-50 overflow-y-auto"><!-- Dashboard -->
+    <section id="page-dashboard" class="page-section active">
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div data-template-id="stat-taxpayers" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-blue-600" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-taxpayers-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Wajib Pajak</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">1.247</p>
+        </div>
+        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="stat-sppt" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-green-600" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-sppt-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total SPPT</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">1.185</p>
+        </div>
+        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="stat-target" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-indigo-600" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-target-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Target PBB</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 89.450.000</p>
+        </div>
+        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="target" class="w-5 h-5 text-indigo-600"></i>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="stat-paid" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-emerald-600" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-paid-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Pembayaran</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 62.180.000</p>
+        </div>
+        <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="banknote" class="w-5 h-5 text-emerald-600"></i>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="stat-arrears" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-red-500" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-arrears-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Tunggakan</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 27.270.000</p>
+        </div>
+        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500"></i>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="stat-percent" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-teal-500" style="background: rgb(255, 255, 255);">
+       <div class="flex items-center justify-between">
+        <div>
+         <p data-template-id="stat-percent-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Persentase Pelunasan</p>
+         <p class="text-2xl font-bold text-gray-800 mt-1">69,5%</p>
+        </div>
+        <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+         <i data-lucide="percent" class="w-5 h-5 text-teal-600"></i>
+        </div>
+       </div>
+      </div>
+     </div><!-- Charts -->
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div data-template-id="chart-monthly" class="canva-card bg-white rounded-xl p-5 shadow-sm" style="background: rgb(255, 255, 255);">
+       <h3 data-template-id="chart-monthly-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Pembayaran per Bulan</h3>
+       <div class="flex items-end gap-2 h-40">
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:40%"></div><span class="text-[10px] mt-1 text-gray-500">Jan</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:55%"></div><span class="text-[10px] mt-1 text-gray-500">Feb</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:30%"></div><span class="text-[10px] mt-1 text-gray-500">Mar</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:70%"></div><span class="text-[10px] mt-1 text-gray-500">Apr</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:85%"></div><span class="text-[10px] mt-1 text-gray-500">Mei</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-blue-500 rounded-t" style="height:60%"></div><span class="text-[10px] mt-1 text-gray-500">Jun</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+         <div class="bar w-full bg-green-500 rounded-t" style="height:50%"></div><span class="text-[10px] mt-1 text-gray-500">Jul</span>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="chart-dusun" class="canva-card bg-white rounded-xl p-5 shadow-sm" style="background: rgb(255, 255, 255);">
+       <h3 data-template-id="chart-dusun-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Pembayaran per Dusun</h3>
+       <div class="space-y-3">
+        <div>
+         <div class="flex justify-between text-xs text-gray-600 mb-1">
+          <span>Dusun 1</span><span>82%</span>
+         </div>
+         <div class="h-3 bg-gray-200 rounded-full">
+          <div class="h-3 bg-green-500 rounded-full" style="width:82%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-600 mb-1">
+          <span>Dusun 2</span><span>65%</span>
+         </div>
+         <div class="h-3 bg-gray-200 rounded-full">
+          <div class="h-3 bg-blue-500 rounded-full" style="width:65%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-600 mb-1">
+          <span>Dusun 3</span><span>71%</span>
+         </div>
+         <div class="h-3 bg-gray-200 rounded-full">
+          <div class="h-3 bg-blue-500 rounded-full" style="width:71%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-600 mb-1">
+          <span>Dusun 4</span><span>58%</span>
+         </div>
+         <div class="h-3 bg-gray-200 rounded-full">
+          <div class="h-3 bg-yellow-500 rounded-full" style="width:58%"></div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Data Wajib Pajak -->
+    <section id="page-taxpayers" class="page-section">
+     <div class="bg-white rounded-xl shadow-sm p-5">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+       <h3 data-template-id="taxpayers-title" class="canva-text font-semibold text-gray-800" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Data Wajib Pajak</h3>
+       <div class="flex flex-wrap gap-2"><button data-template-id="btn-add-taxpayer" class="canva-button px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1" style="background: rgb(30, 64, 175); color: rgb(255, 255, 255); font-weight: 500; font-style: normal; font-size: 15px;">Tambah Data</button> <button class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 flex items-center gap-1"><i data-lucide="upload" class="w-4 h-4"></i>Import</button> <button class="px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i>Export</button>
+       </div>
+      </div>
+      <div class="mb-4"><input type="text" id="search-taxpayer" placeholder="Cari NOP atau Nama..." class="w-full sm:w-72 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
+      <div class="overflow-x-auto">
+       <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-600">
+         <tr>
+          <th class="px-3 py-2 text-left">No</th>
+          <th class="px-3 py-2 text-left">NOP</th>
+          <th class="px-3 py-2 text-left">Nama</th>
+          <th class="px-3 py-2 text-left">Dusun</th>
+          <th class="px-3 py-2 text-right">Nilai PBB</th>
+          <th class="px-3 py-2 text-center">Status</th>
+          <th class="px-3 py-2 text-center">Aksi</th>
+         </tr>
+        </thead>
+        <tbody id="taxpayer-tbody">
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section><!-- Pembayaran -->
+    <section id="page-payment" class="page-section">
+     <div class="bg-white rounded-xl shadow-sm p-5 max-w-2xl">
+      <h3 data-template-id="payment-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Form Pembayaran PBB</h3>
+      <form id="payment-form" class="space-y-4">
+       <div><label data-template-id="payment-nop-label" class="canva-text block text-sm font-medium text-gray-700 mb-1" for="pay-nop" style="color: rgb(55, 65, 81); font-weight: 500; font-style: normal; font-size: 15px;">NOP (Nomor Objek Pajak)</label> <input id="pay-nop" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none" placeholder="Masukkan NOP">
+       </div>
+       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-name">Nama WP</label> <input id="pay-name" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="Nama Wajib Pajak">
+        </div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-dusun">Dusun</label> <select id="pay-dusun" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"> <option>Dusun 1</option><option>Dusun 2</option><option>Dusun 3</option><option>Dusun 4</option> </select>
+        </div>
+       </div>
+       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-amount">Besaran Pajak (Rp)</label> <input id="pay-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" value="75000">
+        </div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-method">Metode Pembayaran</label> <select id="pay-method" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"> <option>Tunai</option><option>Transfer</option><option>QRIS</option> </select>
+        </div>
+       </div>
+       <div class="flex gap-3 pt-2"><button data-template-id="btn-pay-save" type="submit" class="canva-button px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium text-sm" style="background: rgb(5, 150, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 15px;">Simpan Pembayaran</button> <button type="button" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm">Batal</button>
+       </div>
+      </form>
+      <div id="payment-success" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-center"><i data-lucide="check-circle" class="w-10 h-10 text-green-600 mx-auto mb-2"></i>
+       <p class="font-bold text-green-700 text-lg">LUNAS</p>
+       <p class="text-sm text-green-600">Pembayaran berhasil disimpan</p>
+      </div>
+     </div>
+    </section><!-- Laporan -->
+    <section id="page-reports" class="page-section">
+     <div class="bg-white rounded-xl shadow-sm p-5">
+      <h3 data-template-id="reports-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Laporan PBB</h3>
+      <div class="flex flex-wrap gap-3 mb-4"><select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>2026</option><option>2025</option></select> <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>Semua Dusun</option><option>Dusun 1</option><option>Dusun 2</option><option>Dusun 3</option><option>Dusun 4</option></select> <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>Semua Status</option><option>Lunas</option><option>Belum Lunas</option></select> <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Tampilkan</button>
+      </div>
+      <div class="flex flex-wrap gap-2 mb-4"><button class="px-3 py-2 bg-red-600 text-white text-sm rounded-lg flex items-center gap-1"><i data-lucide="file-text" class="w-4 h-4"></i>Cetak PDF</button> <button class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i>Export Excel</button>
+      </div>
+      <div class="text-center py-10 text-gray-400"><i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-2"></i>
+       <p>Pilih filter dan klik "Tampilkan" untuk melihat laporan</p>
+      </div>
+     </div>
+    </section><!-- Grafik -->
+    <section id="page-charts" class="page-section">
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-xl shadow-sm p-5">
+       <h3 data-template-id="chart-target-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Target vs Realisasi</h3>
+       <div class="flex items-end gap-4 justify-center h-40">
+        <div class="text-center">
+         <div class="w-16 bg-blue-200 rounded-t" style="height:100%"></div><span class="text-xs text-gray-500 block mt-1">Target</span><span class="text-xs font-bold">89,4jt</span>
+        </div>
+        <div class="text-center">
+         <div class="w-16 bg-green-500 rounded-t" style="height:69%"></div><span class="text-xs text-gray-500 block mt-1">Realisasi</span><span class="text-xs font-bold">62,1jt</span>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm p-5">
+       <h3 data-template-id="chart-pelunasan-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Persentase Pelunasan</h3>
+       <div class="flex items-center justify-center h-40">
+        <div class="relative w-32 h-32">
+         <svg viewBox="0 0 36 36" class="w-32 h-32 -rotate-90"><circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3"></circle> <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="69.5 100" stroke-linecap="round"></circle>
+         </svg>
+         <div class="absolute inset-0 flex items-center justify-center font-bold text-xl text-gray-800">
+          69,5%
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Pengguna -->
+    <section id="page-users" class="page-section">
+     <div class="bg-white rounded-xl shadow-sm p-5">
+      <h3 data-template-id="users-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Manajemen Pengguna</h3>
+      <div class="overflow-x-auto">
+       <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-600">
+         <tr>
+          <th class="px-3 py-2 text-left">Nama</th>
+          <th class="px-3 py-2 text-left">Username</th>
+          <th class="px-3 py-2 text-left">Level</th>
+          <th class="px-3 py-2 text-center">Status</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="border-b">
+          <td class="px-3 py-3">Admin Desa</td>
+          <td class="px-3 py-3">admin</td>
+          <td class="px-3 py-3">Administrator</td>
+          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
+         </tr>
+         <tr class="border-b">
+          <td class="px-3 py-3">Operator 1</td>
+          <td class="px-3 py-3">operator1</td>
+          <td class="px-3 py-3">Operator</td>
+          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
+         </tr>
+         <tr class="border-b">
+          <td class="px-3 py-3">Kepala Desa</td>
+          <td class="px-3 py-3">kades</td>
+          <td class="px-3 py-3">Kepala Desa</td>
+          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section><!-- Pengaturan -->
+    <section id="page-settings" class="page-section">
+     <div class="bg-white rounded-xl shadow-sm p-5 max-w-lg">
+      <h3 data-template-id="settings-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Pengaturan</h3>
+      <div class="space-y-4">
+       <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><span class="text-sm">Mode Gelap</span> <button onclick="toggleDark()" class="w-10 h-6 bg-gray-300 rounded-full relative"><span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform"></span></button>
+       </div>
+       <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><span class="text-sm">Backup Database</span> <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg">Backup</button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+  </div><!-- Sidebar overlay for mobile -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-30 hidden md:hidden" onclick="toggleSidebar()"></div>
+  <script src="/_sdk/1b56991da13617fe.editing_sdk.js" integrity="sha512-7QHNPLPvkV/StrSqMG/kmvYbG8mJP4lGjSAmVe52ZYilblz47/1vWJa6sAdgi1w/a7EbAadWwTEJWNjrpiUkfg=="></script>
+  <script>
+        lucide.createIcons();
+
+        // Sample taxpayer data
+        const taxpayers = [
+            { no:1, nop:'72.01.060.001.001-0001.0', name:'Ahmad Yusuf', dusun:'Dusun 1', nilai:'Rp 85.000', status:'Lunas' },
+            { no:2, nop:'72.01.060.001.001-0002.0', name:'Siti Rahmah', dusun:'Dusun 2', nilai:'Rp 62.000', status:'Belum Lunas' },
+            { no:3, nop:'72.01.060.001.001-0003.0', name:'Budi Santoso', dusun:'Dusun 1', nilai:'Rp 120.000', status:'Lunas' },
+            { no:4, nop:'72.01.060.001.001-0004.0', name:'Fatimah Zahra', dusun:'Dusun 3', nilai:'Rp 55.000', status:'Belum Lunas' },
+            { no:5, nop:'72.01.060.001.001-0005.0', name:'Hendra Wijaya', dusun:'Dusun 4', nilai:'Rp 95.000', status:'Lunas' },
         ];
 
-        // Format phone number for WhatsApp link (converts 08... to 628...)
-        function formatWhatsAppNumber(phone) {
-            let cleaned = phone.replace(/\D/g, '');
-            if (cleaned.startsWith('0')) {
-                cleaned = '62' + cleaned.substring(1);
-            }
-            return cleaned;
+        function renderTaxpayers(data) {
+            const tbody = document.getElementById('taxpayer-tbody');
+            tbody.innerHTML = data.map(t => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-3 py-3">${t.no}</td>
+                    <td class="px-3 py-3 font-mono text-xs">${t.nop}</td>
+                    <td class="px-3 py-3">${t.name}</td>
+                    <td class="px-3 py-3">${t.dusun}</td>
+                    <td class="px-3 py-3 text-right">${t.nilai}</td>
+                    <td class="px-3 py-3 text-center"><span class="px-2 py-1 rounded-full text-xs ${t.status==='Lunas'?'bg-green-100 text-green-700':'bg-yellow-100 text-yellow-700'}">${t.status}</span></td>
+                    <td class="px-3 py-3 text-center"><button class="text-blue-600 hover:underline text-xs">Lihat</button></td>
+                </tr>
+            `).join('');
+        }
+        renderTaxpayers(taxpayers);
+
+        document.getElementById('search-taxpayer').addEventListener('input', function(e) {
+            const q = e.target.value.toLowerCase();
+            renderTaxpayers(taxpayers.filter(t => t.name.toLowerCase().includes(q) || t.nop.includes(q)));
+        });
+
+        // Page navigation
+        function showPage(page) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+            // Close mobile sidebar
+            if (window.innerWidth < 768) toggleSidebar();
         }
 
-        // Render Cards Function
-        function renderCards(dataToRender) {
-            const grid = document.getElementById('cardsGrid');
-            const emptyState = document.getElementById('emptyState');
-            const totalCount = document.getElementById('totalCount');
-
-            grid.innerHTML = '';
-            totalCount.textContent = dataToRender.length;
-
-            if (dataToRender.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            dataToRender.forEach(item => {
-                const waNumber = formatWhatsAppNumber(item.hp);
-                const waMessage = encodeURIComponent(`Halo Bapak/Ibu ${item.nama}, petugas pemungut PBB ${item.desa}, saya ingin menanyakan mengenai pembayaran PBB.`);
-                const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
-
-                const cardHtml = `
-                    <div class="bg-white rounded-3xl card-shadow overflow-hidden border-2 ${item.cardBorder} flex flex-col">
-                        <!-- Card Header with Number & Village Name -->
-                        <div class="${item.headerBg} text-white px-5 py-4 flex items-center justify-between shadow-sm">
-                            <div class="flex items-center gap-3">
-                                <span class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black text-lg text-white shadow-inner border border-white/30">
-                                    ${item.id}
-                                </span>
-                                <h2 class="text-lg sm:text-xl font-bold tracking-wide">${item.desa}</h2>
-                            </div>
-                            <span class="text-xs uppercase bg-black/20 px-2.5 py-1 rounded-lg font-medium tracking-wider text-white/90">
-                                Petugas PBB
-                            </span>
-                        </div>
-
-                        <!-- Card Body Content -->
-                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4 bg-gradient-to-b from-white to-sky-50/30">
-                            
-                            <!-- Officer Name Info -->
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl flex-shrink-0 shadow-sm border border-sky-200">
-                                    <i class="fa-solid fa-user-tie"></i>
-                                </div>
-                                <div class="flex-grow">
-                                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Nama Petugas</p>
-                                    <p class="text-base sm:text-lg font-bold text-slate-800 mt-0.5">${item.nama}</p>
-                                </div>
-                            </div>
-
-                            <!-- Phone Number Info -->
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl flex-shrink-0 shadow-sm border border-emerald-200">
-                                    <i class="fa-solid fa-phone"></i>
-                                </div>
-                                <div class="flex-grow">
-                                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Nomor HP</p>
-                                    <p class="text-base sm:text-lg font-semibold text-slate-700 font-mono tracking-wide mt-0.5">${item.hp}</p>
-                                </div>
-                            </div>
-
-                            <!-- Action Button (WhatsApp) -->
-                            <div class="pt-2">
-                                <a href="${waLink}" target="_blank" rel="noopener noreferrer" 
-                                    class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5">
-                                    <i class="fa-brands fa-whatsapp text-xl"></i>
-                                    <span>Hubungi via WhatsApp</span>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                `;
-                grid.insertAdjacentHTML('beforeend', cardHtml);
-            });
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            sb.classList.toggle('-translate-x-full');
+            ov.classList.toggle('hidden');
         }
 
-        // Initialize render on load
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCards(petugasData);
+        // Dark mode
+        function toggleDark() {
+            document.documentElement.classList.toggle('dark');
+        }
 
-            // Search Filter Logic
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', (e) => {
-                const keyword = e.target.value.toLowerCase().trim();
-                const filteredData = petugasData.filter(item => 
-                    item.desa.toLowerCase().includes(keyword) || 
-                    item.nama.toLowerCase().includes(keyword) ||
-                    item.hp.includes(keyword)
-                );
-                renderCards(filteredData);
-            });
+        // Payment form
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('payment-success').classList.remove('hidden');
+            lucide.createIcons();
         });
     </script>
-</body>
-</html>
+ 
+</body></html>
