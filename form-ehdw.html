@@ -1,226 +1,304 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Upload Sertifikat Desa - e-HDW</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Sertifikat Desa — e-HDW</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
+    :root {
+      --brand-primary: #157347;
+      --brand-bg: #f3f6f4;
+    }
     body {
-      background-color: #f4f7f6;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--brand-bg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #1f2937;
     }
-    .form-container {
-      max-width: 520px;
-      margin: 45px auto;
+    .upload-card {
+      max-width: 540px;
+      margin: 40px auto;
       background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
     }
-    .header-title {
-      color: #198754;
-      font-weight: 700;
+    .upload-header {
+      background: linear-gradient(135deg, #198754, #146c43);
+      color: #ffffff;
+      padding: 24px 28px;
+    }
+    .upload-body {
+      padding: 28px;
+    }
+    .btn-brand {
+      background-color: var(--brand-primary);
+      border-color: var(--brand-primary);
+      font-weight: 600;
+      padding: 12px 16px;
+    }
+    .btn-brand:hover {
+      background-color: #115c38;
+      border-color: #115c38;
     }
   </style>
 </head>
 <body>
+  <main class="container px-3">
+    <section class="upload-card">
+      <header class="upload-header text-center">
+        <h1 class="h5 fw-bold mb-1">FORM UPLOAD SERTIFIKAT DESA</h1>
+        <p class="mb-0 small opacity-90">Rekapitulasi Bimtek e-HDW (TANGGAL · DESA · KECAMATAN · JABATAN · STATUS · FILE)</p>
+      </header>
 
-<div class="container">
-  <div class="form-container">
-    <div class="text-center mb-4">
-      <h4 class="header-title">UPLOAD SERTIFIKAT DESA</h4>
-      <p class="text-muted small">Rekapitulasi Sertifikat Bimtek e-HDW</p>
-    </div>
+      <div class="upload-body">
+        <div id="alertBox" class="alert alert-danger d-none" role="alert"></div>
 
-    <!-- ALERT ERROR -->
-    <div id="errorAlert" class="alert alert-danger d-none" role="alert"></div>
+        <form id="certForm" novalidate>
+          <div class="mb-3">
+            <label for="desa" class="form-label fw-semibold">Desa <span class="text-danger">*</span></label>
+            <input type="text" id="desa" name="desa" class="form-control" placeholder="Contoh: Wani Lumbum" required />
+          </div>
 
-    <!-- FORM UPLOAD -->
-    <form id="formUpload" onsubmit="kirimFile(event)">
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Nama Desa</label>
-        <input type="text" class="form-control" id="desa" required placeholder="Masukkan nama desa">
+          <div class="mb-3">
+            <label for="kecamatan" class="form-label fw-semibold">Kecamatan <span class="text-danger">*</span></label>
+            <input type="text" id="kecamatan" name="kecamatan" class="form-label form-control" placeholder="Contoh: Tanantovea" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="jabatan" class="form-label fw-semibold">Jabatan <span class="text-danger">*</span></label>
+            <select id="jabatan" name="jabatan" class="form-select" required>
+              <option value="" selected disabled>-- Pilih Jabatan --</option>
+              <option value="ADMIN DESA">ADMIN DESA</option>
+              <option value="KPM">KPM</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="fileInput" class="form-label fw-semibold">File Sertifikat (PDF, JPG, PNG) <span class="text-danger">*</span></label>
+            <input type="file" id="fileInput" name="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+            <div class="form-text">Ukuran maksimal 8 MB. Gambar besar akan dikompres otomatis sebelum dikirim.</div>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" id="submitBtn" class="btn btn-success btn-brand">
+              Kirim &amp; Rekap Sertifikat
+            </button>
+          </div>
+        </form>
+
+        <div id="loadingBox" class="text-center py-4 d-none">
+          <div class="spinner-border text-success" role="status"></div>
+          <p id="loadingText" class="mt-3 mb-0 text-muted fw-medium">Mengunggah file dan merekap data...</p>
+        </div>
+
+        <div id="successBox" class="d-none">
+          <div class="alert alert-success" role="alert">
+            <h2 class="h6 alert-heading fw-bold mb-2">Berhasil Direkap!</h2>
+            <ul class="list-unstyled small mb-0">
+              <li><strong>Tanggal:</strong> <span id="outTanggal"></span></li>
+              <li><strong>Desa:</strong> <span id="outDesa"></span></li>
+              <li><strong>Kecamatan:</strong> <span id="outKecamatan"></span></li>
+              <li><strong>Jabatan:</strong> <span id="outJabatan"></span></li>
+              <li><strong>Status:</strong> <span id="outStatus"></span></li>
+            </ul>
+          </div>
+
+          <div class="d-grid gap-2">
+            <a id="outFileLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Buka File Sertifikat di Google Drive
+            </a>
+            <a
+              href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuvz8kh_YY0xode24ydq7ubqAr5RS_d0hl6hC371cjTS6VHSqdqPMYCJfMksVBpk4RzP-SVMid5L7F/pubhtml?gid=0&single=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-outline-secondary"
+            >
+              Lihat Rekap Publik Spreadsheet
+            </a>
+            <button type="button" id="resetBtn" class="btn btn-link text-decoration-none mt-1">
+              + Input Data Sertifikat Lainnya
+            </button>
+          </div>
+        </div>
       </div>
+    </section>
+  </main>
 
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Kecamatan</label>
-        <input type="text" class="form-control" id="kecamatan" required placeholder="Masukkan nama kecamatan">
-      </div>
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygHjJmtK4PzYHQlfrxwSlgY_PUP3D_bFQ9lnAEZUpYaljZr80bY4KKECQRcGCxZznE/exec";
+    const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Jabatan</label>
-        <select class="form-select" id="jabatan" required>
-          <option value="" disabled selected>-- Pilih Jabatan --</option>
-          <option value="ADMIN DESA">ADMIN DESA</option>
-          <option value="KPM">KPM</option>
-        </select>
-      </div>
+    const form = document.getElementById("certForm");
+    const alertBox = document.getElementById("alertBox");
+    const loadingBox = document.getElementById("loadingBox");
+    const loadingText = document.getElementById("loadingText");
+    const successBox = document.getElementById("successBox");
+    const resetBtn = document.getElementById("resetBtn");
 
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Pilih File Sertifikat (PDF / JPG / PNG)</label>
-        <input type="file" class="form-control" id="fileSertifikat" accept=".pdf,.jpg,.jpeg,.png" required>
-        <div class="form-text">Disarankan file PDF di bawah 5 MB atau foto JPG/PNG.</div>
-      </div>
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hideAlert();
 
-      <div class="d-grid mt-4">
-        <button type="submit" id="btnSubmit" class="btn btn-success btn-lg">
-          📤 Upload & Simpan Data
-        </button>
-      </div>
-    </form>
+      const desa = document.getElementById("desa").value.trim();
+      const kecamatan = document.getElementById("kecamatan").value.trim();
+      const jabatan = document.getElementById("jabatan").value.trim();
+      const fileInput = document.getElementById("fileInput");
+      const rawFile = fileInput.files && fileInput.files[0];
 
-    <!-- AREA LOADING -->
-    <div id="loadingArea" class="text-center my-4 d-none">
-      <div class="spinner-border text-success" role="status"></div>
-      <p class="mt-2 text-muted fw-semibold" id="statusLoading">Mengunggah ke Google Drive...</p>
-    </div>
+      if (!desa || !kecamatan || !jabatan) {
+        showAlert("Lengkapi kolom Desa, Kecamatan, dan Jabatan.");
+        return;
+      }
+      if (!rawFile) {
+        showAlert("Pilih file sertifikat terlebih dahulu.");
+        return;
+      }
+      if (rawFile.size > MAX_FILE_BYTES) {
+        showAlert("Ukuran file melebihi batas maksimal 8 MB.");
+        return;
+      }
 
-    <!-- AREA SUKSES -->
-    <div id="hasilArea" class="text-center my-4 d-none">
-      <div class="alert alert-success">
-        <h5 class="alert-heading fw-bold">Upload Berhasil!</h5>
-        <p class="mb-0">
-          Sertifikat <strong><span id="resJabatan"></span></strong> — <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah tersimpan dan direkap.
-        </p>
-      </div>
-      <div class="d-grid gap-2">
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuvz8kh_YY0xode24ydq7ubqAr5RS_d0hl6hC371cjTS6VHSqdqPMYCJfMksVBpk4RzP-SVMid5L7F/pubhtml?gid=0&single=true" target="_blank" class="btn btn-outline-primary">
-          📊 Cek Rekapitulasi Spreadsheet
-        </a>
-        <button type="button" class="btn btn-link text-decoration-none mt-2" onclick="resetForm()">
-          + Upload Sertifikat Lainnya
-        </button>
-      </div>
-    </div>
+      setLoadingState(true, "Menyiapkan file...");
 
-  </div>
-</div>
-
-<script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygHjJmtK4PzYHQlfrxwSlgY_PUP3D_bFQ9lnAEZUpYaljZr80bY4KKECQRcGCxZznE/exec";
-
-  function tampilkanError(pesan) {
-    document.getElementById('loadingArea').classList.add('d-none');
-    document.getElementById('formUpload').classList.remove('d-none');
-    const alertBox = document.getElementById('errorAlert');
-    alertBox.innerText = "Gagal: " + pesan;
-    alertBox.classList.remove('d-none');
-  }
-
-  function kirimFile(e) {
-    e.preventDefault();
-    document.getElementById('errorAlert').classList.add('d-none');
-
-    const fileInput = document.getElementById('fileSertifikat');
-    const file = fileInput.files[0];
-
-    if (!file) {
-      tampilkanError("Silakan pilih file sertifikat terlebih dahulu.");
-      return;
-    }
-
-    if (file.type === "application/pdf" && file.size > 5 * 1024 * 1024) {
-      tampilkanError("Ukuran PDF terlalu besar (maksimal 5 MB).");
-      return;
-    }
-
-    document.getElementById('formUpload').classList.add('d-none');
-    document.getElementById('loadingArea').classList.remove('d-none');
-
-    const desaVal = document.getElementById('desa').value;
-    const kecamatanVal = document.getElementById('kecamatan').value;
-    const jabatanVal = document.getElementById('jabatan').value;
-
-    if (file.type.startsWith('image/')) {
-      kompresGambar(file, function(base64Kompres) {
-        eksekusiFetch({
-          desa: desaVal,
-          kecamatan: kecamatanVal,
-          jabatan: jabatanVal,
-          fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
-          mimeType: "image/jpeg",
-          fileData: base64Kompres
-        });
-      });
-    } else {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        eksekusiFetch({
-          desa: desaVal,
-          kecamatan: kecamatanVal,
-          jabatan: jabatanVal,
-          fileName: file.name,
-          mimeType: file.type,
-          fileData: event.target.result
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  function kompresGambar(file, callback) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-        const maxDim = 1600;
-
-        if (width > maxDim || height > maxDim) {
-          if (width > height) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
+      try {
+        let preparedFile = rawFile;
+        if (rawFile.type.startsWith("image/")) {
+          loadingText.textContent = "Mengoptimalkan ukuran gambar...";
+          preparedFile = await compressImageIfNeeded(rawFile);
         }
 
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        callback(canvas.toDataURL('image/jpeg', 0.8));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
+        loadingText.textContent = "Mengunggah ke Google Drive & merekap ke Spreadsheet...";
 
-  async function eksekusiFetch(payload) {
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(payload)
-      });
+        const formData = new FormData();
+        formData.append("desa", desa);
+        formData.append("kecamatan", kecamatan);
+        formData.append("jabatan", jabatan);
+        formData.append("file", preparedFile, preparedFile.name);
 
-      setTimeout(() => {
-        document.getElementById('loadingArea').classList.add('d-none');
-        document.getElementById('resJabatan').innerText = payload.jabatan;
-        document.getElementById('resDesa').innerText = payload.desa.trim().toUpperCase();
-        document.getElementById('resKecamatan').innerText = payload.kecamatan.trim().toUpperCase();
-        document.getElementById('hasilArea').classList.remove('d-none');
-      }, 2500);
+        const response = await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: formData
+        });
 
-    } catch (err) {
-      tampilkanError("Periksa koneksi internet Anda: " + err.message);
+        const textResult = await response.text();
+        let parsed;
+        try {
+          parsed = JSON.parse(textResult);
+        } catch (_parseErr) {
+          throw new Error("Respons server tidak valid. Pastikan deployment Apps Script diset ke 'Anyone' (Siapa saja) dan versi terbaru.");
+        }
+
+        if (!response.ok || !parsed || parsed.status !== "sukses") {
+          throw new Error((parsed && parsed.message) || "Gagal menyimpan data di server.");
+        }
+
+        renderSuccess(parsed.data);
+      } catch (err) {
+        setLoadingState(false);
+        showAlert(err && err.message ? err.message : "Terjadi kesalahan jaringan.");
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      form.reset();
+      hideAlert();
+      successBox.classList.add("d-none");
+      form.classList.remove("d-none");
+    });
+
+    function setLoadingState(isLoading, message) {
+      if (message) loadingText.textContent = message;
+      if (isLoading) {
+        form.classList.add("d-none");
+        successBox.classList.add("d-none");
+        loadingBox.classList.remove("d-none");
+      } else {
+        loadingBox.classList.add("d-none");
+        form.classList.remove("d-none");
+      }
     }
-  }
 
-  function resetForm() {
-    document.getElementById('formUpload').reset();
-    document.getElementById('errorAlert').classList.add('d-none');
-    document.getElementById('hasilArea').classList.add('d-none');
-    document.getElementById('formUpload').classList.remove('d-none');
-  }
-</script>
+    function showAlert(msg) {
+      alertBox.textContent = msg;
+      alertBox.classList.remove("d-none");
+    }
 
+    function hideAlert() {
+      alertBox.textContent = "";
+      alertBox.classList.add("d-none");
+    }
+
+    function renderSuccess(data) {
+      loadingBox.classList.add("d-none");
+      document.getElementById("outTanggal").textContent = data.tanggal || "-";
+      document.getElementById("outDesa").textContent = data.desa || "-";
+      document.getElementById("outKecamatan").textContent = data.kecamatan || "-";
+      document.getElementById("outJabatan").textContent = data.jabatan || "-";
+      document.getElementById("outStatus").textContent = data.status || "Sudah Upload";
+
+      const linkEl = document.getElementById("outFileLink");
+      if (data.fileUrl) {
+        linkEl.href = data.fileUrl;
+        linkEl.classList.remove("disabled");
+      } else {
+        linkEl.href = "#";
+        linkEl.classList.add("disabled");
+      }
+
+      successBox.classList.remove("d-none");
+    }
+
+    function compressImageIfNeeded(file) {
+      return new Promise((resolve) => {
+        if (file.size < 1.5 * 1024 * 1024) {
+          resolve(file);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const maxSide = 1600;
+            let { width, height } = img;
+            if (width > maxSide || height > maxSide) {
+              if (width >= height) {
+                height = Math.round((height * maxSide) / width);
+                width = maxSide;
+              } else {
+                width = Math.round((width * maxSide) / height);
+                height = maxSide;
+              }
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) {
+                  resolve(file);
+                  return;
+                }
+                const baseName = file.name.replace(/\.[^/.]+$/, "");
+                resolve(new File([blob], baseName + ".jpg", { type: "image/jpeg" }));
+              },
+              "image/jpeg",
+              0.82
+            );
+          };
+          img.onerror = () => resolve(file);
+          img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
 </body>
 </html>
