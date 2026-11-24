@@ -2,8 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form Upload Sertifikat Desa - e-HDW</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -34,6 +33,9 @@
       <p class="text-muted small">Rekapitulasi Sertifikat Bimtek e-HDW</p>
     </div>
 
+    <!-- ALERT ERROR -->
+    <div id="errorAlert" class="alert alert-danger d-none" role="alert"></div>
+
     <!-- FORM UPLOAD -->
     <form id="formUpload" onsubmit="kirimFile(event)">
       <div class="mb-3">
@@ -49,7 +51,7 @@
       <div class="mb-3">
         <label class="form-label fw-semibold">Pilih File Sertifikat (PDF / JPG / PNG)</label>
         <input type="file" class="form-control" id="fileSertifikat" accept=".pdf,.jpg,.jpeg,.png" required>
-        <div class="form-text">Maksimal ukuran file 10 MB.</div>
+        <div class="form-text">Disarankan file PDF di bawah 5 MB atau foto JPG/PNG.</div>
       </div>
 
       <div class="d-grid mt-4">
@@ -62,14 +64,14 @@
     <!-- AREA LOADING -->
     <div id="loadingArea" class="text-center my-4 d-none">
       <div class="spinner-border text-success" role="status"></div>
-      <p class="mt-2 text-muted">Sedang mengunggah file ke Google Drive & merekap data...</p>
+      <p class="mt-2 text-muted fw-semibold" id="statusLoading">Mengunggah ke Google Drive...</p>
     </div>
 
     <!-- AREA SUKSES -->
     <div id="hasilArea" class="text-center my-4 d-none">
       <div class="alert alert-success">
         <h5 class="alert-heading fw-bold">Upload Berhasil!</h5>
-        <p class="mb-0">Sertifikat <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah tersimpan dan terekap.</p>
+        <p class="mb-0">Sertifikat <strong>DESA <span id="resDesa"></span></strong> (Kecamatan <span id="resKecamatan"></span>) telah tersimpan.</p>
       </div>
       <div class="d-grid gap-2">
         <a id="btnLihatFile" href="#" target="_blank" class="btn btn-outline-primary">
@@ -85,62 +87,123 @@
 </div>
 
 <script>
+  // URL Web App Google Apps Script Anda
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygHjJmtK4PzYHQlfrxwSlgY_PUP3D_bFQ9lnAEZUpYaljZr80bY4KKECQRcGCxZznE/exec";
+
+  function tampilkanError(pesan) {
+    document.getElementById('loadingArea').classList.add('d-none');
+    document.getElementById('formUpload').classList.remove('d-none');
+    const alertBox = document.getElementById('errorAlert');
+    alertBox.innerText = "Gagal: " + pesan;
+    alertBox.classList.remove('d-none');
+  }
+
   function kirimFile(e) {
     e.preventDefault();
+    document.getElementById('errorAlert').classList.add('d-none');
 
     const fileInput = document.getElementById('fileSertifikat');
     const file = fileInput.files[0];
 
     if (!file) {
-      alert("Silakan pilih file sertifikat terlebih dahulu.");
+      tampilkanError("Silakan pilih file sertifikat terlebih dahulu.");
       return;
     }
 
-    // Validasi ukuran file maksimal 10 MB
-    if (file.size > 10 * 1024 * 1024) {
-      alert("Ukuran file terlalu besar! Maksimal 10 MB.");
+    if (file.type === "application/pdf" && file.size > 5 * 1024 * 1024) {
+      tampilkanError("Ukuran PDF terlalu besar (maksimal 5 MB).");
       return;
     }
 
     document.getElementById('formUpload').classList.add('d-none');
     document.getElementById('loadingArea').classList.remove('d-none');
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const payload = {
-        desa: document.getElementById('desa').value,
-        kecamatan: document.getElementById('kecamatan').value,
-        fileName: file.name,
-        mimeType: file.type,
-        fileData: event.target.result
+    if (file.type.startsWith('image/')) {
+      kompresGambar(file, function(base64Kompres) {
+        eksekusiFetch({
+          desa: document.getElementById('desa').value,
+          kecamatan: document.getElementById('kecamatan').value,
+          fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+          mimeType: "image/jpeg",
+          fileData: base64Kompres
+        });
+      });
+    } else {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        eksekusiFetch({
+          desa: document.getElementById('desa').value,
+          kecamatan: document.getElementById('kecamatan').value,
+          fileName: file.name,
+          mimeType: file.type,
+          fileData: event.target.result
+        });
       };
+      reader.readAsDataURL(file);
+    }
+  }
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          document.getElementById('loadingArea').classList.add('d-none');
-          if (res.status === "sukses") {
-            document.getElementById('resDesa').innerText = res.desa;
-            document.getElementById('resKecamatan').innerText = res.kecamatan;
-            document.getElementById('btnLihatFile').href = res.fileUrl;
-            document.getElementById('hasilArea').classList.remove('d-none');
+  function kompresGambar(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1600;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
           } else {
-            alert("Gagal mengunggah: " + res.pesan);
-            document.getElementById('formUpload').classList.remove('d-none');
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
           }
-        })
-        .withFailureHandler(function(err) {
-          document.getElementById('loadingArea').classList.add('d-none');
-          document.getElementById('formUpload').classList.remove('d-none');
-          alert("Terjadi kesalahan koneksi: " + err.message);
-        })
-        .prosesUploadSertifikat(payload);
-    };
+        }
 
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = e.target.result;
+    };
     reader.readAsDataURL(file);
+  }
+
+  async function eksekusiFetch(payload) {
+    try {
+      // Menggunakan text/plain agar terhindar dari blokir CORS preflight browser
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const res = await response.json();
+      document.getElementById('loadingArea').classList.add('d-none');
+
+      if (res && res.status === "sukses") {
+        document.getElementById('resDesa').innerText = res.desa;
+        document.getElementById('resKecamatan').innerText = res.kecamatan;
+        document.getElementById('btnLihatFile').href = res.fileUrl;
+        document.getElementById('hasilArea').classList.remove('d-none');
+      } else {
+        tampilkanError(res ? res.pesan : "Gagal memproses di server.");
+      }
+    } catch (err) {
+      tampilkanError("Gagal terhubung ke Google Apps Script: " + err.message);
+    }
   }
 
   function resetForm() {
     document.getElementById('formUpload').reset();
+    document.getElementById('errorAlert').classList.add('d-none');
     document.getElementById('hasilArea').classList.add('d-none');
     document.getElementById('formUpload').classList.remove('d-none');
   }
