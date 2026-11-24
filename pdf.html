@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+	<title>DAFTAR INFORMASI PUBLIK - Website Resmi Desa Wani Lumbumpetigo</title>
+
+	<meta name="description" content="DAFTAR INFORMASI PUBLIK - Website Resmi Desa Wani Lumbumpetigo, Kecamatan Tanantovea, Kabupaten Donggala">
+	<meta name="keywords" content="daftar,informasi,publik,ppid,desa wani lumbumpetigo,lumbumpetigo.berdesa.id,tanantovea,donggala">
+	<meta name="author" content="Pemerintah Desa Wani Lumbumpetigo">
+	<meta property="og:url" content="https://lumbumpetigo.berdesa.id/ppid/daftar-informasi-publik">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="DAFTAR INFORMASI PUBLIK - Website Resmi Desa Wani Lumbumpetigo">
+	<meta property="og:description" content="DAFTAR INFORMASI PUBLIK - PPID Pemerintah Desa Wani Lumbumpetigo">
+	<meta property="og:image" content="https://lumbumpetigo.berdesa.id/favicon.png">
+
+	<link rel="shortcut icon" href="https://lumbumpetigo.berdesa.id/favicon.png">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+	<style>
+		:root {
+			--bg-stage: #323639;
+			--panel-bg: #202124;
+			--accent: #0048ff;
+			--accent-hover: #0035bd;
+			--text-light: #f8fafc;
+			--text-muted: #cbd5e1;
+			--border-dark: rgba(255, 255, 255, 0.12);
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			background: radial-gradient(circle at center, #3e4246 0%, #26282b 100%);
+			color: var(--text-light);
+			font-family: 'Plus Jakarta Sans', sans-serif;
+			overflow-x: hidden;
+		}
+
+		/* =========================================
+		   HEADER & TOMBOL KEMBALI
+		   ========================================= */
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			padding: 10px 18px;
+			background: var(--panel-bg);
+			border-bottom: 1px solid var(--border-dark);
+			z-index: 20;
+			flex-wrap: wrap;
+		}
+
+		.btn-kembali {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 14px;
+			border-radius: 9px;
+			background: #ffffff;
+			color: #0f172a;
+			text-decoration: none;
+			font-size: 13px;
+			font-weight: 700;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+			transition: transform 0.18s ease, background-color 0.2s ease, color 0.2s ease;
+		}
+
+		.btn-kembali:hover {
+			background: var(--accent);
+			color: #ffffff;
+			transform: translateX(-2px);
+		}
+
+		.btn-kembali svg {
+			width: 16px;
+			height: 16px;
+			stroke: currentColor;
+			stroke-width: 2.4;
+			fill: none;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.doc-heading {
+			text-align: center;
+			flex: 1;
+			min-width: 220px;
+		}
+
+		.doc-heading-title {
+			font-size: 14px;
+			font-weight: 800;
+			letter-spacing: 0.02em;
+			color: var(--text-light);
+		}
+
+		.doc-heading-sub {
+			font-size: 11px;
+			color: var(--text-muted);
+			margin-top: 2px;
+		}
+
+		.btn-download-top {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 8px 14px;
+			border-radius: 9px;
+			background: var(--accent);
+			color: #ffffff;
+			text-decoration: none;
+			font-size: 12px;
+			font-weight: 700;
+			transition: background-color 0.2s ease, transform 0.15s ease;
+		}
+
+		.btn-download-top:hover {
+			background: var(--accent-hover);
+		}
+
+		/* =========================================
+		   AREA BUKU TERBUKA & ANIMASI PEMBUKA
+		   ========================================= */
+		.book-stage {
+			position: relative;
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 18px;
+			perspective: 2200px;
+		}
+
+		.book-wrapper {
+			position: relative;
+			width: min(95vw, 1080px);
+			height: calc(100vh - 122px);
+			min-height: 480px;
+			background: #ffffff;
+			border-radius: 10px;
+			overflow: hidden;
+			box-shadow:
+				0 24px 60px rgba(0, 0, 0, 0.55),
+				0 0 0 1px rgba(255, 255, 255, 0.15);
+			transform-origin: center center;
+			animation: bookOpenReveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		}
+
+		/* Efek sampul buku terbuka di awal muat */
+		.book-cover-anim {
+			position: absolute;
+			inset: 0;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			pointer-events: none;
+			z-index: 6;
+		}
+
+		.book-flap-left,
+		.book-flap-right {
+			background: linear-gradient(135deg, #0035bd, #0048ff);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #ffffff;
+			font-weight: 800;
+			font-size: 14px;
+			letter-spacing: 0.06em;
+			box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.25);
+		}
+
+		.book-flap-left {
+			transform-origin: left center;
+			border-right: 1px solid rgba(255, 255, 255, 0.25);
+			animation: openLeftFlap 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+		}
+
+		.book-flap-right {
+			transform-origin: right center;
+			border-left: 1px solid rgba(255, 255, 255, 0.25);
+			animation: openRightFlap 1.05s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+		}
+
+		/* Bayangan lipatan tengah buku (spine) */
+		.book-spine-shadow {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 50%;
+			width: 36px;
+			transform: translateX(-50%);
+			background: linear-gradient(
+				to right,
+				rgba(0, 0, 0, 0),
+				rgba(0, 0, 0, 0.11) 46%,
+				rgba(255, 255, 255, 0.28) 50%,
+				rgba(0, 0, 0, 0.11) 54%,
+				rgba(0, 0, 0, 0)
+			);
+			pointer-events: none;
+			z-index: 4;
+		}
+
+		/* Loading Overlay saat PDF Drive dimuat */
+		.pdf-loader {
+			position: absolute;
+			inset: 0;
+			background: #f8fafc;
+			color: #0f172a;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 12px;
+			z-index: 5;
+			transition: opacity 0.35s ease, visibility 0.35s ease;
+		}
+
+		.pdf-loader.is-hidden {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+		}
+
+		.spinner {
+			width: 40px;
+			height: 40px;
+			border: 4px solid #dbeafe;
+			border-top-color: var(--accent);
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+		}
+
+		.loader-text {
+			font-size: 13px;
+			font-weight: 700;
+		}
+
+		.pdf-frame {
+			width: 100%;
+			height: 100%;
+			border: 0;
+			display: block;
+			background: #ffffff;
+		}
+
+		@keyframes bookOpenReveal {
+			0% {
+				opacity: 0;
+				transform: scale(0.92) translateY(16px);
+			}
+			100% {
+				opacity: 1;
+				transform: scale(1) translateY(0);
+			}
+		}
+
+		@keyframes openLeftFlap {
+			0% {
+				opacity: 1;
+				transform: rotateY(0deg);
+			}
+			85% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+				transform: rotateY(-115deg);
+			}
+		}
+
+		@keyframes openRightFlap {
+			0% {
+				opacity: 1;
+				transform: rotateY(0deg);
+			}
+			85% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+				transform: rotateY(115deg);
+			}
+		}
+
+		@keyframes spin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		/* =========================================
+		   TOOLBAR BAWAH
+		   ========================================= */
+		.bottom-toolbar {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 18px;
+			padding: 8px 16px;
+			background: var(--panel-bg);
+			border-top: 1px solid var(--border-dark);
+			font-size: 12px;
+			color: var(--text-muted);
+			flex-wrap: wrap;
+		}
+
+		.tool-btn {
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			color: #ffffff;
+			font-family: inherit;
+			font-size: 12px;
+			font-weight: 600;
+			padding: 6px 12px;
+			border-radius: 7px;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			transition: background-color 0.18s ease;
+		}
+
+		.tool-btn:hover {
+			background: var(--accent);
+			border-color: var(--accent);
+		}
+
+		@media (max-width: 640px) {
+			.book-stage {
+				padding: 10px;
+			}
+
+			.book-wrapper {
+				width: 100%;
+				height: calc(100vh - 145px);
+			}
+
+			.book-spine-shadow,
+			.book-cover-anim {
+				display: none;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- Header & Tombol Kembali -->
+	<header class="topbar">
+		<a href="https://lumbumpetigo.berdesa.id/" class="btn-kembali">
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M19 12H5"></path>
+				<path d="M12 19l-7-7 7-7"></path>
+			</svg>
+			Kembali ke Beranda
+		</a>
+
+		<div class="doc-heading">
+			<div class="doc-heading-title">DAFTAR INFORMASI PUBLIK</div>
+			<div class="doc-heading-sub">Website Resmi Desa Wani Lumbumpetigo — Kecamatan Tanantovea</div>
+		</div>
+
+		<a
+			href="https://drive.google.com/uc?export=download&id=1RkmXZxN53FVRkBTKDxPMbTphe4wr6hBh"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn-download-top">
+			&#8681; Unduh PDF
+		</a>
+	</header>
+
+	<!-- Area Buku Terbuka -->
+	<main class="book-stage">
+		<div class="book-wrapper" id="bookWrapper">
+			<!-- Animasi sampul buku terbuka -->
+			<div class="book-cover-anim" id="bookCoverAnim" aria-hidden="true">
+				<div class="book-flap-left">PPID DESA WANI</div>
+				<div class="book-flap-right">LUMBUMPETIGO</div>
+			</div>
+
+			<!-- Efek lipatan tengah buku -->
+			<div class="book-spine-shadow" aria-hidden="true"></div>
+
+			<!-- Loading indicator -->
+			<div class="pdf-loader" id="pdfLoader">
+				<div class="spinner"></div>
+				<div class="loader-text">Membuka Dokumen Daftar Informasi Publik...</div>
+			</div>
+
+			<!-- Embed PDF Google Drive -->
+			<iframe
+				id="pdfFrame"
+				class="pdf-frame"
+				src="https://drive.google.com/file/d/1RkmXZxN53FVRkBTKDxPMbTphe4wr6hBh/preview"
+				allow="autoplay"
+				onload="selesaiMuatPdf()">
+			</iframe>
+		</div>
+	</main>
+
+	<!-- Toolbar Bawah -->
+	<footer class="bottom-toolbar">
+		<span>Desa Wani Lumbumpetigo • lumbumpetigo.berdesa.id</span>
+		<a
+			href="https://drive.google.com/file/d/1RkmXZxN53FVRkBTKDxPMbTphe4wr6hBh/view?usp=sharing"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="tool-btn">
+			Buka di Tab Baru
+		</a>
+		<button type="button" class="tool-btn" id="fullscreenBtn">
+			Layar Penuh
+		</button>
+	</footer>
+
+	<script>
+		const pdfLoader = document.getElementById('pdfLoader');
+		const bookCoverAnim = document.getElementById('bookCoverAnim');
+		const fullscreenBtn = document.getElementById('fullscreenBtn');
+		const bookWrapper = document.getElementById('bookWrapper');
+
+		function selesaiMuatPdf() {
+			setTimeout(() => {
+				pdfLoader.classList.add('is-hidden');
+			}, 300);
+
+			setTimeout(() => {
+				if (bookCoverAnim) {
+					bookCoverAnim.style.display = 'none';
+				}
+			}, 1400);
+		}
+
+		fullscreenBtn.addEventListener('click', () => {
+			if (!document.fullscreenElement) {
+				bookWrapper.requestFullscreen?.();
+			} else {
+				document.exitFullscreen?.();
+			}
+		});
+	</script>
+</body>
+</html>
