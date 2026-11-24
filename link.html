@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Link Aplikasi</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/df6ny81dl/image/upload/v1795507333/icon-appdesa_gmkvvy.png" />
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/df6ny81dl/image/upload/v1795507333/icon-appdesa_gmkvvy.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Menggunakan font Inter sebagai tipografi utama */
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Efek animasi halus saat hover pada ikon panah tombol */
+    .app-link-btn:hover .arrow-icon {
+      transform: translate(2px, -2px);
+    }
+
+    .arrow-icon {
+      transition: transform 0.2s ease;
+    }
+
+    /* Efek animasi halus saat hover pada tombol kembali */
+    .back-btn:hover .back-arrow-icon {
+      transform: translateX(-3px);
+    }
+
+    .back-arrow-icon {
+      transition: transform 0.2s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Navigasi Tombol Kembali -->
+    <nav aria-label="Navigasi Kembali" class="mb-6">
+      <a
+        href="https://appdesa.my.id/#fitur"
+        class="back-btn inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl shadow-xs hover:bg-slate-100 hover:text-blue-600 hover:border-blue-200 transition-all duration-200"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="back-arrow-icon" aria-hidden="true">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        <span>Kembali</span>
+      </a>
+    </nav>
+
+    <!-- Header Halaman -->
+    <header class="mb-8 text-center sm:text-left">
+      <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-2">
+        Pusat Tautan
+      </span>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+        Direktori Link Aplikasi
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl">
+        Pilih salah satu kartu aplikasi di bawah ini untuk membuka layanan terkait. Setiap tautan pada atribut <code class="px-1.5 py-0.5 text-xs bg-slate-200 text-slate-800 rounded-md">href</code> siap diganti dengan link tujuan Anda.
+      </p>
+    </header>
+
+    <!-- Grid Utama: 1 kolom di HP, 2 kolom di tablet, 3 kolom di desktop -->
+    <section aria-label="Daftar Link Aplikasi" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 1: Ganti nilai href="#link-1" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Grid Aplikasi -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+                <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+                <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+                <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 01
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Portal Pendaftaran Peserta
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Akses formulir registrasi, kelola data peserta, dan unggah dokumen pendukung secara daring.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-1) -->
+        <a
+          href="#link-1"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 2: Ganti nilai href="#link-2" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Globe / Sistem Web -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                <path d="M2 12h20"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 02
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Dashboard Monitoring &amp; Status
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Pantau perkembangan proses verifikasi, jadwal kegiatan, serta rekapitulasi data terbaru.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-2) -->
+        <a
+          href="#link-2"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 3: Ganti nilai href="#link-3" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Dokumen & Arsip -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                <path d="M10 9H8"></path>
+                <path d="M16 13H8"></path>
+                <path d="M16 17H8"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 03
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Repositori Dokumen &amp; Panduan
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Unduh petunjuk teknis, template administrasi, dan materi resmi untuk kebutuhan tim.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-3) -->
+        <a
+          href="#link-3"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 4: Ganti nilai href="#link-4" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Analitik & Laporan -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+                <path d="m19 9-5 5-4-4-3 3"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 04
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Sistem Penilaian &amp; Rekapitulasi
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Kelola komponen penilaian, tinjau hasil evaluasi, dan lihat ringkasan statistik secara terstruktur.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-4) -->
+        <a
+          href="#link-4"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 5: Ganti nilai href="#link-5" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Pesan & Bantuan -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 05
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Pusat Bantuan &amp; Layanan Panitia
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Ajukan pertanyaan teknis, konsultasi kendala penggunaan aplikasi, atau hubungi tim dukungan.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-5) -->
+        <a
+          href="#link-5"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 6: Ganti nilai href="#link-6" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Pengaturan & Konfigurasi -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 06
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Pengaturan &amp; Integrasi Sistem
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Kelola preferensi akun, akses modul tambahan, dan konfigurasi layanan pendukung lainnya.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-6) -->
+        <a
+          href="#link-6"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 7: Ganti nilai href="#link-7" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Direktori Desa -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 07
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Direktori Profil Website Desa
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Jelajahi daftar lengkap website desa peserta beserta profil wilayah dan informasi publikasinya.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-7) -->
+        <a
+          href="#link-7"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 8: Ganti nilai href="#link-8" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Verifikasi & Validasi -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 08
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Verifikasi Domain &amp; Keamanan
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Periksa keaktifan domain resmi desa, status sertifikat SSL, serta kelayakan teknis website.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-8) -->
+        <a
+          href="#link-8"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 9: Ganti nilai href="#link-9" dengan URL tujuan Anda   -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Jadwal & Agenda -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                <line x1="16" x2="16" y1="2" y2="6"></line>
+                <line x1="8" x2="8" y1="2" y2="6"></line>
+                <line x1="3" x2="21" y1="10" y2="10"></line>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 09
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Jadwal Tahapan &amp; Linimasa
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Pantau agenda penting mulai dari pendaftaran, masa kurasi, presentasi finalis, hingga pengumuman.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-9) -->
+        <a
+          href="#link-9"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 10: Ganti nilai href="#link-10" dengan URL tujuan Anda -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Ruang Juri -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 10
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Portal Dewan Juri &amp; Kurator
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Akses khusus tim penilai untuk melakukan kurasi konten, inovasi layanan, dan tata kelola website.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-10) -->
+        <a
+          href="#link-10"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 11: Ganti nilai href="#link-11" dengan URL tujuan Anda -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Sertifikat & Penghargaan -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 11
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            E-Sertifikat &amp; Apresiasi Peserta
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Unduh sertifikat keikutsertaan resmi serta piagam penghargaan bagi desa finalis dan pemenang.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-11) -->
+        <a
+          href="#link-11"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- KARTU APLIKASI 12: Ganti nilai href="#link-12" dengan URL tujuan Anda -->
+      <!-- ===================================================================== -->
+      <article class="group flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+              <!-- Ikon Pengumuman & Berita -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m3 11 18-5v12L3 14v-3z"></path>
+                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+              </svg>
+            </span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+              Link Aplikasi 12
+            </span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-slate-900 leading-snug mb-2">
+            Pusat Pengumuman &amp; Berita Resmi
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed mb-6">
+            Baca rilis informasi terkini, hasil seleksi administrasi, dan pengumuman resmi panitia lomba.
+          </p>
+        </div>
+
+        <!-- GANTI LINK DI SINI (#link-12) -->
+        <a
+          href="#link-12"
+          target="_blank"
+          rel="noreferrer"
+          class="app-link-btn inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-blue-600 hover:border-blue-600 transition-colors duration-200"
+        >
+          <span>Buka Aplikasi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+        </a>
+      </article>
+
+    </section>
+  </div>
+
+  <script>
+    // Pembungkus aman untuk memastikan interaksi tautan placeholder berjalan lancar tanpa error
+    try {
+      document.addEventListener('DOMContentLoaded', function () {
+        const appLinks = document.querySelectorAll('.app-link-btn');
+
+        appLinks.forEach(function (link) {
+          link.addEventListener('click', function (event) {
+            const targetHref = link.getAttribute('href');
+            // Jika masih menggunakan link placeholder (#link-...), cegah perpindahan halaman kosong
+            if (!targetHref || targetHref.startsWith('#link-')) {
+              event.preventDefault();
+            }
+          });
+        });
+      });
+    } catch (err) {
+      console.error('Terjadi kesalahan pada skrip tautan aplikasi:', err);
+    }
+  </script>
+</body>
+</html>
