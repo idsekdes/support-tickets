@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Nota Penjualan & Invoice</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .font-mono-receipt {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Mode Pratinjau Kertas */
+        .paper-a4 {
+            width: 100%;
+            max-width: 794px; /* ~210mm */
+            min-height: 500px;
+            padding: 32px;
+        }
+        .paper-thermal {
+            width: 100%;
+            max-width: 320px; /* ~80mm */
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* Aturan Khusus Cetak / Print PDF */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            body {
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 10mm !important;
+            }
+            #print-area.thermal-print-mode {
+                width: 80mm !important;
+                max-width: 80mm !important;
+                padding: 4mm !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 no-print"></div>
+
+    <!-- Modal Riwayat Nota -->
+    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[88vh] flex flex-col overflow-hidden">
+            <!-- Header Modal -->
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800">Riwayat Nota Penjualan</h3>
+                        <p class="text-xs text-slate-500">Klik "Muat / Edit" untuk melunasi sisa bayar atau mencetak ulang</p>
+                    </div>
+                </div>
+                <button onclick="toggleHistoryModal(false)" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 rounded-lg transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Filter & Search -->
+            <div class="p-4 border-b border-slate-200 bg-white flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                    <input type="text" id="history-search" onkeyup="renderHistoryList()" placeholder="Cari nomor nota atau nama pelanggan..." class="w-full pl-10 pr-4 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                </div>
+                <select id="history-filter-status" onchange="renderHistoryList()" class="px-3.5 py-2 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <option value="ALL">Semua Status</option>
+                    <option value="LUNAS">Lunas</option>
+                    <option value="BELUM LUNAS">Belum Lunas (DP)</option>
+                    <option value="BELUM BAYAR">Belum Bayar</option>
+                </select>
+            </div>
+
+            <!-- List Riwayat -->
+            <div id="history-list" class="p-4 overflow-y-auto flex-1 space-y-3 bg-slate-50/50">
+                <!-- Diisi oleh JS -->
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center text-xs text-slate-500">
+                <span id="history-count">0 Nota tersimpan</span>
+                <button onclick="toggleHistoryModal(false)" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Aplikasi -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                    <i data-lucide="receipt" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-none">NotaKita <span class="text-indigo-600">Pro</span></h1>
+                    <p class="text-xs text-slate-500 mt-0.5 hidden sm:block">Aplikasi Invoice, Kasir & Manajemen Piutang</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="createNewInvoice()" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+                    <i data-lucide="file-plus" class="w-4 h-4"></i>
+                    <span>Nota Baru</span>
+                </button>
+                <button onclick="toggleHistoryModal(true)" class="relative flex items-center gap-1.5 px-3 sm:px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition">
+                    <i data-lucide="history" class="w-4 h-4"></i>
+                    <span>Riwayat</span>
+                    <span id="badge-history-count" class="ml-1 px-1.5 py-0.5 text-xs bg-indigo-600 text-white rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- KOLOM KIRI: FORM INPUT NOTA (7 Kolom) -->
+            <div class="lg:col-span-7 space-y-6 no-print">
+                
+                <!-- 1. Informasi Toko / Usaha -->
+                <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="store" class="w-4 h-4 text-indigo-600"></i>
+                            <h2 class="font-bold text-sm text-slate-800 uppercase tracking-wider">1. Profil Toko / Usaha</h2>
+                        </div>
+                        <button onclick="saveStoreProfile()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 bg-indigo-50 px-2.5 py-1 rounded-lg transition">
+                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Default
+                        </button>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Toko / Perusahaan</label>
+                            <input type="text" id="store-name" oninput="updatePreview()" value="TOKO MAJU JAYA SEJAHTERA" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Telepon / WA Toko</label>
+                            <input type="text" id="store-phone" oninput="updatePreview()" value="0812-3456-7890" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Alamat Singkat</label>
+                            <input type="text" id="store-address" oninput="updatePreview()" value="Jl. Merdeka No. 45, Jakarta Pusat" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Informasi Pelanggan & Nota -->
+                <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center gap-2">
+                        <i data-lucide="user-check" class="w-4 h-4 text-indigo-600"></i>
+                        <h2 class="font-bold text-sm text-slate-800 uppercase tracking-wider">2. Informasi Nota & Pelanggan</h2>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Nota</label>
+                            <div class="flex gap-1.5">
+                                <input type="text" id="invoice-number" oninput="updatePreview()" class="w-full px-3.5 py-2 text-sm font-mono font-semibold bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <button onclick="regenerateInvoiceNumber()" title="Buat Nomor Baru" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Transaksi</label>
+                            <input type="date" id="invoice-date" onchange="updatePreview()" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Pelanggan</label>
+                            <input type="text" id="customer-name" oninput="updatePreview()" placeholder="Contoh: Budi Santoso / Pelanggan Umum" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">No. HP / WhatsApp Pelanggan</label>
+                            <input type="tel" id="customer-phone" oninput="updatePreview()" placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Catatan Tambahan / Jatuh Tempo (Opsional)</label>
+                            <input type="text" id="invoice-notes" oninput="updatePreview()" placeholder="Contoh: Barang yang sudah dibeli tidak dapat ditukar / Pelunasan maks tgl 30" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Daftar Barang / Jasa -->
+                <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="shopping-bag" class="w-4 h-4 text-indigo-600"></i>
+                            <h2 class="font-bold text-sm text-slate-800 uppercase tracking-wider">3. Daftar Barang / Jasa</h2>
+                        </div>
+                        <button onclick="addItemRow()" class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Baris
+                        </button>
+                    </div>
+
+                    <div class="p-4 overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[540px]">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                                    <th class="pb-2.5 pl-1 w-5/12">Nama Item / Jasa</th>
+                                    <th class="pb-2.5 px-2 w-1/12 text-center">Qty</th>
+                                    <th class="pb-2.5 px-2 w-3/12 text-right">Harga (Rp)</th>
+                                    <th class="pb-2.5 px-2 w-2/12 text-right">Diskon (Rp)</th>
+                                    <th class="pb-2.5 pr-1 w-1/12 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items-container" class="divide-y divide-slate-100">
+                                <!-- Baris item di-render oleh JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4 & 5. Ringkasan Perhitungan & Opsi Pembayaran / Sisa Bayar -->
+                <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-4 h-4 text-indigo-600"></i>
+                        <h2 class="font-bold text-sm text-slate-800 uppercase tracking-wider">4. Ringkasan & Opsi Pembayaran</h2>
+                    </div>
+
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Kolom Potongan & Pajak -->
+                        <div class="space-y-4">
+                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/70 space-y-3">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-600 font-medium">Subtotal Keseluruhan:</span>
+                                    <span id="form-subtotal" class="font-bold text-slate-800">Rp 0</span>
+                                </div>
+
+                                <!-- Diskon Tambahan -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Diskon Tambahan Nota</label>
+                                    <div class="flex gap-2">
+                                        <select id="discount-type" onchange="calculateAll()" class="px-2.5 py-2 text-sm border border-slate-300 rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-500">
+                                            <option value="nominal">Rp</option>
+                                            <option value="percent">%</option>
+                                        </select>
+                                        <input type="number" id="discount-value" min="0" value="0" oninput="calculateAll()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0">
+                                    </div>
+                                </div>
+
+                                <!-- Pajak / PPN -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Pajak / PPN (%)</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="number" id="tax-percent" min="0" max="100" step="0.5" value="0" oninput="calculateAll()" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0">
+                                        <span class="text-sm font-semibold text-slate-500">%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Metode Pembayaran -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Metode Pembayaran</label>
+                                <select id="payment-method" onchange="updatePreview()" class="w-full px-3.5 py-2.5 text-sm font-medium border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                    <option value="Tunai / Cash">Tunai / Cash</option>
+                                    <option value="Transfer Bank">Transfer Bank</option>
+                                    <option value="QRIS">QRIS</option>
+                                    <option value="E-Wallet (GoPay/OVO/DANA)">E-Wallet (GoPay/OVO/DANA)</option>
+                                    <option value="Tempo / Kredit">Tempo / Kredit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Grand Total, Jumlah Bayar & Sisa Bayar -->
+                        <div class="space-y-4">
+                            <!-- Grand Total Card -->
+                            <div class="p-4 bg-indigo-600 text-white rounded-2xl shadow-md shadow-indigo-100">
+                                <div class="text-xs font-medium text-indigo-100 uppercase tracking-wider">Total Tagihan (Grand Total)</div>
+                                <div id="form-grand-total" class="text-2xl sm:text-3xl font-extrabold mt-1 tracking-tight">Rp 0</div>
+                            </div>
+
+                            <!-- Input Jumlah Bayar / DP -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-xs font-bold text-slate-700">Jumlah Bayar / DP (Rp)</label>
+                                    <span id="status-badge-form" class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-red-100 text-red-700">BELUM BAYAR</span>
+                                </div>
+                                <input type="number" id="amount-paid" min="0" value="0" oninput="calculateAll()" class="w-full px-3.5 py-2.5 text-base font-bold text-slate-900 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" placeholder="Masukkan nominal bayar...">
+                                
+                                <!-- Tombol Cepat Pembayaran -->
+                                <div class="grid grid-cols-3 gap-2 mt-2">
+                                    <button type="button" onclick="quickPay('FULL')" class="py-1.5 px-2 text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition">
+                                        Bayar Lunas
+                                    </button>
+                                    <button type="button" onclick="quickPay('DP50')" class="py-1.5 px-2 text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 rounded-lg transition">
+                                        DP 50%
+                                    </button>
+                                    <button type="button" onclick="quickPay('CLEAR')" class="py-1.5 px-2 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 rounded-lg transition">
+                                        Hapus (0)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Box Dinamis: Sisa Bayar (Kurang) atau Kembalian -->
+                            <div id="balance-box" class="p-3.5 rounded-xl border bg-red-50 border-red-200 flex items-center justify-between transition-colors">
+                                <div>
+                                    <div id="balance-label" class="text-xs font-bold uppercase text-red-700">Sisa Bayar (Kurang)</div>
+                                    <div class="text-[11px] text-slate-500" id="balance-subtext">Belum ada pembayaran</div>
+                                </div>
+                                <div id="balance-amount" class="text-lg font-extrabold text-red-700">Rp 0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Simpan Nota ke Riwayat -->
+                    <div class="px-5 py-4 bg-slate-50 border-t border-slate-200/80 flex flex-col sm:flex-row gap-3 justify-end">
+                        <button onclick="saveInvoiceToHistory()" class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md shadow-indigo-200 transition">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            <span>Simpan Nota ke Riwayat</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- KOLOM KANAN: PRATINJAU NOTA & CETAK (5 Kolom) -->
+            <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-20">
+                
+                <!-- Toolbar Pratinjau -->
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-2 no-print">
+                    <!-- Pilihan Ukuran Kertas -->
+                    <div class="flex items-center bg-slate-100 p-1 rounded-xl">
+                        <button id="btn-mode-a4" onclick="setPaperMode('A4')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition">
+                            Kertas A4
+                        </button>
+                        <button id="btn-mode-thermal" onclick="setPaperMode('THERMAL')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition">
+                            Struk 80mm
+                        </button>
+                    </div>
+
+                    <!-- Aksi Cetak & WA -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyWhatsAppSummary()" class="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition" title="Salin teks untuk dikirim ke WhatsApp">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>Salin WA</span>
+                        </button>
+                        <button onclick="printInvoice()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm transition">
+                            <i data-lucide="printer" class="w-4 h-4"></i>
+                            <span>Cetak / PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Area Kertas Nota (Siap Cetak) -->
+                <div class="flex justify-center overflow-x-auto pb-6">
+                    <div id="print-area" class="bg-white shadow-lg border border-slate-200 rounded-xl paper-a4 transition-all duration-200">
+                        <!-- Konten Nota di-render dinamis oleh JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- STATE APLIKASI ---
+        let items = [
+            { id: Date.now() + 1, name: 'Jasa Desain Logo & Branding', qty: 1, price: 350000, discount: 0 },
+            { id: Date.now() + 2, name: 'Cetak Kartu Nama (1 Box)', qty: 2, price: 75000, discount: 10000 }
+        ];
+        let paperMode = 'A4'; // 'A4' atau 'THERMAL'
+        let currentGrandTotal = 0;
+
+        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
+        window.onload = function() {
+            lucide.createIcons();
+            loadStoreProfile();
+            setDefaultDate();
+            regenerateInvoiceNumber();
+            renderItemRows();
+            calculateAll();
+            updateHistoryBadge();
+        };
+
+        // --- HELPER FORMAT RUPIAH & TANGGAL ---
+        function formatRupiah(angka) {
+            const num = Math.round(Number(angka) || 0);
+            return 'Rp ' + num.toLocaleString('id-ID');
+        }
+
+        function formatNumber(angka) {
+            const num = Math.round(Number(angka) || 0);
+            return num.toLocaleString('id-ID');
+        }
+
+        function formatDateIndo(dateStr) {
+            if (!dateStr) return '-';
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            return new Date(dateStr).toLocaleDateString('id-ID', options);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-slate-900 text-white' : (type === 'warning' ? 'bg-amber-600 text-white' : 'bg-red-600 text-white');
+            toast.className = `${bgColor} px-4 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'info'}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- 1. PROFIL TOKO (LOCALSTORAGE) ---
+        function saveStoreProfile() {
+            const profile = {
+                name: document.getElementById('store-name').value,
+                phone: document.getElementById('store-phone').value,
+                address: document.getElementById('store-address').value
+            };
+            localStorage.setItem('notakita_store_profile', JSON.stringify(profile));
+            showToast('Profil toko berhasil disimpan sebagai default!');
+        }
+
+        function loadStoreProfile() {
+            const saved = localStorage.getItem('notakita_store_profile');
+            if (saved) {
+                try {
+                    const profile = JSON.parse(saved);
+                    if (profile.name) document.getElementById('store-name').value = profile.name;
+                    if (profile.phone) document.getElementById('store-phone').value = profile.phone;
+                    if (profile.address) document.getElementById('store-address').value = profile.address;
+                } catch (e) { console.error(e); }
+            }
+        }
+
+        // --- 2. INFO NOTA ---
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('invoice-date').value = today;
+        }
+
+        function regenerateInvoiceNumber() {
+            const now = new Date();
+            const yr = now.getFullYear().toString().slice(-2);
+            const mo = String(now.getMonth() + 1).padStart(2, '0');
+            const dy = String(now.getDate()).padStart(2, '0');
+            const rand = Math.floor(100 + Math.random() * 900);
+            document.getElementById('invoice-number').value = `INV/${yr}${mo}${dy}/${rand}`;
+            updatePreview();
+        }
+
+        // --- 3. MANAJEMEN ITEM DINAMIS ---
+        function addItemRow() {
+            items.push({
+                id: Date.now() + Math.random(),
+                name: '',
+                qty: 1,
+                price: 0,
+                discount: 0
+            });
+            renderItemRows();
+            calculateAll();
+        }
+
+        function removeItemRow(id) {
+            if (items.length <= 1) {
+                showToast('Minimal harus ada 1 baris barang/jasa', 'warning');
+                return;
+            }
+            items = items.filter(item => item.id !== id);
+            renderItemRows();
+            calculateAll();
+        }
+
+        function updateItemField(id, field, value) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            if (field === 'name') {
+                item.name = value;
+            } else {
+                item[field] = Math.max(0, parseFloat(value) || 0);
+            }
+            calculateAll();
+        }
+
+        function renderItemRows() {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-slate-50/80 transition';
+                tr.innerHTML = `
+                    <td class="py-2 pl-1 pr-2">
+                        <input type="text" value="${item.name.replace(/"/g, '&quot;')}" 
+                            oninput="updateItemField(${item.id}, 'name', this.value)" 
+                            placeholder="Nama barang / jasa..." 
+                            class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </td>
+                    <td class="py-2 px-1.5">
+                        <input type="number" min="1" value="${item.qty}" 
+                            oninput="updateItemField(${item.id}, 'qty', this.value)" 
+                            class="w-16 mx-auto block text-center px-2 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </td>
+                    <td class="py-2 px-1.5">
+                        <input type="number" min="0" value="${item.price}" 
+                            oninput="updateItemField(${item.id}, 'price', this.value)" 
+                            class="w-full text-right px-2.5 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </td>
+                    <td class="py-2 px-1.5">
+                        <input type="number" min="0" value="${item.discount}" 
+                            oninput="updateItemField(${item.id}, 'discount', this.value)" 
+                            class="w-full text-right px-2.5 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-rose-600">
+                    </td>
+                    <td class="py-2 pr-1 text-center">
+                        <button type="button" onclick="removeItemRow(${item.id})" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus Baris">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                `;
+                container.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        // --- 4 & 5. PERHITUNGAN TOTAL, PEMBAYARAN & SISA BAYAR ---
+        function quickPay(mode) {
+            const amountInput = document.getElementById('amount-paid');
+            if (mode === 'FULL') {
+                amountInput.value = Math.round(currentGrandTotal);
+            } else if (mode === 'DP50') {
+                amountInput.value = Math.round(currentGrandTotal * 0.5);
+            } else if (mode === 'CLEAR') {
+                amountInput.value = 0;
+            }
+            calculateAll();
+        }
+
+        function getCalculationSummary() {
+            // Hitung subtotal semua item
+            let subtotal = 0;
+            items.forEach(item => {
+                const lineTotal = Math.max(0, (item.qty * item.price) - item.discount);
+                subtotal += lineTotal;
+            });
+
+            // Hitung diskon tambahan nota
+            const discType = document.getElementById('discount-type').value;
+            const discVal = Math.max(0, parseFloat(document.getElementById('discount-value').value) || 0);
+            let extraDiscount = 0;
+            if (discType === 'percent') {
+                extraDiscount = subtotal * (Math.min(100, discVal) / 100);
+            } else {
+                extraDiscount = discVal;
+            }
+            extraDiscount = Math.min(subtotal, extraDiscount);
+
+            const afterDiscount = Math.max(0, subtotal - extraDiscount);
+
+            // Hitung Pajak / PPN
+            const taxPercent = Math.max(0, parseFloat(document.getElementById('tax-percent').value) || 0);
+            const taxAmount = afterDiscount * (taxPercent / 100);
+
+            // Grand Total
+            const grandTotal = Math.round(afterDiscount + taxAmount);
+
+            // Jumlah Bayar / DP
+            const amountPaid = Math.max(0, parseFloat(document.getElementById('amount-paid').value) || 0);
+
+            // Status & Selisih (Sisa Bayar vs Kembalian)
+            let status = 'BELUM BAYAR';
+            let remaining = 0;
+            let change = 0;
+
+            if (grandTotal === 0) {
+                status = 'LUNAS';
+            } else if (amountPaid === 0) {
+                status = 'BELUM BAYAR';
+                remaining = grandTotal;
+            } else if (amountPaid < grandTotal) {
+                status = 'BELUM LUNAS';
+                remaining = grandTotal - amountPaid;
+            } else {
+                status = 'LUNAS';
+                change = amountPaid - grandTotal;
+            }
+
+            return {
+                subtotal,
+                extraDiscount,
+                taxPercent,
+                taxAmount,
+                grandTotal,
+                amountPaid,
+                status,
+                remaining,
+                change
+            };
+        }
+
+        function calculateAll() {
+            const calc = getCalculationSummary();
+            currentGrandTotal = calc.grandTotal;
+
+            // Update UI Form
+            document.getElementById('form-subtotal').textContent = formatRupiah(calc.subtotal);
+            document.getElementById('form-grand-total').textContent = formatRupiah(calc.grandTotal);
+
+            // Update Badge Status di Form
+            const badge = document.getElementById('status-badge-form');
+            const balanceBox = document.getElementById('balance-box');
+            const balanceLabel = document.getElementById('balance-label');
+            const balanceSubtext = document.getElementById('balance-subtext');
+            const balanceAmount = document.getElementById('balance-amount');
+
+            if (calc.status === 'LUNAS') {
+                badge.textContent = 'LUNAS';
+                badge.className = 'px-2.5 py-0.5 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-700';
+                
+                balanceBox.className = 'p-3.5 rounded-xl border bg-emerald-50 border-emerald-200 flex items-center justify-between transition-colors';
+                balanceLabel.textContent = 'Kembalian';
+                balanceLabel.className = 'text-xs font-bold uppercase text-emerald-700';
+                balanceSubtext.textContent = calc.change > 0 ? 'Uang kembalian pelanggan' : 'Pembayaran pas';
+                balanceAmount.textContent = formatRupiah(calc.change);
+                balanceAmount.className = 'text-lg font-extrabold text-emerald-700';
+            } else if (calc.status === 'BELUM LUNAS') {
+                badge.textContent = 'BELUM LUNAS / DP';
+                badge.className = 'px-2.5 py-0.5 text-[11px] font-bold rounded-full bg-amber-100 text-amber-700';
+
+                balanceBox.className = 'p-3.5 rounded-xl border bg-amber-50 border-amber-200 flex items-center justify-between transition-colors';
+                balanceLabel.textContent = 'Sisa Bayar (Kurang)';
+                balanceLabel.className = 'text-xs font-bold uppercase text-amber-800';
+                balanceSubtext.textContent = 'Wajib dilunasi pelanggan';
+                balanceAmount.textContent = formatRupiah(calc.remaining);
+                balanceAmount.className = 'text-lg font-extrabold text-amber-700';
+            } else {
+                badge.textContent = 'BELUM BAYAR';
+                badge.className = 'px-2.5 py-0.5 text-[11px] font-bold rounded-full bg-red-100 text-red-700';
+
+                balanceBox.className = 'p-3.5 rounded-xl border bg-red-50 border-red-200 flex items-center justify-between transition-colors';
+                balanceLabel.textContent = 'Sisa Bayar (Kurang)';
+                balanceLabel.className = 'text-xs font-bold uppercase text-red-700';
+                balanceSubtext.textContent = 'Belum ada pembayaran masuk';
+                balanceAmount.textContent = formatRupiah(calc.remaining);
+                balanceAmount.className = 'text-lg font-extrabold text-red-700';
+            }
+
+            updatePreview();
+        }
+
+        // --- 7. PRATINJAU NOTA (A4 & THERMAL 80MM) ---
+        function setPaperMode(mode) {
+            paperMode = mode;
+            const printArea = document.getElementById('print-area');
+            const btnA4 = document.getElementById('btn-mode-a4');
+            const btnThermal = document.getElementById('btn-mode-thermal');
+
+            if (mode === 'A4') {
+                printArea.classList.remove('paper-thermal', 'thermal-print-mode');
+                printArea.classList.add('paper-a4');
+                btnA4.className = 'px-3 py-1.5 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition';
+                btnThermal.className = 'px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition';
+            } else {
+                printArea.classList.remove('paper-a4');
+                printArea.classList.add('paper-thermal', 'thermal-print-mode');
+                btnThermal.className = 'px-3 py-1.5 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition';
+                btnA4.className = 'px-3 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition';
+            }
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const storeName = document.getElementById('store-name').value || 'NAMA TOKO';
+            const storePhone = document.getElementById('store-phone').value;
+            const storeAddress = document.getElementById('store-address').value;
+
+            const invNumber = document.getElementById('invoice-number').value || '-';
+            const invDate = formatDateIndo(document.getElementById('invoice-date').value);
+            const custName = document.getElementById('customer-name').value || 'Pelanggan Umum';
+            const custPhone = document.getElementById('customer-phone').value;
+            const notes = document.getElementById('invoice-notes').value;
+            const payMethod = document.getElementById('payment-method').value;
+
+            const calc = getCalculationSummary();
+            const printArea = document.getElementById('print-area');
+
+            // Warna Stempel Status
+            let stampClass = 'border-red-600 text-red-600';
+            if (calc.status === 'LUNAS') stampClass = 'border-emerald-600 text-emerald-600';
+            else if (calc.status === 'BELUM LUNAS') stampClass = 'border-amber-600 text-amber-600';
+
+            if (paperMode === 'THERMAL') {
+                // RENDER STRUK THERMAL 80MM
+                let itemsHtml = items.map(item => {
+                    const lineTotal = Math.max(0, (item.qty * item.price) - item.discount);
+                    return `
+                        <div class="mb-1.5">
+                            <div class="font-bold text-slate-900">${item.name || 'Item'}</div>
+                            <div class="flex justify-between text-slate-700">
+                                <span>${item.qty} x ${formatNumber(item.price)}${item.discount > 0 ? ` (-${formatNumber(item.discount)})` : ''}</span>
+                                <span class="font-semibold">${formatNumber(lineTotal)}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                printArea.innerHTML = `
+                    <div class="text-center border-b border-dashed border-slate-400 pb-2.5 mb-2.5">
+                        <div class="font-bold text-sm uppercase tracking-tight">${storeName}</div>
+                        ${storeAddress ? `<div class="text-[11px] text-slate-600 mt-0.5">${storeAddress}</div>` : ''}
+                        ${storePhone ? `<div class="text-[11px] text-slate-600">Telp: ${storePhone}</div>` : ''}
+                    </div>
+
+                    <div class="text-[11px] space-y-0.5 border-b border-dashed border-slate-400 pb-2 mb-2.5">
+                        <div class="flex justify-between"><span>No:</span><span class="font-bold">${invNumber}</span></div>
+                        <div class="flex justify-between"><span>Tgl:</span><span>${invDate}</span></div>
+                        <div class="flex justify-between"><span>Plg:</span><span>${custName}</span></div>
+                        ${custPhone ? `<div class="flex justify-between"><span>HP:</span><span>${custPhone}</span></div>` : ''}
+                        <div class="flex justify-between"><span>Metode:</span><span>${payMethod}</span></div>
+                    </div>
+
+                    <div class="border-b border-dashed border-slate-400 pb-2 mb-2.5">
+                        ${itemsHtml}
+                    </div>
+
+                    <div class="space-y-1 text-[11px] border-b border-dashed border-slate-400 pb-2.5 mb-2.5">
+                        <div class="flex justify-between"><span>Subtotal</span><span>${formatNumber(calc.subtotal)}</span></div>
+                        ${calc.extraDiscount > 0 ? `<div class="flex justify-between"><span>Diskon</span><span>-${formatNumber(calc.extraDiscount)}</span></div>` : ''}
+                        ${calc.taxAmount > 0 ? `<div class="flex justify-between"><span>PPN (${calc.taxPercent}%)</span><span>${formatNumber(calc.taxAmount)}</span></div>` : ''}
+                        <div class="flex justify-between font-bold text-xs pt-1 border-t border-slate-300">
+                            <span>TOTAL TAGIHAN</span>
+                            <span>${formatRupiah(calc.grandTotal)}</span>
+                        </div>
+                        <div class="flex justify-between pt-1">
+                            <span>Bayar / DP</span>
+                            <span class="font-semibold">${formatRupiah(calc.amountPaid)}</span>
+                        </div>
+                        ${calc.remaining > 0 ? `
+                            <div class="flex justify-between font-bold text-red-700">
+                                <span>SISA BAYAR</span>
+                                <span>${formatRupiah(calc.remaining)}</span>
+                            </div>
+                        ` : `
+                            <div class="flex justify-between">
+                                <span>Kembalian</span>
+                                <span>${formatRupiah(calc.change)}</span>
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="text-center my-2">
+                        <span class="inline-block border-2 ${stampClass} px-2.5 py-0.5 font-bold text-xs tracking-wider uppercase rounded">
+                            STATUS: ${calc.status}
+                        </span>
+                    </div>
+
+                    ${notes ? `<div class="text-[10px] text-slate-600 text-center mt-2 italic">Catatan: ${notes}</div>` : ''}
+                    <div class="text-center text-[11px] text-slate-600 mt-3 pt-2 border-t border-dashed border-slate-300">
+                        Terima kasih atas kunjungan Anda!
+                    </div>
+                `;
+            } else {
+                // RENDER INVOICE KERTAS A4
+                let rowsHtml = items.map((item, idx) => {
+                    const lineTotal = Math.max(0, (item.qty * item.price) - item.discount);
+                    return `
+                        <tr class="border-b border-slate-200 text-xs">
+                            <td class="py-2.5 px-2 text-slate-500">${idx + 1}</td>
+                            <td class="py-2.5 px-2 font-medium text-slate-800">${item.name || '-'}</td>
+                            <td class="py-2.5 px-2 text-center text-slate-700">${item.qty}</td>
+                            <td class="py-2.5 px-2 text-right text-slate-700">${formatRupiah(item.price)}</td>
+                            <td class="py-2.5 px-2 text-right text-rose-600">${item.discount > 0 ? '-' + formatRupiah(item.discount) : '-'}</td>
+                            <td class="py-2.5 px-2 text-right font-semibold text-slate-900">${formatRupiah(lineTotal)}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                printArea.innerHTML = `
+                    <!-- Kop Nota -->
+                    <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4 mb-5">
+                        <div>
+                            <h1 class="text-xl font-extrabold text-slate-900 uppercase tracking-tight">${storeName}</h1>
+                            <p class="text-xs text-slate-600 mt-1">${storeAddress}</p>
+                            <p class="text-xs text-slate-600">Telp / WA: ${storePhone}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-extrabold text-indigo-600 tracking-wider uppercase">NOTA PENJUALAN</div>
+                            <div class="text-xs font-mono font-bold text-slate-700 mt-1">#${invNumber}</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Tanggal: ${invDate}</div>
+                        </div>
+                    </div>
+
+                    <!-- Info Pelanggan & Status -->
+                    <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-5">
+                        <div>
+                            <div class="text-[10px] font-bold uppercase text-slate-400">Ditagihkan Kepada:</div>
+                            <div class="text-sm font-bold text-slate-800">${custName}</div>
+                            ${custPhone ? `<div class="text-xs text-slate-600">HP/WA: ${custPhone}</div>` : ''}
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[10px] font-bold uppercase text-slate-400 mb-1">Status Pembayaran</div>
+                            <span class="inline-block border-2 ${stampClass} px-3 py-1 rounded-lg font-extrabold text-xs tracking-wider uppercase">
+                                ${calc.status}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Barang -->
+                    <table class="w-full text-left border-collapse mb-5">
+                        <thead>
+                            <tr class="bg-slate-800 text-white text-[11px] uppercase">
+                                <th class="py-2 px-2 rounded-tl-lg w-8">No</th>
+                                <th class="py-2 px-2">Deskripsi Barang / Jasa</th>
+                                <th class="py-2 px-2 text-center w-12">Qty</th>
+                                <th class="py-2 px-2 text-right">Harga</th>
+                                <th class="py-2 px-2 text-right">Diskon</th>
+                                <th class="py-2 px-2 text-right rounded-tr-lg">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+
+                    <!-- Bagian Bawah: Catatan & Rincian Total -->
+                    <div class="grid grid-cols-12 gap-4 items-start">
+                        <div class="col-span-6 space-y-3">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                                <div class="font-bold text-slate-700 mb-1">Metode Pembayaran:</div>
+                                <div class="text-slate-600 font-medium">${payMethod}</div>
+                            </div>
+                            ${notes ? `
+                                <div class="p-3 bg-amber-50/70 rounded-xl border border-amber-200/80 text-xs">
+                                    <div class="font-bold text-amber-800 mb-0.5">Catatan:</div>
+                                    <div class="text-slate-700">${notes}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="col-span-6 space-y-1.5 text-xs">
+                            <div class="flex justify-between py-1 text-slate-600">
+                                <span>Subtotal:</span>
+                                <span class="font-semibold text-slate-800">${formatRupiah(calc.subtotal)}</span>
+                            </div>
+                            ${calc.extraDiscount > 0 ? `
+                                <div class="flex justify-between py-1 text-rose-600">
+                                    <span>Diskon Tambahan:</span>
+                                    <span class="font-semibold">-${formatRupiah(calc.extraDiscount)}</span>
+                                </div>
+                            ` : ''}
+                            ${calc.taxAmount > 0 ? `
+                                <div class="flex justify-between py-1 text-slate-600">
+                                    <span>PPN (${calc.taxPercent}%):</span>
+                                    <span class="font-semibold text-slate-800">${formatRupiah(calc.taxAmount)}</span>
+                                </div>
+                            ` : ''}
+                            <div class="flex justify-between py-2 border-t-2 border-slate-800 text-sm font-extrabold text-slate-900">
+                                <span>TOTAL TAGIHAN:</span>
+                                <span>${formatRupiah(calc.grandTotal)}</span>
+                            </div>
+                            <div class="flex justify-between py-1 text-slate-700">
+                                <span>Jumlah Bayar / DP:</span>
+                                <span class="font-bold text-indigo-700">${formatRupiah(calc.amountPaid)}</span>
+                            </div>
+                            ${calc.remaining > 0 ? `
+                                <div class="flex justify-between py-1.5 px-2.5 bg-red-50 border border-red-200 rounded-lg text-red-700 font-extrabold">
+                                    <span>SISA BAYAR:</span>
+                                    <span>${formatRupiah(calc.remaining)}</span>
+                                </div>
+                            ` : `
+                                <div class="flex justify-between py-1.5 px-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 font-bold">
+                                    <span>Kembalian:</span>
+                                    <span>${formatRupiah(calc.change)}</span>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- Tanda Tangan -->
+                    <div class="mt-10 pt-4 border-t border-slate-200 flex justify-between text-center text-xs text-slate-600">
+                        <div class="w-40">
+                            <div>Penerima / Pelanggan,</div>
+                            <div class="h-14"></div>
+                            <div class="border-t border-slate-400 pt-1 font-semibold text-slate-800">${custName}</div>
+                        </div>
+                        <div class="w-40">
+                            <div>Hormat Kami,</div>
+                            <div class="h-14"></div>
+                            <div class="border-t border-slate-400 pt-1 font-semibold text-slate-800">${storeName}</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // --- CETAK & SALIN WHATSAPP ---
+        function printInvoice() {
+            window.print();
+        }
+
+        function copyWhatsAppSummary() {
+            const storeName = document.getElementById('store-name').value || 'TOKO';
+            const invNumber = document.getElementById('invoice-number').value;
+            const invDate = formatDateIndo(document.getElementById('invoice-date').value);
+            const custName = document.getElementById('customer-name').value || 'Pelanggan';
+            const payMethod = document.getElementById('payment-method').value;
+            const calc = getCalculationSummary();
+
+            let text = `*NOTA PENJUALAN - ${storeName}*\n`;
+            text += `No. Nota: ${invNumber}\n`;
+            text += `Tanggal: ${invDate}\n`;
+            text += `Pelanggan: ${custName}\n`;
+            text += `--------------------------------\n`;
+
+            items.forEach((item, i) => {
+                const lineTotal = Math.max(0, (item.qty * item.price) - item.discount);
+                text += `${i + 1}. ${item.name || 'Item'} (${item.qty}x ${formatRupiah(item.price)}) = ${formatRupiah(lineTotal)}\n`;
+            });
+
+            text += `--------------------------------\n`;
+            if (calc.extraDiscount > 0) text += `Diskon: -${formatRupiah(calc.extraDiscount)}\n`;
+            if (calc.taxAmount > 0) text += `PPN (${calc.taxPercent}%): ${formatRupiah(calc.taxAmount)}\n`;
+            text += `*TOTAL TAGIHAN: ${formatRupiah(calc.grandTotal)}*\n`;
+            text += `Dibayar (${payMethod}): ${formatRupiah(calc.amountPaid)}\n`;
+
+            if (calc.remaining > 0) {
+                text += `*SISA BAYAR: ${formatRupiah(calc.remaining)}*\n`;
+            } else if (calc.change > 0) {
+                text += `Kembalian: ${formatRupiah(calc.change)}\n`;
+            }
+            text += `Status: *[${calc.status}]*\n\nTerima kasih!`;
+
+            // Salin ke clipboard menggunakan execCommand agar kompatibel di iframe
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Ringkasan nota berhasil disalin! Siap ditempel di WhatsApp.');
+            } catch (err) {
+                showToast('Gagal menyalin teks', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // --- 6. RIWAYAT NOTA (LOCALSTORAGE) ---
+        function getHistoryData() {
+            try {
+                return JSON.parse(localStorage.getItem('notakita_history')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveHistoryData(data) {
+            localStorage.setItem('notakita_history', JSON.stringify(data));
+            updateHistoryBadge();
+        }
+
+        function updateHistoryBadge() {
+            const list = getHistoryData();
+            document.getElementById('badge-history-count').textContent = list.length;
+        }
+
+        function saveInvoiceToHistory() {
+            const invNumber = document.getElementById('invoice-number').value.trim();
+            if (!invNumber) {
+                showToast('Nomor nota tidak boleh kosong!', 'error');
+                return;
+            }
+
+            const calc = getCalculationSummary();
+            const invoiceRecord = {
+                invoiceNumber: invNumber,
+                date: document.getElementById('invoice-date').value,
+                storeName: document.getElementById('store-name').value,
+                storePhone: document.getElementById('store-phone').value,
+                storeAddress: document.getElementById('store-address').value,
+                customerName: document.getElementById('customer-name').value || 'Pelanggan Umum',
+                customerPhone: document.getElementById('customer-phone').value,
+                notes: document.getElementById('invoice-notes').value,
+                items: JSON.parse(JSON.stringify(items)),
+                discountType: document.getElementById('discount-type').value,
+                discountValue: document.getElementById('discount-value').value,
+                taxPercent: document.getElementById('tax-percent').value,
+                paymentMethod: document.getElementById('payment-method').value,
+                amountPaid: calc.amountPaid,
+                grandTotal: calc.grandTotal,
+                remaining: calc.remaining,
+                status: calc.status,
+                updatedAt: new Date().toISOString()
+            };
+
+            let history = getHistoryData();
+            const existingIndex = history.findIndex(h => h.invoiceNumber === invNumber);
+
+            if (existingIndex !== -1) {
+                history[existingIndex] = invoiceRecord;
+                showToast(`Nota ${invNumber} berhasil diperbarui!`);
+            } else {
+                history.unshift(invoiceRecord);
+                showToast(`Nota ${invNumber} berhasil disimpan ke riwayat!`);
+            }
+
+            saveHistoryData(history);
+        }
+
+        function toggleHistoryModal(show) {
+            const modal = document.getElementById('history-modal');
+            if (show) {
+                renderHistoryList();
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function renderHistoryList() {
+            const listContainer = document.getElementById('history-list');
+            const searchQuery = document.getElementById('history-search').value.toLowerCase();
+            const statusFilter = document.getElementById('history-filter-status').value;
+
+            let history = getHistoryData();
+
+            const filtered = history.filter(item => {
+                const matchText = item.invoiceNumber.toLowerCase().includes(searchQuery) ||
+                                  item.customerName.toLowerCase().includes(searchQuery);
+                const matchStatus = statusFilter === 'ALL' || item.status === statusFilter;
+                return matchText && matchStatus;
+            });
+
+            document.getElementById('history-count').textContent = `Menampilkan ${filtered.length} dari ${history.length} nota`;
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i data-lucide="folder-open" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+                        <p class="text-sm font-medium">Tidak ada riwayat nota yang ditemukan.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(item => {
+                let badgeClass = 'bg-red-100 text-red-700';
+                if (item.status === 'LUNAS') badgeClass = 'bg-emerald-100 text-emerald-700';
+                else if (item.status === 'BELUM LUNAS') badgeClass = 'bg-amber-100 text-amber-700';
+
+                return `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-indigo-300 transition">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-mono font-bold text-sm text-indigo-700">${item.invoiceNumber}</span>
+                                <span class="px-2 py-0.5 text-[10px] font-bold rounded-full ${badgeClass}">${item.status}</span>
+                                <span class="text-xs text-slate-400">• ${formatDateIndo(item.date)}</span>
+                            </div>
+                            <div class="font-bold text-slate-800 text-sm">${item.customerName}</div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+                                <span>Total: <strong class="text-slate-900">${formatRupiah(item.grandTotal)}</strong></span>
+                                <span>Dibayar: <strong class="text-emerald-700">${formatRupiah(item.amountPaid)}</strong></span>
+                                ${item.remaining > 0 ? `<span class="text-red-600 font-bold">Sisa: ${formatRupiah(item.remaining)}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                            <button onclick="loadInvoiceFromHistory('${item.invoiceNumber}')" class="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white text-xs font-bold rounded-xl transition">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                <span>${item.remaining > 0 ? 'Lunasi / Edit' : 'Muat Nota'}</span>
+                            </button>
+                            <button onclick="deleteInvoiceFromHistory('${item.invoiceNumber}')" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition" title="Hapus Riwayat">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function loadInvoiceFromHistory(invNumber) {
+            const history = getHistoryData();
+            const record = history.find(h => h.invoiceNumber === invNumber);
+            if (!record) return;
+
+            document.getElementById('invoice-number').value = record.invoiceNumber;
+            document.getElementById('invoice-date').value = record.date;
+            document.getElementById('store-name').value = record.storeName || '';
+            document.getElementById('store-phone').value = record.storePhone || '';
+            document.getElementById('store-address').value = record.storeAddress || '';
+            document.getElementById('customer-name').value = record.customerName || '';
+            document.getElementById('customer-phone').value = record.customerPhone || '';
+            document.getElementById('invoice-notes').value = record.notes || '';
+            
+            items = JSON.parse(JSON.stringify(record.items));
+            document.getElementById('discount-type').value = record.discountType || 'nominal';
+            document.getElementById('discount-value').value = record.discountValue || 0;
+            document.getElementById('tax-percent').value = record.taxPercent || 0;
+            document.getElementById('payment-method').value = record.paymentMethod || 'Tunai / Cash';
+            document.getElementById('amount-paid').value = record.amountPaid || 0;
+
+            renderItemRows();
+            calculateAll();
+            toggleHistoryModal(false);
+            showToast(`Nota ${invNumber} berhasil dimuat! Silakan ubah pembayaran jika ingin melunasi.`);
+        }
+
+        function deleteInvoiceFromHistory(invNumber) {
+            let history = getHistoryData();
+            history = history.filter(h => h.invoiceNumber !== invNumber);
+            saveHistoryData(history);
+            renderHistoryList();
+            showToast(`Nota ${invNumber} dihapus dari riwayat.`, 'warning');
+        }
+
+        function createNewInvoice() {
+            regenerateInvoiceNumber();
+            setDefaultDate();
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('invoice-notes').value = '';
+            items = [{ id: Date.now(), name: '', qty: 1, price: 0, discount: 0 }];
+            document.getElementById('discount-type').value = 'nominal';
+            document.getElementById('discount-value').value = 0;
+            document.getElementById('tax-percent').value = 0;
+            document.getElementById('payment-method').value = 'Tunai / Cash';
+            document.getElementById('amount-paid').value = 0;
+
+            renderItemRows();
+            calculateAll();
+            showToast('Formulir nota baru siap digunakan!');
+        }
+    </script>
+</body>
+</html>
