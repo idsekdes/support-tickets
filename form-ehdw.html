@@ -95,16 +95,13 @@
 
         <div id="successBox" class="d-none">
           <div class="alert alert-success" role="alert">
-            <h2 class="h6 alert-heading fw-bold mb-2">Berhasil Direkap!</h2>
-            <p class="small mb-2">Data berikut telah tersimpan ke Google Drive &amp; Spreadsheet:</p>
+            <h2 class="h6 alert-heading fw-bold mb-2">Permintaan Terkirim!</h2>
+            <p class="small mb-2">Data berikut telah dikirim ke sistem rekapitulasi:</p>
             <ul class="list-unstyled small mb-0">
               <li><strong>Desa:</strong> <span id="outDesa"></span></li>
               <li><strong>Kecamatan:</strong> <span id="outKecamatan"></span></li>
               <li><strong>Jabatan:</strong> <span id="outJabatan"></span></li>
               <li><strong>Status:</strong> Sudah Upload</li>
-              <li id="fileLinkWrapper" class="mt-1 d-none">
-                <strong>File:</strong> <a id="outFileUrl" href="#" target="_blank" rel="noopener noreferrer">Lihat Sertifikat</a>
-              </li>
             </ul>
           </div>
 
@@ -149,7 +146,6 @@
       const fileInput = document.getElementById("fileInput");
       const rawFile = fileInput.files && fileInput.files[0];
 
-      // 1. Validasi Input
       if (!desa || !kecamatan || !jabatan) {
         showAlert("Lengkapi kolom Desa, Kecamatan, dan Jabatan.");
         return;
@@ -178,8 +174,6 @@
 
         loadingText.textContent = "Mengunggah ke Google Drive & merekap ke Spreadsheet...";
         const dataUrl = await readFileAsDataUrl(preparedFile);
-        // Ambil string Base64 murni tanpa prefix "data:...;base64,"
-        const base64Only = dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl;
 
         const payload = {
           desa: desa,
@@ -187,56 +181,28 @@
           jabatan: jabatan,
           fileName: preparedFile.name,
           mimeType: preparedFile.type || "application/octet-stream",
-          fileData: base64Only,
-          dataUrl: dataUrl // tetap disertakan jika script lama memakai field ini
+          fileData: dataUrl
         };
 
-        // Gunakan redirect: "follow" dan tanpa no-cors agar respons JSON GAS terbaca
-        const response = await fetch(WEB_APP_URL, {
+        await fetch(WEB_APP_URL, {
           method: "POST",
-          redirect: "follow",
+          mode: "no-cors",
           headers: {
             "Content-Type": "text/plain;charset=utf-8"
           },
           body: JSON.stringify(payload)
         });
 
-        if (!response.ok) {
-          throw new Error(`Server merespons dengan status ${response.status}`);
-        }
+        await new Promise((resolve) => setTimeout(resolve, 2500));
 
-        const resultText = await response.text();
-        let result;
-        try {
-          result = JSON.parse(resultText);
-        } catch {
-          // Jika GAS mengembalikan teks biasa namun status 200 OK
-          result = { status: "success" };
-        }
-
-        if (result.status === "error" || result.success === false) {
-          throw new Error(result.message || "Terjadi kesalahan saat menyimpan di server.");
-        }
-
-        // Tampilkan hasil sukses secara akurat
         loadingBox.classList.add("d-none");
         document.getElementById("outDesa").textContent = desa;
         document.getElementById("outKecamatan").textContent = kecamatan;
         document.getElementById("outJabatan").textContent = jabatan;
-
-        const fileLinkWrapper = document.getElementById("fileLinkWrapper");
-        const outFileUrl = document.getElementById("outFileUrl");
-        if (result.fileUrl) {
-          outFileUrl.href = result.fileUrl;
-          fileLinkWrapper.classList.remove("d-none");
-        } else {
-          fileLinkWrapper.classList.add("d-none");
-        }
-
         successBox.classList.remove("d-none");
       } catch (err) {
         setLoadingState(false);
-        showAlert(err && err.message ? err.message : "Gagal terhubung ke server. Periksa koneksi internet Anda.");
+        showAlert(err && err.message ? err.message : "Gagal memproses pengiriman data. Pastikan koneksi internet stabil.");
       }
     });
 
@@ -308,7 +274,6 @@
             canvas.height = height;
             const ctx = canvas.getContext("2d");
 
-            // Isi background putih agar file PNG transparan tidak menjadi hitam saat diubah ke JPG
             ctx.fillStyle = "#FFFFFF";
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
