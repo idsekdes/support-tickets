@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Slip Gaji Desa Wani Lumbumpetigo</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+      .slip-page { box-shadow: none !important; margin: 0 !important; page-break-after: always; }
+    }
+    .slip-table th, .slip-table td {
+      border: 1.5px solid #1a2744;
+      padding: 6px 10px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto" style="background:#e8ecf2; font-family:'Source Sans 3',sans-serif;">
+  <div class="w-full min-h-full py-6 px-4" id="app-wrapper"><!-- Controls -->
+   <div class="no-print max-w-4xl mx-auto mb-4 flex flex-wrap gap-3 items-center justify-between">
+    <div class="flex items-center gap-3 flex-wrap">
+     <div class="flex items-center gap-2">
+      <span class="text-sm font-semibold" style="color:#1a2744;">Tipe:</span> <select id="typeSelect" class="text-sm border rounded-lg px-3 py-2 focus:outline-none" style="border-color:#1a2744; color:#1a2744; background:#fff;"> <option value="all">📋 Semua (Desa + BPD)</option> <option value="desa">🏛️ Perangkat Desa</option> <option value="bpd">👥 BPD</option> </select>
+     </div>
+     <div class="flex items-center gap-2">
+      <span class="text-sm font-semibold" style="color:#1a2744;">Pilih:</span> <select id="personSelect" class="text-sm border rounded-lg px-3 py-2 focus:outline-none" style="border-color:#1a2744; color:#1a2744; background:#fff;"> <option value="all">📄 Cetak Semua</option> </select>
+     </div>
+    </div>
+    <div class="flex gap-2"><button id="printBtn" class="flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-all hover:opacity-90 cursor-pointer" style="background:#1a2744;"> <i data-lucide="printer" style="width:16px;height:16px;"></i> Cetak / Print </button> <button id="exportPdfBtn" class="flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-all hover:opacity-90 cursor-pointer" style="background:#c41e3a;"> <i data-lucide="file-pdf" style="width:16px;height:16px;"></i> Export PDF </button> <button id="exportBtn" class="flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-all hover:opacity-90 cursor-pointer" style="background:#2d5f2e;"> <i data-lucide="download" style="width:16px;height:16px;"></i> Export HTML </button>
+    </div>
+   </div><!-- Slip Container -->
+   <div id="slipContainer" class="max-w-4xl mx-auto"></div>
+  </div>
+  <script>
+const defaultConfig = {
+  document_title: "SLIP GAJI PERANGKAT DESA",
+  village_name: "DESA WANI LUMBUMPETIGO",
+  period_text: "BULAN JANUARI 2025",
+  background_color: "#e8ecf2",
+  primary_color: "#1a2744",
+  surface_color: "#ffffff",
+  text_color: "#1a2744",
+  accent_color: "#2d5f2e",
+  font_family: "Source Sans 3",
+  font_size: 14
+};
+
+const employees = [
+  { no:1, nama:"AMIR RAMANG", jabatan:"Kepala Desa", rek:".", siltap:2450000, vol:1, tipe:"desa" },
+  { no:2, nama:"SYAMSUDDIN", jabatan:"Sekretaris Desa", rek:".", siltap:2250000, vol:1, tipe:"desa" },
+  { no:3, nama:"SUNARTIN", jabatan:"Kaur Keuangan", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:4, nama:"AL ZAHRIN LAHASE", jabatan:"Kaur Perencanaan", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:5, nama:"FITRIA", jabatan:"Kaur Umum & Aset", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:6, nama:"SAIRMAN", jabatan:"Kasi Pemerintahan", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:7, nama:"DJIDAL RAGAIYA", jabatan:"Kasi Kesejahteraan", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:8, nama:"AGUSMAN N.R", jabatan:"Kasi Pelayanan", rek:".", siltap:2100000, vol:1, tipe:"desa" },
+  { no:9, nama:"HERMAN LOLO", jabatan:"Kepala Dusun I", rek:".", siltap:2050000, vol:1, tipe:"desa" },
+  { no:10, nama:"TAJRIN A LAMANIMPA", jabatan:"Kepala Dusun II", rek:".", siltap:2050000, vol:1, tipe:"desa" },
+  { no:11, nama:"RUSLIN DG,MARODJA", jabatan:"Kepala Dusun III", rek:".", siltap:2050000, vol:1, tipe:"desa" },
+  { no:1, nama:"ALWAN", jabatan:"Ketua BPD", rek:".", siltap:1000000, vol:1, tipe:"bpd" },
+  { no:2, nama:"ANWAR RAMANG", jabatan:"Wakil Ketua BPD", rek:".", siltap:900000, vol:1, tipe:"bpd" },
+  { no:3, nama:"DARMAWATI", jabatan:"Sekretaris BPD", rek:".", siltap:800000, vol:1, tipe:"bpd" },
+  { no:4, nama:"TASRIN T LAMANIMPA", jabatan:"Anggota BPD", rek:".", siltap:800000, vol:1, tipe:"bpd" }
+];
+
+function fmt(n) {
+  return n.toLocaleString('id-ID');
+}
+
+function terbilang(n) {
+  const satuan = ['','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan','Sepuluh','Sebelas'];
+  if (n < 12) return satuan[n];
+  if (n < 20) return terbilang(n-10) + ' Belas';
+  if (n < 100) return terbilang(Math.floor(n/10)) + ' Puluh' + (n%10?' '+terbilang(n%10):'');
+  if (n < 200) return 'Seratus' + (n%100?' '+terbilang(n%100):'');
+  if (n < 1000) return terbilang(Math.floor(n/100)) + ' Ratus' + (n%100?' '+terbilang(n%100):'');
+  if (n < 2000) return 'Seribu' + (n%1000?' '+terbilang(n%1000):'');
+  if (n < 1000000) return terbilang(Math.floor(n/1000)) + ' Ribu' + (n%1000?' '+terbilang(n%1000):'');
+  if (n < 1000000000) return terbilang(Math.floor(n/1000000)) + ' Juta' + (n%1000000?' '+terbilang(n%1000000):'');
+  return n.toString();
+}
+
+function buildSlip(emp, config) {
+  const jumlah = emp.siltap * emp.vol;
+  const c = { ...defaultConfig, ...config };
+  return `
+  <div class="slip-page bg-white rounded-xl shadow-lg mb-6 p-8" style="font-family:'${c.font_family}',sans-serif; color:${c.text_color}; font-size:${c.font_size}px;">
+    <!-- Header -->
+    <div class="text-center mb-1" style="border-bottom:3px double ${c.primary_color}; padding-bottom:12px;">
+      <h2 class="font-bold tracking-wide" style="font-size:${c.font_size*1.3}px; color:${c.primary_color};">PEMERINTAH ${c.village_name.toUpperCase()}</h2>
+      <h1 class="font-bold mt-1" style="font-size:${c.font_size*1.5}px; color:${c.primary_color};">${c.document_title}</h1>
+      <p class="mt-1 font-semibold" style="font-size:${c.font_size*0.95}px;">${c.period_text}</p>
+    </div>
+
+    <!-- Info Pegawai -->
+    <div class="mt-5 mb-4 grid grid-cols-2 gap-x-8 gap-y-1" style="font-size:${c.font_size}px;">
+      <div class="flex"><span class="w-36 font-semibold">Nama</span><span>: ${emp.nama}</span></div>
+      <div class="flex"><span class="w-36 font-semibold">No. Rekening</span><span>: ${emp.rek}</span></div>
+      <div class="flex"><span class="w-36 font-semibold">Jabatan</span><span>: ${emp.jabatan}</span></div>
+      <div class="flex"><span class="w-36 font-semibold">No. Urut</span><span>: ${emp.no}</span></div>
+    </div>
+
+    <!-- Tabel Gaji -->
+    <table class="slip-table w-full text-center" style="border-collapse:collapse; font-size:${c.font_size}px; border-color:${c.primary_color};">
+      <thead>
+        <tr style="background:${c.primary_color}; color:#fff;">
+          <th class="w-12">NO</th>
+          <th>URAIAN</th>
+          <th class="w-40">SILTAP/BULAN (Rp)</th>
+          <th class="w-20">VOLUME</th>
+          <th class="w-44">JUMLAH (Rp)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="text-left">${emp.tipe === 'bpd' ? 'Tunjangan BPD' : 'Penghasilan Tetap (Siltap)'}</td>
+          <td class="text-right">${fmt(emp.siltap)}</td>
+          <td>${emp.vol}</td>
+          <td class="text-right font-semibold">${fmt(jumlah)}</td>
+        </tr>
+        <tr style="background:#f0f4f8;">
+          <td colspan="4" class="text-right font-bold" style="color:${c.primary_color};">TOTAL DITERIMA</td>
+          <td class="text-right font-bold" style="color:${c.accent_color};">Rp ${fmt(jumlah)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Terbilang -->
+    <div class="mt-3 p-3 rounded-lg text-sm italic" style="background:#f0f4f8; border-left:4px solid ${c.accent_color};">
+      <strong>Terbilang:</strong> ${terbilang(jumlah)} Rupiah
+    </div>
+
+    <!-- Tanda Tangan -->
+    <div class="mt-10 flex justify-between items-start" style="font-size:${c.font_size}px;">
+      <div class="text-center">
+        <p>Penerima,</p>
+        <div class="h-20"></div>
+        <p class="font-bold border-t pt-1" style="border-color:${c.primary_color}; min-width:180px;">${emp.nama}</p>
+        <p class="text-sm">${emp.jabatan}</p>
+      </div>
+      <div class="text-center">
+        <p>Mengetahui,</p>
+        <p class="font-semibold">Kepala Desa Wani Lumbumpetigo</p>
+        <div class="h-16"></div>
+        <p class="font-bold border-t pt-1" style="border-color:${c.primary_color}; min-width:180px;">AMIR RAMANG</p>
+        <p class="text-sm">Kepala Desa</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSlips(config) {
+  const typeVal = document.getElementById('typeSelect').value;
+  const personVal = document.getElementById('personSelect').value;
+  const container = document.getElementById('slipContainer');
+  
+  let list = employees;
+  if (typeVal !== 'all') list = list.filter(e => e.tipe === typeVal);
+  if (personVal !== 'all') list = list.filter(e => `${e.tipe}-${e.no}` === personVal);
+  
+  container.innerHTML = list.map(e => buildSlip(e, config)).join('');
+}
+
+// Populate type select
+const typeSelect = document.getElementById('typeSelect');
+typeSelect.addEventListener('change', () => {
+  const personSelect = document.getElementById('personSelect');
+  personSelect.value = 'all';
+  updatePersonSelect();
+});
+
+// Update person select based on type
+function updatePersonSelect() {
+  const typeVal = document.getElementById('typeSelect').value;
+  const personSelect = document.getElementById('personSelect');
+  let filtered = employees;
+  if (typeVal !== 'all') filtered = filtered.filter(e => e.tipe === typeVal);
+  
+  personSelect.innerHTML = '<option value="all">📄 Cetak Semua</option>';
+  filtered.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = `${e.tipe}-${e.no}`;
+    opt.textContent = `${e.no}. ${e.nama} (${e.jabatan})`;
+    personSelect.appendChild(opt);
+  });
+  renderSlips({});
+}
+
+// Populate select
+updatePersonSelect();
+
+const sel = document.getElementById('personSelect');
+sel.addEventListener('change', () => renderSlips(window.elementSdk?.config || {}));
+
+// Print functionality
+document.getElementById('printBtn').addEventListener('click', () => {
+  setTimeout(() => {
+    window.print();
+  }, 100);
+});
+
+// Export PDF functionality
+document.getElementById('exportPdfBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('exportPdfBtn');
+  const originalHTML = btn.innerHTML;
+  
+  try {
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.innerHTML = '<i data-lucide="loader" style="width:16px;height:16px; animation: spin 1s linear infinite;"></i> Membuat PDF...';
+    lucide.createIcons();
+    
+    const typeVal = document.getElementById('typeSelect').value;
+    const personVal = document.getElementById('personSelect').value;
+    const config = window.elementSdk?.config || {};
+    
+    let list = employees;
+    if (typeVal !== 'all') list = list.filter(e => e.tipe === typeVal);
+    if (personVal !== 'all') list = list.filter(e => `${e.tipe}-${e.no}` === personVal);
+    
+    const element = document.createElement('div');
+    element.style.background = 'white';
+    element.innerHTML = list.map(emp => buildSlip(emp, config)).join('');
+    
+    const opt = {
+      margin: 10,
+      filename: `Slip_Gaji_${config.period_text?.replace(/\s+/g, '_') || 'Periode'}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    await html2pdf().set(opt).from(element).save();
+    
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    lucide.createIcons();
+  } catch (err) {
+    console.error('PDF Export Error:', err);
+    btn.innerHTML = '❌ Error PDF';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      lucide.createIcons();
+    }, 2000);
+  }
+});
+
+// Add CSS for spinner animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);
+
+// Export HTML functionality
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const typeVal = document.getElementById('typeSelect').value;
+  const personVal = document.getElementById('personSelect').value;
+  const config = window.elementSdk?.config || {};
+  
+  let list = employees;
+  if (typeVal !== 'all') list = list.filter(e => e.tipe === typeVal);
+  if (personVal !== 'all') list = list.filter(e => `${e.tipe}-${e.no}` === personVal);
+  
+  const htmlContent = `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slip Gaji - ${config.period_text || 'Periode'}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+    .slip-page { background: white; border: 1px solid #ddd; border-radius: 8px; margin: 20px auto; padding: 40px; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); page-break-after: always; }
+    .header { text-align: center; border-bottom: 3px double #1a2744; padding-bottom: 15px; margin-bottom: 20px; }
+    .header h2 { margin: 0; font-size: 18px; color: #1a2744; letter-spacing: 1px; }
+    .header h1 { margin: 10px 0 5px 0; font-size: 20px; font-weight: bold; color: #1a2744; }
+    .header p { margin: 5px 0 0 0; font-weight: 500; font-size: 14px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; font-size: 14px; }
+    .info-row { display: flex; }
+    .info-label { font-weight: bold; width: 150px; }
+    .slip-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    .slip-table th, .slip-table td { border: 1.5px solid #1a2744; padding: 10px; text-align: center; }
+    .slip-table th { background: #1a2744; color: white; font-weight: bold; }
+    .slip-table td { text-align: right; }
+    .slip-table td:first-child { text-align: center; }
+    .slip-table .desc { text-align: left; }
+    .total-row { background: #f0f4f8; }
+    .total-row td:nth-child(4) { color: #2d5f2e; font-weight: bold; }
+    .terbilang { margin: 15px 0; padding: 12px; background: #f0f4f8; border-left: 4px solid #2d5f2e; border-radius: 4px; font-size: 13px; font-style: italic; }
+    .signature-section { margin-top: 40px; display: flex; justify-content: space-between; font-size: 13px; }
+    .signature-box { text-align: center; width: 200px; }
+    .signature-box .label { margin-bottom: 50px; }
+    .signature-box .name { border-top: 1px solid #1a2744; padding-top: 5px; font-weight: bold; }
+    .signature-box .position { font-size: 12px; }
+    @media print { body { background: white; } .slip-page { margin: 0; box-shadow: none; } }
+  </style>
+</head>
+<body>
+${list.map(emp => {
+  const jumlah = emp.siltap * emp.vol;
+  return `
+  <div class="slip-page">
+    <div class="header">
+      <h2>PEMERINTAH ${(config.village_name || 'DESA WANI LUMBUMPETIGO').toUpperCase()}</h2>
+      <h1>${config.document_title || 'SLIP GAJI PERANGKAT DESA'}</h1>
+      <p>${config.period_text || 'BULAN JANUARI 2025'}</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-row">
+        <span class="info-label">Nama</span>
+        <span>: ${emp.nama}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">No. Rekening</span>
+        <span>: ${emp.rek}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Jabatan</span>
+        <span>: ${emp.jabatan}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">No. Urut</span>
+        <span>: ${emp.no}</span>
+      </div>
+    </div>
+
+    <table class="slip-table">
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>URAIAN</th>
+          <th>SILTAP/BULAN (Rp)</th>
+          <th>VOLUME</th>
+          <th>JUMLAH (Rp)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="desc">${emp.tipe === 'bpd' ? 'Tunjangan BPD' : 'Penghasilan Tetap (Siltap)'}</td>
+          <td>${emp.siltap.toLocaleString('id-ID')}</td>
+          <td>${emp.vol}</td>
+          <td style="font-weight: bold;">${jumlah.toLocaleString('id-ID')}</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="4" style="text-align: right; font-weight: bold; color: #1a2744;">TOTAL DITERIMA</td>
+          <td>Rp ${jumlah.toLocaleString('id-ID')}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="terbilang">
+      <strong>Terbilang:</strong> ${terbilang(jumlah)} Rupiah
+    </div>
+
+    <div class="signature-section">
+      <div class="signature-box">
+        <div class="label">Penerima,</div>
+        <div class="name">${emp.nama}</div>
+        <div class="position">${emp.jabatan}</div>
+      </div>
+      <div class="signature-box">
+        <div class="label">Mengetahui,</div>
+        <div style="font-weight: 500;">Kepala Desa Wani Lumbumpetigo</div>
+        <div class="name">AMIR RAMANG</div>
+        <div class="position">Kepala Desa</div>
+      </div>
+    </div>
+  </div>
+  `;
+}).join('')}
+</body>
+</html>`;
+
+  // Create and download file
+  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  const fileName = `Slip_Gaji_${config.period_text?.replace(/\s+/g, '_') || 'Periode'}.html`;
+  link.setAttribute('href', url);
+  link.setAttribute('download', fileName);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    document.body.style.background = c.background_color;
+    renderSlips(config);
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    function mut(key) {
+      return { get: () => c[key], set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); } };
+    }
+    return {
+      recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_color'), mut('accent_color')],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ["document_title", c.document_title],
+      ["village_name", c.village_name],
+      ["period_text", c.period_text]
+    ]);
+  }
+});
+
+renderSlips({});
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f0289205769f8f0',t:'MTc3NjgzODk2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
