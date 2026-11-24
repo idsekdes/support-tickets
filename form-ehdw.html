@@ -63,7 +63,7 @@
 
           <div class="mb-3">
             <label for="kecamatan" class="form-label fw-semibold">Kecamatan <span class="text-danger">*</span></label>
-            <input type="text" id="kecamatan" name="kecamatan" class="form-label form-control" placeholder="Contoh: Tanantovea" required />
+            <input type="text" id="kecamatan" name="kecamatan" class="form-control" placeholder="Contoh: Tanantovea" required />
           </div>
 
           <div class="mb-3">
@@ -77,8 +77,8 @@
 
           <div class="mb-4">
             <label for="fileInput" class="form-label fw-semibold">File Sertifikat (PDF, JPG, PNG) <span class="text-danger">*</span></label>
-            <input type="file" id="fileInput" name="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
-            <div class="form-text">Ukuran maksimal 8 MB. Gambar besar akan dikompres otomatis sebelum dikirim.</div>
+            <input type="file" id="fileInput" name="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" required />
+            <div class="form-text">Ukuran maksimal 6 MB. Gambar besar akan dikompres otomatis sebelum dikirim.</div>
           </div>
 
           <div class="d-grid">
@@ -96,26 +96,26 @@
         <div id="successBox" class="d-none">
           <div class="alert alert-success" role="alert">
             <h2 class="h6 alert-heading fw-bold mb-2">Berhasil Direkap!</h2>
+            <p class="small mb-2">Data berikut telah tersimpan ke Google Drive &amp; Spreadsheet:</p>
             <ul class="list-unstyled small mb-0">
-              <li><strong>Tanggal:</strong> <span id="outTanggal"></span></li>
               <li><strong>Desa:</strong> <span id="outDesa"></span></li>
               <li><strong>Kecamatan:</strong> <span id="outKecamatan"></span></li>
               <li><strong>Jabatan:</strong> <span id="outJabatan"></span></li>
-              <li><strong>Status:</strong> <span id="outStatus"></span></li>
+              <li><strong>Status:</strong> Sudah Upload</li>
+              <li id="fileLinkWrapper" class="mt-1 d-none">
+                <strong>File:</strong> <a id="outFileUrl" href="#" target="_blank" rel="noopener noreferrer">Lihat Sertifikat</a>
+              </li>
             </ul>
           </div>
 
           <div class="d-grid gap-2">
-            <a id="outFileLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-              Buka File Sertifikat di Google Drive
-            </a>
             <a
               href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuvz8kh_YY0xode24ydq7ubqAr5RS_d0hl6hC371cjTS6VHSqdqPMYCJfMksVBpk4RzP-SVMid5L7F/pubhtml?gid=0&single=true"
               target="_blank"
               rel="noopener noreferrer"
-              class="btn btn-outline-secondary"
+              class="btn btn-primary"
             >
-              Lihat Rekap Publik Spreadsheet
+              Cek Rekapitulasi di Spreadsheet
             </a>
             <button type="button" id="resetBtn" class="btn btn-link text-decoration-none mt-1">
               + Input Data Sertifikat Lainnya
@@ -128,9 +128,11 @@
 
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygHjJmtK4PzYHQlfrxwSlgY_PUP3D_bFQ9lnAEZUpYaljZr80bY4KKECQRcGCxZznE/exec";
-    const MAX_FILE_BYTES = 8 * 1024 * 1024;
+    const MAX_FILE_BYTES = 6 * 1024 * 1024;
+    const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
     const form = document.getElementById("certForm");
+    const submitBtn = document.getElementById("submitBtn");
     const alertBox = document.getElementById("alertBox");
     const loadingBox = document.getElementById("loadingBox");
     const loadingText = document.getElementById("loadingText");
@@ -141,12 +143,13 @@
       event.preventDefault();
       hideAlert();
 
-      const desa = document.getElementById("desa").value.trim();
-      const kecamatan = document.getElementById("kecamatan").value.trim();
-      const jabatan = document.getElementById("jabatan").value.trim();
+      const desa = document.getElementById("desa").value.trim().toUpperCase();
+      const kecamatan = document.getElementById("kecamatan").value.trim().toUpperCase();
+      const jabatan = document.getElementById("jabatan").value.trim().toUpperCase();
       const fileInput = document.getElementById("fileInput");
       const rawFile = fileInput.files && fileInput.files[0];
 
+      // 1. Validasi Input
       if (!desa || !kecamatan || !jabatan) {
         showAlert("Lengkapi kolom Desa, Kecamatan, dan Jabatan.");
         return;
@@ -155,8 +158,12 @@
         showAlert("Pilih file sertifikat terlebih dahulu.");
         return;
       }
+      if (!ALLOWED_TYPES.includes(rawFile.type) && !/\.(pdf|jpg|jpeg|png)$/i.test(rawFile.name)) {
+        showAlert("Format file tidak didukung. Gunakan PDF, JPG, atau PNG.");
+        return;
+      }
       if (rawFile.size > MAX_FILE_BYTES) {
-        showAlert("Ukuran file melebihi batas maksimal 8 MB.");
+        showAlert("Ukuran file melebihi batas maksimal 6 MB.");
         return;
       }
 
@@ -170,34 +177,66 @@
         }
 
         loadingText.textContent = "Mengunggah ke Google Drive & merekap ke Spreadsheet...";
+        const dataUrl = await readFileAsDataUrl(preparedFile);
+        // Ambil string Base64 murni tanpa prefix "data:...;base64,"
+        const base64Only = dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl;
 
-        const formData = new FormData();
-        formData.append("desa", desa);
-        formData.append("kecamatan", kecamatan);
-        formData.append("jabatan", jabatan);
-        formData.append("file", preparedFile, preparedFile.name);
+        const payload = {
+          desa: desa,
+          kecamatan: kecamatan,
+          jabatan: jabatan,
+          fileName: preparedFile.name,
+          mimeType: preparedFile.type || "application/octet-stream",
+          fileData: base64Only,
+          dataUrl: dataUrl // tetap disertakan jika script lama memakai field ini
+        };
 
+        // Gunakan redirect: "follow" dan tanpa no-cors agar respons JSON GAS terbaca
         const response = await fetch(WEB_APP_URL, {
           method: "POST",
-          body: formData
+          redirect: "follow",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
         });
 
-        const textResult = await response.text();
-        let parsed;
+        if (!response.ok) {
+          throw new Error(`Server merespons dengan status ${response.status}`);
+        }
+
+        const resultText = await response.text();
+        let result;
         try {
-          parsed = JSON.parse(textResult);
-        } catch (_parseErr) {
-          throw new Error("Respons server tidak valid. Pastikan deployment Apps Script diset ke 'Anyone' (Siapa saja) dan versi terbaru.");
+          result = JSON.parse(resultText);
+        } catch {
+          // Jika GAS mengembalikan teks biasa namun status 200 OK
+          result = { status: "success" };
         }
 
-        if (!response.ok || !parsed || parsed.status !== "sukses") {
-          throw new Error((parsed && parsed.message) || "Gagal menyimpan data di server.");
+        if (result.status === "error" || result.success === false) {
+          throw new Error(result.message || "Terjadi kesalahan saat menyimpan di server.");
         }
 
-        renderSuccess(parsed.data);
+        // Tampilkan hasil sukses secara akurat
+        loadingBox.classList.add("d-none");
+        document.getElementById("outDesa").textContent = desa;
+        document.getElementById("outKecamatan").textContent = kecamatan;
+        document.getElementById("outJabatan").textContent = jabatan;
+
+        const fileLinkWrapper = document.getElementById("fileLinkWrapper");
+        const outFileUrl = document.getElementById("outFileUrl");
+        if (result.fileUrl) {
+          outFileUrl.href = result.fileUrl;
+          fileLinkWrapper.classList.remove("d-none");
+        } else {
+          fileLinkWrapper.classList.add("d-none");
+        }
+
+        successBox.classList.remove("d-none");
       } catch (err) {
         setLoadingState(false);
-        showAlert(err && err.message ? err.message : "Terjadi kesalahan jaringan.");
+        showAlert(err && err.message ? err.message : "Gagal terhubung ke server. Periksa koneksi internet Anda.");
       }
     });
 
@@ -210,6 +249,7 @@
 
     function setLoadingState(isLoading, message) {
       if (message) loadingText.textContent = message;
+      submitBtn.disabled = isLoading;
       if (isLoading) {
         form.classList.add("d-none");
         successBox.classList.add("d-none");
@@ -223,6 +263,7 @@
     function showAlert(msg) {
       alertBox.textContent = msg;
       alertBox.classList.remove("d-none");
+      alertBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function hideAlert() {
@@ -230,29 +271,18 @@
       alertBox.classList.add("d-none");
     }
 
-    function renderSuccess(data) {
-      loadingBox.classList.add("d-none");
-      document.getElementById("outTanggal").textContent = data.tanggal || "-";
-      document.getElementById("outDesa").textContent = data.desa || "-";
-      document.getElementById("outKecamatan").textContent = data.kecamatan || "-";
-      document.getElementById("outJabatan").textContent = data.jabatan || "-";
-      document.getElementById("outStatus").textContent = data.status || "Sudah Upload";
-
-      const linkEl = document.getElementById("outFileLink");
-      if (data.fileUrl) {
-        linkEl.href = data.fileUrl;
-        linkEl.classList.remove("disabled");
-      } else {
-        linkEl.href = "#";
-        linkEl.classList.add("disabled");
-      }
-
-      successBox.classList.remove("d-none");
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Gagal membaca file yang dipilih."));
+        reader.readAsDataURL(file);
+      });
     }
 
     function compressImageIfNeeded(file) {
       return new Promise((resolve) => {
-        if (file.size < 1.5 * 1024 * 1024) {
+        if (file.size < 1.2 * 1024 * 1024) {
           resolve(file);
           return;
         }
@@ -277,11 +307,15 @@
             canvas.width = width;
             canvas.height = height;
             const ctx = canvas.getContext("2d");
+
+            // Isi background putih agar file PNG transparan tidak menjadi hitam saat diubah ke JPG
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
 
             canvas.toBlob(
               (blob) => {
-                if (!blob) {
+                if (!blob || blob.size >= file.size) {
                   resolve(file);
                   return;
                 }
