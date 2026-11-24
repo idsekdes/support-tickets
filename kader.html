@@ -98,59 +98,56 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* Mencegah zoom otomatis pada input di iOS/Android & hilangkan horizontal scroll */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-0">
 
     <!-- Toast Notification Container (Pengganti alert()) -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none no-print"></div>
-
-    <!-- Modal Konfirmasi & Edit (Pengganti confirm() / prompt()) -->
-    <div id="app-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full overflow-hidden transform transition-all">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-posyandu-50/60">
-                <h3 id="modal-title" class="text-lg font-bold text-slate-800">Judul Modal</h3>
-                <button onclick="closeModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div id="modal-body" class="p-6">
-                <!-- Konten Dinamis Modal -->
-            </div>
-            <div id="modal-footer" class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
-                <!-- Tombol Aksi Modal -->
-            </div>
-        </div>
-    </div>
+    <div id="toast-container" class="fixed top-3 left-3 right-3 sm:left-auto sm:top-4 sm:right-4 z-50 flex flex-col gap-2 sm:max-w-sm pointer-events-none no-print"></div>
 
     <!-- Header Aplikasi -->
-    <header class="bg-gradient-to-r from-posyandu-800 via-posyandu-700 to-teal-600 text-white shadow-md no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="flex items-center gap-3.5">
-                    <div class="bg-white/15 backdrop-blur-md p-3 rounded-2xl border border-white/20 shadow-inner shrink-0">
-                        <i data-lucide="heart-pulse" class="w-8 h-8 text-posyandu-200"></i>
+    <header class="bg-gradient-to-r from-posyandu-800 via-posyandu-700 to-teal-600 text-white shadow-md no-print sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-3.5 sm:py-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/15 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-white/20 shadow-inner shrink-0">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 sm:w-8 sm:h-8 text-posyandu-200"></i>
                     </div>
-                    <div>
-                        <span class="inline-block text-xs font-semibold uppercase tracking-wider bg-posyandu-900/50 text-posyandu-100 px-2.5 py-0.5 rounded-full mb-1 border border-posyandu-500/30">
-                            Pemerintah Desa Wani Lumbumpetigo
+                    <div class="min-w-0">
+                        <span class="inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-posyandu-900/50 text-posyandu-100 px-2 py-0.5 rounded-full mb-0.5 border border-posyandu-500/30 truncate max-w-full">
+                            Desa Wani Lumbumpetigo
                         </span>
-                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight">
+                        <h1 class="text-base sm:text-2xl font-extrabold tracking-tight leading-tight truncate">
                             Absensi Kader Posyandu
                         </h1>
-                        <p class="text-xs sm:text-sm text-posyandu-100 mt-0.5">
+                        <p class="hidden sm:block text-xs sm:text-sm text-posyandu-100 mt-0.5">
                             Sistem Pencatatan Kehadiran & Rekapitulasi Posyandu Mekar 1, 2, & 3
                         </p>
                     </div>
                 </div>
 
-                <!-- Navigasi Mode Utama: Input Absensi vs Rekap & Laporan -->
-                <div class="flex bg-posyandu-900/40 p-1.5 rounded-xl border border-white/15 self-start md:self-auto w-full md:w-auto">
-                    <button id="nav-absensi" onclick="switchMainView('absensi')" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm">
+                <!-- Navigasi Mode Utama Desktop (Tersembunyi di HP karena pakai Bottom Nav) -->
+                <div class="hidden md:flex bg-posyandu-900/40 p-1.5 rounded-xl border border-white/15 self-auto">
+                    <button id="nav-absensi" onclick="switchMainView('absensi')" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm">
                         <i data-lucide="clipboard-check" class="w-4 h-4"></i>
                         <span>Input Absensi</span>
                     </button>
-                    <button id="nav-rekap" onclick="switchMainView('rekap')" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white">
+                    <button id="nav-rekap" onclick="switchMainView('rekap')" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white">
                         <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
                         <span>Rekap & Laporan</span>
                     </button>
@@ -160,53 +157,53 @@
     </header>
 
     <!-- Konten Utama -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
 
         <!-- ============================================================== -->
         <!-- VIEW 1: INPUT ABSENSI & MANAJEMEN KADER                        -->
         <!-- ============================================================== -->
-        <div id="view-absensi" class="space-y-6">
+        <div id="view-absensi" class="space-y-4 sm:space-y-6">
             
-            <!-- Tab Pilihan Posyandu (1. Mekar 1, 2. Mekar 2, 3. Mekar 3) -->
-            <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <button onclick="selectPosyandu('mekar1')" id="tab-mekar1" class="posyandu-tab flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-sm transition-all border-2 border-posyandu-600 bg-posyandu-50 text-posyandu-800 shadow-sm">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-7 h-7 rounded-lg bg-posyandu-600 text-white flex items-center justify-center text-xs font-extrabold">1</span>
-                            <span>POSYANDU MEKAR 1</span>
+            <!-- Tab Pilihan Posyandu (3 Kolom Rapi di HP maupun Desktop) -->
+            <div class="bg-white p-1.5 sm:p-2 rounded-2xl shadow-sm border border-slate-200/80">
+                <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
+                    <button onclick="selectPosyandu('mekar1')" id="tab-mekar1" class="posyandu-tab flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 px-2 sm:px-4 py-2.5 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all border-2 border-posyandu-600 bg-posyandu-50 text-posyandu-800 shadow-sm active:scale-[0.98]">
+                        <div class="flex items-center gap-1.5 sm:gap-2.5">
+                            <span class="w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-posyandu-600 text-white flex items-center justify-center text-[11px] sm:text-xs font-extrabold shrink-0">1</span>
+                            <span class="truncate"><span class="hidden sm:inline">POSYANDU </span>MEKAR 1</span>
                         </div>
-                        <span id="badge-count-mekar1" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-posyandu-200/80 text-posyandu-900">0 Kader</span>
+                        <span id="badge-count-mekar1" class="text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-posyandu-200/80 text-posyandu-900">0 Kader</span>
                     </button>
 
-                    <button onclick="selectPosyandu('mekar2')" id="tab-mekar2" class="posyandu-tab flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-7 h-7 rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-xs font-extrabold">2</span>
-                            <span>POSYANDU MEKAR 2</span>
+                    <button onclick="selectPosyandu('mekar2')" id="tab-mekar2" class="posyandu-tab flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 px-2 sm:px-4 py-2.5 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100 active:scale-[0.98]">
+                        <div class="flex items-center gap-1.5 sm:gap-2.5">
+                            <span class="w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-[11px] sm:text-xs font-extrabold shrink-0">2</span>
+                            <span class="truncate"><span class="hidden sm:inline">POSYANDU </span>MEKAR 2</span>
                         </div>
-                        <span id="badge-count-mekar2" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200 text-slate-700">0 Kader</span>
+                        <span id="badge-count-mekar2" class="text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-slate-200 text-slate-700">0 Kader</span>
                     </button>
 
-                    <button onclick="selectPosyandu('mekar3')" id="tab-mekar3" class="posyandu-tab flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-7 h-7 rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-xs font-extrabold">3</span>
-                            <span>POSYANDU MEKAR 3</span>
+                    <button onclick="selectPosyandu('mekar3')" id="tab-mekar3" class="posyandu-tab flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 px-2 sm:px-4 py-2.5 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100 active:scale-[0.98]">
+                        <div class="flex items-center gap-1.5 sm:gap-2.5">
+                            <span class="w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-[11px] sm:text-xs font-extrabold shrink-0">3</span>
+                            <span class="truncate"><span class="hidden sm:inline">POSYANDU </span>MEKAR 3</span>
                         </div>
-                        <span id="badge-count-mekar3" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200 text-slate-700">0 Kader</span>
+                        <span id="badge-count-mekar3" class="text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-slate-200 text-slate-700">0 Kader</span>
                     </button>
                 </div>
             </div>
 
             <!-- Panel Pengaturan Kegiatan & Tanggal -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6">
-                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-slate-100">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-6">
+                <div class="pb-4 sm:pb-5 border-b border-slate-100">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
                         <!-- Pilih Tanggal -->
                         <div>
                             <label for="input-tanggal" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                                 Tanggal Kegiatan
                             </label>
                             <div class="relative">
-                                <input type="date" id="input-tanggal" onchange="loadAttendanceForCurrentSelection()" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
+                                <input type="date" id="input-tanggal" onchange="loadAttendanceForCurrentSelection()" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-3 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
                             </div>
                         </div>
 
@@ -215,7 +212,7 @@
                             <label for="input-kegiatan" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                                 Jenis Kegiatan Posyandu
                             </label>
-                            <select id="input-kegiatan" onchange="handleActivitySelectChange()" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
+                            <select id="input-kegiatan" onchange="handleActivitySelectChange()" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-3 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
                                 <option value="Posyandu Balita & Ibu Hamil">Posyandu Balita & Ibu Hamil</option>
                                 <option value="Posyandu Lansia & PTM">Posyandu Lansia & PTM</option>
                                 <option value="Posyandu Remaja">Posyandu Remaja</option>
@@ -226,50 +223,42 @@
                             </select>
                         </div>
 
-                        <!-- Input Keterangan Kustom (Muncul jika pilih Lainnya atau sebagai catatan tambahan) -->
+                        <!-- Input Keterangan Kustom (Muncul jika pilih Lainnya) -->
                         <div id="custom-kegiatan-wrapper" class="hidden">
                             <label for="input-kegiatan-custom" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                                 Nama Kegiatan Khusus
                             </label>
-                            <input type="text" id="input-kegiatan-custom" placeholder="Contoh: Pemberian Vitamin A" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
+                            <input type="text" id="input-kegiatan-custom" placeholder="Contoh: Pemberian Vitamin A" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-3 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white focus:ring-2 focus:ring-posyandu-500/20 outline-none transition">
                         </div>
-                    </div>
-
-                    <!-- Tombol Tambah Kader Baru -->
-                    <div class="flex flex-wrap items-center gap-2.5 pt-2 lg:pt-0">
-                        <button onclick="openAddKaderModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold shadow-sm transition cursor-pointer">
-                            <i data-lucide="user-plus" class="w-4 h-4 text-posyandu-300"></i>
-                            <span>Tambah / Atur Nama Kader</span>
-                        </button>
                     </div>
                 </div>
 
                 <!-- Baris Statistik Singkat & Aksi Cepat -->
-                <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-                        <span class="font-semibold text-slate-600 mr-1">Ringkasan Hari Ini:</span>
-                        <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+                    <div class="grid grid-cols-4 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
+                        <span class="hidden sm:inline font-semibold text-slate-600 mr-1">Ringkasan:</span>
+                        <span class="px-2 py-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200 text-center">
                             Hadir: <strong id="stat-hadir">0</strong>
                         </span>
-                        <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 font-semibold border border-amber-200">
+                        <span class="px-2 py-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-amber-50 text-amber-700 font-semibold border border-amber-200 text-center">
                             Izin: <strong id="stat-izin">0</strong>
                         </span>
-                        <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                        <span class="px-2 py-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-blue-50 text-blue-700 font-semibold border border-blue-200 text-center">
                             Sakit: <strong id="stat-sakit">0</strong>
                         </span>
-                        <span class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 font-semibold border border-rose-200">
+                        <span class="px-2 py-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-rose-50 text-rose-700 font-semibold border border-rose-200 text-center">
                             Alpha: <strong id="stat-alpha">0</strong>
                         </span>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="markAllPresent()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-posyandu-100 hover:bg-posyandu-200 text-posyandu-800 text-xs sm:text-sm font-bold transition cursor-pointer">
+                    <div class="flex items-center gap-2">
+                        <button onclick="markAllPresent()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-posyandu-100 hover:bg-posyandu-200 active:bg-posyandu-300 text-posyandu-800 text-xs sm:text-sm font-bold transition cursor-pointer">
                             <i data-lucide="check-check" class="w-4 h-4"></i>
                             <span>Tandai Semua Hadir</span>
                         </button>
-                        <button onclick="resetCurrentAttendance()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs sm:text-sm font-semibold transition cursor-pointer" title="Kosongkan status absensi tanggal ini">
+                        <button onclick="resetCurrentAttendance()" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-600 text-xs sm:text-sm font-semibold transition cursor-pointer" title="Kosongkan status absensi tanggal ini">
                             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">Reset</span>
+                            <span>Reset</span>
                         </button>
                     </div>
                 </div>
@@ -277,34 +266,34 @@
 
             <!-- Daftar Kader & Form Absensi -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-                <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="px-4 sm:px-5 py-3.5 sm:py-4 bg-slate-50/80 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                         <h2 id="active-posyandu-title" class="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-posyandu-500"></span>
                             Daftar Kader Posyandu Mekar 1
                         </h2>
                         <p class="text-xs text-slate-500 mt-0.5">
-                            Klik tombol status kehadiran di bawah, lalu tekan <strong>Simpan Absensi</strong>. Nama kader dapat diubah atau dihapus kapan saja.
+                            Ketuk tombol status kehadiran di bawah masing-masing nama kader, lalu tekan <strong>Simpan Absensi</strong>.
                         </p>
                     </div>
                     <div id="saved-indicator" class="hidden items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full self-start sm:self-auto">
                         <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
-                        <span>Data Tersimpan di Perangkat</span>
+                        <span>Tersimpan di HP</span>
                     </div>
                 </div>
 
                 <!-- Container Tabel Desktop & Kartu Mobile -->
-                <div id="kader-list-container" class="divide-y divide-slate-100">
+                <div id="kader-list-container" class="divide-y divide-slate-200/70">
                     <!-- Diisi secara dinamis oleh JavaScript -->
                 </div>
 
-                <!-- Footer Simpan Absensi -->
-                <div class="p-5 bg-slate-50 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <!-- Footer Simpan Absensi (Desktop & Tablet) -->
+                <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p class="text-xs text-slate-500 text-center sm:text-left">
                         <i data-lucide="info" class="w-3.5 h-3.5 inline mr-1 text-posyandu-600"></i>
-                        Data absensi tersimpan otomatis di browser perangkat Anda dan dapat dicetak di menu <strong>Rekap & Laporan</strong>.
+                        Data absensi tersimpan otomatis di HP Anda dan dapat dicetak di menu <strong>Rekap & Laporan</strong>.
                     </p>
-                    <button onclick="saveAttendance()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 active:bg-posyandu-800 text-white font-bold text-sm shadow-md shadow-posyandu-600/20 transition cursor-pointer">
+                    <button onclick="saveAttendance()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 active:bg-posyandu-800 text-white font-bold text-sm shadow-md shadow-posyandu-600/20 transition cursor-pointer">
                         <i data-lucide="save" class="w-4 h-4"></i>
                         <span>Simpan Data Absensi</span>
                     </button>
@@ -315,22 +304,7 @@
         <!-- ============================================================== -->
         <!-- VIEW 2: REKAPITULASI & LAPORAN RESMI                           -->
         <!-- ============================================================== -->
-        <div id="view-rekap" class="hidden space-y-6">
-            
-            <!-- Filter & Tombol Ekspor (Tidak ikut tercetak) -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6 no-print">
-                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
-                        <!-- Filter Unit Posyandu -->
-                        <div>
-                            <label for="filter-posyandu" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                                Pilih Unit Posyandu
-                            </label>
-                            <select id="filter-posyandu" onchange="renderRecapReport()" class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus:border-posyandu-500 focus:bg-white outline-none">
-                                <option value="all">Semua Posyandu (Mekar 1, 2, & 3)</option>
-                                <option value="mekar1">Posyandu Mekar 1</option>
-                                <option value="mekar2">Posyandu Mekar 2</option>
-                                <option value="mekar3">Posyandu Mekar 3</option>
+        <div id="view-rekap" class="hidden space-y-4 sm:space-y-6">
                             </select>
                         </div>
 
@@ -358,10 +332,6 @@
 
                     <!-- Tombol Export CSV & Print -->
                     <div class="flex flex-wrap items-center gap-2.5 pt-2 lg:pt-0">
-                        <button onclick="openKopSettingsModal()" class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition cursor-pointer" title="Atur URL Gambar Kop Desa">
-                            <i data-lucide="image" class="w-4 h-4 text-posyandu-600"></i>
-                            <span class="hidden sm:inline">Atur Kop</span>
-                        </button>
                         <button onclick="exportToCSV()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm transition cursor-pointer">
                             <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                             <span>Unduh Excel (CSV)</span>
@@ -461,12 +431,12 @@
                 </div>
 
                 <!-- Tab Sub-Tampilan Rekap: Ringkasan Per Kader vs Rincian Riwayat Harian -->
-                <div class="flex gap-2 mb-4 no-print">
-                    <button id="subtab-ringkasan" onclick="switchRecapSubtab('ringkasan')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-posyandu-600 text-white shadow-sm transition">
-                        Rekapitulasi Per Kader
+                <div class="grid grid-cols-2 sm:flex gap-2 mb-4 no-print">
+                    <button id="subtab-ringkasan" onclick="switchRecapSubtab('ringkasan')" class="px-3 py-2.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-posyandu-600 text-white shadow-sm transition text-center">
+                        Rekap Per Kader
                     </button>
-                    <button id="subtab-riwayat" onclick="switchRecapSubtab('riwayat')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">
-                        Log Rincian Per Tanggal
+                    <button id="subtab-riwayat" onclick="switchRecapSubtab('riwayat')" class="px-3 py-2.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition text-center">
+                        Log Per Tanggal
                     </button>
                 </div>
 
@@ -534,6 +504,20 @@
 
     </main>
 
+    <!-- Bottom Navigation Bar Khusus Handphone (Mobile-First) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_15px_rgba(0,0,0,0.06)] no-print safe-bottom">
+        <div class="grid grid-cols-2 gap-2 p-2">
+            <button id="mobile-nav-absensi" onclick="switchMainView('absensi')" class="flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-posyandu-50 text-posyandu-700 border border-posyandu-200">
+                <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                <span>Input Absensi</span>
+            </button>
+            <button id="mobile-nav-rekap" onclick="switchMainView('rekap')" class="flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:bg-slate-50">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Rekap & Laporan</span>
+            </button>
+        </div>
+    </nav>
+
     <!-- Footer Aplikasi -->
     <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-500 no-print mt-auto">
         <p>Aplikasi Absensi Kader Posyandu Mekar 1, 2, & 3 • <strong>Desa Wani Lumbumpetigo</strong></p>
@@ -543,14 +527,12 @@
     <!-- JAVASCRIPT LOGIC                                                   -->
     <!-- ================================================================== -->
     <script>
-        // Kunci Penyimpanan LocalStorage
-        const STORAGE_KEY_KADERS = 'posyandu_wani_kaders_v1';
-        const STORAGE_KEY_ATTENDANCE = 'posyandu_wani_attendance_v1';
-        const STORAGE_KEY_KOP_URL = 'posyandu_wani_kop_url_v1';
-        const DEFAULT_KOP_URL = 'https://res.cloudinary.com/dpr2vc3b0/image/upload/v1752847536/KOP-DESA-2025_t1etmr.png';
+        /* ====================================================================
+           KONFIGURASI UTAMA (EDIT NAMA KADER & KOP SURAT DI BAGIAN INI)
+           ==================================================================== */
+        const URL_KOP_SURAT_DESA = 'https://res.cloudinary.com/dpr2vc3b0/image/upload/v1752847536/KOP-DESA-2025_t1etmr.png';
 
-        // Data Awal (Placeholder Kader agar langsung siap digunakan dan mudah diubah)
-        const DEFAULT_KADERS = {
+        const DATA_KADER_POSYANDU = {
             mekar1: [
                 { id: 'k1-1', name: 'Ibu Siti Aminah', role: 'Ketua Kader Mekar 1' },
                 { id: 'k1-2', name: 'Ibu Nurhayati', role: 'Sekretaris' },
@@ -573,6 +555,10 @@
                 { id: 'k3-5', name: 'Ibu Herlina', role: 'Kader Lansia & Balita' }
             ]
         };
+        /* ==================================================================== */
+
+        // Kunci Penyimpanan LocalStorage
+        const STORAGE_KEY_ATTENDANCE = 'posyandu_wani_attendance_v1';
 
         const POSYANDU_LABELS = {
             mekar1: 'Posyandu Mekar 1',
@@ -583,7 +569,7 @@
         // State Aplikasi
         let state = {
             activePosyandu: 'mekar1',
-            kaders: { mekar1: [], mekar2: [], mekar3: [] },
+            kaders: DATA_KADER_POSYANDU,
             attendanceRecords: [], // Array of { id, date, posyandu, activity, records: [{ kaderId, kaderName, kaderRole, status, time, note }] }
             currentDraft: {} // Map kaderId -> { status, time, note }
         };
@@ -632,30 +618,18 @@
             return `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
         }
 
-        // Muat data dari localStorage
+        // Muat data riwayat absensi dari localStorage
         function loadFromStorage() {
             try {
-                const savedKaders = localStorage.getItem(STORAGE_KEY_KADERS);
-                if (savedKaders) {
-                    state.kaders = JSON.parse(savedKaders);
-                } else {
-                    state.kaders = JSON.parse(JSON.stringify(DEFAULT_KADERS));
-                    saveKadersToStorage();
-                }
-
+                state.kaders = DATA_KADER_POSYANDU;
                 const savedAttendance = localStorage.getItem(STORAGE_KEY_ATTENDANCE);
                 if (savedAttendance) {
                     state.attendanceRecords = JSON.parse(savedAttendance);
                 }
             } catch (e) {
                 console.error('Gagal memuat data:', e);
-                state.kaders = JSON.parse(JSON.stringify(DEFAULT_KADERS));
+                state.kaders = DATA_KADER_POSYANDU;
             }
-        }
-
-        function saveKadersToStorage() {
-            localStorage.setItem(STORAGE_KEY_KADERS, JSON.stringify(state.kaders));
-            updateTabBadges();
         }
 
         function saveAttendanceToStorage() {
@@ -663,13 +637,8 @@
         }
 
         // Pengaturan & Fallback Gambar Kop Desa
-        function getSavedKopUrl() {
-            const saved = localStorage.getItem(STORAGE_KEY_KOP_URL);
-            return saved !== null ? saved : DEFAULT_KOP_URL;
-        }
-
         function applyKopImageUrl() {
-            const url = getSavedKopUrl().trim();
+            const url = (URL_KOP_SURAT_DESA || '').trim();
             const imgEl = document.getElementById('kop-surat-image');
             const fallbackEl = document.getElementById('kop-surat-fallback');
             if (!imgEl || !fallbackEl) return;
@@ -694,69 +663,43 @@
             document.getElementById('kop-surat-fallback')?.classList.remove('hidden');
         }
 
-        function openKopSettingsModal() {
-            const currentUrl = getSavedKopUrl();
-            document.getElementById('modal-title').textContent = 'Pengaturan Kop Surat Desa';
-            document.getElementById('modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                            URL Gambar Kop Surat Desa
-                        </label>
-                        <input type="url" id="modal-kop-url" value="${escapeHTML(currentUrl)}" placeholder="https://..." class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs sm:text-sm focus:border-posyandu-500 focus:ring-2 focus:ring-posyandu-500/20 outline-none">
-                        <p class="text-xs text-slate-500 mt-1.5">
-                            Gambar kop ini akan ditampilkan pada bagian atas pratinjau laporan dan saat dicetak ke kertas A4 / PDF. Jika kosong atau gagal dimuat, aplikasi akan menampilkan kop teks resmi desa.
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-                        <button type="button" onclick="resetKopUrlToDefault()" class="text-xs font-semibold text-posyandu-700 hover:underline">
-                            Kembalikan ke URL Kop Default (2025)
-                        </button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal-footer').innerHTML = `
-                <button onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-100 transition">Batal</button>
-                <button onclick="saveKopSettings()" class="px-5 py-2 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 text-white text-sm font-bold shadow-sm transition">Simpan Kop</button>
-            `;
-            showModal();
-        }
-
-        function resetKopUrlToDefault() {
-            const input = document.getElementById('modal-kop-url');
-            if (input) input.value = DEFAULT_KOP_URL;
-        }
-
-        function saveKopSettings() {
-            const url = document.getElementById('modal-kop-url').value.trim();
-            localStorage.setItem(STORAGE_KEY_KOP_URL, url);
-            applyKopImageUrl();
-            closeModal();
-            showToast('Pengaturan Kop Surat Desa berhasil diperbarui.', 'success');
-        }
-
         // Navigasi Utama: Input Absensi vs Rekap & Laporan
         function switchMainView(viewName) {
             const viewAbsensi = document.getElementById('view-absensi');
             const viewRekap = document.getElementById('view-rekap');
             const navAbsensi = document.getElementById('nav-absensi');
             const navRekap = document.getElementById('nav-rekap');
+            const mobAbsensi = document.getElementById('mobile-nav-absensi');
+            const mobRekap = document.getElementById('mobile-nav-rekap');
 
             if (viewName === 'absensi') {
                 viewAbsensi.classList.remove('hidden');
                 viewRekap.classList.add('hidden');
                 
-                navAbsensi.className = 'flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm';
-                navRekap.className = 'flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white';
+                if (navAbsensi && navRekap) {
+                    navAbsensi.className = 'flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm';
+                    navRekap.className = 'flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white';
+                }
+                if (mobAbsensi && mobRekap) {
+                    mobAbsensi.className = 'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-posyandu-50 text-posyandu-700 border border-posyandu-200';
+                    mobRekap.className = 'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:bg-slate-50';
+                }
                 loadAttendanceForCurrentSelection();
             } else {
                 viewAbsensi.classList.add('hidden');
                 viewRekap.classList.remove('hidden');
 
-                navRekap.className = 'flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm';
-                navAbsensi.className = 'flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white';
+                if (navAbsensi && navRekap) {
+                    navRekap.className = 'flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-posyandu-800 shadow-sm';
+                    navAbsensi.className = 'flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-posyandu-100 hover:text-white';
+                }
+                if (mobAbsensi && mobRekap) {
+                    mobRekap.className = 'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-posyandu-50 text-posyandu-700 border border-posyandu-200';
+                    mobAbsensi.className = 'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-500 hover:bg-slate-50';
+                }
                 renderRecapReport();
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             lucide.createIcons();
         }
 
@@ -770,13 +713,13 @@
                 const countBadge = document.getElementById(`badge-count-${key}`);
 
                 if (key === posyanduKey) {
-                    tab.className = 'posyandu-tab flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-sm transition-all border-2 border-posyandu-600 bg-posyandu-50 text-posyandu-800 shadow-sm';
-                    numBadge.className = 'w-7 h-7 rounded-lg bg-posyandu-600 text-white flex items-center justify-center text-xs font-extrabold';
-                    countBadge.className = 'text-xs font-semibold px-2.5 py-1 rounded-full bg-posyandu-200/80 text-posyandu-900';
+                    tab.className = 'posyandu-tab flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 px-2 sm:px-4 py-2.5 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all border-2 border-posyandu-600 bg-posyandu-50 text-posyandu-800 shadow-sm active:scale-[0.98]';
+                    numBadge.className = 'w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-posyandu-600 text-white flex items-center justify-center text-[11px] sm:text-xs font-extrabold shrink-0';
+                    countBadge.className = 'text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-posyandu-200/80 text-posyandu-900';
                 } else {
-                    tab.className = 'posyandu-tab flex items-center justify-between px-4 py-3.5 rounded-xl font-bold text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100';
-                    numBadge.className = 'w-7 h-7 rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-xs font-extrabold';
-                    countBadge.className = 'text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200 text-slate-700';
+                    tab.className = 'posyandu-tab flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 px-2 sm:px-4 py-2.5 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all border-2 border-transparent bg-slate-50 text-slate-600 hover:bg-slate-100 active:scale-[0.98]';
+                    numBadge.className = 'w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-slate-300 text-slate-700 flex items-center justify-center text-[11px] sm:text-xs font-extrabold shrink-0';
+                    countBadge.className = 'text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-slate-200 text-slate-700';
                 }
             });
 
@@ -880,14 +823,10 @@
                         <div class="w-14 h-14 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
                             <i data-lucide="users" class="w-7 h-7"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-700">Belum Ada Nama Kader</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1 mb-4">
-                            Daftar kader untuk <strong>${POSYANDU_LABELS[posyandu]}</strong> masih kosong. Silakan tambahkan nama-nama kader terlebih dahulu.
+                        <h3 class="text-base font-bold text-slate-700">Belum Ada Nama Kader Terdaftar</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1">
+                            Daftar kader untuk <strong>${POSYANDU_LABELS[posyandu]}</strong> belum diisi pada konfigurasi kode HTML.
                         </p>
-                        <button onclick="openAddKaderModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 text-white text-sm font-semibold transition">
-                            <i data-lucide="user-plus" class="w-4 h-4"></i>
-                            <span>Tambah Nama Kader</span>
-                        </button>
                     </div>
                 `;
                 lucide.createIcons();
@@ -899,32 +838,20 @@
                 const draft = state.currentDraft[kader.id] || { status: '', time: '', note: '' };
                 
                 html += `
-                <div class="p-4 sm:px-6 sm:py-4 hover:bg-slate-50/70 transition flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <!-- Info Kader + Tombol Edit/Hapus Kader -->
-                    <div class="flex items-start sm:items-center justify-between lg:justify-start gap-3 lg:w-1/3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-posyandu-100 text-posyandu-800 font-bold text-xs flex items-center justify-center shrink-0">
-                                ${index + 1}
-                            </div>
-                            <div>
-                                <div class="font-bold text-slate-800 text-sm sm:text-base">${escapeHTML(kader.name)}</div>
-                                <div class="text-xs text-slate-500">${escapeHTML(kader.role || 'Kader Posyandu')}</div>
-                            </div>
+                <div class="p-4 sm:px-6 sm:py-4 hover:bg-slate-50/70 transition flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 sm:gap-4">
+                    <!-- Info Kader -->
+                    <div class="flex items-center gap-3 lg:w-1/3">
+                        <div class="w-9 h-9 rounded-full bg-posyandu-100 text-posyandu-800 font-extrabold text-xs sm:text-sm flex items-center justify-center shrink-0">
+                            ${index + 1}
                         </div>
-                        
-                        <!-- Aksi Edit / Hapus Nama Kader -->
-                        <div class="flex items-center gap-1">
-                            <button onclick="openEditKaderModal('${kader.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-posyandu-700 hover:bg-posyandu-50 transition" title="Ubah Nama Kader">
-                                <i data-lucide="pencil" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="confirmDeleteKader('${kader.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Hapus Kader">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-bold text-slate-800 text-base leading-snug break-words">${escapeHTML(kader.name)}</div>
+                            <div class="text-xs text-slate-500 truncate">${escapeHTML(kader.role || 'Kader Posyandu')}</div>
                         </div>
                     </div>
 
-                    <!-- Pilihan Status Kehadiran -->
-                    <div class="grid grid-cols-4 gap-1.5 sm:gap-2 lg:w-auto">
+                    <!-- Pilihan Status Kehadiran (Target sentuh besar untuk layar HP) -->
+                    <div class="grid grid-cols-4 gap-2 lg:w-auto">
                         ${renderStatusButton(kader.id, 'Hadir', draft.status, 'emerald')}
                         ${renderStatusButton(kader.id, 'Izin', draft.status, 'amber')}
                         ${renderStatusButton(kader.id, 'Sakit', draft.status, 'blue')}
@@ -932,9 +859,12 @@
                     </div>
 
                     <!-- Jam Datang & Catatan -->
-                    <div class="flex items-center gap-2 lg:w-1/3">
-                        <input type="time" value="${draft.time}" onchange="updateDraftField('${kader.id}', 'time', this.value)" class="w-28 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-700 focus:border-posyandu-500 focus:bg-white outline-none" title="Jam Datang">
-                        <input type="text" value="${escapeHTML(draft.note)}" oninput="updateDraftField('${kader.id}', 'note', this.value)" placeholder="Catatan (opsional)..." class="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 focus:border-posyandu-500 focus:bg-white outline-none">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 lg:w-1/3">
+                        <div class="flex items-center gap-2">
+                            <span class="sm:hidden text-xs font-semibold text-slate-500 w-14 shrink-0">Jam:</span>
+                            <input type="time" value="${draft.time}" onchange="updateDraftField('${kader.id}', 'time', this.value)" class="flex-1 sm:w-28 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 focus:border-posyandu-500 focus:bg-white outline-none" title="Jam Datang">
+                        </div>
+                        <input type="text" value="${escapeHTML(draft.note)}" oninput="updateDraftField('${kader.id}', 'note', this.value)" placeholder="Catatan (opsional)..." class="w-full flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 focus:border-posyandu-500 focus:bg-white outline-none">
                     </div>
                 </div>
                 `;
@@ -962,7 +892,7 @@
             };
 
             return `
-                <button type="button" onclick="setKaderStatus('${kaderId}', '${statusLabel}')" class="px-2.5 py-2 rounded-xl border text-xs font-bold transition text-center cursor-pointer ${colorMap[colorTheme]}">
+                <button type="button" onclick="setKaderStatus('${kaderId}', '${statusLabel}')" class="min-h-[44px] px-2 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition text-center cursor-pointer active:scale-95 ${colorMap[colorTheme]}">
                     ${statusLabel}
                 </button>
             `;
@@ -1107,175 +1037,6 @@
             savedIndicator.classList.add('flex');
 
             showToast(`Absensi ${POSYANDU_LABELS[posyandu]} (${formatIndonesianDate(date)}) berhasil disimpan!`, 'success');
-        }
-
-        // ====================================================================
-        // MANAJEMEN KADER (TAMBAH, EDIT, HAPUS NAMA KADER)
-        // ====================================================================
-
-        function openAddKaderModal() {
-            const posyanduLabel = POSYANDU_LABELS[state.activePosyandu];
-            document.getElementById('modal-title').textContent = `Tambah Kader Baru - ${posyanduLabel}`;
-            document.getElementById('modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                            Nama Lengkap Kader <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" id="modal-kader-name" placeholder="Contoh: Ibu Mariam" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-posyandu-500 focus:ring-2 focus:ring-posyandu-500/20 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                            Jabatan / Tugas Meja (Opsional)
-                        </label>
-                        <input type="text" id="modal-kader-role" placeholder="Contoh: Ketua Kader / Meja 1 Pendaftaran" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-posyandu-500 focus:ring-2 focus:ring-posyandu-500/20 outline-none">
-                    </div>
-                    <div class="pt-2 border-t border-slate-100">
-                        <p class="text-xs text-slate-500">
-                            Tips: Anda juga bisa menghapus seluruh contoh nama kader bawaan untuk menggantinya dengan daftar kader resmi Desa Wani Lumbumpetigo.
-                        </p>
-                        <button type="button" onclick="confirmClearAllKadersInUnit()" class="mt-2 text-xs font-semibold text-rose-600 hover:underline">
-                            Kosongkan semua daftar kader di ${posyanduLabel}
-                        </button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal-footer').innerHTML = `
-                <button onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-100 transition">Batal</button>
-                <button onclick="submitAddKader()" class="px-5 py-2 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 text-white text-sm font-bold shadow-sm transition">Simpan Kader</button>
-            `;
-            showModal();
-            setTimeout(() => document.getElementById('modal-kader-name')?.focus(), 100);
-        }
-
-        function submitAddKader() {
-            const nameInput = document.getElementById('modal-kader-name');
-            const roleInput = document.getElementById('modal-kader-role');
-            const name = nameInput.value.trim();
-            const role = roleInput.value.trim() || 'Kader Posyandu';
-
-            if (!name) {
-                showToast('Nama kader tidak boleh kosong.', 'error');
-                nameInput.focus();
-                return;
-            }
-
-            const newKader = {
-                id: 'k-' + Date.now(),
-                name,
-                role
-            };
-
-            state.kaders[state.activePosyandu].push(newKader);
-            state.currentDraft[newKader.id] = { status: '', time: '', note: '' };
-
-            saveKadersToStorage();
-            renderKaderAttendanceList();
-            updateDailySummaryStats();
-            closeModal();
-            showToast(`Kader "${name}" berhasil ditambahkan ke ${POSYANDU_LABELS[state.activePosyandu]}.`, 'success');
-        }
-
-        function openEditKaderModal(kaderId) {
-            const kaderList = state.kaders[state.activePosyandu];
-            const kader = kaderList.find(k => k.id === kaderId);
-            if (!kader) return;
-
-            document.getElementById('modal-title').textContent = 'Ubah Data Kader';
-            document.getElementById('modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                            Nama Lengkap Kader <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" id="modal-edit-name" value="${escapeHTML(kader.name)}" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-posyandu-500 focus:ring-2 focus:ring-posyandu-500/20 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                            Jabatan / Tugas Meja
-                        </label>
-                        <input type="text" id="modal-edit-role" value="${escapeHTML(kader.role || '')}" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-posyandu-500 focus:ring-2 focus:ring-posyandu-500/20 outline-none">
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal-footer').innerHTML = `
-                <button onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-100 transition">Batal</button>
-                <button onclick="submitEditKader('${kaderId}')" class="px-5 py-2 rounded-xl bg-posyandu-600 hover:bg-posyandu-700 text-white text-sm font-bold shadow-sm transition">Simpan Perubahan</button>
-            `;
-            showModal();
-        }
-
-        function submitEditKader(kaderId) {
-            const name = document.getElementById('modal-edit-name').value.trim();
-            const role = document.getElementById('modal-edit-role').value.trim() || 'Kader Posyandu';
-
-            if (!name) {
-                showToast('Nama kader tidak boleh kosong.', 'error');
-                return;
-            }
-
-            const kaderList = state.kaders[state.activePosyandu];
-            const index = kaderList.findIndex(k => k.id === kaderId);
-            if (index !== -1) {
-                kaderList[index].name = name;
-                kaderList[index].role = role;
-                saveKadersToStorage();
-                renderKaderAttendanceList();
-                closeModal();
-                showToast('Data kader berhasil diperbarui.', 'success');
-            }
-        }
-
-        function confirmDeleteKader(kaderId) {
-            const kaderList = state.kaders[state.activePosyandu];
-            const kader = kaderList.find(k => k.id === kaderId);
-            if (!kader) return;
-
-            document.getElementById('modal-title').textContent = 'Hapus Nama Kader?';
-            document.getElementById('modal-body').innerHTML = `
-                <p class="text-sm text-slate-600">
-                    Apakah Anda yakin ingin menghapus <strong>${escapeHTML(kader.name)}</strong> dari daftar kader <strong>${POSYANDU_LABELS[state.activePosyandu]}</strong>?
-                </p>
-            `;
-            document.getElementById('modal-footer').innerHTML = `
-                <button onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-100 transition">Batal</button>
-                <button onclick="executeDeleteKader('${kaderId}')" class="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-sm transition">Ya, Hapus</button>
-            `;
-            showModal();
-        }
-
-        function executeDeleteKader(kaderId) {
-            state.kaders[state.activePosyandu] = state.kaders[state.activePosyandu].filter(k => k.id !== kaderId);
-            delete state.currentDraft[kaderId];
-            saveKadersToStorage();
-            renderKaderAttendanceList();
-            updateDailySummaryStats();
-            closeModal();
-            showToast('Kader berhasil dihapus dari daftar.', 'info');
-        }
-
-        function confirmClearAllKadersInUnit() {
-            const label = POSYANDU_LABELS[state.activePosyandu];
-            document.getElementById('modal-title').textContent = `Kosongkan Kader ${label}?`;
-            document.getElementById('modal-body').innerHTML = `
-                <p class="text-sm text-slate-600">
-                    Semua nama kader di <strong>${label}</strong> akan dihapus agar Anda dapat memasukkan nama-nama kader baru dari awal. Lanjutkan?
-                </p>
-            `;
-            document.getElementById('modal-footer').innerHTML = `
-                <button onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-100 transition">Batal</button>
-                <button onclick="executeClearAllKadersInUnit()" class="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-sm transition">Kosongkan Daftar</button>
-            `;
-        }
-
-        function executeClearAllKadersInUnit() {
-            state.kaders[state.activePosyandu] = [];
-            state.currentDraft = {};
-            saveKadersToStorage();
-            renderKaderAttendanceList();
-            updateDailySummaryStats();
-            closeModal();
-            showToast(`Daftar kader ${POSYANDU_LABELS[state.activePosyandu]} telah dikosongkan.`, 'info');
         }
 
         // ====================================================================
@@ -1510,21 +1271,8 @@
         }
 
         // ====================================================================
-        // MODAL & TOAST HELPERS
+        // TOAST HELPER
         // ====================================================================
-
-        function showModal() {
-            const modal = document.getElementById('app-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            lucide.createIcons();
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('app-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
