@@ -84,6 +84,10 @@
                 background-color: #f3f4f6 !important;
                 -webkit-print-color-adjust: exact;
             }
+            .print-avoid-break {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
         }
 
         /* Mencegah zoom otomatis input pada layar HP & menjaga lebar fluid */
@@ -162,9 +166,32 @@
         <!-- ============================================================== -->
         <section id="view-absensi" class="space-y-4 sm:space-y-5 soft-fade">
 
+            <!-- Panel Standar Operasional & Profil Unit Posyandu -->
+            <div class="bg-gradient-to-r from-lembut-50/95 via-white to-pasir-50/95 rounded-3xl border border-lembut-200/80 shadow-xs p-4 sm:p-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-lembut-800 bg-lembut-100 px-2.5 py-0.5 rounded-full border border-lembut-200">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-lembut-700"></i>
+                            <span>Standar Tata Kelola Posyandu • ILP</span>
+                        </div>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-700">
+                            Unit: <span class="text-lembut-900 font-bold">Posyandu Mekar 1</span> • Desa Wani Lumbumpetigo, Kec. Tanantovea, Kab. Donggala
+                        </p>
+                        <p class="text-[11px] sm:text-xs text-slate-500">
+                            Pencatatan kehadiran kader per hari buka pelayanan / kegiatan lapangan sebagai dokumen pertanggungjawaban dan arsip desa.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="px-3 py-1.5 rounded-2xl bg-white border border-lembut-200/80 text-xs font-bold text-lembut-800">
+                            Siklus Hidup (ILP)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Kartu Informasi Kegiatan & Tanggal -->
             <div class="bg-white/90 backdrop-blur-xs rounded-3xl border border-lembut-200/70 shadow-xs p-4 sm:p-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
                     <!-- Tanggal -->
                     <div>
                         <label for="input-tanggal" class="block text-xs font-bold uppercase tracking-wider text-lembut-800 mb-1.5">
@@ -187,6 +214,14 @@
                             <option value="Rapat / Pembinaan Kader">Rapat / Pembinaan Kader</option>
                             <option value="Lainnya">Lainnya (Tulis Sendiri...)</option>
                         </select>
+                    </div>
+
+                    <!-- Lokasi / Tempat Layanan -->
+                    <div class="sm:col-span-2 lg:col-span-1">
+                        <label for="input-lokasi" class="block text-xs font-bold uppercase tracking-wider text-lembut-800 mb-1.5">
+                            Lokasi / Pos Pelayanan
+                        </label>
+                        <input type="text" id="input-lokasi" value="Balai / Posyandu Mekar 1, Desa Wani Lumbumpetigo" placeholder="Contoh: Posyandu Mekar 1 / Dusun I" class="w-full rounded-2xl border border-lembut-200 bg-pasir-50/80 px-4 py-3 text-sm font-medium text-slate-700 focus:border-lembut-500 focus:bg-white focus:ring-4 focus:ring-lembut-200/50 outline-none transition">
                     </div>
                 </div>
 
@@ -372,6 +407,9 @@
                     <p id="recap-subtitle" class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
                         Periode: Semua Waktu
                     </p>
+                    <p id="recap-meta-unit" class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+                        Desa Wani Lumbumpetigo, Kec. Tanantovea, Kab. Donggala • Layanan Integrasi Layanan Primer (ILP)
+                    </p>
                 </div>
 
                 <!-- Sub-Tab Rekap -->
@@ -391,15 +429,17 @@
                             <tr class="bg-lembut-50/90 text-slate-700 border-y border-lembut-200">
                                 <th class="py-3 px-3 font-bold text-center w-12">No</th>
                                 <th class="py-3 px-3 font-bold">Nama Kader</th>
-                                <th class="py-3 px-3 font-bold">Jabatan</th>
-                                <th class="py-3 px-3 font-bold text-center text-emerald-700">Hadir</th>
-                                <th class="py-3 px-3 font-bold text-center text-amber-700">Izin</th>
-                                <th class="py-3 px-3 font-bold text-center text-sky-700">Sakit</th>
-                                <th class="py-3 px-3 font-bold text-center text-rose-700">Alpha</th>
-                                <th class="py-3 px-3 font-bold text-center">Persen</th>
+                                <th class="py-3 px-3 font-bold">Jabatan / Peran</th>
+                                <th class="py-3 px-3 font-bold text-center text-emerald-700">Hadir (H)</th>
+                                <th class="py-3 px-3 font-bold text-center text-amber-700">Izin (I)</th>
+                                <th class="py-3 px-3 font-bold text-center text-sky-700">Sakit (S)</th>
+                                <th class="py-3 px-3 font-bold text-center text-rose-700">Alpha (A)</th>
+                                <th class="py-3 px-3 font-bold text-center">Jml Sesi</th>
+                                <th class="py-3 px-3 font-bold text-center">Kehadiran (%)</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-kader" class="divide-y divide-slate-200/80"></tbody>
+                        <tfoot id="tfoot-kader" class="bg-lembut-50/70 font-extrabold text-slate-800 border-t-2 border-slate-300"></tfoot>
                     </table>
                 </div>
 
@@ -410,7 +450,7 @@
                             <tr class="bg-lembut-50/90 text-slate-700 border-y border-lembut-200">
                                 <th class="py-3 px-3 font-bold text-center w-12">No</th>
                                 <th class="py-3 px-3 font-bold">Tanggal</th>
-                                <th class="py-3 px-3 font-bold">Kegiatan</th>
+                                <th class="py-3 px-3 font-bold">Kegiatan & Lokasi</th>
                                 <th class="py-3 px-3 font-bold">Nama Kader</th>
                                 <th class="py-3 px-3 font-bold text-center">Status</th>
                                 <th class="py-3 px-3 font-bold">Jam / Catatan</th>
@@ -421,17 +461,36 @@
                     </table>
                 </div>
 
-                <!-- Tanda Tangan -->
-                <div class="mt-10 pt-4 grid grid-cols-2 gap-6 sm:gap-10 text-xs sm:text-sm text-slate-800">
+                <!-- Keterangan & Verifikasi Berjenjang Standar Laporan -->
+                <div class="mt-6 p-3.5 rounded-2xl bg-pasir-50/90 border border-lembut-200/70 text-[11px] sm:text-xs text-slate-600 print-avoid-break">
+                    <span class="font-bold text-slate-800">Keterangan Status:</span>
+                    <span class="ml-1"><strong>H</strong> = Hadir melaksanakan tugas pelayanan/kunjungan;</span>
+                    <span><strong>I</strong> = Izin resmi;</span>
+                    <span><strong>S</strong> = Sakit;</span>
+                    <span><strong>A</strong> = Tidak hadir tanpa keterangan.</span>
+                    <span class="block sm:inline sm:ml-1">Rumus Persentase Kehadiran = (Jumlah Hadir / Total Sesi Tercatat) × 100%.</span>
+                </div>
+
+                <!-- Tanda Tangan Berjenjang -->
+                <div class="mt-8 pt-4 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-6 text-xs sm:text-sm text-slate-800 print-avoid-break">
                     <div class="text-center">
-                        <p>Mengetahui,</p>
+                        <p class="text-slate-600">Mengetahui,</p>
                         <p class="font-bold">Kepala Desa Wani Lumbumpetigo</p>
+                        <p class="text-[11px] text-slate-500">Pembina Posyandu Desa</p>
                         <div class="h-16 sm:h-20"></div>
                         <p class="font-bold underline">( ............................................ )</p>
                     </div>
                     <div class="text-center">
-                        <p id="ttd-tanggal">Wani Lumbumpetigo, ..........................</p>
+                        <p class="text-slate-600">Diverifikasi oleh,</p>
+                        <p class="font-bold">Petugas Kesehatan / Bidan Desa</p>
+                        <p class="text-[11px] text-slate-500">Pendamping Teknis Layanan</p>
+                        <div class="h-16 sm:h-20"></div>
+                        <p class="font-bold underline">( ............................................ )</p>
+                    </div>
+                    <div class="text-center">
+                        <p id="ttd-tanggal" class="text-slate-600">Wani Lumbumpetigo, ..........................</p>
                         <p class="font-bold">Ketua Kader Posyandu Mekar 1</p>
+                        <p class="text-[11px] text-slate-500">Pelaksana Harian Unit</p>
                         <div class="h-16 sm:h-20"></div>
                         <p class="font-bold underline">( ............................................ )</p>
                     </div>
@@ -476,14 +535,15 @@
             { id: 'm1-3', name: 'Ibu Rahmawati', role: 'Bendahara' },
             { id: 'm1-4', name: 'Ibu Fatmawati', role: 'Kader Meja 1 (Pendaftaran)' },
             { id: 'm1-5', name: 'Ibu Hasnah', role: 'Kader Meja 2 (Penimbangan)' },
-           
+            { id: 'm1-6', name: 'Ibu Suryani', role: 'Kader Meja 3 (Pencatatan)' },
+            { id: 'm1-7', name: 'Ibu Rosdiana', role: 'Kader Meja 4 (Penyuluhan)' }
         ];
         /* ==================================================================== */
 
         const STORAGE_KEY = 'absensi_posyandu_mekar1_wani_v1';
 
         let state = {
-            sessions: [], // { id, date, activity, records: [{ kaderId, kaderName, kaderRole, status, time, note }] }
+            sessions: [], // { id, date, activity, location, records: [{ kaderId, kaderName, kaderRole, status, time, note }] }
             draft: {}     // kaderId -> { status, time, note }
         };
 
@@ -612,6 +672,10 @@
             if (existing) {
                 badge.classList.remove('hidden');
                 badge.classList.add('inline-flex');
+
+                if (existing.location) {
+                    document.getElementById('input-lokasi').value = existing.location;
+                }
 
                 const sel = document.getElementById('input-kegiatan');
                 const opts = Array.from(sel.options).map(o => o.value);
@@ -790,6 +854,7 @@
             if (activity === 'Lainnya') {
                 activity = document.getElementById('input-kegiatan-custom').value.trim() || 'Kegiatan Posyandu Mekar 1';
             }
+            const location = document.getElementById('input-lokasi').value.trim() || 'Posyandu Mekar 1, Desa Wani Lumbumpetigo';
 
             const records = KADER_MEKAR_1.map(k => {
                 const d = state.draft[k.id];
@@ -808,6 +873,7 @@
                 id: `mekar1-${date}`,
                 date,
                 activity,
+                location,
                 records
             });
             state.sessions.sort((a, b) => b.date.localeCompare(a.date));
@@ -879,6 +945,9 @@
             document.getElementById('recap-subtitle').textContent = `Unit: Posyandu Mekar 1 • ${periodLabel}`;
 
             let totalHadir = 0;
+            let totalIzin = 0;
+            let totalSakit = 0;
+            let totalAlpha = 0;
             let totalAbsen = 0;
 
             const rowsKader = KADER_MEKAR_1.map((kader, idx) => {
@@ -894,6 +963,9 @@
                 });
                 const sum = h + i + s + a;
                 totalHadir += h;
+                totalIzin += i;
+                totalSakit += s;
+                totalAlpha += a;
                 totalAbsen += sum;
                 const pct = sum > 0 ? Math.round((h / sum) * 100) : 0;
 
@@ -906,6 +978,7 @@
                         <td class="py-2.5 px-3 text-center font-semibold text-amber-700">${i}</td>
                         <td class="py-2.5 px-3 text-center font-semibold text-sky-700">${s}</td>
                         <td class="py-2.5 px-3 text-center font-semibold text-rose-700">${a}</td>
+                        <td class="py-2.5 px-3 text-center font-semibold text-slate-700">${sum}</td>
                         <td class="py-2.5 px-3 text-center font-bold text-lembut-800">${pct}%</td>
                     </tr>
                 `;
@@ -913,23 +986,37 @@
 
             document.getElementById('tbody-kader').innerHTML = rowsKader.length
                 ? rowsKader.join('')
-                : `<tr><td colspan="8" class="py-8 text-center text-slate-400">Belum ada data kader.</td></tr>`;
+                : `<tr><td colspan="9" class="py-8 text-center text-slate-400">Belum ada data kader.</td></tr>`;
+
+            const totalPct = totalAbsen > 0 ? Math.round((totalHadir / totalAbsen) * 100) : 0;
+            document.getElementById('tfoot-kader').inner = `
+                <tr>
+                    <td colspan="3" class="py-2.5 px-3 text-right uppercase text-xs tracking-wider">Jumlah Keseluruhan</td>
+                    <td class="py-2.5 px-3 text-center text-emerald-800">${totalHadir}</td>
+                    <td class="py-2.5 px-3 text-center text-amber-800">${totalIzin}</td>
+                    <td class="py-2.5 px-3 text-center text-sky-800">${totalSakit}</td>
+                    <td class="py-2.5 px-3 text-center text-rose-800">${totalAlpha}</td>
+                    <td class="py-2.5 px-3 text-center text-slate-800">${totalAbsen}</td>
+                    <td class="py-2.5 px-3 text-center text-lembut-900">${totalPct}%</td>
+                </tr>
+            `;
 
             document.getElementById('recap-kader-count').textContent = KADER_MEKAR_1.length;
             document.getElementById('recap-sesi-count').textContent = sessions.length;
             document.getElementById('recap-hadir-count').textContent = totalHadir;
-            document.getElementById('recap-persen').textContent = totalAbsen > 0
-                ? `${Math.round((totalHadir / totalAbsen) * 100)}%`
-                : '0%';
+            document.getElementById('recap-persen').textContent = `${totalPct}%`;
 
             // Tabel Riwayat Harian
             const flat = [];
             sessions.forEach(sess => {
+                const actWithLoc = sess.location
+                    ? `${sess.activity} (${sess.location})`
+                    : sess.activity;
                 sess.records.forEach(rec => {
                     flat.push({
                         sessionId: sess.id,
                         date: sess.date,
-                        activity: sess.activity,
+                        activity: actWithLoc,
                         kaderName: rec.kaderName,
                         status: rec.status,
                         info: [rec.time ? `Jam ${rec.time}` : '', rec.note].filter(Boolean).join(' • ') || '-'
@@ -981,8 +1068,9 @@
 
             const lines = [
                 ['PEMERINTAH DESA WANI LUMBUMPETIGO - ABSENSI KADER POSYANDU MEKAR 1'],
+                ['Unit Layanan: Posyandu Mekar 1 (ILP) • Kec. Tanantovea, Kab. Donggala'],
                 [],
-                ['No', 'Tanggal', 'Kegiatan', 'Nama Kader', 'Jabatan', 'Status', 'Jam', 'Catatan']
+                ['No', 'Tanggal', 'Kegiatan', 'Lokasi', 'Nama Kader', 'Jabatan', 'Status', 'Jam', 'Catatan']
             ];
 
             let no = 1;
@@ -992,6 +1080,7 @@
                         no++,
                         sess.date,
                         `"${(sess.activity || '').replace(/"/g, '""')}"`,
+                        `"${(sess.location || 'Posyandu Mekar 1').replace(/"/g, '""')}"`,
                         `"${(rec.kaderName || '').replace(/"/g, '""')}"`,
                         `"${(rec.kaderRole || '').replace(/"/g, '""')}"`,
                         rec.status,
