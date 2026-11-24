@@ -1,412 +1,3106 @@
-<!doctype html>
-<html lang="id"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260729-01-9dad521","C":{"Alfa Slab One":"YACgEYS9sJU_0","Archivo":"YAHO2-t-jNE_0","Arial":"YAGyDp9gliI_0","Canva Sans":"YAFLd8sKbwc_2","Cormorant Garamond":"YAFdJhX-538_0","Courier New":"YAGzXiGs0_8_0","Georgia":"YAGzXkO0pEM_0","Impact":"YAFcfnjI7Vk_0","Inter":"YADSwGZbFSo_0","Iowan Old Style":"YAGNIFa8j9o_0","JetBrains Mono":"YAFdJksXcAk_0","Playfair Display":"YACgEYmuCJE_0","Space Grotesk":"YAHO2sjPCSM_0","Times":"YAGzXW3gftg_0","Times New Roman":"YAGzXW3gftg_0","Trebuchet MS":"YAFcfrglpVA_0","Verdana":"YAGzXTctYtQ_0","Work Sans":"YAGXhLOKv44_0","Yellowtail":"YACgEYG4kG4_0"}}');</script><script src="/_sdk/a27874207e105461.telemetry_sdk.js" integrity="sha512-wgI5N9F7oA2h3vH+benMYIv4wGqTct4nKWakqgvfgRyBLmfYq8q/fi6gkfWKd2hMsyN+VQ/qOAOpxybwkcoxlA=="></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIPBB Desa Wani Lumbumpetigo</title>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIPBB Desa Wani Lumbumpetigo - Sistem Informasi PBB</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"DM Sans"', 'sans-serif'],
+          },
+          colors: {
+            primary: '#1e40af',
+            secondary: '#059669',
+            accent: '#10b981',
+          },
+        },
+      },
+    };
+  </script>
   <style>
-        body { font-family: 'DM Sans', sans-serif; }
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-        .sidebar-item.active { background: rgba(255,255,255,0.15); border-right: 3px solid #34d399; }
-        .stat-card { transition: transform 0.2s; }
-        .stat-card:hover { transform: translateY(-2px); }
-        .bar { transition: height 0.5s ease; }
-        .dark body, .dark .main-bg { background: #1a1a2e !important; color: #e0e0e0; }
-        .dark .card-bg { background: #16213e !important; }
-        .dark .table-row:hover { background: #1a1a2e; }
-    </style>
-  <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#059669',
-                        accent: '#10b981'
-                    }
-                }
-            }
-        }
-    </script>
-  <script src="/_sdk/935a53bc2e11fb8d.data_sdk.js" type="text/javascript" integrity="sha512-qr2oyPnEys1WebcOABaRh6hG77r5PWpqeWW6JTKbRJqly/INsfBi31CVNlTmHqjgeLpkVmmHZJUdxSx/32tOFQ=="></script>
-  <script src="/_sdk/6030e540d4419216.resizing_sdk.js" type="text/javascript" integrity="sha512-b5KWzyoXsbWP4smq4sftIi6Kts4YVBpBsz0BwCViwbBJkK64a3/Z6ZMdWA+qnplNcXw4mhZeqvQi3mOosiRJdA=="></script>
- </head>
- <body data-template-id="__page-root" class="min-h-screen flex" style="background: rgb(243, 244, 246);"><!-- Sidebar -->
-  <aside id="sidebar" class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 md:relative transition-transform">
-   <div class="p-5 border-b border-blue-700">
-    <div class="flex items-center gap-3">
-     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center"><i data-lucide="landmark" class="w-6 h-6 text-blue-800"></i>
-     </div>
-     <div>
-      <h1 data-template-id="app-title" class="canva-text font-bold text-sm" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 14px;">SIPBB</h1>
-      <p data-template-id="village-name" class="canva-text text-xs text-blue-200" style="color: rgb(191, 219, 254); font-weight: 400; font-style: normal; font-size: 11px;">Desa Wani Lumbumpetigo</p>
-     </div>
+    * {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .sidebar-item.active {
+      background: rgba(255, 255, 255, 0.16);
+      border-right: 3px solid #34d399;
+      font-weight: 600;
+    }
+
+    .stat-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+    }
+
+    .bar-anim {
+      transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1), width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Scroll percentage circular button */
+    #scroll-percent {
+      transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
+    }
+
+    #scroll-percent.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(14px) scale(0.9);
+    }
+
+    /* Print styling for Laporan & Struk */
+    @media print {
+      .no-print,
+      aside,
+      header,
+      #scroll-percent,
+      #toast-container {
+        display: none !important;
+      }
+      body,
+      main,
+      .page-section,
+      .print-card {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      .print-only-header {
+        display: block !important;
+      }
+    }
+
+    .print-only-header {
+      display: none;
+    }
+
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.55);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-[80] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-3 sm:px-0"></div>
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Mobile Sidebar Overlay -->
+    <div
+      id="sidebar-overlay"
+      onclick="toggleSidebar(false)"
+      class="fixed inset-0 bg-slate-950/50 backdrop-blur-[1px] z-30 hidden md:hidden transition-opacity"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="no-print w-64 bg-gradient-to-b from-blue-900 via-blue-900 to-emerald-950 text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-200 ease-out shadow-xl"
+    >
+      <div class="p-5 border-b border-blue-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+            <i data-lucide="landmark" class="w-6 h-6 text-blue-900"></i>
+          </div>
+          <div class="min-w-0">
+            <h1 id="sidebar-app-title" class="font-bold text-sm tracking-wide text-white truncate">SIPBB</h1>
+            <p id="sidebar-village-name" class="text-xs text-blue-200 truncate">Desa Wani Lumbumpetigo</p>
+          </div>
+        </div>
+        <button
+          onclick="toggleSidebar(false)"
+          class="md:hidden p-1.5 rounded-lg text-blue-200 hover:text-white hover:bg-white/10"
+          aria-label="Tutup menu"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <nav class="flex-1 py-4 px-2 space-y-1 overflow-y-auto" aria-label="Navigasi Utama">
+        <button
+          onclick="showPage('dashboard')"
+          data-page="dashboard"
+          class="sidebar-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Dashboard</span>
+        </button>
+        <button
+          onclick="showPage('taxpayers')"
+          data-page="taxpayers"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="users" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Data Wajib Pajak</span>
+        </button>
+        <button
+          onclick="showPage('payment')"
+          data-page="payment"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="credit-card" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pembayaran PBB</span>
+        </button>
+        <button
+          onclick="showPage('reports')"
+          data-page="reports"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="file-text" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Laporan</span>
+        </button>
+        <button
+          onclick="showPage('charts')"
+          data-page="charts"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Grafik</span>
+        </button>
+        <button
+          onclick="showPage('users')"
+          data-page="users"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="shield" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pengguna</span>
+        </button>
+        <button
+          onclick="showPage('settings')"
+          data-page="settings"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="settings" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pengaturan</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-blue-800/80 text-xs text-blue-200/90 bg-black/15">
+        <div class="flex items-center justify-between">
+          <span>Status Sinkronisasi</span>
+          <span class="inline-flex items-center gap-1.5 text-emerald-300 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Lokal Aktif
+          </span>
+        </div>
+        <p id="sidebar-kecamatan" class="mt-1 text-[11px] text-blue-300/80 truncate">Kec. Tanantovea, Kab. Donggala</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Column -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- Sticky Top Header -->
+      <header class="no-print bg-white dark:bg-slate-900 border-b border-gray-200/80 dark:border-slate-800 shadow-sm px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+        <div class="flex items-center gap-3 min-w-0">
+          <button
+            onclick="toggleSidebar()"
+            class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label="Buka menu navigasi"
+          >
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <div class="min-w-0">
+            <h2 id="header-page-title" class="font-bold text-slate-800 dark:text-white text-base sm:text-lg truncate">
+              Dashboard SIPBB
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+              <span id="header-village-subtitle">Desa Wani Lumbumpetigo</span> • Tahun Pajak <span id="header-tax-year" class="font-semibold text-blue-700 dark:text-emerald-400">2026</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 relative">
+          <button
+            onclick="toggleDarkMode()"
+            class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            title="Mode Gelap / Terang"
+            aria-label="Toggle dark mode"
+          >
+            <i id="dark-mode-icon" data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Notifications Trigger -->
+          <div class="relative">
+            <button
+              id="notif-btn"
+              onclick="toggleNotifications(event)"
+              class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors relative"
+              title="Notifikasi"
+              aria-label="Notifikasi"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+            </button>
+
+            <!-- Notifications Popover -->
+            <div
+              id="notif-popover"
+              class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden"
+            >
+              <div class="px-4 py-3 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gray-50/70 dark:bg-slate-800/60">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-sm text-slate-800 dark:text-white">Notifikasi Sistem</span>
+                  <span id="notif-count-badge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">0</span>
+                </div>
+                <button
+                  onclick="clearNotifications()"
+                  class="text-xs text-blue-600 dark:text-emerald-400 hover:underline font-medium"
+                >
+                  Bersihkan semua
+                </button>
+              </div>
+              <div id="notif-list" class="max-h-72 overflow-y-auto divide-y divide-gray-100 dark:divide-slate-800 text-sm"></div>
+            </div>
+          </div>
+
+          <!-- Active User Badge -->
+          <button
+            onclick="showPage('users')"
+            class="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700/80 border border-blue-200/70 dark:border-slate-700 transition-colors"
+            title="Manajemen Pengguna"
+          >
+            <div class="w-7 h-7 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
+              AD
+            </div>
+            <span class="hidden sm:inline text-xs font-semibold text-slate-700 dark:text-slate-200">Admin Desa</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Workspace -->
+      <main class="flex-1 p-4 md:p-6 bg-gray-50/90 dark:bg-slate-950">
+        <!-- ==================== 1. DASHBOARD ==================== -->
+        <section id="page-dashboard" class="page-section active space-y-6">
+          <!-- 6 Stat Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-blue-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Wajib Pajak</p>
+                  <p id="stat-total-wp" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">0</p>
+                  <p id="stat-wp-sub" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Wajib pajak terdaftar</p>
+                </div>
+                <div class="w-11 h-11 bg-blue-100 dark:bg-blue-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="users" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-emerald-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total SPPT</p>
+                  <p id="stat-total-sppt" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">0</p>
+                  <p id="stat-sppt-sub" class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">SPPT aktif terbit</p>
+                </div>
+                <div class="w-11 h-11 bg-emerald-100 dark:bg-emerald-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="file-text" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-indigo-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Target PBB</p>
+                  <p id="stat-target-pbb" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">Rp 0</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akumulasi ketetapan & target</p>
+                </div>
+                <div class="w-11 h-11 bg-indigo-100 dark:bg-indigo-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="target" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-teal-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Pembayaran</p>
+                  <p id="stat-total-paid" class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-1">Rp 0</p>
+                  <p id="stat-paid-count" class="text-xs text-slate-500 dark:text-slate-400 mt-1">0 SPPT berstatus Lunas</p>
+                </div>
+                <div class="w-11 h-11 bg-teal-100 dark:bg-teal-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="banknote" class="w-5 h-5 text-teal-600 dark:text-teal-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-rose-500">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Tunggakan</p>
+                  <p id="stat-total-arrears" class="text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1">Rp 0</p>
+                  <p id="stat-unpaid-count" class="text-xs text-slate-500 dark:text-slate-400 mt-1">0 SPPT belum lunas</p>
+                </div>
+                <div class="w-11 h-11 bg-rose-100 dark:bg-rose-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-600 dark:text-rose-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-cyan-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Persentase Pelunasan</p>
+                  <p id="stat-percent-paid" class="text-2xl font-bold text-blue-700 dark:text-blue-400 mt-1">0%</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Rasio realisasi terhadap target</p>
+                </div>
+                <div class="w-11 h-11 bg-cyan-100 dark:bg-cyan-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="percent" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- Monthly Payment Bar Chart -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-semibold text-slate-800 dark:text-white text-base">Pembayaran per Bulan</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Distribusi transaksi pembayaran PBB (Jan – Des)</p>
+                </div>
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                  Real-time
+                </span>
+              </div>
+              <div id="dashboard-monthly-chart" class="grid grid-cols-6 sm:grid-cols-12 gap-1.5 sm:gap-2 items-end h-48 pt-6 border-b border-gray-200 dark:border-slate-800 pb-2"></div>
+            </div>
+
+            <!-- Per-Dusun Progress Bars -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-semibold text-slate-800 dark:text-white text-base">Capaian Pelunasan per Dusun</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Persentase nilai PBB lunas di wilayah Desa Wani Lumbumpetigo</p>
+                </div>
+                <button
+                  onclick="showPage('taxpayers')"
+                  class="text-xs font-semibold text-blue-600 dark:text-emerald-400 hover:underline"
+                >
+                  Lihat detail →
+                </button>
+              </div>
+              <div id="dashboard-dusun-bars" class="space-y-3.5"></div>
+            </div>
+          </div>
+
+          <!-- Recent Payments & Quick Actions -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-semibold text-slate-800 dark:text-white text-base">Transaksi Pembayaran Terbaru</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Catatan pembayaran PBB yang baru saja diproses</p>
+              </div>
+              <button
+                onclick="showPage('payment')"
+                class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                Input Pembayaran
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-2.5 text-left rounded-tl-lg">Tanggal</th>
+                    <th class="px-3 py-2.5 text-left">NOP</th>
+                    <th class="px-3 py-2.5 text-left">Nama WP</th>
+                    <th class="px-3 py-2.5 text-left">Dusun</th>
+                    <th class="px-3 py-2.5 text-left">Metode</th>
+                    <th class="px-3 py-2.5 text-right rounded-tr-lg">Nominal</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-payments" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 2. DATA WAJIB PAJAK ==================== -->
+        <section id="page-taxpayers" class="page-section space-y-5">
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Data Wajib Pajak & SPPT</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Kelola data objek pajak, status pembayaran, import/export, dan rincian SPPT</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  onclick="openTaxpayerModal()"
+                  class="px-3.5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="user-plus" class="w-4 h-4"></i>
+                  Tambah Data
+                </button>
+                <button
+                  onclick="triggerImportFile()"
+                  class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  Import
+                </button>
+                <input
+                  type="file"
+                  id="import-file-input"
+                  accept=".csv,.json"
+                  class="hidden"
+                  onchange="handleImportFile(event)"
+                />
+                <button
+                  onclick="exportTaxpayersCSV()"
+                  class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                  Export
+                </button>
+              </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <div class="lg:col-span-2 relative">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input
+                  type="text"
+                  id="search-taxpayer"
+                  oninput="renderTaxpayersTable()"
+                  placeholder="Cari NOP atau Nama Wajib Pajak..."
+                  class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <select
+                id="filter-dusun"
+                onchange="renderTaxpayersTable()"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="ALL">Semua Dusun</option>
+                <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+              </select>
+
+              <select
+                id="filter-status"
+                onchange="renderTaxpayersTable()"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="ALL">Semua Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+              </select>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-3 text-left">No</th>
+                    <th class="px-3 py-3 text-left">NOP</th>
+                    <th class="px-3 py-3 text-left">Nama WP</th>
+                    <th class="px-3 py-3 text-left">Dusun</th>
+                    <th class="px-3 py-3 text-center">Tahun</th>
+                    <th class="px-3 py-3 text-right">Nilai PBB</th>
+                    <th class="px-3 py-3 text-center">Status</th>
+                    <th class="px-3 py-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="taxpayer-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+            <div id="taxpayer-table-summary" class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"></div>
+          </div>
+        </section>
+
+        <!-- ==================== 3. PEMBAYARAN PBB ==================== -->
+        <section id="page-payment" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-slate-800 dark:text-white text-lg">Form Pembayaran PBB</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Ketik atau pilih NOP terdaftar untuk memuat data otomatis</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                  Loket Desa
+                </span>
+              </div>
+
+              <form id="payment-form" onsubmit="handlePaymentSubmit(event)" class="space-y-4">
+                <div>
+                  <label for="pay-nop" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                    NOP (Nomor Objek Pajak) <span class="text-rose-500">*</span>
+                  </label>
+                  <input
+                    id="pay-nop"
+                    list="nop-datalist"
+                    type="text"
+                    required
+                    oninput="handleNopLookup(this.value)"
+                    placeholder="Contoh: 72.03.080.004.001-0001.0"
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <datalist id="nop-datalist"></datalist>
+                  <p id="pay-lookup-hint" class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Pilih NOP dari daftar atau masukkan NOP baru.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="pay-name" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Nama Wajib Pajak <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="pay-name"
+                      type="text"
+                      required
+                      placeholder="Nama lengkap wajib pajak"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="pay-dusun" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Dusun
+                    </label>
+                    <select
+                      id="pay-dusun"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                      <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                      <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                      <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                      <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="pay-amount" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Besaran Pajak (Rp) <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="pay-amount"
+                      type="number"
+                      min="1000"
+                      step="500"
+                      required
+                      value="85000"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="pay-method" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Metode Pembayaran
+                    </label>
+                    <select
+                      id="pay-method"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                      <option value="Tunai">Tunai</option>
+                      <option value="Transfer">Transfer Bank</option>
+                      <option value="QRIS">QRIS</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    type="submit"
+                    class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm inline-flex items-center gap-2 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                    Simpan Pembayaran
+                  </button>
+                  <button
+                    type="button"
+                    onclick="resetPaymentForm(true)"
+                    class="px-5 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg text-sm transition-colors"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+
+              <!-- Confirmation Receipt Box -->
+              <div
+                id="payment-success"
+                class="hidden mt-5 p-4 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 rounded-xl"
+              >
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <i data-lucide="check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-emerald-800 dark:text-emerald-300 text-base tracking-wide">LUNAS</span>
+                        <span id="receipt-id" class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-200"></span>
+                      </div>
+                      <p id="receipt-detail" class="text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 mt-1"></p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 self-end sm:self-center">
+                    <button
+                      type="button"
+                      onclick="window.print()"
+                      class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg text-xs font-semibold inline-flex items-center gap-1"
+                    >
+                      <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                      Cetak Struk
+                    </button>
+                    <button
+                      type="button"
+                      onclick="resetPaymentForm(true)"
+                      class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold"
+                    >
+                      Transaksi Baru
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unpaid Quick Queue -->
+            <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h4 class="font-bold text-slate-800 dark:text-white text-base mb-1">Daftar Belum Lunas</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Klik salah satu wajib pajak untuk mengisi form secara otomatis</p>
+              <div id="unpaid-quick-list" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 4. LAPORAN ==================== -->
+        <section id="page-reports" class="page-section space-y-5">
+          <div class="print-card bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="print-only-header mb-4 pb-3 border-b border-slate-300">
+              <h2 class="text-xl font-bold uppercase">Laporan Realisasi & Tunggakan PBB</h2>
+              <p id="print-report-meta" class="text-sm text-slate-600"></p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Laporan PBB Desa</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Filter data berdasarkan tahun pajak, dusun, dan status pelunasan</p>
+              </div>
+              <div class="no-print flex flex-wrap gap-2">
+                <button
+                  onclick="printReport()"
+                  class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="printer" class="w-4 h-4"></i>
+                  Cetak PDF
+                </button>
+                <button
+                  onclick="exportReportCSV()"
+                  class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                  Export Excel
+                </button>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="no-print grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <select
+                id="report-year"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Tahun</option>
+                <option value="2026" selected>Tahun 2026</option>
+                <option value="2025">Tahun 2025</option>
+              </select>
+
+              <select
+                id="report-dusun"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Dusun</option>
+                <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+              </select>
+
+              <select
+                id="report-status"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+              </select>
+
+              <button
+                onclick="renderReport()"
+                class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="filter" class="w-4 h-4"></i>
+                Tampilkan
+              </button>
+            </div>
+
+            <!-- Report Summary Cards -->
+            <div id="report-summary" class="hidden grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700">
+                <p class="text-xs text-slate-500 dark:text-slate-400">Total Data</p>
+                <p id="rep-sum-count" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">0 SPPT</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-900">
+                <p class="text-xs text-blue-700 dark:text-blue-300">Total Nilai PBB</p>
+                <p id="rep-sum-nilai" class="text-lg font-bold text-blue-800 dark:text-blue-200 mt-0.5">Rp 0</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-900">
+                <p class="text-xs text-emerald-700 dark:text-emerald-300">Total Lunas</p>
+                <p id="rep-sum-lunas" class="text-lg font-bold text-emerald-800 dark:text-emerald-200 mt-0.5">Rp 0</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/40 border border-rose-200/70 dark:border-rose-900">
+                <p class="text-xs text-rose-700 dark:text-rose-300">Total Tunggakan</p>
+                <p id="rep-sum-tunggakan" class="text-lg font-bold text-rose-800 dark:text-rose-200 mt-0.5">Rp 0</p>
+              </div>
+            </div>
+
+            <!-- Report Table / Empty Prompt -->
+            <div id="report-empty" class="text-center py-12 text-slate-400 dark:text-slate-500 border border-dashed border-gray-200 dark:border-slate-800 rounded-xl">
+              <i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-2 opacity-80"></i>
+              <p class="font-medium text-sm">Pilih filter dan klik "Tampilkan" untuk melihat laporan</p>
+            </div>
+
+            <div id="report-table-wrap" class="hidden overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-2.5 text-left">No</th>
+                    <th class="px-3 py-2.5 text-left">NOP</th>
+                    <th class="px-3 py-2.5 text-left">Nama WP</th>
+                    <th class="px-3 py-2.5 text-left">Dusun</th>
+                    <th class="px-3 py-2.5 text-center">Tahun</th>
+                    <th class="px-3 py-2.5 text-right">Nilai PBB</th>
+                    <th class="px-3 py-2.5 text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="report-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 5. GRAFIK ==================== -->
+        <section id="page-charts" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- Target vs Realisasi -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Target vs Realisasi PBB</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Perbandingan target penerimaan desa dengan realisasi terbayar</p>
+
+              <div class="flex items-end justify-center gap-10 h-52 pt-6 border-b border-gray-200 dark:border-slate-800 pb-2">
+                <div class="flex flex-col items-center h-full justify-end w-24">
+                  <span id="chart-target-label" class="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1.5">Rp 0</span>
+                  <div class="w-full bg-blue-500/90 dark:bg-blue-500 rounded-t-lg bar-anim" style="height: 100%"></div>
+                </div>
+                <div class="flex flex-col items-center h-full justify-end w-24">
+                  <span id="chart-realisasi-label" class="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1.5">Rp 0</span>
+                  <div id="chart-realisasi-bar" class="w-full bg-emerald-500 rounded-t-lg bar-anim" style="height: 0%"></div>
+                </div>
+              </div>
+              <div class="flex justify-center gap-14 mt-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <span>Target PBB</span>
+                <span>Realisasi</span>
+              </div>
+            </div>
+
+            <!-- Persentase Pelunasan Donut -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Persentase Pelunasan</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Tingkat penyelesaian ketetapan PBB Desa Wani Lumbumpetigo</p>
+
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 py-3">
+                <div class="relative w-40 h-40 flex-shrink-0">
+                  <svg viewBox="0 0 36 36" class="w-40 h-40 -rotate-90">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="currentColor"
+                      class="text-gray-200 dark:text-slate-800"
+                      stroke-width="3.2"
+                    ></circle>
+                    <circle
+                      id="donut-progress-circle"
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#10b981"
+                      stroke-width="3.2"
+                      stroke-dasharray="0 100"
+                      stroke-linecap="round"
+                      style="transition: stroke-dasharray 0.6s ease;"
+                    ></circle>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="donut-percent-text" class="font-bold text-2xl text-slate-800 dark:text-white">0%</span>
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400">Terbayar</span>
+                  </div>
+                </div>
+
+                <div class="space-y-2.5 text-sm w-full sm:w-auto">
+                  <div class="flex items-center justify-between sm:justify-start gap-3">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                    <span class="text-slate-600 dark:text-slate-300">Lunas:</span>
+                    <span id="donut-legend-paid" class="font-bold text-emerald-700 dark:text-emerald-400">Rp 0</span>
+                  </div>
+                  <div class="flex items-center justify-between sm:justify-start gap-3">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 flex-shrink-0"></span>
+                    <span class="text-slate-600 dark:text-slate-300">Tunggakan:</span>
+                    <span id="donut-legend-unpaid" class="font-bold text-rose-600 dark:text-rose-400">Rp 0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Breakdown per Dusun -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Rincian Capaian per Dusun</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Perbandingan ketetapan, realisasi, dan tunggakan tiap dusun</p>
+            <div id="charts-dusun-breakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </div>
+        </section>
+
+        <!-- ==================== 6. PENGGUNA ==================== -->
+        <section id="page-users" class="page-section space-y-5">
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Manajemen Pengguna</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Kelola akun operator, perangkat desa, dan hak akses sistem</p>
+              </div>
+              <button
+                onclick="openUserModal()"
+                class="px-3.5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Tambah Pengguna
+              </button>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-3 text-left">Nama</th>
+                    <th class="px-3 py-3 text-left">Username</th>
+                    <th class="px-3 py-3 text-left">Level Akses</th>
+                    <th class="px-3 py-3 text-center">Status</th>
+                    <th class="px-3 py-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 7. PENGATURAN ==================== -->
+        <section id="page-settings" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-5xl">
+            <!-- Appearance & Village Settings -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 space-y-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Pengaturan Aplikasi & Desa</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Sesuaikan tampilan, identitas desa, tahun pajak, dan target PBB</p>
+              </div>
+
+              <!-- Dark Mode Switch Row -->
+              <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800/70 border border-gray-200/60 dark:border-slate-700">
+                <div>
+                  <p class="text-sm font-semibold text-slate-800 dark:text-white">Mode Gelap (Dark Mode)</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Kurangi silau layar saat bekerja malam hari</p>
+                </div>
+                <button
+                  type="button"
+                  id="settings-dark-toggle"
+                  onclick="toggleDarkMode()"
+                  role="switch"
+                  aria-checked="false"
+                  class="w-12 h-7 bg-gray-300 dark:bg-emerald-600 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <span
+                    id="settings-dark-knob"
+                    class="w-5 h-5 bg-white rounded-full shadow transform transition-transform translate-x-1 flex items-center justify-center"
+                  ></span>
+                </button>
+              </div>
+
+              <form id="settings-form" onsubmit="saveSettings(event)" class="space-y-3.5">
+                <div>
+                  <label for="set-village-name" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                    Nama Desa
+                  </label>
+                  <input
+                    id="set-village-name"
+                    type="text"
+                    required
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label for="set-kecamatan" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                    Kecamatan & Kabupaten
+                  </label>
+                  <input
+                    id="set-kecamatan"
+                    type="text"
+                    required
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                  />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label for="set-tax-year" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                      Tahun Pajak Aktif
+                    </label>
+                    <input
+                      id="set-tax-year"
+                      type="number"
+                      min="2020"
+                      max="2035"
+                      required
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="set-target-pbb" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                      Target PBB Desa (Rp)
+                    </label>
+                    <input
+                      id="set-target-pbb"
+                      type="number"
+                      min="0"
+                      step="10000"
+                      required
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full sm:w-auto px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center justify-center gap-2 shadow-sm transition-colors"
+                >
+                  <i data-lucide="save" class="w-4 h-4"></i>
+                  Simpan Pengaturan
+                </button>
+              </form>
+            </div>
+
+            <!-- Backup & Restore Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 space-y-4">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Backup, Restore & Reset Data</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Amankan seluruh data SIPBB ke berkas JSON atau pulihkan data bawaan</p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/35 border border-blue-200/70 dark:border-blue-900 space-y-2">
+                <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">Unduh Backup Lengkap (.JSON)</p>
+                <p class="text-xs text-blue-700 dark:text-blue-300">
+                  Mencakup data wajib pajak, riwayat pembayaran, pengguna, notifikasi, dan pengaturan desa.
+                </p>
+                <button
+                  type="button"
+                  onclick="backupDatabaseJSON()"
+                  class="mt-1 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="database-backup" class="w-4 h-4"></i>
+                  Backup Database
+                </button>
+              </div>
+
+              <div class="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/35 border border-emerald-200/70 dark:border-emerald-900 space-y-2">
+                <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-200">Restore dari Berkas Backup (.JSON)</p>
+                <p class="text-xs text-emerald-700 dark:text-emerald-300">
+                  Pulihkan seluruh data dari file backup JSON yang pernah diunduh sebelumnya.
+                </p>
+                <button
+                  type="button"
+                  onclick="document.getElementById('restore-json-input').click()"
+                  class="mt-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                  Restore Data JSON
+                </button>
+                <input
+                  type="file"
+                  id="restore-json-input"
+                  accept=".json,application/json"
+                  class="hidden"
+                  onchange="handleRestoreJSON(event)"
+                />
+              </div>
+
+              <div class="p-4 rounded-xl bg-rose-50/70 dark:bg-rose-950/35 border border-rose-200/70 dark:border-rose-900 space-y-2">
+                <p class="text-sm font-semibold text-rose-900 dark:text-rose-200">Reset ke Data Awal Contoh</p>
+                <p class="text-xs text-rose-700 dark:text-rose-300">
+                  Mengembalikan seluruh data ke kondisi awal sampel Desa Wani Lumbumpetigo.
+                </p>
+                <button
+                  type="button"
+                  onclick="resetToDefaultData()"
+                  class="mt-1 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                  Reset Data Default
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-   </div>
-   <nav class="flex-1 py-4 overflow-y-auto"><button onclick="showPage('dashboard')" class="sidebar-item active w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="dashboard"> <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard</span> </button> <button onclick="showPage('taxpayers')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="taxpayers"> <i data-lucide="users" class="w-4 h-4"></i><span>Data Wajib Pajak</span> </button> <button onclick="showPage('payment')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="payment"> <i data-lucide="credit-card" class="w-4 h-4"></i><span>Pembayaran PBB</span> </button> <button onclick="showPage('reports')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="reports"> <i data-lucide="file-text" class="w-4 h-4"></i><span>Laporan</span> </button> <button onclick="showPage('charts')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="charts"> <i data-lucide="bar-chart-2" class="w-4 h-4"></i><span>Grafik</span> </button> <button onclick="showPage('users')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="users"> <i data-lucide="shield" class="w-4 h-4"></i><span>Pengguna</span> </button> <button onclick="showPage('settings')" class="sidebar-item w-full flex items-center gap-3 px-5 py-3 text-sm hover:bg-white/10" data-page="settings"> <i data-lucide="settings" class="w-4 h-4"></i><span>Pengaturan</span> </button>
-   </nav>
-  </aside><!-- Main Content -->
-  <div class="flex-1 flex flex-col min-h-screen md:ml-0"><!-- Header -->
-   <header data-template-id="header-bar" class="canva-header bg-white shadow-sm px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-30" style="background: rgb(255, 255, 255);">
-    <div class="flex items-center gap-3"><button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg hover:bg-gray-100"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
-     <div>
-      <h2 data-template-id="header-title" class="canva-text font-semibold text-gray-800" style="color: rgb(30, 58, 95); font-weight: 600; font-style: normal; font-size: 16px;">Sistem Informasi PBB</h2>
-      <p data-template-id="header-year" class="canva-text text-xs text-gray-500" style="color: rgb(107, 114, 128); font-weight: 400; font-style: normal; font-size: 12px;">Tahun Pajak 2026</p>
-     </div>
-    </div>
-    <div class="flex items-center gap-3"><button onclick="toggleDark()" class="p-2 rounded-lg hover:bg-gray-100" aria-label="Toggle dark mode"> <i data-lucide="moon" class="w-5 h-5 text-gray-600"></i> </button> <button class="p-2 rounded-lg hover:bg-gray-100 relative" aria-label="Notifications"> <i data-lucide="bell" class="w-5 h-5 text-gray-600"></i> <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span> </button>
-     <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-      A
-     </div>
-    </div>
-   </header>
-   <main class="flex-1 p-4 md:p-6 bg-gray-50 overflow-y-auto"><!-- Dashboard -->
-    <section id="page-dashboard" class="page-section active">
-     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      <div data-template-id="stat-taxpayers" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-blue-600" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
-        <div>
-         <p data-template-id="stat-taxpayers-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Wajib Pajak</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">1.247</p>
-        </div>
-        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-        </div>
-       </div>
+  </div>
+
+  <!-- Bottom-Left Circular Scroll-Percentage Back-to-Top Button -->
+  <button
+    id="scroll-percent"
+    type="button"
+    onclick="scrollToTopSmooth()"
+    title="Kembali ke atas"
+    aria-label="Persentase gulir dan kembali ke atas"
+    class="no-print is-hidden fixed bottom-5 left-5 z-30 w-12 h-12 rounded-full bg-blue-900 dark:bg-emerald-700 text-white shadow-lg border-2 border-emerald-400/70 dark:border-emerald-300/70 flex flex-col items-center justify-center hover:bg-blue-800 dark:hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+  >
+    <i data-lucide="arrow-up" class="w-3.5 h-3.5 -mb-0.5"></i>
+    <span id="scroll-percent-value" class="text-[10px] font-bold leading-tight">0%</span>
+  </button>
+
+  <!-- ==================== MODAL: TAMBAH / EDIT WAJIB PAJAK ==================== -->
+  <div
+    id="taxpayer-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-lg overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <h4 id="taxpayer-modal-title" class="font-bold text-slate-800 dark:text-white text-base">Tambah Data Wajib Pajak</h4>
+        <button onclick="closeTaxpayerModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
-      <div data-template-id="stat-sppt" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-green-600" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
+      <form id="taxpayer-form" onsubmit="saveTaxpayer(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="tp-edit-id" />
         <div>
-         <p data-template-id="stat-sppt-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total SPPT</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">1.185</p>
+          <label for="tp-nop" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            NOP (Nomor Objek Pajak) *
+          </label>
+          <input
+            id="tp-nop"
+            type="text"
+            required
+            placeholder="72.03.080.004.001-0010.0"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white"
+          />
         </div>
-        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="tp-name" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Nama Wajib Pajak *
+            </label>
+            <input
+              id="tp-name"
+              type="text"
+              required
+              placeholder="Nama lengkap"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-dusun" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Dusun *
+            </label>
+            <select
+              id="tp-dusun"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+              <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+              <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+              <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+            </select>
+          </div>
         </div>
-       </div>
-      </div>
-      <div data-template-id="stat-target" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-indigo-600" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
-        <div>
-         <p data-template-id="stat-target-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Target PBB</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 89.450.000</p>
-        </div>
-        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="target" class="w-5 h-5 text-indigo-600"></i>
-        </div>
-       </div>
-      </div>
-      <div data-template-id="stat-paid" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-emerald-600" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
-        <div>
-         <p data-template-id="stat-paid-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Pembayaran</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 62.180.000</p>
-        </div>
-        <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="banknote" class="w-5 h-5 text-emerald-600"></i>
-        </div>
-       </div>
-      </div>
-      <div data-template-id="stat-arrears" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-red-500" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
-        <div>
-         <p data-template-id="stat-arrears-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Total Tunggakan</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">Rp 27.270.000</p>
-        </div>
-        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500"></i>
-        </div>
-       </div>
-      </div>
-      <div data-template-id="stat-percent" class="canva-card stat-card bg-white rounded-xl p-5 shadow-sm border-l-4 border-teal-500" style="background: rgb(255, 255, 255);">
-       <div class="flex items-center justify-between">
-        <div>
-         <p data-template-id="stat-percent-label" class="canva-text text-xs text-gray-500 uppercase tracking-wide" style="color: rgb(107, 114, 128); font-weight: 600; font-style: normal; font-size: 11px;">Persentase Pelunasan</p>
-         <p class="text-2xl font-bold text-gray-800 mt-1">69,5%</p>
-        </div>
-        <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-         <i data-lucide="percent" class="w-5 h-5 text-teal-600"></i>
-        </div>
-       </div>
-      </div>
-     </div><!-- Charts -->
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div data-template-id="chart-monthly" class="canva-card bg-white rounded-xl p-5 shadow-sm" style="background: rgb(255, 255, 255);">
-       <h3 data-template-id="chart-monthly-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Pembayaran per Bulan</h3>
-       <div class="flex items-end gap-2 h-40">
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:40%"></div><span class="text-[10px] mt-1 text-gray-500">Jan</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:55%"></div><span class="text-[10px] mt-1 text-gray-500">Feb</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:30%"></div><span class="text-[10px] mt-1 text-gray-500">Mar</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:70%"></div><span class="text-[10px] mt-1 text-gray-500">Apr</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:85%"></div><span class="text-[10px] mt-1 text-gray-500">Mei</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-blue-500 rounded-t" style="height:60%"></div><span class="text-[10px] mt-1 text-gray-500">Jun</span>
-        </div>
-        <div class="flex-1 flex flex-col items-center">
-         <div class="bar w-full bg-green-500 rounded-t" style="height:50%"></div><span class="text-[10px] mt-1 text-gray-500">Jul</span>
-        </div>
-       </div>
-      </div>
-      <div data-template-id="chart-dusun" class="canva-card bg-white rounded-xl p-5 shadow-sm" style="background: rgb(255, 255, 255);">
-       <h3 data-template-id="chart-dusun-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Pembayaran per Dusun</h3>
-       <div class="space-y-3">
-        <div>
-         <div class="flex justify-between text-xs text-gray-600 mb-1">
-          <span>Dusun 1</span><span>82%</span>
-         </div>
-         <div class="h-3 bg-gray-200 rounded-full">
-          <div class="h-3 bg-green-500 rounded-full" style="width:82%"></div>
-         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div>
+            <label for="tp-nilai" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Nilai PBB (Rp) *
+            </label>
+            <input
+              id="tp-nilai"
+              type="number"
+              min="1000"
+              step="500"
+              required
+              value="75000"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-year" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Tahun Pajak
+            </label>
+            <input
+              id="tp-year"
+              type="number"
+              min="2020"
+              max="2035"
+              value="2026"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-status" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Status
+            </label>
+            <select
+              id="tp-status"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Belum Lunas">Belum Lunas</option>
+              <option value="Lunas">Lunas</option>
+            </select>
+          </div>
         </div>
         <div>
-         <div class="flex justify-between text-xs text-gray-600 mb-1">
-          <span>Dusun 2</span><span>65%</span>
-         </div>
-         <div class="h-3 bg-gray-200 rounded-full">
-          <div class="h-3 bg-blue-500 rounded-full" style="width:65%"></div>
-         </div>
+          <label for="tp-address" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Alamat Objek Pajak / Luas (Opsional)
+          </label>
+          <input
+            id="tp-address"
+            type="text"
+            placeholder="Contoh: Jl. Trans Sulawesi, Tanah 240 m² / Bangunan 72 m²"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+          />
         </div>
-        <div>
-         <div class="flex justify-between text-xs text-gray-600 mb-1">
-          <span>Dusun 3</span><span>71%</span>
-         </div>
-         <div class="h-3 bg-gray-200 rounded-full">
-          <div class="h-3 bg-blue-500 rounded-full" style="width:71%"></div>
-         </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+          <button
+            type="button"
+            onclick="closeTaxpayerModal()"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-medium"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm"
+          >
+            Simpan Data
+          </button>
         </div>
-        <div>
-         <div class="flex justify-between text-xs text-gray-600 mb-1">
-          <span>Dusun 4</span><span>58%</span>
-         </div>
-         <div class="h-3 bg-gray-200 rounded-full">
-          <div class="h-3 bg-yellow-500 rounded-full" style="width:58%"></div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div>
-    </section><!-- Data Wajib Pajak -->
-    <section id="page-taxpayers" class="page-section">
-     <div class="bg-white rounded-xl shadow-sm p-5">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-       <h3 data-template-id="taxpayers-title" class="canva-text font-semibold text-gray-800" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Data Wajib Pajak</h3>
-       <div class="flex flex-wrap gap-2"><button data-template-id="btn-add-taxpayer" class="canva-button px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1" style="background: rgb(30, 64, 175); color: rgb(255, 255, 255); font-weight: 500; font-style: normal; font-size: 15px;">Tambah Data</button> <button class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 flex items-center gap-1"><i data-lucide="upload" class="w-4 h-4"></i>Import</button> <button class="px-3 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i>Export</button>
-       </div>
-      </div>
-      <div class="mb-4"><input type="text" id="search-taxpayer" placeholder="Cari NOP atau Nama..." class="w-full sm:w-72 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-      </div>
-      <div class="overflow-x-auto">
-       <table class="w-full text-sm">
-        <thead class="bg-gray-50 text-gray-600">
-         <tr>
-          <th class="px-3 py-2 text-left">No</th>
-          <th class="px-3 py-2 text-left">NOP</th>
-          <th class="px-3 py-2 text-left">Nama</th>
-          <th class="px-3 py-2 text-left">Dusun</th>
-          <th class="px-3 py-2 text-right">Nilai PBB</th>
-          <th class="px-3 py-2 text-center">Status</th>
-          <th class="px-3 py-2 text-center">Aksi</th>
-         </tr>
-        </thead>
-        <tbody id="taxpayer-tbody">
-        </tbody>
-       </table>
-      </div>
-     </div>
-    </section><!-- Pembayaran -->
-    <section id="page-payment" class="page-section">
-     <div class="bg-white rounded-xl shadow-sm p-5 max-w-2xl">
-      <h3 data-template-id="payment-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Form Pembayaran PBB</h3>
-      <form id="payment-form" class="space-y-4">
-       <div><label data-template-id="payment-nop-label" class="canva-text block text-sm font-medium text-gray-700 mb-1" for="pay-nop" style="color: rgb(55, 65, 81); font-weight: 500; font-style: normal; font-size: 15px;">NOP (Nomor Objek Pajak)</label> <input id="pay-nop" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none" placeholder="Masukkan NOP">
-       </div>
-       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-name">Nama WP</label> <input id="pay-name" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="Nama Wajib Pajak">
-        </div>
-        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-dusun">Dusun</label> <select id="pay-dusun" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"> <option>Dusun 1</option><option>Dusun 2</option><option>Dusun 3</option><option>Dusun 4</option> </select>
-        </div>
-       </div>
-       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-amount">Besaran Pajak (Rp)</label> <input id="pay-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" value="75000">
-        </div>
-        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="pay-method">Metode Pembayaran</label> <select id="pay-method" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"> <option>Tunai</option><option>Transfer</option><option>QRIS</option> </select>
-        </div>
-       </div>
-       <div class="flex gap-3 pt-2"><button data-template-id="btn-pay-save" type="submit" class="canva-button px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium text-sm" style="background: rgb(5, 150, 105); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 15px;">Simpan Pembayaran</button> <button type="button" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm">Batal</button>
-       </div>
       </form>
-      <div id="payment-success" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-center"><i data-lucide="check-circle" class="w-10 h-10 text-green-600 mx-auto mb-2"></i>
-       <p class="font-bold text-green-700 text-lg">LUNAS</p>
-       <p class="text-sm text-green-600">Pembayaran berhasil disimpan</p>
-      </div>
-     </div>
-    </section><!-- Laporan -->
-    <section id="page-reports" class="page-section">
-     <div class="bg-white rounded-xl shadow-sm p-5">
-      <h3 data-template-id="reports-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Laporan PBB</h3>
-      <div class="flex flex-wrap gap-3 mb-4"><select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>2026</option><option>2025</option></select> <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>Semua Dusun</option><option>Dusun 1</option><option>Dusun 2</option><option>Dusun 3</option><option>Dusun 4</option></select> <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm"><option>Semua Status</option><option>Lunas</option><option>Belum Lunas</option></select> <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Tampilkan</button>
-      </div>
-      <div class="flex flex-wrap gap-2 mb-4"><button class="px-3 py-2 bg-red-600 text-white text-sm rounded-lg flex items-center gap-1"><i data-lucide="file-text" class="w-4 h-4"></i>Cetak PDF</button> <button class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i>Export Excel</button>
-      </div>
-      <div class="text-center py-10 text-gray-400"><i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-2"></i>
-       <p>Pilih filter dan klik "Tampilkan" untuk melihat laporan</p>
-      </div>
-     </div>
-    </section><!-- Grafik -->
-    <section id="page-charts" class="page-section">
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div class="bg-white rounded-xl shadow-sm p-5">
-       <h3 data-template-id="chart-target-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Target vs Realisasi</h3>
-       <div class="flex items-end gap-4 justify-center h-40">
-        <div class="text-center">
-         <div class="w-16 bg-blue-200 rounded-t" style="height:100%"></div><span class="text-xs text-gray-500 block mt-1">Target</span><span class="text-xs font-bold">89,4jt</span>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: DETAIL SPPT WAJIB PAJAK ==================== -->
+  <div
+    id="detail-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-800 dark:text-white text-base">Rincian SPPT Wajib Pajak</h4>
+          <p id="detail-nop-sub" class="text-xs font-mono text-slate-500 dark:text-slate-400"></p>
         </div>
-        <div class="text-center">
-         <div class="w-16 bg-green-500 rounded-t" style="height:69%"></div><span class="text-xs text-gray-500 block mt-1">Realisasi</span><span class="text-xs font-bold">62,1jt</span>
+        <button onclick="closeDetailModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="detail-modal-body" class="p-5 space-y-4 text-sm"></div>
+      <div id="detail-modal-footer" class="px-5 py-3.5 bg-gray-50 dark:bg-slate-800/60 border-t border-gray-100 dark:border-slate-800 flex flex-wrap justify-between gap-2"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: TAMBAH / EDIT PENGGUNA ==================== -->
+  <div
+    id="user-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-md overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <h4 id="user-modal-title" class="font-bold text-slate-800 dark:text-white text-base">Tambah Pengguna</h4>
+        <button onclick="closeUserModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form id="user-form" onsubmit="saveUser(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="usr-edit-id" />
+        <div>
+          <label for="usr-name" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Nama Lengkap *
+          </label>
+          <input
+            id="usr-name"
+            type="text"
+            required
+            placeholder="Contoh: Bendahara Desa"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+          />
         </div>
-       </div>
-      </div>
-      <div class="bg-white rounded-xl shadow-sm p-5">
-       <h3 data-template-id="chart-pelunasan-title" class="canva-text font-semibold text-gray-700 mb-4" style="color: rgb(55, 65, 81); font-weight: 600; font-style: normal; font-size: 14px;">Persentase Pelunasan</h3>
-       <div class="flex items-center justify-center h-40">
-        <div class="relative w-32 h-32">
-         <svg viewBox="0 0 36 36" class="w-32 h-32 -rotate-90"><circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3"></circle> <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="69.5 100" stroke-linecap="round"></circle>
-         </svg>
-         <div class="absolute inset-0 flex items-center justify-center font-bold text-xl text-gray-800">
-          69,5%
-         </div>
+        <div>
+          <label for="usr-username" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Username *
+          </label>
+          <input
+            id="usr-username"
+            type="text"
+            required
+            placeholder="contoh: bendahara"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white"
+          />
         </div>
-       </div>
-      </div>
-     </div>
-    </section><!-- Pengguna -->
-    <section id="page-users" class="page-section">
-     <div class="bg-white rounded-xl shadow-sm p-5">
-      <h3 data-template-id="users-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Manajemen Pengguna</h3>
-      <div class="overflow-x-auto">
-       <table class="w-full text-sm">
-        <thead class="bg-gray-50 text-gray-600">
-         <tr>
-          <th class="px-3 py-2 text-left">Nama</th>
-          <th class="px-3 py-2 text-left">Username</th>
-          <th class="px-3 py-2 text-left">Level</th>
-          <th class="px-3 py-2 text-center">Status</th>
-         </tr>
-        </thead>
-        <tbody>
-         <tr class="border-b">
-          <td class="px-3 py-3">Admin Desa</td>
-          <td class="px-3 py-3">admin</td>
-          <td class="px-3 py-3">Administrator</td>
-          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
-         </tr>
-         <tr class="border-b">
-          <td class="px-3 py-3">Operator 1</td>
-          <td class="px-3 py-3">operator1</td>
-          <td class="px-3 py-3">Operator</td>
-          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
-         </tr>
-         <tr class="border-b">
-          <td class="px-3 py-3">Kepala Desa</td>
-          <td class="px-3 py-3">kades</td>
-          <td class="px-3 py-3">Kepala Desa</td>
-          <td class="px-3 py-3 text-center"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Aktif</span></td>
-         </tr>
-        </tbody>
-       </table>
-      </div>
-     </div>
-    </section><!-- Pengaturan -->
-    <section id="page-settings" class="page-section">
-     <div class="bg-white rounded-xl shadow-sm p-5 max-w-lg">
-      <h3 data-template-id="settings-title" class="canva-text font-semibold text-gray-800 mb-4" style="color: rgb(31, 41, 55); font-weight: 600; font-style: normal; font-size: 18px;">Pengaturan</h3>
-      <div class="space-y-4">
-       <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><span class="text-sm">Mode Gelap</span> <button onclick="toggleDark()" class="w-10 h-6 bg-gray-300 rounded-full relative"><span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform"></span></button>
-       </div>
-       <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><span class="text-sm">Backup Database</span> <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg">Backup</button>
-       </div>
-      </div>
-     </div>
-    </section>
-   </main>
-  </div><!-- Sidebar overlay for mobile -->
-  <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-30 hidden md:hidden" onclick="toggleSidebar()"></div>
-  <script src="/_sdk/1b56991da13617fe.editing_sdk.js" integrity="sha512-7QHNPLPvkV/StrSqMG/kmvYbG8mJP4lGjSAmVe52ZYilblz47/1vWJa6sAdgi1w/a7EbAadWwTEJWNjrpiUkfg=="></script>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="usr-role" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Level Akses
+            </label>
+            <select
+              id="usr-role"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Administrator">Administrator</option>
+              <option value="Operator">Operator</option>
+              <option value="Bendahara">Bendahara</option>
+              <option value="Kepala Desa">Kepala Desa</option>
+            </select>
+          </div>
+          <div>
+            <label for="usr-status" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Status Akun
+            </label>
+            <select
+              id="usr-status"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Aktif">Aktif</option>
+              <option value="Non-Aktif">Non-Aktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+          <button
+            type="button"
+            onclick="closeUserModal()"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-medium"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm"
+          >
+            Simpan Pengguna
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-        lucide.createIcons();
+    const STORAGE_KEY = 'sipbb_wani_lumbumpetigo_v1';
 
-        // Sample taxpayer data
-        const taxpayers = [
-            { no:1, nop:'72.01.060.001.001-0001.0', name:'Ahmad Yusuf', dusun:'Dusun 1', nilai:'Rp 85.000', status:'Lunas' },
-            { no:2, nop:'72.01.060.001.001-0002.0', name:'Siti Rahmah', dusun:'Dusun 2', nilai:'Rp 62.000', status:'Belum Lunas' },
-            { no:3, nop:'72.01.060.001.001-0003.0', name:'Budi Santoso', dusun:'Dusun 1', nilai:'Rp 120.000', status:'Lunas' },
-            { no:4, nop:'72.01.060.001.001-0004.0', name:'Fatimah Zahra', dusun:'Dusun 3', nilai:'Rp 55.000', status:'Belum Lunas' },
-            { no:5, nop:'72.01.060.001.001-0005.0', name:'Hendra Wijaya', dusun:'Dusun 4', nilai:'Rp 95.000', status:'Lunas' },
-        ];
+    const DEFAULT_STATE = {
+      darkMode: false,
+      activePage: 'dashboard',
+      settings: {
+        villageName: 'Desa Wani Lumbumpetigo',
+        kecamatan: 'Kec. Tanantovea, Kab. Donggala',
+        taxYear: 2026,
+        targetPBB: 89450000,
+      },
+      taxpayers: [
+        {
+          id: 'wp-1',
+          nop: '72.03.080.004.001-0001.0',
+          name: 'Ahmad Yusuf',
+          dusun: 'Dusun 1 (Petigo)',
+          nilai: 85000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Trans Sulawesi, Dusun Petigo • Luas Tanah 220 m²',
+          paidMonth: 1,
+          paidDate: '2026-01-18',
+        },
+        {
+          id: 'wp-2',
+          nop: '72.03.080.004.001-0002.0',
+          name: 'Siti Rahmah',
+          dusun: 'Dusun 2 (Lumbum)',
+          nilai: 62000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Lorong Melati, Dusun Lumbum • Luas Tanah 165 m²',
+          paidMonth: null,
+          paidDate: null,
+        },
+        {
+          id: 'wp-3',
+          nop: '72.03.080.004.001-0003.0',
+          name: 'Budi Santoso',
+          dusun: 'Dusun 1 (Petigo)',
+          nilai: 120000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Poros Wani, Dusun Petigo • Luas Tanah 340 m²',
+          paidMonth: 3,
+          paidDate: '2026-03-11',
+        },
+        {
+          id: 'wp-4',
+          nop: '72.03.080.004.001-0004.0',
+          name: 'Fatimah Zahra',
+          dusun: 'Dusun 3 (Kavatua)',
+          nilai: 55000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Jl. Pantai Kavatua, Dusun 3 • Luas Tanah 150 m²',
+          paidMonth: null,
+          paidDate: null,
+        },
+        {
+          id: 'wp-5',
+          nop: '72.03.080.004.001-0005.0',
+          name: 'Hendra Wijaya',
+          dusun: 'Dusun 4 (Wani Barat)',
+          nilai: 95000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Wani Barat, Dusun 4 • Luas Tanah 275 m²',
+          paidMonth: 4,
+          paidDate: '2026-04-22',
+        },
+        {
+          id: 'wp-6',
+          nop: '72.03.080.004.001-0006.0',
+          name: 'Nurhayati Mahmud',
+          dusun: 'Dusun 2 (Lumbum)',
+          nilai: 78000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Lumbum Raya, Dusun 2 • Luas Tanah 200 m²',
+          paidMonth: 5,
+          paidDate: '2026-05-14',
+        },
+        {
+          id: 'wp-7',
+          nop: '72.03.080.004.001-0007.0',
+          name: 'Rizal Tobing',
+          dusun: 'Dusun 3 (Kavatua)',
+          nilai: 110000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Jl. Kavatua Tengah, Dusun 3 • Luas Tanah 310 m²',
+          paidMonth: null,
+          paidDate: null,
+        },
+        {
+          id: 'wp-8',
+          nop: '72.03.080.004.001-0008.0',
+          name: 'Dewi Kusuma',
+          dusun: 'Dusun 4 (Wani Barat)',
+          nilai: 68000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Jl. Nelayan Wani Barat, Dusun 4 • Luas Tanah 180 m²',
+          paidMonth: null,
+          paidDate: null,
+        },
+        {
+          id: 'wp-9',
+          nop: '72.03.080.004.001-0009.0',
+          name: 'Mohamad Saleh',
+          dusun: 'Dusun 1 (Petigo)',
+          nilai: 92000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Petigo Indah, Dusun 1 • Luas Tanah 250 m²',
+          paidMonth: 7,
+          paidDate: '2026-07-08',
+        },
+        {
+          id: 'wp-10',
+          nop: '72.03.080.004.001-0010.0',
+          name: 'Yuliana Lapu',
+          dusun: 'Dusun 2 (Lumbum)',
+          nilai: 84000,
+          year: 2025,
+          status: 'Lunas',
+          address: 'Jl. Lumbum Utara, Dusun 2 • Luas Tanah 210 m²',
+          paidMonth: 2,
+          paidDate: '2025-02-19',
+        },
+      ],
+      payments: [
+        {
+          id: 'TRX-2026-001',
+          date: '2026-01-18',
+          monthIndex: 0,
+          nop: '72.03.080.004.001-0001.0',
+          name: 'Ahmad Yusuf',
+          dusun: 'Dusun 1 (Petigo)',
+          method: 'Tunai',
+          amount: 85000,
+        },
+        {
+          id: 'TRX-2025-009',
+          date: '2025-02-19',
+          monthIndex: 1,
+          nop: '72.03.080.004.001-0010.0',
+          name: 'Yuliana Lapu',
+          dusun: 'Dusun 2 (Lumbum)',
+          method: 'QRIS',
+          amount: 84000,
+        },
+        {
+          id: 'TRX-2026-002',
+          date: '2026-03-11',
+          monthIndex: 2,
+          nop: '72.03.080.004.001-0003.0',
+          name: 'Budi Santoso',
+          dusun: 'Dusun 1 (Petigo)',
+          method: 'Transfer',
+          amount: 120000,
+        },
+        {
+          id: 'TRX-2026-003',
+          date: '2026-04-22',
+          monthIndex: 3,
+          nop: '72.03.080.004.001-0005.0',
+          name: 'Hendra Wijaya',
+          dusun: 'Dusun 4 (Wani Barat)',
+          method: 'Tunai',
+          amount: 95000,
+        },
+        {
+          id: 'TRX-2026-004',
+          date: '2026-05-14',
+          monthIndex: 4,
+          nop: '72.03.080.004.001-0006.0',
+          name: 'Nurhayati Mahmud',
+          dusun: 'Dusun 2 (Lumbum)',
+          method: 'QRIS',
+          amount: 78000,
+        },
+        {
+          id: 'TRX-2026-005',
+          date: '2026-07-08',
+          monthIndex: 6,
+          nop: '72.03.080.004.001-0009.0',
+          name: 'Mohamad Saleh',
+          dusun: 'Dusun 1 (Petigo)',
+          method: 'Transfer',
+          amount: 92000,
+        },
+      ],
+      users: [
+        { id: 'usr-1', name: 'Admin Desa', username: 'admin', role: 'Administrator', status: 'Aktif' },
+        { id: 'usr-2', name: 'Operator 1 (Petigo & Lumbum)', username: 'operator1', role: 'Operator', status: 'Aktif' },
+        { id: 'usr-3', name: 'Bendahara Desa', username: 'bendahara', role: 'Bendahara', status: 'Aktif' },
+        { id: 'usr-4', name: 'Kepala Desa Wani Lumbumpetigo', username: 'kades', role: 'Kepala Desa', status: 'Aktif' },
+      ],
+      notifications: [
+        {
+          id: 'n-1',
+          title: 'Sistem SIPBB Siap Digunakan',
+          desc: 'Data wajib pajak Desa Wani Lumbumpetigo tersinkronisasi di penyimpanan lokal.',
+          time: 'Hari ini',
+          unread: true,
+        },
+        {
+          id: 'n-2',
+          title: 'Monitoring Tunggakan Dusun',
+          desc: 'Beberapa SPPT berstatus Belum Lunas dapat ditindaklanjuti di menu Pembayaran PBB.',
+          time: '2 jam lalu',
+          unread: true,
+        },
+      ],
+    };
 
-        function renderTaxpayers(data) {
-            const tbody = document.getElementById('taxpayer-tbody');
-            tbody.innerHTML = data.map(t => `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="px-3 py-3">${t.no}</td>
-                    <td class="px-3 py-3 font-mono text-xs">${t.nop}</td>
-                    <td class="px-3 py-3">${t.name}</td>
-                    <td class="px-3 py-3">${t.dusun}</td>
-                    <td class="px-3 py-3 text-right">${t.nilai}</td>
-                    <td class="px-3 py-3 text-center"><span class="px-2 py-1 rounded-full text-xs ${t.status==='Lunas'?'bg-green-100 text-green-700':'bg-yellow-100 text-yellow-700'}">${t.status}</span></td>
-                    <td class="px-3 py-3 text-center"><button class="text-blue-600 hover:underline text-xs">Lihat</button></td>
-                </tr>
-            `).join('');
+    const DUSUN_LIST = [
+      'Dusun 1 (Petigo)',
+      'Dusun 2 (Lumbum)',
+      'Dusun 3 (Kavatua)',
+      'Dusun 4 (Wani Barat)',
+    ];
+
+    const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    let appState = loadState();
+
+    function cloneDefaultState() {
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          const initial = cloneDefaultState();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+          return initial;
         }
-        renderTaxpayers(taxpayers);
+        const parsed = JSON.parse(raw);
+        return {
+          ...cloneDefaultState(),
+          ...parsed,
+          settings: {
+            ...DEFAULT_STATE.settings,
+            ...(parsed.settings || {}),
+          },
+          taxpayers: Array.isArray(parsed.taxpayers) ? parsed.taxpayers : cloneDefaultState().taxpayers,
+          payments: Array.isArray(parsed.payments) ? parsed.payments : cloneDefaultState().payments,
+          users: Array.isArray(parsed.users) ? parsed.users : cloneDefaultState().users,
+          notifications: Array.isArray(parsed.notifications) ? parsed.notifications : cloneDefaultState().notifications,
+        };
+      } catch (err) {
+        console.error('Gagal memuat state dari localStorage:', err);
+        return cloneDefaultState();
+      }
+    }
 
-        document.getElementById('search-taxpayer').addEventListener('input', function(e) {
-            const q = e.target.value.toLowerCase();
-            renderTaxpayers(taxpayers.filter(t => t.name.toLowerCase().includes(q) || t.nop.includes(q)));
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        console.error('Gagal menyimpan state ke localStorage:', err);
+        showToast('Gagal menyimpan data ke penyimpanan lokal.', 'error');
+      }
+    }
+
+    function formatRupiah(num) {
+      const n = Number(num) || 0;
+      return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const palette = {
+        success: 'bg-emerald-600 text-white border-emerald-500',
+        error: 'bg-rose-600 text-white border-rose-500',
+        warning: 'bg-amber-600 text-white border-amber-500',
+        info: 'bg-blue-800 text-white border-blue-700',
+      };
+
+      const iconName = {
+        success: 'check-circle',
+        error: 'alert-circle',
+        warning: 'alert-triangle',
+        info: 'info',
+      }[type] || 'info';
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-lg text-xs sm:text-sm font-medium transition-all duration-200 ${palette[type] || palette.info}`;
+      toast.innerHTML = `
+        <i data-lucide="${iconName}" class="w-4 h-4 flex-shrink-0"></i>
+        <span class="flex-1">${escapeHtml(message)}</span>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        setTimeout(() => toast.remove(), 220);
+      }, 3200);
+    }
+
+    function addNotification(title, desc) {
+      appState.notifications.unshift({
+        id: 'notif-' + Date.now(),
+        title,
+        desc,
+        time: 'Baru saja',
+        unread: true,
+      });
+      if (appState.notifications.length > 20) {
+        appState.notifications = appState.notifications.slice(0, 20);
+      }
+      saveState();
+      renderNotifications();
+    }
+
+    // ==================== DARK MODE & SIDEBAR & SCROLL ====================
+    function applyDarkModeUI() {
+      const htmlEl = document.documentElement;
+      const isDark = Boolean(appState.darkMode);
+      htmlEl.classList.toggle('dark', isDark);
+
+      const icon = document.getElementById('dark-mode-icon');
+      if (icon) {
+        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      }
+
+      const toggleBtn = document.getElementById('settings-dark-toggle');
+      const knob = document.getElementById('settings-dark-knob');
+      if (toggleBtn) toggleBtn.setAttribute('aria-checked', String(isDark));
+      if (knob) {
+        knob.classList.toggle('translate-x-6', isDark);
+        knob.classList.toggle('translate-x-1', !isDark);
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleDarkMode() {
+      appState.darkMode = !appState.darkMode;
+      saveState();
+      applyDarkModeUI();
+      showToast(appState.darkMode ? 'Mode Gelap diaktifkan' : 'Mode Terang diaktifkan', 'info');
+    }
+
+    function toggleSidebar(forceState) {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebar-overlay');
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : sb.classList.contains('-translate-x-full');
+
+      if (shouldOpen) {
+        sb.classList.remove('-translate-x-full');
+        ov.classList.remove('hidden');
+      } else {
+        sb.classList.add('-translate-x-full');
+        ov.classList.add('hidden');
+      }
+    }
+
+    function updateScrollPercent() {
+      const btn = document.getElementById('scroll-percent');
+      const valEl = document.getElementById('scroll-percent-value');
+      if (!btn || !valEl) return;
+
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      const docHeight = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        0
+      );
+
+      if (docHeight <= 10 || scrollTop <= 4) {
+        btn.classList.add('is-hidden');
+        valEl.textContent = '0%';
+        return;
+      }
+
+      const pct = Math.min(100, Math.max(1, Math.round((scrollTop / docHeight) * 100)));
+      valEl.textContent = `${pct}%`;
+      btn.classList.remove('is-hidden');
+    }
+
+    function scrollToTopSmooth() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==================== NAVIGATION ====================
+    const PAGE_TITLES = {
+      dashboard: 'Dashboard SIPBB',
+      taxpayers: 'Data Wajib Pajak',
+      payment: 'Pembayaran PBB',
+      reports: 'Laporan PBB',
+      charts: 'Grafik & Analisis',
+      users: 'Manajemen Pengguna',
+      settings: 'Pengaturan Sistem',
+    };
+
+    function showPage(page, persist = true) {
+      const validPage = PAGE_TITLES[page] ? page : 'dashboard';
+
+      document.querySelectorAll('.page-section').forEach((sec) => sec.classList.remove('active'));
+      const targetSec = document.getElementById('page-' + validPage);
+      if (targetSec) targetSec.classList.add('active');
+
+      document.querySelectorAll('.sidebar-item').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-page') === validPage);
+      });
+
+      const headerTitle = document.getElementById('header-page-title');
+      if (headerTitle) headerTitle.textContent = PAGE_TITLES[validPage];
+
+      if (persist) {
+        appState.activePage = validPage;
+        saveState();
+      }
+
+      if (window.innerWidth < 768) {
+        toggleSidebar(false);
+      }
+
+      refreshAllViews();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==================== NOTIFICATIONS ====================
+    function toggleNotifications(e) {
+      e.stopPropagation();
+      const pop = document.getElementById('notif-popover');
+      const isHidden = pop.classList.contains('hidden');
+      pop.classList.toggle('hidden', !isHidden);
+
+      if (isHidden) {
+        appState.notifications.forEach((n) => (n.unread = false));
+        saveState();
+        renderNotifications();
+      }
+    }
+
+    function clearNotifications() {
+      appState.notifications = [];
+      saveState();
+      renderNotifications();
+      showToast('Semua notifikasi dibersihkan', 'info');
+    }
+
+    function renderNotifications() {
+      const listEl = document.getElementById('notif-list');
+      const badgeEl = document.getElementById('notif-count-badge');
+      const dotEl = document.getElementById('notif-dot');
+
+      const unreadCount = appState.notifications.filter((n) => n.unread).length;
+      if (badgeEl) badgeEl.textContent = String(appState.notifications.length);
+      if (dotEl) dotEl.classList.toggle('hidden', unreadCount === 0);
+
+      if (!listEl) return;
+
+      if (appState.notifications.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-6 text-center text-xs text-slate-400 dark:text-slate-500">
+            Tidak ada notifikasi saat ini.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = appState.notifications
+        .map(
+          (n) => `
+          <div class="p-3.5 ${n.unread ? 'bg-blue-50/50 dark:bg-blue-950/25' : ''}">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-xs text-slate-800 dark:text-white">${escapeHtml(n.title)}</p>
+              <span class="text-[11px] text-slate-400 flex-shrink-0">${escapeHtml(n.time)}</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">${escapeHtml(n.desc)}</p>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    // ==================== CALCULATIONS & DASHBOARD ====================
+    function computeMetrics() {
+      const tps = appState.taxpayers || [];
+      const totalWP = tps.length;
+      const totalSPPT = tps.length;
+
+      const sumNilaiWP = tps.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+      const configuredTarget = Number(appState.settings?.targetPBB) || 0;
+      const targetPBB = Math.max(configuredTarget, sumNilaiWP);
+
+      const paidItems = tps.filter((t) => t.status === 'Lunas');
+      const unpaidItems = tps.filter((t) => t.status !== 'Lunas');
+
+      const totalPaid = paidItems.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+      const totalArrears = unpaidItems.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+      const percentPaid = targetPBB > 0 ? Math.min(100, (totalPaid / targetPBB) * 100) : 0;
+
+      // Monthly totals from payments
+      const monthlyTotals = Array(12).fill(0);
+      (appState.payments || []).forEach((p) => {
+        let mIdx = typeof p.monthIndex === 'number' ? p.monthIndex : -1;
+        if (mIdx < 0 || mIdx > 11) {
+          const parsedDate = new Date(p.date);
+          mIdx = Number.isNaN(parsedDate.getTime()) ? 0 : parsedDate.getMonth();
+        }
+        monthlyTotals[mIdx] += Number(p.amount) || 0;
+      });
+
+      // Per-dusun stats
+      const dusunStats = DUSUN_LIST.map((dusunName) => {
+        const list = tps.filter((t) => t.dusun === dusunName);
+        const totalNilai = list.reduce((s, item) => s + (Number(item.nilai) || 0), 0);
+        const lunasNilai = list
+          .filter((item) => item.status === 'Lunas')
+          .reduce((s, item) => s + (Number(item.nilai) || 0), 0);
+        const tunggakanNilai = Math.max(0, totalNilai - lunasNilai);
+        const pct = totalNilai > 0 ? Math.round((lunasNilai / totalNilai) * 100) : 0;
+
+        return {
+          dusun: dusunName,
+          count: list.length,
+          totalNilai,
+          lunasNilai,
+          tunggakanNilai,
+          pct,
+        };
+      });
+
+      return {
+        totalWP,
+        totalSPPT,
+        targetPBB,
+        totalPaid,
+        totalArrears,
+        percentPaid,
+        paidCount: paidItems.length,
+        unpaidCount: unpaidItems.length,
+        monthlyTotals,
+        dusunStats,
+      };
+    }
+
+    function renderDashboard() {
+      const m = computeMetrics();
+
+      document.getElementById('stat-total-wp').textContent = m.totalWP.toLocaleString('id-ID');
+      document.getElementById('stat-total-sppt').textContent = m.totalSPPT.toLocaleString('id-ID');
+      document.getElementById('stat-target-pbb').textContent = formatRupiah(m.targetPBB);
+      document.getElementById('stat-total-paid').textContent = formatRupiah(m.totalPaid);
+      document.getElementById('stat-total-arrears').textContent = formatRupiah(m.totalArrears);
+      document.getElementById('stat-percent-paid').textContent = m.percentPaid.toFixed(1).replace('.', ',') + '%';
+
+      document.getElementById('stat-paid-count').textContent = `${m.paidCount} SPPT berstatus Lunas`;
+      document.getElementById('stat-unpaid-count').textContent = `${m.unpaidCount} SPPT belum lunas`;
+
+      // Monthly bar chart
+      const monthlyEl = document.getElementById('dashboard-monthly-chart');
+      const maxMonth = Math.max(...m.monthlyTotals, 1);
+      monthlyEl.innerHTML = m.monthlyTotals
+        .map((amt, idx) => {
+          const pct = amt > 0 ? Math.max(12, Math.round((amt / maxMonth) * 100)) : 4;
+          const barColor = amt > 0 ? 'bg-blue-600 dark:bg-blue-500 hover:bg-emerald-500' : 'bg-gray-200 dark:bg-slate-800';
+          return `
+            <div class="flex flex-col items-center h-full justify-end group" title="${MONTH_LABELS[idx]}: ${formatRupiah(amt)}">
+              <div class="bar-anim w-full ${barColor} rounded-t-md transition-colors" style="height: ${pct}%"></div>
+              <span class="text-[10px] font-medium mt-1.5 text-slate-500 dark:text-slate-400">${MONTH_LABELS[idx]}</span>
+            </div>
+          `;
+        })
+        .join('');
+
+      // Dusun progress bars
+      const dusunEl = document.getElementById('dashboard-dusun-bars');
+      dusunEl.innerHTML = m.dusunStats
+        .map((d) => {
+          const barTone =
+            d.pct >= 75
+              ? 'bg-emerald-500'
+              : d.pct >= 50
+              ? 'bg-blue-600'
+              : 'bg-amber-500';
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-semibold text-slate-700 dark:text-slate-200">${escapeHtml(d.dusun)} <span class="font-normal text-slate-400">(${d.count} WP)</span></span>
+                <span class="font-bold text-slate-800 dark:text-white">${d.pct}% <span class="font-normal text-slate-500 dark:text-slate-400">• ${formatRupiah(d.lunasNilai)}</span></span>
+              </div>
+              <div class="h-2.5 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="bar-anim h-full ${barTone} rounded-full" style="width: ${d.pct}%"></div>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      // Recent payments table
+      const recentEl = document.getElementById('dashboard-recent-payments');
+      const recentPayments = [...(appState.payments || [])].slice(-5).reverse();
+      if (recentPayments.length === 0) {
+        recentEl.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-3 py-6 text-center text-xs text-slate-400">Belum ada riwayat pembayaran.</td>
+          </tr>
+        `;
+      } else {
+        recentEl.innerHTML = recentPayments
+          .map(
+            (p) => `
+            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+              <td class="px-3 py-2.5 text-xs text-slate-600 dark:text-slate-300 whitespace-nowrap">${escapeHtml(p.date)}</td>
+              <td class="px-3 py-2.5 font-mono text-xs text-slate-700 dark:text-slate-200 whitespace-nowrap">${escapeHtml(p.nop)}</td>
+              <td class="px-3 py-2.5 font-medium text-slate-800 dark:text-white">${escapeHtml(p.name)}</td>
+              <td class="px-3 py-2.5 text-xs text-slate-600 dark:text-slate-300">${escapeHtml(p.dusun)}</td>
+              <td class="px-3 py-2.5 text-xs"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-medium">${escapeHtml(p.method)}</span></td>
+              <td class="px-3 py-2.5 text-right font-semibold text-emerald-700 dark:text-emerald-400 whitespace-nowrap">${formatRupiah(p.amount)}</td>
+            </tr>
+          `
+          )
+          .join('');
+      }
+    }
+
+    // ==================== DATA WAJIB PAJAK CRUD, IMPORT, EXPORT ====================
+    function getFilteredTaxpayers() {
+      const q = (document.getElementById('search-taxpayer')?.value || '').trim().toLowerCase();
+      const dusun = document.getElementById('filter-dusun')?.value || 'ALL';
+      const status = document.getElementById('filter-status')?.value || 'ALL';
+
+      return (appState.taxpayers || []).filter((t) => {
+        const matchSearch =
+          !q ||
+          String(t.name || '').toLowerCase().includes(q) ||
+          String(t.nop || '').toLowerCase().includes(q);
+        const matchDusun = dusun === 'ALL' || t.dusun === dusun;
+        const matchStatus = status === 'ALL' || t.status === status;
+        return matchSearch && matchDusun && matchStatus;
+      });
+    }
+
+    function renderTaxpayersTable() {
+      const tbody = document.getElementById('taxpayer-tbody');
+      const summaryEl = document.getElementById('taxpayer-table-summary');
+      const list = getFilteredTaxpayers();
+
+      if (!tbody) return;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="px-4 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">
+              Tidak ada data wajib pajak yang cocok dengan filter.
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = list
+          .map((t, index) => {
+            const isPaid = t.status === 'Lunas';
+            const badgeClass = isPaid
+              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+              : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+
+            return `
+              <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                <td class="px-3 py-3 text-slate-500 dark:text-slate-400">${index + 1}</td>
+                <td class="px-3 py-3 font-mono text-xs text-slate-700 dark:text-slate-200 whitespace-nowrap">${escapeHtml(t.nop)}</td>
+                <td class="px-3 py-3 font-semibold text-slate-800 dark:text-white">${escapeHtml(t.name)}</td>
+                <td class="px-3 py-3 text-xs text-slate-600 dark:text-slate-300">${escapeHtml(t.dusun)}</td>
+                <td class="px-3 py-3 text-center text-xs text-slate-600 dark:text-slate-300">${escapeHtml(t.year || appState.settings.taxYear)}</td>
+                <td class="px-3 py-3 text-right font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap">${formatRupiah(t.nilai)}</td>
+                <td class="px-3 py-3 text-center whitespace-nowrap">
+                  <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${badgeClass}">${escapeHtml(t.status)}</span>
+                </td>
+                <td class="px-3 py-3 text-center whitespace-nowrap">
+                  <div class="inline-flex items-center gap-1.5">
+                    <button
+                      onclick="openDetailModal('${escapeHtml(t.id)}')"
+                      class="px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/70 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold transition-colors"
+                    >
+                      Lihat
+                    </button>
+                    <button
+                      onclick="openTaxpayerModal('${escapeHtml(t.id)}')"
+                      class="p-1.5 rounded-md text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800"
+                      title="Edit"
+                      aria-label="Edit wajib pajak"
+                    >
+                      <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button
+                      onclick="deleteTaxpayer('${escapeHtml(t.id)}')"
+                      class="p-1.5 rounded-md text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/60"
+                      title="Hapus"
+                      aria-label="Hapus wajib pajak"
+                    >
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          })
+          .join('');
+      }
+
+      if (summaryEl) {
+        const totalFilteredNilai = list.reduce((s, item) => s + (Number(item.nilai) || 0), 0);
+        summaryEl.innerHTML = `
+          <span>Menampilkan <strong>${list.length}</strong> dari <strong>${appState.taxpayers.length}</strong> data wajib pajak</span>
+          <span>Total Nilai Ditampilkan: <strong class="text-slate-700 dark:text-slate-200">${formatRupiah(totalFilteredNilai)}</strong></span>
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    function openTaxpayerModal(editId = null) {
+      const modal = document.getElementById('taxpayer-modal');
+      const title = document.getElementById('taxpayer-modal-title');
+      document.getElementById('tp-edit-id').value = editId || '';
+
+      if (editId) {
+        const item = appState.taxpayers.find((t) => t.id === editId);
+        if (!item) return;
+        title.textContent = 'Edit Data Wajib Pajak';
+        document.getElementById('tp-nop').value = item.nop;
+        document.getElementById('tp-name').value = item.name;
+        document.getElementById('tp-dusun').value = item.dusun;
+        document.getElementById('tp-nilai').value = item.nilai;
+        document.getElementById('tp-year').value = item.year || appState.settings.taxYear;
+        document.getElementById('tp-status').value = item.status;
+        document.getElementById('tp-address').value = item.address || '';
+      } else {
+        title.textContent = 'Tambah Data Wajib Pajak';
+        document.getElementById('tp-nop').value = '';
+        document.getElementById('tp-name').value = '';
+        document.getElementById('tp-dusun').value = DUSUN_LIST[0];
+        document.getElementById('tp-nilai').value = 75000;
+        document.getElementById('tp-year').value = appState.settings.taxYear || 2026;
+        document.getElementById('tp-status').value = 'Belum Lunas';
+        document.getElementById('tp-address').value = '';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeTaxpayerModal() {
+      const modal = document.getElementById('taxpayer-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveTaxpayer(e) {
+      e.preventDefault();
+      const editId = document.getElementById('tp-edit-id').value;
+      const nop = document.getElementById('tp-nop').value.trim();
+      const name = document.getElementById('tp-name').value.trim();
+      const dusun = document.getElementById('tp-dusun').value;
+      const nilai = Number(document.getElementById('tp-nilai').value) || 0;
+      const year = Number(document.getElementById('tp-year').value) || appState.settings.taxYear;
+      const status = document.getElementById('tp-status').value;
+      const address = document.getElementById('tp-address').value.trim();
+
+      if (!nop || !name || nilai <= 0) {
+        showToast('Lengkapi NOP, Nama WP, dan Nilai PBB yang valid.', 'error');
+        return;
+      }
+
+      if (editId) {
+        const idx = appState.taxpayers.findIndex((t) => t.id === editId);
+        if (idx !== -1) {
+          const prev = appState.taxpayers[idx];
+          appState.taxpayers[idx] = {
+            ...prev,
+            nop,
+            name,
+            dusun,
+            nilai,
+            year,
+            status,
+            address,
+            paidDate: status === 'Lunas' ? (prev.paidDate || new Date().toISOString().slice(0, 10)) : null,
+            paidMonth: status === 'Lunas' ? (typeof prev.paidMonth === 'number' ? prev.paidMonth : new Date().getMonth()) : null,
+          };
+          showToast(`Data wajib pajak "${name}" diperbarui.`, 'success');
+          addNotification('Perubahan Data WP', `Data SPPT atas nama ${name} (${nop}) telah diperbarui.`);
+        }
+      } else {
+        const newItem = {
+          id: 'wp-' + Date.now(),
+          nop,
+          name,
+          dusun,
+          nilai,
+          year,
+          status,
+          address: address || `Desa Wani Lumbumpetigo, ${dusun}`,
+          paidDate: status === 'Lunas' ? new Date().toISOString().slice(0, 10) : null,
+          paidMonth: status === 'Lunas' ? new Date().getMonth() : null,
+        };
+        appState.taxpayers.unshift(newItem);
+
+        if (status === 'Lunas') {
+          appState.payments.push({
+            id: 'TRX-' + Date.now().toString().slice(-6),
+            date: new Date().toISOString().slice(0, 10),
+            monthIndex: new Date().getMonth(),
+            nop,
+            name,
+            dusun,
+            method: 'Tunai',
+            amount: nilai,
+          });
+        }
+
+        showToast(`Wajib pajak "${name}" berhasil ditambahkan.`, 'success');
+        addNotification('Wajib Pajak Baru', `${name} (${nop}) ditambahkan pada ${dusun}.`);
+      }
+
+      saveState();
+      closeTaxpayerModal();
+      refreshAllViews();
+    }
+
+    function deleteTaxpayer(id) {
+      const target = appState.taxpayers.find((t) => t.id === id);
+      if (!target) return;
+
+      appState.taxpayers = appState.taxpayers.filter((t) => t.id !== id);
+      saveState();
+      refreshAllViews();
+      showToast(`Data "${target.name}" telah dihapus.`, 'warning');
+      addNotification('Penghapusan Data WP', `Data SPPT ${target.nop} (${target.name}) dihapus.`);
+    }
+
+    // Detail SPPT Modal
+    function openDetailModal(id) {
+      const tp = appState.taxpayers.find((t) => t.id === id);
+      if (!tp) return;
+
+      const modal = document.getElementById('detail-modal');
+      document.getElementById('detail-nop-sub').textContent = `NOP: ${tp.nop}`;
+
+      const history = (appState.payments || []).filter((p) => p.nop === tp.nop);
+      const isPaid = tp.status === 'Lunas';
+
+      document.getElementById('detail-modal-body').innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 dark:bg-slate-800/70 p-4 rounded-xl">
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Nama Wajib Pajak</p>
+            <p class="font-bold text-slate-800 dark:text-white">${escapeHtml(tp.name)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Wilayah / Dusun</p>
+            <p class="font-semibold text-slate-800 dark:text-white">${escapeHtml(tp.dusun)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tahun Pajak</p>
+            <p class="font-semibold text-slate-800 dark:text-white">${escapeHtml(tp.year || appState.settings.taxYear)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Ketetapan PBB</p>
+            <p class="font-bold text-blue-700 dark:text-blue-400">${formatRupiah(tp.nilai)}</p>
+          </div>
+          <div class="sm:col-span-2">
+            <p class="text-xs text-slate-500 dark:text-slate-400">Keterangan Objek Pajak</p>
+            <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 mt-0.5">${escapeHtml(tp.address || '-')}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Status Pembayaran</p>
+            <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+              isPaid
+                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+            }">${escapeHtml(tp.status)}</span>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tanggal Lunas</p>
+            <p class="font-medium text-slate-700 dark:text-slate-300 mt-1">${tp.paidDate ? escapeHtml(tp.paidDate) : 'Belum dibayar'}</p>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Riwayat Transaksi NOP Ini</h5>
+          ${
+            history.length === 0
+              ? `<p class="text-xs text-slate-400 italic">Belum ada catatan transaksi pembayaran untuk NOP ini.</p>`
+              : `<div class="space-y-1.5 max-h-36 overflow-y-auto">
+                  ${history
+                    .map(
+                      (h) => `
+                    <div class="flex items-center justify-between text-xs p-2.5 rounded-lg border border-gray-100 dark:border-slate-800">
+                      <div>
+                        <span class="font-semibold text-slate-800 dark:text-white">${escapeHtml(h.id)}</span>
+                        <span class="text-slate-500 ml-2">${escapeHtml(h.date)} (${escapeHtml(h.method)})</span>
+                      </div>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400">${formatRupiah(h.amount)}</span>
+                    </div>
+                  `
+                    )
+                    .join('')}
+                </div>`
+          }
+        </div>
+      `;
+
+      document.getElementById('detail-modal-footer').innerHTML = `
+        <div class="flex gap-2">
+          <button
+            onclick="closeDetailModal(); openTaxpayerModal('${escapeHtml(tp.id)}')"
+            class="px-3.5 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white rounded-lg text-xs font-semibold"
+          >
+            Edit Data
+          </button>
+          <button
+            onclick="closeDetailModal(); deleteTaxpayer('${escapeHtml(tp.id)}')"
+            class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 rounded-lg text-xs font-semibold"
+          >
+            Hapus
+          </button>
+        </div>
+        <div class="flex gap-2">
+          ${
+            !isPaid
+              ? `<button
+                  onclick="payTaxpayerDirectly('${escapeHtml(tp.id)}')"
+                  class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm"
+                >
+                  <i data-lucide="check-circle" class="w-4 h-4"></i>
+                  Bayar Sekarang
+                </button>`
+              : `<button
+                  onclick="goToPaymentWithNop('${escapeHtml(tp.nop)}')"
+                  class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold"
+                >
+                  Buka Form Bayar
+                </button>`
+          }
+          <button
+            onclick="closeDetailModal()"
+            class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 text-white rounded-lg text-xs font-semibold"
+          >
+            Tutup
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('detail-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function payTaxpayerDirectly(id) {
+      const tp = appState.taxpayers.find((t) => t.id === id);
+      if (!tp) return;
+
+      const today = new Date().toISOString().slice(0, 10);
+      const monthIdx = new Date().getMonth();
+
+      tp.status = 'Lunas';
+      tp.paidDate = today;
+      tp.paidMonth = monthIdx;
+
+      appState.payments.push({
+        id: 'TRX-' + Date.now().toString().slice(-6),
+        date: today,
+        monthIndex: monthIdx,
+        nop: tp.nop,
+        name: tp.name,
+        dusun: tp.dusun,
+        method: 'Tunai',
+        amount: Number(tp.nilai) || 0,
+      });
+
+      saveState();
+      closeDetailModal();
+      refreshAllViews();
+      showToast(`SPPT ${tp.name} (${tp.nop}) ditandai LUNAS.`, 'success');
+      addNotification('Pembayaran Lunas', `${tp.name} melunasi PBB sebesar ${formatRupiah(tp.nilai)}.`);
+    }
+
+    function goToPaymentWithNop(nop) {
+      closeDetailModal();
+      showPage('payment');
+      const nopInput = document.getElementById('pay-nop');
+      if (nopInput) {
+        nopInput.value = nop;
+        handleNopLookup(nop);
+      }
+    }
+
+    // Import & Export CSV/JSON
+    function triggerImportFile() {
+      document.getElementById('import-file-input').click();
+    }
+
+    function handleImportFile(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = String(e.target?.result || '').trim();
+          let importedRows = [];
+
+          if (file.name.toLowerCase().endsWith('.json')) {
+            const parsed = JSON.parse(text);
+            const arr = Array.isArray(parsed) ? parsed : parsed.taxpayers || [];
+            importedRows = arr.map((r, i) => ({
+              nop: String(r.nop || '').trim() || `72.03.080.004.001-90${i + 1}.0`,
+              name: String(r.name || r.nama || '').trim() || `Wajib Pajak ${i + 1}`,
+              dusun: DUSUN_LIST.includes(r.dusun) ? r.dusun : DUSUN_LIST[i % DUSUN_LIST.length],
+              nilai: Number(r.nilai || r.amount || 50000) || 50000,
+              year: Number(r.year || r.tahun || appState.settings.taxYear) || 2026,
+              status: r.status === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+              address: String(r.address || r.alamat || 'Data hasil import').trim(),
+            }));
+          } else {
+            const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+            if (lines.length < 2) {
+              showToast('File CSV tidak memiliki baris data.', 'warning');
+              return;
+            }
+            const startIdx = /nop/i.test(lines[0]) ? 1 : 0;
+            for (let i = startIdx; i < lines.length; i++) {
+              const cols = lines[i].split(',').map((c) => c.replace(/^"|"$/g, '').trim());
+              if (!cols[0] && !cols[1]) continue;
+              const rawNilai = Number(String(cols[3] || '50000').replace(/[^0-9]/g, '')) || 50000;
+              const matchedDusun = DUSUN_LIST.find((d) => d.toLowerCase().includes(String(cols[2] || '').toLowerCase()));
+              importedRows.push({
+                nop: cols[0] || `72.03.080.004.001-80${i}.0`,
+                name: cols[1] || `Wajib Pajak ${i}`,
+                dusun: matchedDusun || DUSUN_LIST[0],
+                nilai: rawNilai,
+                year: Number(cols[4]) || appState.settings.taxYear || 2026,
+                status: /lunas/i.test(cols[5] || '') && !/belum/i.test(cols[5] || '') ? 'Lunas' : 'Belum Lunas',
+                address: cols[6] || 'Data import CSV',
+              });
+            }
+          }
+
+          if (importedRows.length === 0) {
+            showToast('Tidak ada data valid yang dapat diimpor.', 'warning');
+            return;
+          }
+
+          importedRows.forEach((row, idx) => {
+            appState.taxpayers.unshift({
+              id: 'wp-imp-' + Date.now() + '-' + idx,
+              ...row,
+              paidDate: row.status === 'Lunas' ? new Date().toISOString().slice(0, 10) : null,
+              paidMonth: row.status === 'Lunas' ? new Date().getMonth() : null,
+            });
+          });
+
+          saveState();
+          refreshAllViews();
+          showToast(`${importedRows.length} data wajib pajak berhasil diimpor.`, 'success');
+          addNotification('Import Data WP', `${importedRows.length} data wajib pajak ditambahkan dari ${file.name}.`);
+        } catch (err) {
+          console.error(err);
+          showToast('Gagal membaca file import. Pastikan format CSV/JSON valid.', 'error');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function downloadCSV(filename, headers, rows) {
+      const csvLines = [
+        headers.map((h) => `"${String(h).replace(/"/g, '""')}"`).join(','),
+        ...rows.map((r) => r.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')),
+      ];
+      const blob = new Blob(['\uFEFF' + csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function exportTaxpayersCSV() {
+      const list = getFilteredTaxpayers();
+      if (list.length === 0) {
+        showToast('Tidak ada data untuk di-export.', 'warning');
+        return;
+      }
+      const headers = ['No', 'NOP', 'Nama Wajib Pajak', 'Dusun', 'Tahun Pajak', 'Nilai PBB (Rp)', 'Status', 'Keterangan'];
+      const rows = list.map((t, idx) => [
+        idx + 1,
+        t.nop,
+        t.name,
+        t.dusun,
+        t.year || appState.settings.taxYear,
+        t.nilai,
+        t.status,
+        t.address || '',
+      ]);
+      downloadCSV(`Data_WP_${appState.settings.villageName.replace(/\s+/g, '_')}.csv`, headers, rows);
+      showToast(`${list.length} data wajib pajak di-export ke CSV.`, 'success');
+    }
+
+    // ==================== PEMBAYARAN PBB ====================
+    function renderPaymentHelpers() {
+      const dl = document.getElementById('nop-datalist');
+      if (dl) {
+        dl.innerHTML = (appState.taxpayers || [])
+          .map((t) => `<option value="${escapeHtml(t.nop)}">${escapeHtml(t.name)} (${escapeHtml(t.status)})</option>`)
+          .join('');
+      }
+
+      const unpaidListEl = document.getElementById('unpaid-quick-list');
+      if (!unpaidListEl) return;
+
+      const unpaid = (appState.taxpayers || []).filter((t) => t.status !== 'Lunas');
+      if (unpaid.length === 0) {
+        unpaidListEl.innerHTML = `
+          <div class="p-6 text-center rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
+            <p class="text-sm font-bold text-emerald-800 dark:text-emerald-300">Seluruh SPPT Terdaftar Sudah Lunas!</p>
+            <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">Tidak ada tunggakan aktif pada daftar saat ini.</p>
+          </div>
+        `;
+        return;
+      }
+
+      unpaidListEl.innerHTML = unpaid
+        .map(
+          (t) => `
+          <button
+            type="button"
+            onclick="selectUnpaidForPayment('${escapeHtml(t.nop)}')"
+            class="w-full text-left p-3 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-600 bg-gray-50/70 dark:bg-slate-800/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 transition-all flex items-center justify-between gap-2"
+          >
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-slate-800 dark:text-white truncate">${escapeHtml(t.name)}</p>
+              <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">${escapeHtml(t.nop)}</p>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(t.dusun)}</p>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <p class="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400">${formatRupiah(t.nilai)}</p>
+              <span class="inline-block mt-0.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                Belum Lunas
+              </span>
+            </div>
+          </button>
+        `
+        )
+        .join('');
+    }
+
+    function selectUnpaidForPayment(nop) {
+      const nopEl = document.getElementById('pay-nop');
+      nopEl.value = nop;
+      handleNopLookup(nop);
+      nopEl.focus();
+    }
+
+    function handleNopLookup(val) {
+      const hint = document.getElementById('pay-lookup-hint');
+      const clean = String(val || '').trim();
+      const found = (appState.taxpayers || []).find(
+        (t) => t.nop.toLowerCase() === clean.toLowerCase()
+      );
+
+      if (found) {
+        document.getElementById('pay-name').value = found.name;
+        document.getElementById('pay-dusun').value = found.dusun;
+        document.getElementById('pay-amount').value = found.nilai;
+        if (hint) {
+          hint.innerHTML = `Ditemukan: <strong class="text-blue-700 dark:text-blue-400">${escapeHtml(found.name)}</strong> • Status saat ini: <strong>${escapeHtml(found.status)}</strong>`;
+        }
+      } else if (hint) {
+        hint.textContent = 'NOP baru / belum terdaftar: Anda dapat mengisi nama WP, dusun, dan nominal secara manual.';
+      }
+    }
+
+    function handlePaymentSubmit(e) {
+      e.preventDefault();
+      const nop = document.getElementById('pay-nop').value.trim();
+      const name = document.getElementById('pay-name').value.trim();
+      const dusun = document.getElementById('pay-dusun').value;
+      const amount = Number(document.getElementById('pay-amount').value) || 0;
+      const method = document.getElementById('pay-method').value;
+
+      if (!nop || !name || amount <= 0) {
+        showToast('Mohon lengkapi data pembayaran dengan benar.', 'error');
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toISOString().slice(0, 10);
+      const monthIdx = now.getMonth();
+      const trxId = 'TRX-' + appState.settings.taxYear + '-' + String(Math.floor(100 + Math.random() * 899));
+
+      const existingIdx = appState.taxpayers.findIndex(
+        (t) => t.nop.toLowerCase() === nop.toLowerCase()
+      );
+
+      if (existingIdx !== -1) {
+        appState.taxpayers[existingIdx] = {
+          ...appState.taxpayers[existingIdx],
+          name,
+          dusun,
+          nilai: appState.taxpayers[existingIdx].nilai || amount,
+          status: 'Lunas',
+          paidDate: dateStr,
+          paidMonth: monthIdx,
+        };
+      } else {
+        appState.taxpayers.unshift({
+          id: 'wp-pay-' + Date.now(),
+          nop,
+          name,
+          dusun,
+          nilai: amount,
+          year: appState.settings.taxYear || 2026,
+          status: 'Lunas',
+          address: `Terdaftar saat pembayaran loket (${dusun})`,
+          paidDate: dateStr,
+          paidMonth: monthIdx,
         });
+      }
 
-        // Page navigation
-        function showPage(page) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-            document.querySelector(`[data-page="${page}"]`).classList.add('active');
-            // Close mobile sidebar
-            if (window.innerWidth < 768) toggleSidebar();
+      appState.payments.push({
+        id: trxId,
+        date: dateStr,
+        monthIndex: monthIdx,
+        nop,
+        name,
+        dusun,
+        method,
+        amount,
+      });
+
+      saveState();
+      refreshAllViews();
+
+      const successBox = document.getElementById('payment-success');
+      document.getElementById('receipt-id').textContent = trxId;
+      document.getElementById('receipt-detail').textContent = `${name} (${nop}) • ${dusun} • ${formatRupiah(amount)} via ${method} pada ${dateStr}`;
+      successBox.classList.remove('hidden');
+      lucide.createIcons();
+
+      showToast(`Pembayaran PBB ${name} (${formatRupiah(amount)}) berhasil dicatat!`, 'success');
+      addNotification('Pembayaran PBB Diterima', `No. ${trxId}: ${name} membayar ${formatRupiah(amount)} (${method}).`);
+    }
+
+    function resetPaymentForm(hideReceipt = false) {
+      document.getElementById('payment-form').reset();
+      document.getElementById('pay-amount').value = 75000;
+      const hint = document.getElementById('pay-lookup-hint');
+      if (hint) hint.textContent = 'Pilih NOP dari daftar atau masukkan NOP baru.';
+      if (hideReceipt) {
+        document.getElementById('payment-success').classList.add('hidden');
+      }
+    }
+
+    // ==================== LAPORAN ====================
+    let lastFilteredReport = [];
+
+    function getFilteredReportData() {
+      const yearVal = document.getElementById('report-year')?.value || 'ALL';
+      const dusunVal = document.getElementById('report-dusun')?.value || 'ALL';
+      const statusVal = document.getElementById('report-status')?.value || 'ALL';
+
+      return (appState.taxpayers || []).filter((t) => {
+        const matchYear = yearVal === 'ALL' || String(t.year || appState.settings.taxYear) === String(yearVal);
+        const matchDusun = dusunVal === 'ALL' || t.dusun === dusunVal;
+        const matchStatus = statusVal === 'ALL' || t.status === statusVal;
+        return matchYear && matchDusun && matchStatus;
+      });
+    }
+
+    function renderReport() {
+      const rows = getFilteredReportData();
+      lastFilteredReport = rows;
+
+      const emptyEl = document.getElementById('report-empty');
+      const summaryEl = document.getElementById('report-summary');
+      const wrapEl = document.getElementById('report-table-wrap');
+      const tbody = document.getElementById('report-tbody');
+
+      emptyEl.classList.add('hidden');
+      summaryEl.classList.remove('hidden');
+      summaryEl.classList.add('grid');
+      wrapEl.classList.remove('hidden');
+
+      const totalNilai = rows.reduce((s, r) => s + (Number(r.nilai) || 0), 0);
+      const totalLunas = rows
+        .filter((r) => r.status === 'Lunas')
+        .reduce((s, r) => s + (Number(r.nilai) || 0), 0);
+      const totalTunggakan = Math.max(0, totalNilai - totalLunas);
+
+      document.getElementById('rep-sum-count').textContent = `${rows.length} SPPT`;
+      document.getElementById('rep-sum-nilai').textContent = formatRupiah(totalNilai);
+      document.getElementById('rep-sum-lunas').textContent = formatRupiah(totalLunas);
+      document.getElementById('rep-sum-tunggakan').textContent = formatRupiah(totalTunggakan);
+
+      const yearVal = document.getElementById('report-year').value;
+      const dusunVal = document.getElementById('report-dusun').value;
+      const statusVal = document.getElementById('report-status').value;
+      document.getElementById('print-report-meta').textContent =
+        `${appState.settings.villageName} • Tahun: ${yearVal} • Dusun: ${dusunVal} • Status: ${statusVal}`;
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="px-4 py-8 text-center text-slate-400">Tidak ada data laporan untuk kriteria filter ini.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = rows
+        .map((r, i) => {
+          const isPaid = r.status === 'Lunas';
+          return `
+            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50">
+              <td class="px-3 py-2.5 text-slate-500">${i + 1}</td>
+              <td class="px-3 py-2.5 font-mono text-xs">${escapeHtml(r.nop)}</td>
+              <td class="px-3 py-2.5 font-semibold text-slate-800 dark:text-white">${escapeHtml(r.name)}</td>
+              <td class="px-3 py-2.5 text-xs">${escapeHtml(r.dusun)}</td>
+              <td class="px-3 py-2.5 text-center text-xs">${escapeHtml(r.year || appState.settings.taxYear)}</td>
+              <td class="px-3 py-2.5 text-right font-semibold">${formatRupiah(r.nilai)}</td>
+              <td class="px-3 py-2.5 text-center">
+                <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${
+                  isPaid
+                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                    : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                }">${escapeHtml(r.status)}</span>
+              </td>
+            </tr>
+          `;
+        })
+        .join('');
+    }
+
+    function printReport() {
+      if (lastFilteredReport.length === 0) {
+        renderReport();
+      }
+      window.print();
+    }
+
+    function exportReportCSV() {
+      const rows = lastFilteredReport.length > 0 || document.getElementById('report-table-wrap').classList.contains('hidden') === false
+        ? lastFilteredReport
+        : getFilteredReportData();
+
+      if (rows.length === 0) {
+        showToast('Tidak ada data laporan untuk di-export.', 'warning');
+        return;
+      }
+
+      const headers = ['No', 'NOP', 'Nama Wajib Pajak', 'Dusun', 'Tahun Pajak', 'Nilai PBB (Rp)', 'Status'];
+      const csvRows = rows.map((r, idx) => [
+        idx + 1,
+        r.nop,
+        r.name,
+        r.dusun,
+        r.year || appState.settings.taxYear,
+        r.nilai,
+        r.status,
+      ]);
+
+      downloadCSV(`Laporan_PBB_${appState.settings.villageName.replace(/\s+/g, '_')}.csv`, headers, csvRows);
+      showToast('Laporan PBB berhasil di-export ke CSV/Excel.', 'success');
+    }
+
+    // ==================== GRAFIK ====================
+    function renderChartsPage() {
+      const m = computeMetrics();
+
+      document.getElementById('chart-target-label').textContent = formatRupiah(m.targetPBB);
+      document.getElementById('chart-realisasi-label').textContent = formatRupiah(m.totalPaid);
+
+      const realisasiHeightPct = m.targetPBB > 0
+        ? Math.min(100, Math.max(4, Math.round((m.totalPaid / m.targetPBB) * 100)))
+        : 0;
+      document.getElementById('chart-realisasi-bar').style.height = `${realisasiHeightPct}%`;
+
+      const pctRounded = Number(m.percentPaid.toFixed(1));
+      const circle = document.getElementById('donut-progress-circle');
+      if (circle) {
+        circle.setAttribute('stroke-dasharray', `${pctRounded} 100`);
+      }
+      document.getElementById('donut-percent-text').textContent = `${pctRounded.toString().replace('.', ',')}%`;
+      document.getElementById('donut-legend-paid').textContent = formatRupiah(m.totalPaid);
+      document.getElementById('donut-legend-unpaid').textContent = formatRupiah(m.totalArrears);
+
+      const breakdownEl = document.getElementById('charts-dusun-breakdown');
+      breakdownEl.innerHTML = m.dusunStats
+        .map(
+          (d) => `
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/60 border border-gray-200/70 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-slate-800 dark:text-white">${escapeHtml(d.dusun)}</span>
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">${d.pct}% Lunas</span>
+            </div>
+            <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full bar-anim" style="width: ${d.pct}%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-600 dark:text-slate-300 pt-1">
+              <span>Lunas: <strong>${formatRupiah(d.lunasNilai)}</strong></span>
+              <span>Tunggakan: <strong class="text-rose-600 dark:text-rose-400">${formatRupiah(d.tunggakanNilai)}</strong></span>
+            </div>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    // ==================== PENGGUNA ====================
+    function renderUsersTable() {
+      const tbody = document.getElementById('users-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = (appState.users || [])
+        .map((u) => {
+          const isActive = u.status === 'Aktif';
+          return `
+            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+              <td class="px-3 py-3 font-semibold text-slate-800 dark:text-white">${escapeHtml(u.name)}</td>
+              <td class="px-3 py-3 font-mono text-xs text-slate-600 dark:text-slate-300">${escapeHtml(u.username)}</td>
+              <td class="px-3 py-3 text-xs">
+                <span class="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-semibold">${escapeHtml(u.role)}</span>
+              </td>
+              <td class="px-3 py-3 text-center">
+                <button
+                  onclick="toggleUserStatus('${escapeHtml(u.id)}')"
+                  class="px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-800 dark:text-slate-400'
+                  }"
+                  title="Klik untuk ubah status"
+                >
+                  ${escapeHtml(u.status)}
+                </button>
+              </td>
+              <td class="px-3 py-3 text-center whitespace-nowrap">
+                <div class="inline-flex items-center gap-1">
+                  <button
+                    onclick="openUserModal('${escapeHtml(u.id)}')"
+                    class="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800"
+                    title="Edit pengguna"
+                  >
+                    <i data-lucide="pencil" class="w-4 h-4"></i>
+                  </button>
+                  <button
+                    onclick="deleteUser('${escapeHtml(u.id)}')"
+                    class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/60"
+                    title="Hapus pengguna"
+                  >
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        })
+        .join('');
+
+      lucide.createIcons();
+    }
+
+    function openUserModal(editId = null) {
+      const modal = document.getElementById('user-modal');
+      const title = document.getElementById('user-modal-title');
+      document.getElementById('usr-edit-id').value = editId || '';
+
+      if (editId) {
+        const u = appState.users.find((item) => item.id === editId);
+        if (!u) return;
+        title.textContent = 'Edit Pengguna';
+        document.getElementById('usr-name').value = u.name;
+        document.getElementById('usr-username').value = u.username;
+        document.getElementById('usr-role').value = u.role;
+        document.getElementById('usr-status').value = u.status;
+      } else {
+        title.textContent = 'Tambah Pengguna';
+        document.getElementById('usr-name').value = '';
+        document.getElementById('usr-username').value = '';
+        document.getElementById('usr-role').value = 'Operator';
+        document.getElementById('usr-status').value = 'Aktif';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeUserModal() {
+      const modal = document.getElementById('user-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveUser(e) {
+      e.preventDefault();
+      const editId = document.getElementById('usr-edit-id').value;
+      const name = document.getElementById('usr-name').value.trim();
+      const username = document.getElementById('usr-username').value.trim().toLowerCase();
+      const role = document.getElementById('usr-role').value;
+      const status = document.getElementById('usr-status').value;
+
+      if (!name || !username) {
+        showToast('Nama dan username wajib diisi.', 'error');
+        return;
+      }
+
+      if (editId) {
+        const idx = appState.users.findIndex((u) => u.id === editId);
+        if (idx !== -1) {
+          appState.users[idx] = { ...appState.users[idx], name, username, role, status };
+          showToast(`Pengguna "${name}" diperbarui.`, 'success');
         }
-
-        // Sidebar toggle
-        function toggleSidebar() {
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('sidebar-overlay');
-            sb.classList.toggle('-translate-x-full');
-            ov.classList.toggle('hidden');
-        }
-
-        // Dark mode
-        function toggleDark() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        // Payment form
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.getElementById('payment-success').classList.remove('hidden');
-            lucide.createIcons();
+      } else {
+        appState.users.push({
+          id: 'usr-' + Date.now(),
+          name,
+          username,
+          role,
+          status,
         });
-    </script>
- 
-</body></html>
+        showToast(`Pengguna "${name}" ditambahkan.`, 'success');
+        addNotification('Pengguna Baru', `Akun ${name} (${username}) ditambahkan sebagai ${role}.`);
+      }
+
+      saveState();
+      closeUserModal();
+      renderUsersTable();
+    }
+
+    function toggleUserStatus(id) {
+      const u = appState.users.find((item) => item.id === id);
+      if (!u) return;
+      u.status = u.status === 'Aktif' ? 'Non-Aktif' : 'Aktif';
+      saveState();
+      renderUsersTable();
+      showToast(`Status ${u.name} diubah menjadi ${u.status}.`, 'info');
+    }
+
+    function deleteUser(id) {
+      if (appState.users.length <= 1) {
+        showToast('Minimal harus ada 1 pengguna aktif di sistem.', 'warning');
+        return;
+      }
+      const u = appState.users.find((item) => item.id === id);
+      appState.users = appState.users.filter((item) => item.id !== id);
+      saveState();
+      renderUsersTable();
+      showToast(`Pengguna "${u?.name || ''}" dihapus.`, 'warning');
+    }
+
+    // ==================== PENGATURAN, BACKUP & RESTORE ====================
+    function syncBrandingAndSettingsForm() {
+      const s = appState.settings;
+      document.title = `SIPBB ${s.villageName} - Sistem Informasi PBB`;
+      document.getElementById('sidebar-village-name').textContent = s.villageName;
+      document.getElementById('sidebar-kecamatan').textContent = s.kecamatan;
+      document.getElementById('header-village-subtitle').textContent = s.villageName;
+      document.getElementById('header-tax-year').textContent = String(s.taxYear);
+
+      const vInput = document.getElementById('set-village-name');
+      const kInput = document.getElementById('set-kecamatan');
+      const yInput = document.getElementById('set-tax-year');
+      const tInput = document.getElementById('set-target-pbb');
+
+      if (vInput) vInput.value = s.villageName;
+      if (kInput) kInput.value = s.kecamatan;
+      if (yInput) yInput.value = s.taxYear;
+      if (tInput) tInput.value = s.targetPBB;
+    }
+
+    function saveSettings(e) {
+      e.preventDefault();
+      const villageName = document.getElementById('set-village-name').value.trim();
+      const kecamatan = document.getElementById('set-kecamatan').value.trim();
+      const taxYear = Number(document.getElementById('set-tax-year').value) || 2026;
+      const targetPBB = Number(document.getElementById('set-target-pbb').value) || 0;
+
+      if (!villageName || !kecamatan) {
+        showToast('Nama desa dan kecamatan wajib diisi.', 'error');
+        return;
+      }
+
+      appState.settings = {
+        villageName,
+        kecamatan,
+        taxYear,
+        targetPBB,
+      };
+
+      saveState();
+      syncBrandingAndSettingsForm();
+      refreshAllViews();
+      showToast('Pengaturan desa & tahun pajak disimpan.', 'success');
+      addNotification('Pengaturan Diperbarui', `Tahun pajak ${taxYear} • Target PBB ${formatRupiah(targetPBB)}.`);
+    }
+
+    function backupDatabaseJSON() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        app: 'SIPBB Desa Wani Lumbumpetigo',
+        data: appState,
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Backup_SIPBB_${appState.settings.villageName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup database JSON berhasil diunduh.', 'success');
+    }
+
+    function handleRestoreJSON(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(String(e.target?.result || '{}'));
+          const restored = parsed.data && typeof parsed.data === 'object' ? parsed.data : parsed;
+          if (!Array.isArray(restored.taxpayers)) {
+            throw new Error('Struktur JSON tidak sesuai');
+          }
+
+          appState = {
+            ...cloneDefaultState(),
+            ...restored,
+            settings: {
+              ...DEFAULT_STATE.settings,
+              ...(restored.settings || {}),
+            },
+          };
+          saveState();
+          applyDarkModeUI();
+          syncBrandingAndSettingsForm();
+          refreshAllViews();
+          showToast('Data berhasil dipulihkan dari file backup JSON.', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('File backup JSON tidak valid.', 'error');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToDefaultData() {
+      appState = cloneDefaultState();
+      saveState();
+      applyDarkModeUI();
+      syncBrandingAndSettingsForm();
+      refreshAllViews();
+      showToast('Seluruh data telah direset ke kondisi default.', 'info');
+    }
+
+    // ==================== REFRESH ALL VIEWS & INIT ====================
+    function refreshAllViews() {
+      renderDashboard();
+      renderTaxpayersTable();
+      renderPaymentHelpers();
+      renderChartsPage();
+      renderUsersTable();
+      renderNotifications();
+      if (!document.getElementById('report-table-wrap').classList.contains('hidden')) {
+        renderReport();
+      }
+      lucide.createIcons();
+    }
+
+    document.addEventListener('click', (e) => {
+      const pop = document.getElementById('notif-popover');
+      const btn = document.getElementById('notif-btn');
+      if (pop && !pop.classList.contains('hidden') && !pop.contains(e.target) && !btn?.contains(e.target)) {
+        pop.classList.add('hidden');
+      }
+    });
+
+    window.addEventListener('scroll', updateScrollPercent, { passive: true });
+    window.addEventListener('resize', updateScrollPercent, { passive: true });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyDarkModeUI();
+      syncBrandingAndSettingsForm();
+      showPage(appState.activePage || 'dashboard', false);
+      updateScrollPercent();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
