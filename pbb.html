@@ -218,25 +218,25 @@
           <i data-lucide="shield" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
           <span>Pengguna</span>
         </button>
-        <button
-          onclick="showPage('settings')"
-          data-page="settings"
-          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
-        >
-          <i data-lucide="settings" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
-          <span>Pengaturan</span>
-        </button>
-      </nav>
-
-      <div class="p-4 border-t border-blue-800/80 text-xs text-blue-200/90 bg-black/15">
-        <div class="flex items-center justify-between">
+      <div class="p-4 border-t border-blue-800/80 text-xs text-blue-200/90 bg-black/15 space-y-2">
+        <div class="flex items-center justify-between gap-2">
           <span>Status Sinkronisasi</span>
-          <span class="inline-flex items-center gap-1.5 text-emerald-300 font-medium">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Lokal Aktif
+          <span id="sidebar-sync-badge" class="inline-flex items-center gap-1.5 text-emerald-300 font-medium">
+            <span id="sidebar-sync-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span id="sidebar-sync-text">Lokal / Cache</span>
           </span>
         </div>
-        <p id="sidebar-kecamatan" class="mt-1 text-[11px] text-blue-300/80 truncate">Kec. Tanantovea, Kab. Donggala</p>
+        <div class="flex items-center justify-between gap-2">
+          <p id="sidebar-kecamatan" class="text-[11px] text-blue-300/80 truncate">Kec. Tanantovea, Kab. Donggala</p>
+          <button
+            type="button"
+            onclick="syncFromGoogleSheets(true)"
+            class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[10px] font-semibold text-emerald-200 flex-shrink-0 transition-colors"
+            title="Sinkronkan sekarang dengan Google Sheets"
+          >
+            Sync
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -1063,9 +1063,82 @@
 
             <!-- Backup & Restore Card -->
             <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 space-y-4">
-              <div>
-                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Backup, Restore & Reset Data</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Amankan seluruh data SIPBB ke berkas JSON atau pulihkan data bawaan</p>
+              <div class="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-bold text-slate-800 dark:text-white text-lg">Google Sheets Web App & Backup Data</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Simpan permanen ke Google Sheets melalui Google Apps Script atau backup/restore JSON</p>
+                </div>
+                <button
+                  type="button"
+                  onclick="openAppsScriptModal()"
+                  class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                  Kode Apps Script (Code.gs)
+                </button>
+              </div>
+
+              <!-- Google Apps Script Web App URL Configuration -->
+              <div class="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/35 border border-indigo-200/80 dark:border-indigo-900 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="set-sheets-url" class="text-sm font-bold text-indigo-950 dark:text-indigo-200">
+                    URL Google Apps Script Web App
+                  </label>
+                  <span id="sheets-connection-pill" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                    Belum Terhubung
+                  </span>
+                </div>
+                <input
+                  id="set-sheets-url"
+                  type="url"
+                  placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                  class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-indigo-300 dark:border-indigo-700 rounded-lg text-xs font-mono text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div class="flex items-center justify-between gap-2">
+                  <label class="inline-flex items-center gap-2 text-xs text-indigo-900 dark:text-indigo-200 cursor-pointer">
+                    <input
+                      id="set-auto-sync"
+                      type="checkbox"
+                      checked
+                      class="rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span>Otomatis kirim & tarik data saat tambah/ubah/bayar</span>
+                  </label>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    onclick="saveSheetsConfigOnly()"
+                    class="px-3.5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                    Simpan URL
+                  </button>
+                  <button
+                    type="button"
+                    onclick="testGoogleSheetsConnection()"
+                    class="px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                    Test Koneksi
+                  </button>
+                  <button
+                    type="button"
+                    onclick="syncFromGoogleSheets(true)"
+                    class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="cloud-download" class="w-3.5 h-3.5"></i>
+                    Tarik dari Sheet
+                  </button>
+                  <button
+                    type="button"
+                    onclick="pushFullStateToGoogleSheets()"
+                    class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i>
+                    Kirim Semua ke Sheet
+                  </button>
+                </div>
               </div>
 
               <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/35 border border-blue-200/70 dark:border-blue-900 space-y-2">
@@ -1375,12 +1448,285 @@
     </div>
   </div>
 
+  <!-- ==================== MODAL: PANDUAN & KODE GOOGLE APPS SCRIPT (Code.gs) ==================== -->
+  <div
+    id="apps-script-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-800 dark:text-white text-base">Integrasi Permanen Google Sheets (Code.gs)</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Salin kode di bawah ke Google Sheets → Extensions → Apps Script, lalu Deploy sebagai Web App</p>
+        </div>
+        <button onclick="closeAppsScriptModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/35 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 space-y-1 text-xs">
+          <p class="font-bold">Langkah Singkat Deploy Web App:</p>
+          <p>1. Buka <strong>Google Sheets</strong> baru → klik menu <strong>Extensions</strong> → <strong>Apps Script</strong>.</p>
+          <p>2. Hapus kode bawaan, tempel kode di bawah ini, lalu klik <strong>Save</strong>.</p>
+          <p>3. Klik <strong>Deploy</strong> → <strong>New deployment</strong> → pilih type <strong>Web app</strong> → set <strong>Execute as: Me</strong> &amp; <strong>Who has access: Anyone</strong> → klik <strong>Deploy</strong>.</p>
+          <p>4. Salin <strong>Web app URL</strong> (<code>https://script.google.com/macros/s/.../exec</code>) dan tempel ke kolom URL di menu Pengaturan.</p>
+        </div>
+        <div class="relative">
+          <button
+            type="button"
+            onclick="copyAppsScriptCode()"
+            class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm mb-2"
+          >
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            Salin Kode Code.gs
+          </button>
+          <pre id="apps-script-code-block" class="p-4 rounded-xl bg-slate-950 text-emerald-300 font-mono text-[11px] leading-relaxed overflow-x-auto select-all"></pre>
+        </div>
+      </div>
+      <div class="px-5 py-3.5 bg-gray-50 dark:bg-slate-800/60 border-t border-gray-100 dark:border-slate-800 flex justify-end">
+        <button
+          type="button"
+          onclick="closeAppsScriptModal()"
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 text-white rounded-lg text-xs font-semibold"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const STORAGE_KEY = 'sipbb_wani_lumbumpetigo_v1';
+
+    const APPS_SCRIPT_CODE = `const SHEET_TABS = {
+  taxpayers: 'WajibPajak',
+  payments: 'Pembayaran',
+  users: 'Pengguna',
+  settings: 'Pengaturan'
+};
+
+function doGet(e) {
+  try {
+    const action = (e && e.parameter && e.parameter.action) || 'getAll';
+    if (action === 'ping') {
+      return jsonResponse({ ok: true, message: 'SIPBB Web App aktif', timestamp: new Date().toISOString() });
+    }
+    const payload = readAllSheetsData();
+    return jsonResponse({ ok: true, data: payload });
+  } catch (err) {
+    return jsonResponse({ ok: false, error: err.message });
+  }
+}
+
+function doPost(e) {
+  try {
+    const raw = e && e.postData && e.postData.contents ? e.postData.contents : '{}';
+    const body = JSON.parse(raw);
+    const action = body.action || 'syncAll';
+
+    if (action === 'ping') {
+      return jsonResponse({ ok: true, message: 'Koneksi POST berhasil', timestamp: new Date().toISOString() });
+    }
+
+    if (action === 'syncAll' && body.data) {
+      writeAllSheetsData(body.data);
+      return jsonResponse({ ok: true, message: 'Seluruh data tersimpan ke Google Sheets' });
+    }
+
+    if (action === 'upsertTaxpayer' && body.taxpayer) {
+      upsertRowById(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'], body.taxpayer);
+      return jsonResponse({ ok: true, message: 'Wajib pajak tersimpan' });
+    }
+
+    if (action === 'deleteTaxpayer' && body.id) {
+      deleteRowById(SHEET_TABS.taxpayers, body.id);
+      return jsonResponse({ ok: true, message: 'Wajib pajak dihapus' });
+    }
+
+    if (action === 'recordPayment') {
+      if (body.taxpayer) {
+        upsertRowById(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'], body.taxpayer);
+      }
+      if (body.payment) {
+        appendRow(SHEET_TABS.payments, ['id','date','monthIndex','nop','name','dusun','method','amount'], body.payment);
+      }
+      return jsonResponse({ ok: true, message: 'Pembayaran tercatat di Google Sheets' });
+    }
+
+    if (action === 'saveUser' && body.user) {
+      upsertRowById(SHEET_TABS.users, ['id','name','username','role','status'], body.user);
+      return jsonResponse({ ok: true, message: 'Pengguna tersimpan' });
+    }
+
+    if (action === 'deleteUser' && body.id) {
+      deleteRowById(SHEET_TABS.users, body.id);
+      return jsonResponse({ ok: true, message: 'Pengguna dihapus' });
+    }
+
+    if (action === 'saveSettings' && body.settings) {
+      writeSettingsTab(body.settings);
+      return jsonResponse({ ok: true, message: 'Pengaturan tersimpan' });
+    }
+
+    if (body.data) {
+      writeAllSheetsData(body.data);
+      return jsonResponse({ ok: true, message: 'Data tersinkronisasi' });
+    }
+
+    return jsonResponse({ ok: false, error: 'Aksi tidak dikenali: ' + action });
+  } catch (err) {
+    return jsonResponse({ ok: false, error: err.message });
+  }
+}
+
+function getOrCreateSheet(name, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+  }
+  if (sheet.getLastRow() === 0 && headers && headers.length > 0) {
+    sheet.appendRow(headers);
+  }
+  return sheet;
+}
+
+function readSheetObjects(name, headers) {
+  const sheet = getOrCreateSheet(name, headers);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return [];
+  const values = sheet.getRange(1, 1, lastRow, headers.length).getValues();
+  const cols = values[0];
+  return values.slice(1).filter(r => r[0] !== '' && r[0] !== null).map(row => {
+    const obj = {};
+    cols.forEach((col, idx) => {
+      obj[col] = row[idx];
+    });
+    return obj;
+  });
+}
+
+function replaceSheetRows(name, headers, items) {
+  const sheet = getOrCreateSheet(name, headers);
+  sheet.clearContents();
+  sheet.appendRow(headers);
+  if (Array.isArray(items) && items.length > 0) {
+    const matrix = items.map(item => headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : '')));
+    sheet.getRange(2, 1, matrix.length, headers.length).setValues(matrix);
+  }
+}
+
+function upsertRowById(name, headers, item) {
+  const sheet = getOrCreateSheet(name, headers);
+  const lastRow = sheet.getLastRow();
+  const rowValues = headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : ''));
+  if (lastRow > 1) {
+    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i < ids.length; i++) {
+      if (String(ids[i][0]) === String(item.id)) {
+        sheet.getRange(i + 2, 1, 1, headers.length).setValues([rowValues]);
+        return;
+      }
+    }
+  }
+  sheet.appendRow(rowValues);
+}
+
+function appendRow(name, headers, item) {
+  const sheet = getOrCreateSheet(name, headers);
+  const rowValues = headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : ''));
+  sheet.appendRow(rowValues);
+}
+
+function deleteRowById(name, id) {
+  const sheet = getOrCreateSheet(name, ['id']);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return;
+  const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  for (let i = ids.length - 1; i >= 0; i--) {
+    if (String(ids[i][0]) === String(id)) {
+      sheet.deleteRow(i + 2);
+    }
+  }
+}
+
+function writeSettingsTab(settings) {
+  const sheet = getOrCreateSheet(SHEET_TABS.settings, ['key', 'value']);
+  const entries = [
+    ['villageName', settings.villageName || 'Desa Wani Lumbumpetigo'],
+    ['kecamatan', settings.kecamatan || 'Kec. Tanantovea, Kab. Donggala'],
+    ['taxYear', Number(settings.taxYear) || 2026],
+    ['targetPBB', Number(settings.targetPBB) || 89450000]
+  ];
+  sheet.clearContents();
+  sheet.appendRow(['key', 'value']);
+  sheet.getRange(2, 1, entries.length, 2).setValues(entries);
+}
+
+function readSettingsTab() {
+  const rows = readSheetObjects(SHEET_TABS.settings, ['key', 'value']);
+  const out = {};
+  rows.forEach(r => {
+    if (r.key) out[r.key] = r.value;
+  });
+  return {
+    villageName: out.villageName || 'Desa Wani Lumbumpetigo',
+    kecamatan: out.kecamatan || 'Kec. Tanantovea, Kab. Donggala',
+    taxYear: Number(out.taxYear) || 2026,
+    targetPBB: Number(out.targetPBB) || 89450000
+  };
+}
+
+function readAllSheetsData() {
+  return {
+    taxpayers: readSheetObjects(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth']).map(t => ({
+      ...t,
+      nilai: Number(t.nilai) || 0,
+      year: Number(t.year) || 2026,
+      paidMonth: t.paidMonth === '' || t.paidMonth === null || t.paidMonth === undefined ? null : Number(t.paidMonth)
+    })),
+    payments: readSheetObjects(SHEET_TABS.payments, ['id','date','monthIndex','nop','name','dusun','method','amount']).map(p => ({
+      ...p,
+      monthIndex: Number(p.monthIndex) || 0,
+      amount: Number(p.amount) || 0
+    })),
+    users: readSheetObjects(SHEET_TABS.users, ['id','name','username','role','status']),
+    settings: readSettingsTab()
+  };
+}
+
+function writeAllSheetsData(data) {
+  if (Array.isArray(data.taxpayers)) {
+    replaceSheetRows(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'], data.taxpayers);
+  }
+  if (Array.isArray(data.payments)) {
+    replaceSheetRows(SHEET_TABS.payments, ['id','date','monthIndex','nop','name','dusun','method','amount'], data.payments);
+  }
+  if (Array.isArray(data.users)) {
+    replaceSheetRows(SHEET_TABS.users, ['id','name','username','role','status'], data.users);
+  }
+  if (data.settings) {
+    writeSettingsTab(data.settings);
+  }
+}
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
 
     const DEFAULT_STATE = {
       darkMode: false,
       activePage: 'dashboard',
+      sheetsConfig: {
+        webAppUrl: '',
+        autoSync: true,
+        lastSyncedAt: null,
+        lastStatus: 'local', // 'synced' | 'syncing' | 'local' | 'error'
+      },
       settings: {
         villageName: 'Desa Wani Lumbumpetigo',
         kecamatan: 'Kec. Tanantovea, Kab. Donggala',
@@ -1622,6 +1968,10 @@
         return {
           ...cloneDefaultState(),
           ...parsed,
+          sheetsConfig: {
+            ...DEFAULT_STATE.sheetsConfig,
+            ...(parsed.sheetsConfig || {}),
+          },
           settings: {
             ...DEFAULT_STATE.settings,
             ...(parsed.settings || {}),
@@ -1635,6 +1985,264 @@
         console.error('Gagal memuat state dari localStorage:', err);
         return cloneDefaultState();
       }
+    }
+
+    // ==================== GOOGLE APPS SCRIPT / SHEETS SYNC ENGINE ====================
+    function getValidSheetsUrl() {
+      const raw = String(appState.sheetsConfig?.webAppUrl || '').trim();
+      if (!raw) return '';
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec/i.test(raw)) {
+        return raw.startsWith('https://') ? raw : '';
+      }
+      return raw;
+    }
+
+    function updateSyncStatusUI(status, customLabel = '') {
+      if (!appState.sheetsConfig) appState.sheetsConfig = { ...DEFAULT_STATE.sheetsConfig };
+      appState.sheetsConfig.lastStatus = status;
+
+      const dot = document.getElementById('sidebar-sync-dot');
+      const text = document.getElementById('sidebar-sync-text');
+      const pill = document.getElementById('sheets-connection-pill');
+      const url = getValidSheetsUrl();
+
+      if (!url) {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        if (text) text.textContent = customLabel || 'Lokal / Cache';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+          pill.textContent = 'URL Belum Diatur';
+        }
+        return;
+      }
+
+      if (status === 'syncing') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-sky-400 animate-ping';
+        if (text) text.textContent = customLabel || 'Menyinkronkan...';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300';
+          pill.textContent = 'Sinkronisasi...';
+        }
+      } else if (status === 'synced') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        if (text) text.textContent = customLabel || 'Google Sheets Aktif';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+          pill.textContent = 'Terhubung ke Sheet';
+        }
+      } else if (status === 'error') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-400';
+        if (text) text.textContent = customLabel || 'Cache Lokal (Gagal)';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+          pill.textContent = 'Cek Akses Web App';
+        }
+      } else {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-blue-300';
+        if (text) text.textContent = customLabel || 'Siap (Sheet)';
+        if (pill) {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300';
+          pill.textContent = 'URL Tersimpan';
+        }
+      }
+    }
+
+    async function sendToGoogleSheets(payloadObj, silent = false) {
+      const url = getValidSheetsUrl();
+      if (!url || !appState.sheetsConfig?.autoSync && silent) return null;
+      if (!url) return null;
+
+      updateSyncStatusUI('syncing');
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payloadObj),
+        });
+
+        // Google Apps Script Web App often returns opaque response on cross-origin redirect when CORS headers aren't customized
+        if (res.type === 'opaque') {
+          appState.sheetsConfig.lastSyncedAt = new Date().toISOString();
+          saveState();
+          updateSyncStatusUI('synced');
+          if (!silent) showToast('Perubahan dikirim ke Google Sheets.', 'success');
+          return { ok: true, opaque: true };
+        }
+
+        const json = await res.json();
+        if (json && json.ok === false) {
+          throw new Error(json.error || 'Respons Apps Script gagal');
+        }
+        appState.sheetsConfig.lastSyncedAt = new Date().toISOString();
+        saveState();
+        updateSyncStatusUI('synced');
+        if (!silent && json?.message) {
+          showToast(json.message, 'success');
+        }
+        return json;
+      } catch (err) {
+        console.warn('Sinkronisasi ke Google Sheets gagal, data tetap aman di cache lokal:', err);
+        updateSyncStatusUI('error');
+        if (!silent) {
+          showToast('Gagal terhubung ke Google Sheets. Data tersimpan di cache lokal.', 'warning');
+        }
+        return null;
+      }
+    }
+
+    async function syncFromGoogleSheets(showFeedback = false) {
+      const url = getValidSheetsUrl();
+      if (!url) {
+        if (showFeedback) {
+          showToast('Atur URL Google Apps Script Web App terlebih dahulu di menu Pengaturan.', 'warning');
+          showPage('settings');
+        }
+        return;
+      }
+
+      updateSyncStatusUI('syncing', 'Menarik Sheet...');
+      try {
+        const separator = url.includes('?') ? '&' : '?';
+        const res = await fetch(`${url}${separator}action=getAll&_t=${Date.now()}`, {
+          method: 'GET',
+        });
+        const json = await res.json();
+        if (!json || !json.ok || !json.data) {
+          throw new Error(json?.error || 'Format data Google Sheets tidak sesuai');
+        }
+
+        const remote = json.data;
+        if (Array.isArray(remote.taxpayers)) {
+          appState.taxpayers = remote.taxpayers;
+        }
+        if (Array.isArray(remote.payments)) {
+          appState.payments = remote.payments;
+        }
+        if (Array.isArray(remote.users) && remote.users.length > 0) {
+          appState.users = remote.users;
+        }
+        if (remote.settings && typeof remote.settings === 'object') {
+          appState.settings = {
+            ...appState.settings,
+            ...remote.settings,
+          };
+        }
+
+        appState.sheetsConfig.lastSyncedAt = new Date().toISOString();
+        saveState();
+        syncBrandingAndSettingsForm();
+        refreshAllViews();
+        updateSyncStatusUI('synced');
+        if (showFeedback) {
+          showToast('Data berhasil ditarik & disinkronkan dari Google Sheets!', 'success');
+        }
+      } catch (err) {
+        console.error('Gagal menarik data dari Google Sheets:', err);
+        updateSyncStatusUI('error');
+        if (showFeedback) {
+          showToast('Gagal menarik data dari Google Sheets. Periksa URL & izin Web App (Anyone).', 'error');
+        }
+      }
+    }
+
+    async function testGoogleSheetsConnection() {
+      const urlInput = document.getElementById('set-sheets-url')?.value.trim() || '';
+      if (!urlInput) {
+        showToast('Masukkan URL Google Apps Script Web App terlebih dahulu.', 'warning');
+        return;
+      }
+      appState.sheetsConfig.webAppUrl = urlInput;
+      saveState();
+      updateSyncStatusUI('syncing', 'Menguji...');
+
+      try {
+        const sep = urlInput.includes('?') ? '&' : '?';
+        const res = await fetch(`${urlInput}${sep}action=ping&_t=${Date.now()}`);
+        const data = await res.json();
+        if (data && data.ok) {
+          updateSyncStatusUI('synced');
+          showToast('Koneksi Google Sheets Web App berhasil!', 'success');
+        } else {
+          throw new Error(data?.error || 'Respons tidak valid');
+        }
+      } catch (err) {
+        console.error(err);
+        updateSyncStatusUI('error');
+        showToast('Koneksi gagal. Pastikan Web App di-deploy untuk "Anyone" dan URL berakhiran /exec.', 'error');
+      }
+    }
+
+    async function pushFullStateToGoogleSheets() {
+      const urlInput = document.getElementById('set-sheets-url')?.value.trim();
+      if (urlInput) {
+        appState.sheetsConfig.webAppUrl = urlInput;
+        saveState();
+      }
+      if (!getValidSheetsUrl()) {
+        showToast('Masukkan URL Google Apps Script Web App terlebih dahulu.', 'warning');
+        return;
+      }
+
+      const res = await sendToGoogleSheets({
+        action: 'syncAll',
+        data: {
+          taxpayers: appState.taxpayers,
+          payments: appState.payments,
+          users: appState.users,
+          settings: appState.settings,
+        },
+      }, true);
+
+      if (res) {
+        showToast('Seluruh data WP, pembayaran, pengguna & pengaturan berhasil dikirim ke Google Sheets!', 'success');
+      }
+    }
+
+    function saveSheetsConfigOnly() {
+      const urlInput = document.getElementById('set-sheets-url')?.value.trim() || '';
+      const autoSync = Boolean(document.getElementById('set-auto-sync')?.checked);
+      appState.sheetsConfig.webAppUrl = urlInput;
+      appState.sheetsConfig.autoSync = autoSync;
+      saveState();
+      updateSyncStatusUI(urlInput ? 'ready' : 'local');
+      showToast('Konfigurasi Google Sheets disimpan.', 'success');
+    }
+
+    function openAppsScriptModal() {
+      const pre = document.getElementById('apps-script-code-block');
+      if (pre) pre.textContent = APPS_SCRIPT_CODE;
+      const modal = document.getElementById('apps-script-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeAppsScriptModal() {
+      const modal = document.getElementById('apps-script-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyAppsScriptCode() {
+      const text = APPS_SCRIPT_CODE;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Kode Code.gs berhasil disalin ke clipboard!', 'success'),
+          () => fallbackCopy(text)
+        );
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Kode Code.gs berhasil disalin!', 'success');
     }
 
     function saveState() {
@@ -2153,12 +2761,12 @@
       const name = document.getElementById('tp-name').value.trim();
       const dusun = document.getElementById('tp-dusun').value;
       const nilai = Number(document.getElementById('tp-nilai').value) || 0;
-      const year = Number(document.getElementById('tp-year').value) || appState.settings.taxYear;
+      const year = Number(document.getElementById('tp-year').value) || appState.settings.taxYear || 2026;
       const status = document.getElementById('tp-status').value;
       const address = document.getElementById('tp-address').value.trim();
 
       if (!nop || !name || nilai <= 0) {
-        showToast('Lengkapi NOP, Nama WP, dan Nilai PBB yang valid.', 'error');
+        showToast('Mohon lengkapi NOP, Nama WP, dan Nilai PBB yang valid.', 'error');
         return;
       }
 
@@ -2166,7 +2774,7 @@
         const idx = appState.taxpayers.findIndex((t) => t.id === editId);
         if (idx !== -1) {
           const prev = appState.taxpayers[idx];
-          appState.taxpayers[idx] = {
+          const updatedItem = {
             ...prev,
             nop,
             name,
@@ -2178,6 +2786,11 @@
             paidDate: status === 'Lunas' ? (prev.paidDate || new Date().toISOString().slice(0, 10)) : null,
             paidMonth: status === 'Lunas' ? (typeof prev.paidMonth === 'number' ? prev.paidMonth : new Date().getMonth()) : null,
           };
+          appState.taxpayers[idx] = updatedItem;
+          saveState();
+          if (appState.sheetsConfig?.autoSync) {
+            sendToGoogleSheets({ action: 'upsertTaxpayer', taxpayer: updatedItem }, true);
+          }
           showToast(`Data wajib pajak "${name}" diperbarui.`, 'success');
           addNotification('Perubahan Data WP', `Data SPPT atas nama ${name} (${nop}) telah diperbarui.`);
         }
@@ -2196,8 +2809,9 @@
         };
         appState.taxpayers.unshift(newItem);
 
+        let newPayment = null;
         if (status === 'Lunas') {
-          appState.payments.push({
+          newPayment = {
             id: 'TRX-' + Date.now().toString().slice(-6),
             date: new Date().toISOString().slice(0, 10),
             monthIndex: new Date().getMonth(),
@@ -2206,14 +2820,23 @@
             dusun,
             method: 'Tunai',
             amount: nilai,
-          });
+          };
+          appState.payments.push(newPayment);
+        }
+
+        saveState();
+        if (appState.sheetsConfig?.autoSync) {
+          if (newPayment) {
+            sendToGoogleSheets({ action: 'recordPayment', taxpayer: newItem, payment: newPayment }, true);
+          } else {
+            sendToGoogleSheets({ action: 'upsertTaxpayer', taxpayer: newItem }, true);
+          }
         }
 
         showToast(`Wajib pajak "${name}" berhasil ditambahkan.`, 'success');
         addNotification('Wajib Pajak Baru', `${name} (${nop}) ditambahkan pada ${dusun}.`);
       }
 
-      saveState();
       closeTaxpayerModal();
       refreshAllViews();
     }
@@ -2224,6 +2847,9 @@
 
       appState.taxpayers = appState.taxpayers.filter((t) => t.id !== id);
       saveState();
+      if (appState.sheetsConfig?.autoSync) {
+        sendToGoogleSheets({ action: 'deleteTaxpayer', id }, true);
+      }
       refreshAllViews();
       showToast(`Data "${target.name}" telah dihapus.`, 'warning');
       addNotification('Penghapusan Data WP', `Data SPPT ${target.nop} (${target.name}) dihapus.`);
@@ -2363,7 +2989,7 @@
       tp.paidDate = today;
       tp.paidMonth = monthIdx;
 
-      appState.payments.push({
+      const newPayment = {
         id: 'TRX-' + Date.now().toString().slice(-6),
         date: today,
         monthIndex: monthIdx,
@@ -2372,11 +2998,15 @@
         dusun: tp.dusun,
         method: 'Tunai',
         amount: Number(tp.nilai) || 0,
-      });
+      };
+      appState.payments.push(newPayment);
 
       saveState();
-      closeDetailModal();
+      if (appState.sheetsConfig?.autoSync) {
+        sendToGoogleSheets({ action: 'recordPayment', taxpayer: tp, payment: newPayment }, true);
+      }
       refreshAllViews();
+      openDetailModal(id);
       showToast(`SPPT ${tp.name} (${tp.nop}) ditandai LUNAS.`, 'success');
       addNotification('Pembayaran Lunas', `${tp.name} melunasi PBB sebesar ${formatRupiah(tp.nilai)}.`);
     }
@@ -2603,8 +3233,9 @@
         (t) => t.nop.toLowerCase() === nop.toLowerCase()
       );
 
+      let affectedTaxpayer = null;
       if (existingIdx !== -1) {
-        appState.taxpayers[existingIdx] = {
+        affectedTaxpayer = {
           ...appState.taxpayers[existingIdx],
           name,
           dusun,
@@ -2613,8 +3244,9 @@
           paidDate: dateStr,
           paidMonth: monthIdx,
         };
+        appState.taxpayers[existingIdx] = affectedTaxpayer;
       } else {
-        appState.taxpayers.unshift({
+        affectedTaxpayer = {
           id: 'wp-pay-' + Date.now(),
           nop,
           name,
@@ -2625,10 +3257,11 @@
           address: `Terdaftar saat pembayaran loket (${dusun})`,
           paidDate: dateStr,
           paidMonth: monthIdx,
-        });
+        };
+        appState.taxpayers.unshift(affectedTaxpayer);
       }
 
-      appState.payments.push({
+      const paymentEntry = {
         id: trxId,
         date: dateStr,
         monthIndex: monthIdx,
@@ -2637,9 +3270,13 @@
         dusun,
         method,
         amount,
-      });
+      };
+      appState.payments.push(paymentEntry);
 
       saveState();
+      if (appState.sheetsConfig?.autoSync) {
+        sendToGoogleSheets({ action: 'recordPayment', taxpayer: affectedTaxpayer, payment: paymentEntry }, true);
+      }
       refreshAllViews();
 
       const successBox = document.getElementById('payment-success');
@@ -2919,22 +3556,31 @@
       if (editId) {
         const idx = appState.users.findIndex((u) => u.id === editId);
         if (idx !== -1) {
-          appState.users[idx] = { ...appState.users[idx], name, username, role, status };
+          const updatedUser = { ...appState.users[idx], name, username, role, status };
+          appState.users[idx] = updatedUser;
+          saveState();
+          if (appState.sheetsConfig?.autoSync) {
+            sendToGoogleSheets({ action: 'saveUser', user: updatedUser }, true);
+          }
           showToast(`Pengguna "${name}" diperbarui.`, 'success');
         }
       } else {
-        appState.users.push({
+        const newUser = {
           id: 'usr-' + Date.now(),
           name,
           username,
           role,
           status,
-        });
+        };
+        appState.users.push(newUser);
+        saveState();
+        if (appState.sheetsConfig?.autoSync) {
+          sendToGoogleSheets({ action: 'saveUser', user: newUser }, true);
+        }
         showToast(`Pengguna "${name}" ditambahkan.`, 'success');
         addNotification('Pengguna Baru', `Akun ${name} (${username}) ditambahkan sebagai ${role}.`);
       }
 
-      saveState();
       closeUserModal();
       renderUsersTable();
     }
@@ -2944,6 +3590,9 @@
       if (!u) return;
       u.status = u.status === 'Aktif' ? 'Non-Aktif' : 'Aktif';
       saveState();
+      if (appState.sheetsConfig?.autoSync) {
+        sendToGoogleSheets({ action: 'saveUser', user: u }, true);
+      }
       renderUsersTable();
       showToast(`Status ${u.name} diubah menjadi ${u.status}.`, 'info');
     }
@@ -2956,6 +3605,9 @@
       const u = appState.users.find((item) => item.id === id);
       appState.users = appState.users.filter((item) => item.id !== id);
       saveState();
+      if (appState.sheetsConfig?.autoSync) {
+        sendToGoogleSheets({ action: 'deleteUser', id }, true);
+      }
       renderUsersTable();
       showToast(`Pengguna "${u?.name || ''}" dihapus.`, 'warning');
     }
@@ -2973,11 +3625,17 @@
       const kInput = document.getElementById('set-kecamatan');
       const yInput = document.getElementById('set-tax-year');
       const tInput = document.getElementById('set-target-pbb');
+      const urlInput = document.getElementById('set-sheets-url');
+      const autoSyncInput = document.getElementById('set-auto-sync');
 
       if (vInput) vInput.value = s.villageName;
       if (kInput) kInput.value = s.kecamatan;
       if (yInput) yInput.value = s.taxYear;
       if (tInput) tInput.value = s.targetPBB;
+      if (urlInput) urlInput.value = appState.sheetsConfig?.webAppUrl || '';
+      if (autoSyncInput) autoSyncInput.checked = appState.sheetsConfig?.autoSync !== false;
+
+      updateSyncStatusUI(getValidSheetsUrl() ? (appState.sheetsConfig?.lastStatus || 'ready') : 'local');
     }
 
     function saveSettings(e) {
@@ -2986,6 +3644,8 @@
       const kecamatan = document.getElementById('set-kecamatan').value.trim();
       const taxYear = Number(document.getElementById('set-tax-year').value) || 2026;
       const targetPBB = Number(document.getElementById('set-target-pbb').value) || 0;
+      const webAppUrl = document.getElementById('set-sheets-url')?.value.trim() || '';
+      const autoSync = Boolean(document.getElementById('set-auto-sync')?.checked);
 
       if (!villageName || !kecamatan) {
         showToast('Nama desa dan kecamatan wajib diisi.', 'error');
@@ -2998,11 +3658,19 @@
         taxYear,
         targetPBB,
       };
+      appState.sheetsConfig = {
+        ...appState.sheetsConfig,
+        webAppUrl,
+        autoSync,
+      };
 
       saveState();
       syncBrandingAndSettingsForm();
       refreshAllViews();
-      showToast('Pengaturan desa & tahun pajak disimpan.', 'success');
+      if (autoSync && getValidSheetsUrl()) {
+        sendToGoogleSheets({ action: 'saveSettings', settings: appState.settings }, true);
+      }
+      showToast('Pengaturan desa, tahun pajak & Google Sheets disimpan.', 'success');
       addNotification('Pengaturan Diperbarui', `Tahun pajak ${taxYear} • Target PBB ${formatRupiah(targetPBB)}.`);
     }
 
@@ -3100,6 +3768,9 @@
       showPage(appState.activePage || 'dashboard', false);
       updateScrollPercent();
       lucide.createIcons();
+      if (getValidSheetsUrl() && appState.sheetsConfig?.autoSync !== false) {
+        syncFromGoogleSheets(false);
+      }
     });
   </script>
 </body>
