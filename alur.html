@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ringkasan Alur Pengelolaan Akun - eHDW Learning</title>
+  <title>Ringkasan Alur Pengelolaan Akun + Slot Foto - eHDW Learning</title>
   <style>
     :root {
       --primary: #1e1b7a;
@@ -38,19 +38,19 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 24px 16px 60px;
     }
 
-    /* Hero Header */
+    /* Hero */
     .hero {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 55%, #3730a3 100%);
       color: #fff;
       border-radius: 18px;
       padding: 28px 24px;
       box-shadow: var(--shadow);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .hero-badge {
@@ -61,44 +61,28 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.4px;
       margin-bottom: 10px;
     }
 
     .hero h1 {
-      font-size: clamp(1.45rem, 3vw, 2.1rem);
+      font-size: clamp(1.4rem, 3vw, 2.05rem);
       line-height: 1.25;
       margin-bottom: 8px;
     }
 
     .hero p {
       color: #e0e7ff;
-      font-size: 0.96rem;
-      max-width: 820px;
+      font-size: 0.95rem;
+      max-width: 850px;
     }
 
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .meta-pill {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-    }
-
-    /* Navigation Tabs */
+    /* Tabs */
     .nav-tabs {
       display: flex;
       gap: 8px;
       overflow-x: auto;
       padding-bottom: 6px;
       margin-bottom: 22px;
-      scrollbar-width: thin;
     }
 
     .tab-btn {
@@ -125,7 +109,6 @@
       border-color: var(--primary);
     }
 
-    /* Sections */
     .section {
       display: none;
     }
@@ -155,7 +138,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
@@ -166,20 +149,22 @@
       color: var(--primary-dark);
     }
 
-    /* Grid & Flow Cards */
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
     }
 
     .grid-3 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
     }
 
     .flow-step {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       border: 1px solid var(--border);
       border-left: 5px solid var(--primary);
       border-radius: 12px;
@@ -191,13 +176,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
+      min-width: 28px;
       height: 28px;
-      border-radius: 50%;
+      padding: 0 8px;
+      border-radius: 999px;
       background: var(--primary);
       color: #fff;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       margin-bottom: 8px;
     }
 
@@ -208,7 +194,7 @@
     }
 
     .flow-step p, .flow-step li {
-      font-size: 0.92rem;
+      font-size: 0.91rem;
       color: #334155;
     }
 
@@ -221,12 +207,53 @@
       margin-bottom: 5px;
     }
 
-    /* Callouts */
+    /* Slot Foto / Gambar Sesuai Penjelasan */
+    .step-media {
+      margin-top: 14px;
+      border: 1px dashed #94a3b8;
+      border-radius: 10px;
+      background: #f1f5f9;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .step-media img {
+      display: block;
+      width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #fff;
+      margin: 0 auto 8px;
+      cursor: zoom-in;
+    }
+
+    /* Sembunyikan gambar rusak sebelum src diisi, tampilkan info slot */
+    .step-media img[src=""],
+    .step-media img:not([src]) {
+      display: none;
+    }
+
+    .img-caption {
+      font-size: 0.78rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .img-path {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-family: Consolas, monospace;
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
     .alert {
       border-radius: 12px;
       padding: 14px 16px;
       margin-top: 14px;
-      font-size: 0.92rem;
+      font-size: 0.91rem;
     }
 
     .alert-warn {
@@ -241,12 +268,11 @@
       color: #115e59;
     }
 
-    /* Role Badges */
     .tag {
       display: inline-block;
       padding: 3px 10px;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       background: #e0e7ff;
       color: var(--primary-dark);
@@ -258,7 +284,6 @@
       color: var(--success-text);
     }
 
-    /* Table */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
@@ -277,7 +302,6 @@
       color: #fff;
       text-align: left;
       padding: 12px 14px;
-      font-weight: 600;
     }
 
     td {
@@ -298,16 +322,55 @@
 
     .search-box {
       width: 100%;
-      max-width: 340px;
+      max-width: 320px;
       padding: 9px 14px;
       border: 1px solid #cbd5e1;
       border-radius: 10px;
       font-size: 0.9rem;
     }
 
-    .search-box:focus {
-      outline: none;
-      border-color: var(--primary);
+    /* Lightbox Modal */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      max-width: 900px;
+      width: 100%;
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .lightbox-inner img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      margin-top: 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
     }
 
     .footer-note {
@@ -315,12 +378,6 @@
       color: var(--muted);
       font-size: 0.85rem;
       margin-top: 28px;
-    }
-
-    @media (max-width: 600px) {
-      .card {
-        padding: 16px;
-      }
     }
   </style>
 </head>
@@ -330,203 +387,261 @@
       <div class="hero-badge">KEMENDESA &amp; PDT • KONVERGENSI P3S DESA</div>
       <h1>Ringkasan Alur Pengelolaan Akun &amp; Pembelajaran Mandiri</h1>
       <p>
-        Panduan ringkas pelaksanaan peningkatan kapasitas kader dan perangkat desa melalui ekosistem
-        <strong>eHDW</strong> (<em>HDW Learning</em>, <em>HDW Pendataan</em>, dan <em>HDW Monitoring</em>).
+        Panduan lengkap dengan slot foto/tangkapan layar sesuai urutan penjelasan pada file
+        <strong>RINGKASAN ALUR PENGELOLAAN AKUN.pdf</strong>.
       </p>
-      <div class="hero-meta">
-        <div class="meta-pill">Portal: <strong>ehdw.kemendesa.go.id</strong></div>
-        <div class="meta-pill">Durasi Modul: <strong>370 Menit (8 JP)</strong></div>
-        <div class="meta-pill">Batas Akses: <strong>Maksimal 7 Hari</strong></div>
-      </div>
     </header>
 
-    <nav class="nav-tabs" aria-label="Navigasi Ringkasan">
+    <div class="alert alert-info" style="margin-bottom: 20px; margin-top: 0;">
+      <strong>Cara Memasang Foto:</strong> Simpan gambar hasil ekspor/screenshot dari PDF sesuai nama file pada tiap kotak (misalnya <code>img/hal-02-alur-fasilitasi.png</code>). Setelah atribut <code>src</code> diisi, gambar otomatis tampil dan bisa diklik untuk diperbesar.
+    </div>
+
+    <nav class="nav-tabs" aria-label="Navigasi">
       <button class="tab-btn active" data-tab="alur-utama">1. Alur &amp; Koordinasi</button>
       <button class="tab-btn" data-tab="akun-spt">2. Akun &amp; Unggah SPT</button>
       <button class="tab-btn" data-tab="pembelajaran">3. Proses Belajar &amp; Sertifikat</button>
       <button class="tab-btn" data-tab="struktur-modul">4. Struktur Modul (8 JP)</button>
     </nav>
 
-    <!-- TAB 1: ALUR UTAMA & KOORDINASI -->
+    <!-- TAB 1 -->
     <section id="alur-utama" class="section active">
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">Alur Fasilitasi Pembelajaran Mandiri (5 Tahap Utama)</h2>
-        </div>
-        <div class="grid-3">
-          <div class="flow-step">
-            <div class="step-num">1</div>
-            <h3>Koordinasi &amp; Penetapan Peserta</h3>
-            <p>Dilakukan oleh DPMD, TAPM, PD, dan PLD ke Desa.</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">2</div>
-            <h3>Pendaftaran &amp; Pengelolaan Akun</h3>
-            <p>Peserta: KPM, TPK, Kader Posyandu, dan Admin Desa.</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">3</div>
-            <h3>Verifikasi Akun Peserta</h3>
-            <p>Dilakukan oleh Admin Kabupaten (DPMD / TAPM Kabupaten).</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">4</div>
-            <h3>Proses Pembelajaran Mandiri</h3>
-            <p>Peserta belajar mandiri, mengerjakan evaluasi, dan meraih sertifikat di HDW Learning.</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">5</div>
-            <h3>Pendampingan &amp; Monitoring</h3>
-            <p>Dilakukan oleh DPMD, TAPM, PD, dan PLD ke Desa.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Alur Koordinasi dan Penetapan Peserta</h2>
+          <h2 class="card-title">Alur Fasilitasi Pembelajaran Mandiri</h2>
         </div>
         <div class="grid-2">
           <div class="flow-step">
-            <div class="step-num">1</div>
-            <h3>Pemberitahuan ke Kepala Desa</h3>
-            <p>DPMD Kabupaten mengirimkan surat pemberitahuan kepada seluruh Kepala Desa terkait peningkatan kapasitas konvergensi P3S di desa.</p>
+            <div>
+              <div class="step-num">1 - 5</div>
+              <h3>5 Tahap Fasilitasi Pembelajaran Mandiri</h3>
+              <p>Meliputi: (1) Koordinasi &amp; penetapan peserta oleh DPMD, TAPM, PD, dan PLD ke Desa; (2) Pendaftaran &amp; pengelolaan akun peserta (KPM, TPK, Kader Posyandu, Admin Desa); (3) Verifikasi akun oleh Admin Kabupaten; (4) Proses pembelajaran mandiri di HDW Learning; dan (5) Pendampingan &amp; monitoring.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Diagram Alur Fasilitasi Pembelajaran Mandiri" />
+              <figcaption class="img-caption">Foto: Diagram Alur Fasilitasi Pembelajaran Mandiri (Hal. 2)</figcaption>
+              <span class="img-path">src="img/hal-02-alur-fasilitasi.png"</span>
+            </figure>
           </div>
+
           <div class="flow-step">
-            <div class="step-num">2</div>
-            <h3>Sosialisasi oleh DPMD Kabupaten</h3>
-            <p>Dilaksanakan secara daring maupun luring bersama TAPM Kabupaten dengan melibatkan PD dan PLD.</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">3</div>
-            <h3>Sosialisasi di Desa oleh PD dan PLD</h3>
-            <p>Pemerintah Desa bersama PD dan PLD menyosialisasikan tujuan serta mekanisme pembelajaran kepada pelaku desa.</p>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">4 &amp; 5</div>
-            <h3>Penugasan &amp; Penerbitan SPT</h3>
-            <p>Kepala Desa menugaskan peserta melalui Surat Perintah Tugas (SPT), minimal unsur Kader Posyandu, KPM, TPK, dan Perangkat Desa (Admin Desa).</p>
+            <div>
+              <div class="step-num">Koordinasi</div>
+              <h3>Alur Koordinasi dan Penetapan Peserta</h3>
+              <p>Dimulai dari pemberitahuan ke Kepala Desa, sosialisasi oleh DPMD Kabupaten (daring/luring bersama TAPM, PD, PLD), sosialisasi di desa oleh PD &amp; PLD, penugasan peserta (Kader Posyandu, KPM, TPK, Admin Desa), hingga penerbitan Surat Perintah Tugas (SPT).</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Alur Koordinasi dan Penetapan Peserta" />
+              <figcaption class="img-caption">Foto: Alur Koordinasi &amp; Penetapan Peserta (Hal. 3)</figcaption>
+              <span class="img-path">src="img/hal-03-koordinasi-peserta.png"</span>
+            </figure>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: AKUN & SPT -->
+    <!-- TAB 2 -->
     <section id="akun-spt" class="section">
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">3 Aplikasi Utama dalam Ekosistem eHDW</h2>
-        </div>
-        <div class="grid-3">
-          <div class="flow-step">
-            <span class="tag">Peserta</span>
-            <h3>HDW Learning</h3>
-            <p>Media pembelajaran mandiri peserta, latihan/kuis, evaluasi, dan pengunduhan sertifikat.</p>
-          </div>
-          <div class="flow-step">
-            <span class="tag tag-green">Admin Desa &amp; Peserta</span>
-            <h3>HDW Pendataan</h3>
-            <p>Media untuk mengunggah Surat Perintah Tugas (SPT) serta mendukung validasi/pendataan.</p>
-          </div>
-          <div class="flow-step">
-            <span class="tag">Pusat • Prov • Kab</span>
-            <h3>HDW Monitoring</h3>
-            <p>Media monitoring dan evaluasi pelaksanaan pembelajaran mandiri.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Peran &amp; Manfaat Tingkatan Akun</h2>
+          <h2 class="card-title">Pendaftaran, Pengelolaan Akun &amp; Unggah SPT</h2>
         </div>
         <div class="grid-2">
           <div class="flow-step">
-            <h3>Akun Peserta (KPM, TPK, Kader Posyandu, Admin Desa)</h3>
-            <ul class="clean-list">
-              <li>Mendaftar akun di HDW Learning sesuai Surat Tugas (NIK sesuai KTP, 1x pendaftaran).</li>
-              <li>Mengikuti seluruh materi pembelajaran mandiri &amp; mengerjakan tugas/evaluasi.</li>
-              <li>Mendapatkan sertifikat setelah lulus.</li>
-            </ul>
+            <div>
+              <span class="tag">3 Aplikasi eHDW</span>
+              <h3>Pembagian Fungsi Aplikasi</h3>
+              <p><strong>HDW Learning</strong> untuk pembelajaran peserta, <strong>HDW Pendataan</strong> untuk mengunggah SPT oleh Admin Desa/peserta, dan <strong>HDW Monitoring</strong> untuk monitoring &amp; evaluasi Pusat, Provinsi, dan Kabupaten.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Pendaftaran dan Pengelolaan Akun Konvergensi P3S" />
+              <figcaption class="img-caption">Foto: 3 Aplikasi &amp; Peran Akun (Hal. 4)</figcaption>
+              <span class="img-path">src="img/hal-04-pengelolaan-akun.png"</span>
+            </figure>
           </div>
+
           <div class="flow-step">
-            <h3>Akun Admin Desa</h3>
-            <ul class="clean-list">
-              <li>Menggunakan akun eksisting untuk pendataan.</li>
-              <li>Mengunggah file SPT (format PDF, PNG, atau JPEG) melalui menu <em>Pelaksanaan Kegiatan &rarr; Bimtek &rarr; Tambah SPT</em>.</li>
-              <li>Berkoordinasi dengan PD/PLD untuk meminta verifikasi akun peserta ke PIC DPMD/TAPM Kabupaten.</li>
-            </ul>
+            <div>
+              <span class="tag">Registrasi (Langkah 1 - 4)</span>
+              <h3>Akses Portal &amp; Menu Register</h3>
+              <p>Buka <code>ehdw.kemendesa.go.id</code>, pilih <strong>HDW Learning</strong>, klik <strong>LOGIN / REGISTER</strong>, lalu pilih <strong>REGISTER</strong> untuk mendaftar akun peserta.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Langkah 1 sampai 4 Registrasi eHDW Learning" />
+              <figcaption class="img-caption">Foto: Akses Dashboard &amp; Tombol Register (Hal. 7)</figcaption>
+              <span class="img-path">src="img/hal-07-akses-register.png"</span>
+            </figure>
           </div>
+
           <div class="flow-step">
-            <h3>Akun Admin Kabupaten (DPMD &amp; TAPM Kabupaten)</h3>
-            <ul class="clean-list">
-              <li>Memeriksa SPT yang diunggah dan memvalidasi (menyetujui/menolak) akun peserta.</li>
-              <li>Melakukan monitoring dan evaluasi hasil pembelajaran level kabupaten.</li>
-            </ul>
+            <div>
+              <span class="tag">Registrasi (Langkah 5 - 6)</span>
+              <h3>Pengisian Data Diri</h3>
+              <p>Isi NIK sesuai KTP (hanya angka, 1x pendaftaran), Nama Lengkap tanpa gelar (untuk sertifikat), Username, Email, Password, Tempat/Tanggal Lahir, Jenis Kelamin, Nomor HP (format 62), dan Pendidikan, lalu klik <strong>LANJUTKAN</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Form Data Diri Register eHDW Learning" />
+              <figcaption class="img-caption">Foto: Form Data Diri (Hal. 8)</figcaption>
+              <span class="img-path">src="img/hal-08-form-data-diri.png"</span>
+            </figure>
           </div>
+
           <div class="flow-step">
-            <h3>Akun Admin Provinsi &amp; Admin Pusat</h3>
-            <ul class="clean-list">
-              <li><strong>Provinsi:</strong> Monitoring &amp; evaluasi level provinsi (DPMD &amp; TAPM Provinsi).</li>
-              <li><strong>Pusat:</strong> Monitoring &amp; evaluasi seluruh hasil pembelajaran (Tim Kemendesa &amp; PDT).</li>
-            </ul>
+            <div>
+              <span class="tag">Registrasi (Langkah 7 - 9)</span>
+              <h3>Pemilihan Wilayah</h3>
+              <p>Pilih Provinsi, Kab/Kota, Kecamatan, dan Desa sesuai wilayah asal, kemudian klik <strong>LANJUTKAN</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Form Wilayah Register eHDW Learning" />
+              <figcaption class="img-caption">Foto: Form Pemilihan Wilayah (Hal. 9)</figcaption>
+              <span class="img-path">src="img/hal-09-form-wilayah.png"</span>
+            </figure>
           </div>
-        </div>
-        <div class="alert alert-warn">
-          <strong>Catatan Penting:</strong> Akun <em>HDW Learning</em> dan <em>HDW Pendataan</em> merupakan aplikasi terpisah. Pastikan NIK sesuai KTP dan selesaikan pendaftaran dalam sekali pengisian.
+
+          <div class="flow-step">
+            <div>
+              <span class="tag">Registrasi (Langkah 10 - 13)</span>
+              <h3>Pengisian Jabatan &amp; Kirim</h3>
+              <p>Klik <strong>+ TAMBAH JABATAN</strong>, pilih jabatan sesuai SK (dapat lebih dari 1 jabatan dengan menambah baris lagi), isi tanggal mulai dan hingga, lalu klik <strong>KIRIM</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Form Jabatan Register eHDW Learning" />
+              <figcaption class="img-caption">Foto: Form Jabatan &amp; Tanggal SK (Hal. 10)</figcaption>
+              <span class="img-path">src="img/hal-10-form-jabatan.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <span class="tag tag-green">Unggah SPT oleh Admin Desa</span>
+              <h3>Login HDW Pendataan &amp; Upload SPT</h3>
+              <p>Login ke <strong>HDW Pendataan</strong> menggunakan akun Admin Desa, buka menu <strong>PELAKSANAAN KEGIATAN &rarr; Bimtek &rarr; Tambah SPT</strong>, pilih file SPT (PDF/PNG/JPEG), klik <strong>KIRIM</strong>, lalu cek pada <strong>LIHAT SPT</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Langkah Admin Desa Mengunggah SPT di HDW Pendataan" />
+              <figcaption class="img-caption">Foto: Login &amp; Upload SPT di HDW Pendataan (Hal. 13 - 14)</figcaption>
+              <span class="img-path">src="img/hal-14-upload-spt.png"</span>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 3: PROSES PEMBELAJARAN & SERTIFIKAT -->
+    <!-- TAB 3 -->
     <section id="pembelajaran" class="section">
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">Alur Operasional Pembelajaran Mandiri</h2>
+          <h2 class="card-title">Proses Pembelajaran Mandiri &amp; Unduh Sertifikat</h2>
         </div>
         <div class="grid-2">
           <div class="flow-step">
-            <div class="step-num">1 - 4</div>
-            <h3>Registrasi, Unggah SPT &amp; Verifikasi</h3>
-            <p>Peserta mendaftar di HDW Learning (Data Diri, Wilayah, Jabatan &amp; masa berlaku SK). Admin Desa mengunggah SPT, lalu Admin Kabupaten memverifikasi akun agar peserta dapat login dan mulai belajar.</p>
+            <div>
+              <div class="step-num">5 - 6</div>
+              <h3>Login &amp; Memulai Pre-Test</h3>
+              <p>Setelah akun diverifikasi Admin Kabupaten, login ke HDW Learning, pilih kotak <strong>Pre-Test</strong>, lalu klik <strong>MULAI PRETEST</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Halaman Utama Materi dan Mulai Pretest" />
+              <figcaption class="img-caption">Foto: Menu Pre-Test &amp; Mulai Pretest (Hal. 18)</figcaption>
+              <span class="img-path">src="img/hal-18-mulai-pretest.png"</span>
+            </figure>
           </div>
-          <div class="flow-step">
-            <div class="step-num">5 - 8</div>
-            <h3>Pre-Test, 7 Pokok Bahasan &amp; Post-Test</h3>
-            <p>Kerjakan <strong>Pre-Test</strong> terlebih dahulu, lalu pelajari materi (video &amp; bahan bacaan/unduhan) secara berurutan sesuai durasi tonton minimum, selesaikan <strong>Refleksi Pembelajaran</strong>, dan kerjakan <strong>Post-Test</strong> di tiap pokok bahasan.</p>
-          </div>
-        </div>
-        <div class="alert alert-info">
-          <strong>Ketentuan Penyelesaian:</strong> Peserta tidak dapat melanjutkan ke pokok bahasan berikutnya apabila sub-pokok bahasan pada pokok bahasan sebelumnya belum dilengkapi. Waktu akses e-learning keseluruhan maksimal <strong>7 hari</strong> sejak akun terverifikasi.
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Cara Mengunduh Sertifikat Peserta</h2>
-        </div>
-        <div class="grid-2">
           <div class="flow-step">
-            <span class="tag">Cara 1: Melalui Menu Profil / Admin</span>
-            <ul class="clean-list">
-              <li>Klik tanda panah di sebelah nama username, lalu pilih <strong>Admin</strong>.</li>
-              <li>Periksa status kelulusan pada menu <strong>Materi Diikuti</strong>.</li>
-              <li>Jika sudah lulus semua, buka menu <strong>Sertifikat</strong>, geser tabel ke kanan bila perlu, klik ikon mata (lihat), lalu unduh/download.</li>
-            </ul>
+            <div>
+              <div class="step-num">7 - 9</div>
+              <h3>Mengerjakan &amp; Melihat Hasil Pre-Test</h3>
+              <p>Pilih jawaban yang tepat, klik <strong>KIRIM JAWABAN</strong>, tinjau skor yang tampil, lalu klik <strong>SILAHKAN LANJUT UNTUK MELAKUKAN PEMBELAJARAN</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Soal Pretest dan Hasil Skor Pretest" />
+              <figcaption class="img-caption">Foto: Soal &amp; Hasil Skor Pretest (Hal. 19 - 20)</figcaption>
+              <span class="img-path">src="img/hal-20-hasil-pretest.png"</span>
+            </figure>
           </div>
+
           <div class="flow-step">
-            <span class="tag tag-green">Cara 2: Pencarian Cepat NIK</span>
-            <ul class="clean-list">
-              <li>Buka laman <strong>ehdw.kemendesa.go.id/app-learning/#/</strong>.</li>
-              <li>Masukkan <strong>NIK</strong> peserta yang sudah terdaftar pada kolom pencarian.</li>
-              <li>Klik <strong>CARI</strong> untuk mengakses/mengunduh sertifikat.</li>
-            </ul>
+            <div>
+              <div class="step-num">10 - 12</div>
+              <h3>Memilih Pokok Bahasan &amp; Pengantar</h3>
+              <p>Klik modul pokok bahasan (misalnya Pokok Bahasan 1), klik <strong>LIHAT MATERI</strong>, baca tujuan, lingkup materi, dan alokasi waktu pada bagian Pengantar, lalu klik <strong>LANJUTKAN</strong>.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Modul Pokok Bahasan dan Halaman Pengantar" />
+              <figcaption class="img-caption">Foto: Modul Pokok Bahasan &amp; Pengantar (Hal. 21 - 22)</figcaption>
+              <span class="img-path">src="img/hal-22-pengantar-materi.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <div class="step-num">13 - 16</div>
+              <h3>Menonton Video, Unduh Bahan &amp; Sub-Pokok Bahasan</h3>
+              <p>Selesaikan durasi tonton video hingga memenuhi batas waktu minimum sebelum menekan <strong>LANJUTKAN</strong>, serta unduh file materi bila tersedia. Selesaikan seluruh sub-pokok bahasan secara berurutan.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Pemutaran Video Materi dan Tombol Unduh File" />
+              <figcaption class="img-caption">Foto: Durasi Video &amp; Unduh File Materi (Hal. 23, 25)</figcaption>
+              <span class="img-path">src="img/hal-25-video-unduh-materi.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <div class="step-num">18 - 21</div>
+              <h3>Refleksi Pembelajaran</h3>
+              <p>Klik <strong>MULAI QUIZ</strong> &rarr; <strong>LANJUTKAN</strong>, pilih jawaban, dan klik <strong>CEK JAWABAN</strong> untuk melihat hasil.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Halaman Refleksi Pembelajaran dan Cek Jawaban" />
+              <figcaption class="img-caption">Foto: Refleksi Pembelajaran (Hal. 26)</figcaption>
+              <span class="img-path">src="img/hal-26-refleksi.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <div class="step-num">22 - 26</div>
+              <h3>Post-Test &amp; Kelulusan Pokok Bahasan</h3>
+              <p>Klik <strong>MULAI FINAL EXAM</strong> pada bagian Post-Test, pilih jawaban, klik <strong>KIRIM JAWABAN</strong>. Jika mencapai skor minimum (muncul keterangan lulus), lanjutkan ke pokok bahasan berikutnya hingga Pokok Bahasan 7.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Post Test dan Notifikasi Lulus" />
+              <figcaption class="img-caption">Foto: Post-Test &amp; Status Lulus (Hal. 27 - 29)</figcaption>
+              <span class="img-path">src="img/hal-29-hasil-posttest.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <span class="tag">Sertifikat (Cara 1)</span>
+              <h3>Unduh Sertifikat via Menu Admin / Profil</h3>
+              <p>Klik panah di samping nama username &rarr; pilih <strong>Admin</strong> &rarr; cek status <strong>Lulus</strong> di <em>Materi Diikuti</em> &rarr; buka menu <strong>Sertifikat</strong>, geser ke kanan, klik ikon mata, lalu unduh.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Menu Admin Materi Diikuti dan Sertifikat" />
+              <figcaption class="img-caption">Foto: Menu Materi Diikuti &amp; Sertifikat (Hal. 31 - 33)</figcaption>
+              <span class="img-path">src="img/hal-33-menu-sertifikat.png"</span>
+            </figure>
+          </div>
+
+          <div class="flow-step">
+            <div>
+              <span class="tag tag-green">Sertifikat (Cara 2 &amp; Hasil)</span>
+              <h3>Cari via NIK &amp; Tampilan Sertifikat</h3>
+              <p>Atau masukkan NIK terdaftar pada kolom pencarian di halaman utama HDW Learning lalu klik <strong>CARI</strong>. Sertifikat terbit setelah seluruh tahapan selesai.</p>
+            </div>
+            <figure class="step-media">
+              <img src="" alt="Pencarian Sertifikat dengan NIK dan Contoh Sertifikat" />
+              <figcaption class="img-caption">Foto: Cari NIK &amp; Contoh Sertifikat (Hal. 34 - 35)</figcaption>
+              <span class="img-path">src="img/hal-35-contoh-sertifikat.png"</span>
+            </figure>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 4: STRUKTUR MODUL -->
+    <!-- TAB 4 -->
     <section id="struktur-modul" class="section">
       <div class="card">
         <div class="card-header">
@@ -536,7 +651,6 @@
             id="moduleSearch"
             class="search-box"
             placeholder="Cari judul pokok bahasan..."
-            aria-label="Cari judul pokok bahasan"
           />
         </div>
         <div class="table-wrap">
@@ -558,43 +672,43 @@
               </tr>
               <tr>
                 <td>1</td>
-                <td>Pokok Bahasan 1: Permasalahan Stunting (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 1 Permasalahan Stunting (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>6</td>
                 <td>45 menit (1 JP)</td>
               </tr>
               <tr>
                 <td>2</td>
-                <td>Pokok Bahasan 2: Mekanisme Pelaksanaan Konvergensi P3S di Desa (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 2 Mekanisme Pelaksanaan Kondvergensi P3S di Desa (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>3</td>
                 <td>45 menit (1 JP)</td>
               </tr>
               <tr>
                 <td>3</td>
-                <td>Pokok Bahasan 3: Struktur Organisasi P3S (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 3 Struktur Organisasi P3S (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>5</td>
                 <td>45 menit (1 JP)</td>
               </tr>
               <tr>
                 <td>4</td>
-                <td>Pokok Bahasan 4: Perubahan Iklim dan Ketahanan Pangan (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 4 Perubahan Iklim dan Ketahanan pangan (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>3</td>
                 <td>45 menit (1 JP)</td>
               </tr>
               <tr>
                 <td>5</td>
-                <td>Pokok Bahasan 5: Keselamatan dan Kesehatan Kerja (K3) (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 5 Keselamatan dan Kesehatan Kerja (K3) (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>3</td>
                 <td>45 menit (1 JP)</td>
               </tr>
               <tr>
                 <td>6</td>
-                <td>Pokok Bahasan 6: Pendataan (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 6 Pendataan (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>12</td>
                 <td>90 menit (2 JP)</td>
               </tr>
               <tr>
                 <td>7</td>
-                <td>Pokok Bahasan 7: Pemanfaatan Data (beserta pertanyaan refleksi dan evaluasi)</td>
+                <td>Pokok Bahasan 7 Pemanfaatan Data (beserta pertanyaan refleksi dan evaluasi)</td>
                 <td>3</td>
                 <td>45 menit (1 JP)</td>
               </tr>
@@ -607,12 +721,26 @@
             </tbody>
           </table>
         </div>
+        <figure class="step-media" style="margin-top: 16px;">
+          <img src="" alt="Tabel Struktur Modul pada HDW Learning" />
+          <figcaption class="img-caption">Foto: Tabel Struktur Modul &amp; Ketentuan Waktu (Hal. 36)</figcaption>
+          <span class="img-path">src="img/hal-36-struktur-modul.png"</span>
+        </figure>
       </div>
     </section>
 
     <p class="footer-note">
-      Dirangkum dari dokumen <em>RINGKASAN ALUR PENGELOLAAN AKUN.pdf</em> • Pembelajaran mandiri dinyatakan selesai setelah sertifikat terbit.
+      Disusun berdasarkan dokumen <em>RINGKASAN ALUR PENGELOLAAN AKUN.pdf</em>.
     </p>
+  </div>
+
+  <!-- Lightbox Preview -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" src="" alt="Preview Gambar" />
+      <p id="lightboxCaption" class="img-caption" style="margin-top: 8px;"></p>
+      <button type="button" class="lightbox-close" id="lightboxClose">Tutup</button>
+    </div>
   </div>
 
   <script>
@@ -622,10 +750,8 @@
     tabButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.getAttribute("data-tab");
-
         tabButtons.forEach((b) => b.classList.remove("active"));
         sections.forEach((s) => s.classList.remove("active"));
-
         btn.classList.add("active");
         document.getElementById(target).classList.add("active");
       });
@@ -636,13 +762,31 @@
       searchInput.addEventListener("input", (e) => {
         const keyword = e.target.value.toLowerCase().trim();
         const rows = document.querySelectorAll("#moduleTable tbody tr:not(.total-row)");
-
         rows.forEach((row) => {
-          const text = row.textContent.toLowerCase();
-          row.style.display = text.includes(keyword) ? "" : "none";
+          row.style.display = row.textContent.toLowerCase().includes(keyword) ? "" : "none";
         });
       });
     }
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    document.querySelectorAll(".step-media img").forEach((img) => {
+      img.addEventListener("click", () => {
+        if (!img.getAttribute("src")) return;
+        lightboxImg.src = img.src;
+        const caption = img.closest(".step-media").querySelector(".img-caption");
+        lightboxCaption.textContent = caption ? caption.textContent : img.alt;
+        lightbox.classList.add("open");
+      });
+    });
+
+    lightboxClose.addEventListener("click", () => lightbox.classList.remove("open"));
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.classList.remove("open");
+    });
   </script>
 </body>
 </html>
