@@ -218,6 +218,16 @@
           <i data-lucide="shield" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
           <span>Pengguna</span>
         </button>
+        <button
+          onclick="showPage('settings')"
+          data-page="settings"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="settings" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pengaturan</span>
+        </button>
+      </nav>
+
       <div class="p-4 border-t border-blue-800/80 text-xs text-blue-200/90 bg-black/15 space-y-2">
         <div class="flex items-center justify-between gap-2">
           <span>Status Sinkronisasi</span>
@@ -357,7 +367,7 @@
                 <div>
                   <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Target PBB</p>
                   <p id="stat-target-pbb" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">Rp 0</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akumulasi ketetapan & target</p>
+                  <p id="stat-target-sub" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Otomatis dari akumulasi ketetapan WP</p>
                 </div>
                 <div class="w-11 h-11 bg-indigo-100 dark:bg-indigo-950/80 rounded-xl flex items-center justify-center">
                   <i data-lucide="target" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
@@ -1044,12 +1054,26 @@
                       id="set-target-pbb"
                       type="number"
                       min="0"
-                      step="10000"
+                      step="1"
                       required
                       class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
                     />
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                      Ketetapan baku desa: <strong>Rp 7.276.036</strong> (otomatis mengikuti total SPPT jika melebihi target baku).
+                    </p>
                   </div>
                 </div>
+
+                <label class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 cursor-pointer">
+                  <input
+                    id="set-auto-target"
+                    type="checkbox"
+                    checked
+                    onchange="toggleAutoTargetInput()"
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span>Hitung Target PBB otomatis dari total akumulasi ketetapan Wajib Pajak</span>
+                </label>
 
                 <button
                   type="submit"
@@ -1658,7 +1682,8 @@ function writeSettingsTab(settings) {
     ['villageName', settings.villageName || 'Desa Wani Lumbumpetigo'],
     ['kecamatan', settings.kecamatan || 'Kec. Tanantovea, Kab. Donggala'],
     ['taxYear', Number(settings.taxYear) || 2026],
-    ['targetPBB', Number(settings.targetPBB) || 7276036]
+    ['autoTargetPBB', settings.autoTargetPBB !== false ? 'true' : 'false'],
+    ['targetPBB', Number(settings.targetPBB) || 0]
   ];
   sheet.clearContents();
   sheet.appendRow(['key', 'value']);
@@ -1675,7 +1700,8 @@ function readSettingsTab() {
     villageName: out.villageName || 'Desa Wani Lumbumpetigo',
     kecamatan: out.kecamatan || 'Kec. Tanantovea, Kab. Donggala',
     taxYear: Number(out.taxYear) || 2026,
-    targetPBB: Number(out.targetPBB) || 7276036
+    autoTargetPBB: String(out.autoTargetPBB) !== 'false',
+    targetPBB: Number(out.targetPBB) || 0
   };
 }
 
@@ -1763,6 +1789,7 @@ function jsonResponse(obj) {
         villageName: 'Desa Wani Lumbumpetigo',
         kecamatan: 'Kec. Tanantovea, Kab. Donggala',
         taxYear: 2026,
+        autoTargetPBB: true,
         targetPBB: 7276036,
       },
       taxpayers: [
@@ -1913,8 +1940,8 @@ function jsonResponse(obj) {
       notifications: [
         {
           id: 'ntf-1',
-          title: 'Target PBB 2026 Diperbarui',
-          message: 'Ketetapan target PBB Desa Wani Lumbumpetigo sebesar Rp 7.276.036 aktif.',
+          title: 'Target PBB Otomatis Aktif',
+          message: 'Target PBB dihitung otomatis dari total akumulasi ketetapan SPPT Wajib Pajak.',
           time: 'Hari ini',
           type: 'info',
         },
@@ -1941,8 +1968,8 @@ function jsonResponse(obj) {
           ...DEFAULT_STATE.settings,
           ...(parsed.settings || {}),
         };
-        if (Number(mergedSettings.targetPBB) === 89450000) {
-          mergedSettings.targetPBB = 7276036;
+        if (parsed.settings?.autoTargetPBB === undefined) {
+          mergedSettings.autoTargetPBB = true;
         }
         return {
           ...cloneDefaultState(),
@@ -2405,7 +2432,11 @@ function jsonResponse(obj) {
       const totalWP = tps.length;
       const totalSPPT = tps.length;
       const sumKetetapan = tps.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
-      const targetPBB = Number(appState.settings.targetPBB) || sumKetetapan;
+      const isAutoTarget = appState.settings.autoTargetPBB !== false;
+      const configuredTarget = Number(appState.settings.targetPBB) || 7276036;
+      const targetPBB = isAutoTarget
+        ? Math.max(configuredTarget, sumKetetapan)
+        : configuredTarget;
 
       const paidList = tps.filter((t) => t.status === 'Lunas');
       const unpaidList = tps.filter((t) => t.status !== 'Lunas');
@@ -2413,7 +2444,7 @@ function jsonResponse(obj) {
       const totalPaid = paidList.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
       const totalArrears = unpaidList.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
 
-      const denominator = targetPBB > 0 ? targetPBB : sumKetetapan || 1;
+      const denominator = targetPBB > 0 ? targetPBB : 1;
       const percentPaid = Math.min(100, (totalPaid / denominator) * 100);
 
       return {
@@ -2421,6 +2452,7 @@ function jsonResponse(obj) {
         totalSPPT,
         sumKetetapan,
         targetPBB,
+        isAutoTarget,
         totalPaid,
         totalArrears,
         paidCount: paidList.length,
@@ -2440,6 +2472,12 @@ function jsonResponse(obj) {
       setTxt('stat-total-wp', m.totalWP.toLocaleString('id-ID'));
       setTxt('stat-total-sppt', m.totalSPPT.toLocaleString('id-ID'));
       setTxt('stat-target-pbb', formatRupiah(m.targetPBB));
+      setTxt(
+        'stat-target-sub',
+        m.isAutoTarget
+          ? `Otomatis dari ${m.totalSPPT} ketetapan SPPT`
+          : 'Target manual (Pengaturan Desa)'
+      );
       setTxt('stat-total-paid', formatRupiah(m.totalPaid));
       setTxt('stat-paid-count', `${m.paidCount} SPPT berstatus Lunas`);
       setTxt('stat-total-arrears', formatRupiah(m.totalArrears));
@@ -3396,6 +3434,19 @@ function jsonResponse(obj) {
     }
 
     // ==================== PENGATURAN & BACKUP ====================
+    function toggleAutoTargetInput() {
+      const autoCb = document.getElementById('set-auto-target');
+      const vTarget = document.getElementById('set-target-pbb');
+      if (!autoCb || !vTarget) return;
+      const isAuto = autoCb.checked;
+      vTarget.readOnly = isAuto;
+      vTarget.classList.toggle('opacity-70', isAuto);
+      if (isAuto) {
+        const sumKetetapan = appState.taxpayers.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+        vTarget.value = sumKetetapan;
+      }
+    }
+
     function loadSettingsForm() {
       const s = appState.settings;
       const sc = appState.sheetsConfig;
@@ -3404,13 +3455,22 @@ function jsonResponse(obj) {
       const vKec = document.getElementById('set-kecamatan');
       const vYear = document.getElementById('set-tax-year');
       const vTarget = document.getElementById('set-target-pbb');
+      const vAutoTarget = document.getElementById('set-auto-target');
       const sUrl = document.getElementById('set-sheets-url');
       const sAuto = document.getElementById('set-auto-sync');
+
+      const isAuto = s.autoTargetPBB !== false;
+      const sumKetetapan = appState.taxpayers.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
 
       if (vName) vName.value = s.villageName;
       if (vKec) vKec.value = s.kecamatan;
       if (vYear) vYear.value = s.taxYear;
-      if (vTarget) vTarget.value = s.targetPBB;
+      if (vAutoTarget) vAutoTarget.checked = isAuto;
+      if (vTarget) {
+        vTarget.value = isAuto ? sumKetetapan : (Number(s.targetPBB) || sumKetetapan);
+        vTarget.readOnly = isAuto;
+        vTarget.classList.toggle('opacity-70', isAuto);
+      }
       if (sUrl) sUrl.value = sc.webAppUrl || '';
       if (sAuto) sAuto.checked = sc.autoSync !== false;
 
@@ -3426,7 +3486,9 @@ function jsonResponse(obj) {
       appState.settings.villageName = document.getElementById('set-village-name').value.trim() || 'Desa Wani Lumbumpetigo';
       appState.settings.kecamatan = document.getElementById('set-kecamatan').value.trim() || 'Kec. Tanantovea, Kab. Donggala';
       appState.settings.taxYear = Number(document.getElementById('set-tax-year').value) || 2026;
-      appState.settings.targetPBB = Math.max(0, Number(document.getElementById('set-target-pbb').value) || 0);
+      appState.settings.autoTargetPBB = Boolean(document.getElementById('set-auto-target')?.checked);
+      const rawTarget = Number(document.getElementById('set-target-pbb').value);
+      appState.settings.targetPBB = Number.isFinite(rawTarget) && rawTarget >= 0 ? Math.round(rawTarget) : 7276036;
 
       saveState();
       refreshAllViews();
