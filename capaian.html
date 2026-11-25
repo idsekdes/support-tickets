@@ -47,7 +47,13 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      border: 1.5px solid #000000;
       font-size: 14px;
+    }
+
+    th, td {
+      border: 1.5px solid #000000;
+      padding: 8px 14px;
     }
 
     /* Header Tabel */
@@ -56,17 +62,13 @@
       color: #000000;
       font-weight: 700;
       text-align: center;
-      border: 1.5px solid #000000;
-      padding: 8px 14px;
     }
 
     /* Baris Data Utama */
-    tbody.data-rows td {
+    tbody td {
       background-color: #ffffff;
       color: #222222;
       text-align: center;
-      border: 1.5px solid #000000;
-      padding: 8px 14px;
     }
 
     .col-desa {
@@ -79,9 +81,52 @@
       color: #16325c;
     }
 
+    /* Wrapper Nilai & Opsi Edit pada Kolom Capaian */
+    .capaian-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .nilai-capaian {
+      min-width: 42px;
+      display: inline-block;
+    }
+
+    .input-capaian {
+      width: 55px;
+      padding: 2px 4px;
+      font-family: inherit;
+      font-size: 14px;
+      text-align: center;
+      border: 1px solid #4cc44b;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .btn-edit-capaian {
+      background-color: transparent;
+      border: 1px solid #cccccc;
+      color: #16325c;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit-capaian:hover {
+      background-color: #16325c;
+      color: #ffffff;
+      border-color: #16325c;
+    }
+
+    /* Kolom Opsi */
     .col-opsi {
-      text-align: right !important;
-      padding-right: 18px !important;
+      text-align: right;
+      padding-right: 18px;
     }
 
     .col-opsi a {
@@ -94,35 +139,25 @@
       text-decoration: underline;
     }
 
-    /* Baris Grid Kosong & Tombol Selanjutnya di Bagian Bawah */
-    tbody.grid-bawah td {
-      border: 1px solid #d9d9d9;
-      height: 22px;
-      padding: 0;
-    }
-
-    /* Menghilangkan garis atas grid pertama agar menyatu dengan border hitam tabel */
-    tbody.grid-bawah tr:first-child td {
-      border-top: none;
-    }
-
-    /* Sel Khusus Tombol Selanjutnya */
-    td.cell-selanjutnya {
-      padding: 0 !important;
-      background-color: #002366;
+    /* Area Tombol Selanjutnya di Bawah Tabel */
+    .bottom-nav {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .btn-selanjutnya {
-      display: block;
-      width: 100%;
-      height: 100%;
+      display: inline-block;
+      width: 12%;
+      min-width: 125px;
       background-color: #002366;
       color: #ffffff;
       font-weight: 700;
       font-size: 13px;
       text-align: center;
-      line-height: 22px;
+      padding: 5px 12px;
       text-decoration: none;
+      transition: background-color 0.2s ease;
     }
 
     .btn-selanjutnya:hover {
@@ -155,13 +190,18 @@
         <th style="width: 12%;">opsi</th>
       </tr>
     </thead>
-    <tbody class="data-rows">
+    <tbody>
       <tr>
         <td>1</td>
         <td class="col-desa">Wani Lumbumpetigo</td>
         <td>Tanantovea</td>
         <td class="col-aplikasi">e-HDW</td>
-        <td>100%</td>
+        <td>
+          <div class="capaian-wrapper">
+            <span class="nilai-capaian">100%</span>
+            <button type="button" class="btn-edit-capaian" onclick="toggleEditCapaian(this)">Edit</button>
+          </div>
+        </td>
         <td>25 Nov 2026, 12:08</td>
         <td class="col-opsi"><a href="#">Lihat</a></td>
       </tr>
@@ -170,7 +210,12 @@
         <td class="col-desa">Wani Lumbumpetigo</td>
         <td>Tanantovea</td>
         <td class="col-aplikasi">PBB</td>
-        <td>1%</td>
+        <td>
+          <div class="capaian-wrapper">
+            <span class="nilai-capaian">1%</span>
+            <button type="button" class="btn-edit-capaian" onclick="toggleEditCapaian(this)">Edit</button>
+          </div>
+        </td>
         <td>20 Nov 2026, 05:24</td>
         <td class="col-opsi"><a href="#">Lihat</a></td>
       </tr>
@@ -179,32 +224,74 @@
         <td class="col-desa">Wani Lumbumpetigo</td>
         <td>Tanantovea</td>
         <td class="col-aplikasi">Perlinsos</td>
-        <td>6%</td>
+        <td>
+          <div class="capaian-wrapper">
+            <span class="nilai-capaian">6%</span>
+            <button type="button" class="btn-edit-capaian" onclick="toggleEditCapaian(this)">Edit</button>
+          </div>
+        </td>
         <td>25 Nov 2026, 10:46</td>
         <td class="col-opsi"><a href="#">Lihat</a></td>
       </tr>
     </tbody>
-
-    <!-- Bagian Grid Kosong & Tombol Selanjutnya -->
-    <tbody class="grid-bawah">
-      <tr>
-        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-      </tr>
-      <tr>
-        <td></td><td></td><td></td><td></td><td></td><td></td>
-        <td class="cell-selanjutnya">
-          <a href="#" class="btn-selanjutnya">Selanjutnya &rarr;</a>
-        </td>
-      </tr>
-      <tr>
-        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-      </tr>
-    </tbody>
   </table>
 
+  <!-- Tombol Selanjutnya di Pojok Kanan Bawah -->
+  <div class="bottom-nav">
+    <a href="#" class="btn-selanjutnya">Selanjutnya &rarr;</a>
+  </div>
+
   <script>
+    function toggleEditCapaian(tombol) {
+      const wrapper = tombol.parentElement;
+      const isEditing = tombol.dataset.editing === 'true';
+
+      if (!isEditing) {
+        // Masuk ke mode edit
+        const spanNilai = wrapper.querySelector('.nilai-capaian');
+        const angkaSaatIni = spanNilai.innerText.replace('%', '').trim();
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.min = 0;
+        input.max = 100;
+        input.value = angkaSaatIni;
+        input.className = 'input-capaian';
+
+        // Simpan otomatis saat menekan tombol Enter
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            toggleEditCapaian(tombol);
+          }
+        });
+
+        wrapper.replaceChild(input, spanNilai);
+        input.focus();
+        input.select();
+
+        tombol.innerText = 'Simpan';
+        tombol.dataset.editing = 'true';
+      } else {
+        // Simpan perubahan dan kembali ke mode tampilan teks
+        const input = wrapper.querySelector('.input-capaian');
+        let nilaiBaru = parseInt(input.value, 10);
+
+        if (isNaN(nilaiBaru) || nilaiBaru < 0) nilaiBaru = 0;
+        if (nilaiBaru > 100) nilaiBaru = 100;
+
+        const spanNilai = document.createElement('span');
+        spanNilai.className = 'nilai-capaian';
+        spanNilai.innerText = `${nilaiBaru}%`;
+
+        wrapper.replaceChild(spanNilai, input);
+
+        tombol.innerText = 'Edit';
+        tombol.dataset.editing = 'false';
+      }
+    }
+
     function bagikanKeWhatsApp() {
-      const baris = document.querySelectorAll('#tabelData tbody.data-rows tr');
+      const baris = document.querySelectorAll('#tabelData tbody tr');
       let pesan = "*Laporan Capaian Aplikasi Desa*\n\n";
 
       baris.forEach((tr) => {
@@ -213,7 +300,14 @@
         const desa = kolom[1].innerText.trim();
         const kecamatan = kolom[2].innerText.trim();
         const aplikasi = kolom[3].innerText.trim();
-        const capaian = kolom[4].innerText.trim();
+
+        // Ambil nilai capaian (baik saat mode teks maupun sedang diedit)
+        const spanCapaian = kolom[4].querySelector('.nilai-capaian');
+        const inputCapaian = kolom[4].querySelector('.input-capaian');
+        const capaian = spanCapaian
+          ? spanCapaian.innerText.trim()
+          : `${inputCapaian.value}%`;
+
         const diperbarui = kolom[5].innerText.trim();
 
         pesan += `${no}. *${desa}* (Kec. ${kecamatan})\n`;
