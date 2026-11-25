@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Rekapitulasi Indikator Pendidikan & Kependudukan</title>
+  <style>
+    :root {
+      --bg-page: #f4f7f9;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --border-color: #e2e8f0;
+      --header-bg: #0f4c81;
+      --header-text: #ffffff;
+      --row-stripe: #f8fafc;
+      --row-hover: #eff6ff;
+      --badge-warn-bg: #fef3c7;
+      --badge-warn-text: #92400e;
+      --badge-info-bg: #e0f2fe;
+      --badge-info-text: #075985;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.55;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .table-header-box {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      background: #ffffff;
+    }
+
+    .table-header-box h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .table-header-box p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.indikator-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      text-align: left;
+    }
+
+    table.indikator-table thead th {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 600;
+      padding: 14px 18px;
+      border-bottom: 2px solid #0b3961;
+      white-space: nowrap;
+    }
+
+    table.indikator-table tbody tr {
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.15s ease;
+    }
+
+    table.indikator-table tbody tr:nth-child(even) {
+      background-color: var(--row-stripe);
+    }
+
+    table.indikator-table tbody tr:hover {
+      background-color: var(--row-hover);
+    }
+
+    table.indikator-table tbody td {
+      padding: 14px 18px;
+      vertical-align: top;
+    }
+
+    .col-indikator {
+      font-weight: 600;
+      color: var(--text-main);
+      width: 28%;
+    }
+
+    .col-hasil {
+      width: 26%;
+    }
+
+    .col-keterangan {
+      color: var(--text-muted);
+      width: 46%;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .badge-angka {
+      background-color: var(--badge-info-bg);
+      color: var(--badge-info-text);
+    }
+
+    .badge-catatan {
+      background-color: var(--badge-warn-bg);
+      color: var(--badge-warn-text);
+    }
+
+    .table-footer-note {
+      padding: 14px 24px;
+      background-color: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Tampilan responsif untuk layar kecil (HP) */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px 8px;
+      }
+
+      table.indikator-table thead {
+        display: none;
+      }
+
+      table.indikator-table tbody tr {
+        display: block;
+        margin-bottom: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: #ffffff !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      table.indikator-table tbody td {
+        display: block;
+        width: 100%;
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      table.indikator-table tbody td:last-child {
+        border-bottom: none;
+      }
+
+      table.indikator-table tbody td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #64748b;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="table-header-box">
+      <h2>Rekapitulasi Indikator Pendidikan &amp; Kependudukan</h2>
+      <p>Ringkasan hasil perhitungan berdasarkan data yang tersedia dan catatan verifikasi lapangan.</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="indikator-table">
+        <thead>
+          <tr>
+            <th>Indikator</th>
+            <th>Hasil pada Data di Atas</th>
+            <th>Keterangan &amp; Catatan Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Anak Usia 7–12 Tahun Tidak Sekolah</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-angka">17 orang (dari 57 anak usia 7–12 th)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Tercatat berstatus TIDAK/BELUM SEKOLAH (termasuk 2 baris tanggal 23-February-2018 di 2 Lumbum).
+            </td>
+          </tr>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Anak Usia 13–15 Tahun Tidak Sekolah</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-angka">1 orang (dari 33 anak usia 13–15 th)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Tercatat berstatus TIDAK/BELUM SEKOLAH (lahir 30-December-2011, usia 14 th, 2 Lumbum).
+            </td>
+          </tr>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Anak Usia 16–18 Tahun Tidak Sekolah</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-angka">2 orang (dari 33 anak usia 16–18 th)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Tercatat berstatus TIDAK/BELUM SEKOLAH (lahir 24-November-2008 usia 18 th di 3 Kavatua; lahir 06-June-2010 usia 16 th di 1 Petigo).
+            </td>
+          </tr>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Penduduk Usia 19–24 Tahun yang Sedang Kuliah/Pendidikan Tinggi</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-catatan">Tidak tersedia secara langsung (2 orang bergelar Diploma I/II &amp; Akademi/D3)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Data hanya mencantumkan pendidikan/ijazah terakhir (dari 76 orang usia 19–24 th: 48 SLTA, 11 SLTP, 7 Tamat SD, 7 Tidak/Belum Sekolah, 1 Belum Tamat SD, 1 Diploma I/II, 1 Akademi/D3), bukan status sedang kuliah.
+            </td>
+          </tr>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Anak Usia 3–6 Tahun yang Mengikuti PAUD/TK</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-catatan">Tidak tersedia secara langsung (35 anak usia 3–6 th; 30 Tidak/Belum Sekolah)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Tidak ada kolom status PAUD/TK. Dari 35 anak usia 3–6 th: 30 TIDAK/BELUM SEKOLAH, 1 BELUM TAMAT SD/SEDERAJAT, 1 TAMAT SD/SEDERAJAT, dan 3 SLTP/SEDERAJAT (indikasi anomali input di sumber).
+            </td>
+          </tr>
+          <tr>
+            <td class="col-indikator" data-label="Indikator">Penduduk Usia 15 Tahun ke Atas yang Buta Aksara</td>
+            <td class="col-hasil" data-label="Hasil pada Data di Atas">
+              <span class="badge badge-catatan">Tidak tersedia secara langsung (18 orang usia 15+ th berstatus TIDAK/BELUM SEKOLAH)</span>
+            </td>
+            <td class="col-keterangan" data-label="Keterangan &amp; Catatan Data">
+              Tidak terdapat kolom buta/melek aksara. Dari 435 orang usia &ge;15 th, 18 orang tercatat TIDAK/BELUM SEKOLAH (perlu verifikasi lapangan untuk status aksara).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer-note">
+      Catatan: Tampilan tabel otomatis menyesuaikan ke mode kartu pada layar ponsel.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Rekapitulasi Demografi Umur Penduduk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --accent-primary: #0f766e;
+      --row-hover: #f8fafc;
+      --wa-green: #16a34a;
+      --wa-green-hover: #15803d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      padding: 2rem 1rem;
+      line-height: 1.5;
+    }
+
+    .demografi-container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08),
+                  0 4px 10px -2px rgba(15, 23, 42, 0.04);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    /* Header Section */
+    .card-header {
+      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+      color: #ffffff;
+      padding: 1.75rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-title h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .header-title p {
+      font-size: 0.875rem;
+      color: #ccfbf1;
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .total-badge {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 0.55rem 1rem;
+      border-radius: 12px;
+      text-align: right;
+    }
+
+    .total-badge span {
+      display: block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #ccfbf1;
+      font-weight: 600;
+    }
+
+    .total-badge strong {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* WhatsApp Share Button */
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--wa-green);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 0.72rem 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+      transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-wa:hover {
+      background-color: var(--wa-green-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(21, 128, 61, 0.4);
+    }
+
+    .btn-wa:active {
+      transform: translateY(0);
+    }
+
+    .btn-wa svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Table Wrapper */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      background-color: #f8fafc;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    thead th.text-right,
+    tbody td.text-right,
+    tfoot td.text-right {
+      text-align: right;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background-color: var(--row-hover);
+    }
+
+    tbody td {
+      padding: 1.1rem 1.5rem;
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    /* Age Label & Badge */
+    .age-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .age-sub {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .count-val {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+    }
+
+    /* Progress Bar Column */
+    .bar-cell {
+      min-width: 190px;
+    }
+
+    .progress-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background-color: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    .pct-pill {
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      min-width: 54px;
+      text-align: right;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background-color: #f1f5f9;
+      color: var(--text-secondary);
+    }
+
+    /* Color Accents per Category */
+    .c-balita .dot, .c-balita .progress-fill { background-color: #06b6d4; }
+    .c-anak .dot, .c-anak .progress-fill     { background-color: #3b82f6; }
+    .c-remaja .dot, .c-remaja .progress-fill { background-color: #8b5cf6; }
+    .c-dewasa .dot, .c-dewasa .progress-fill { background-color: #0f766e; }
+    .c-lansia .dot, .c-lansia .progress-fill { background-color: #f59e0b; }
+
+    /* Highlight dominant row */
+    tr.highlight-row {
+      background-color: #f0fdfa55;
+    }
+
+    tr.highlight-row .pct-pill {
+      background-color: #ccfbf1;
+      color: #0f766e;
+    }
+
+    /* Footer Total Row */
+    tfoot tr {
+      background-color: #f8fafc;
+      border-top: 2px solid #cbd5e1;
+    }
+
+    tfoot td {
+      padding: 1.1rem 1.5rem;
+      font-weight: 800;
+      font-size: 0.98rem;
+      color: var(--text-primary);
+    }
+
+    /* Note Footer */
+    .card-footer {
+      padding: 0.95rem 2rem;
+      background-color: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn-wa-sm {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .card-header {
+        padding: 1.35rem 1.25rem;
+      }
+      thead th, tbody td, tfoot td {
+        padding: 0.85rem 1rem;
+      }
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .total-badge {
+        flex: 1;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demografi-container">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="header-title">
+        <h2>Rekapitulasi Demografi Umur Penduduk</h2>
+        <p>Distribusi Kelompok Usia • Posisi Data per 25 November 2026</p>
+      </div>
+      <div class="header-actions">
+        <div class="total-badge">
+          <span>Total Data Valid</span>
+          <strong>1.386 Jiwa</strong>
+        </div>
+        <button type="button" class="btn-wa" onclick="bagikanKeWhatsApp()" aria-label="Bagikan ke WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.15 1.6 5.96L0 24l6.3-1.65a11.86 11.86 0 0 0 5.77 1.47h.01c6.57 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.47-8.43zm-8.45 18.33h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.85 9.85 0 0 1-1.51-5.27c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.9 6.99c0 5.45-4.44 9.89-9.9 9.89zm5.42-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.05 1.02-1.05 2.5s1.07 2.9 1.22 3.1c.15.2 2.11 3.22 5.11 4.52.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+          </svg>
+          <span>Bagikan WA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Kelompok Umur</th>
+            <th class="text-right">Jumlah</th>
+            <th>Proporsi & Persentase</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="c-balita">
+            <td>
+              <div class="age-group">
+                <span class="dot"></span>
+                <div>
+                  Penduduk 0–5 Tahun
+                  <span class="age-sub">Balita & Usia Prasekolah</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-right count-val">102 orang</td>
+            <td class="bar-cell">
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 6.95%;"></div>
+                </div>
+                <span class="pct-pill">6,95%</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="c-anak">
+            <td>
+              <div class="age-group">
+                <span class="dot"></span>
+                <div>
+                  Penduduk 6–12 Tahun
+                  <span class="age-sub">Usia Sekolah Dasar</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-right count-val">196 orang</td>
+            <td class="bar-cell">
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 13.30%;"></div>
+                </div>
+                <span class="pct-pill">13,30%</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="c-remaja">
+            <td>
+              <div class="age-group">
+                <span class="dot"></span>
+                <div>
+                  Penduduk 13–18 Tahun
+                  <span class="age-sub">Usia Remaja / SMP–SMA</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-right count-val">159 orang</td>
+            <td class="bar-cell">
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 11.79%;"></div>
+                </div>
+                <span class="pct-pill">11,79%</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="c-dewasa highlight-row">
+            <td>
+              <div class="age-group">
+                <span class="dot"></span>
+                <div>
+                  Penduduk 19–59 Tahun
+                  <span class="age-sub">Usia Dewasa / Produktif Utama</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-right count-val">814 orang</td>
+            <td class="bar-cell">
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 60.39%;"></div>
+                </div>
+                <span class="pct-pill">60,39%</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="c-lansia">
+            <td>
+              <div class="age-group">
+                <span class="dot"></span>
+                <div>
+                  Penduduk 60+ Tahun
+                  <span class="age-sub">Lanjut Usia (Lansia)</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-right count-val">115 orang</td>
+            <td class="bar-cell">
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 7.56%;"></div>
+                </div>
+                <span class="pct-pill">7,56%</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Total Keseluruhan</td>
+            <td class="text-right">1.386 orang</td>
+            <td class="text-right">100,00%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="card-footer">
+      <span>* Sumber: Rekapitulasi Data Tanggal Lahir Penduduk (per 25 November 2026)</span>
+      <button type="button" class="btn-wa btn-wa-sm" onclick="bagikanKeWhatsApp()">
+        Kirim Rekap ke WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function bagikanKeWhatsApp() {
+      const bullet = "\u2022"; // •
+      const dash   = "\u2013"; // –
+
+      const pesan = [
+        "*REKAPITULASI DEMOGRAFI UMUR PENDUDUK*",
+        "_Posisi Data: 25 November 2026_",
+        "",
+        bullet + " *0" + dash + "5 Tahun:* 102 orang (6,95%)",
+        bullet + " *6" + dash + "12 Tahun:* 196 orang (13,30%)",
+        bullet + " *13" + dash + "18 Tahun:* 159 orang (11,79%)",
+        bullet + " *19" + dash + "59 Tahun:* 814 orang (60,39%)",
+        bullet + " *60+ Tahun:* 115 orang (7,56%)",
+        "",
+        "*Total Valid:* *1.386 orang* (100,00%)"
+      ].join("\n");
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(pesan);
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  </script>
+
+</body>
+</html>
