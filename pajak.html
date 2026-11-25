@@ -1,0 +1,3542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIPBB Desa Wani Lumbumpetigo - Sistem Informasi PBB</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"DM Sans"', 'sans-serif'],
+          },
+          colors: {
+            primary: '#1e40af',
+            secondary: '#059669',
+            accent: '#10b981',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .sidebar-item.active {
+      background: rgba(255, 255, 255, 0.16);
+      border-right: 3px solid #34d399;
+      font-weight: 600;
+    }
+
+    .stat-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+    }
+
+    .bar-anim {
+      transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1), width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Scroll percentage circular button */
+    #scroll-percent {
+      transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
+    }
+
+    #scroll-percent.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(14px) scale(0.9);
+    }
+
+    /* Print styling for Laporan & Struk */
+    @media print {
+      .no-print,
+      aside,
+      header,
+      #scroll-percent,
+      #toast-container {
+        display: none !important;
+      }
+      body,
+      main,
+      .page-section,
+      .print-card {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      .print-only-header {
+        display: block !important;
+      }
+    }
+
+    .print-only-header {
+      display: none;
+    }
+
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.55);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-[80] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-3 sm:px-0"></div>
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Mobile Sidebar Overlay -->
+    <div
+      id="sidebar-overlay"
+      onclick="toggleSidebar(false)"
+      class="fixed inset-0 bg-slate-950/50 backdrop-blur-[1px] z-30 hidden md:hidden transition-opacity"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="no-print w-64 bg-gradient-to-b from-blue-900 via-blue-900 to-emerald-950 text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-200 ease-out shadow-xl"
+    >
+      <div class="p-5 border-b border-blue-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+            <i data-lucide="landmark" class="w-6 h-6 text-blue-900"></i>
+          </div>
+          <div class="min-w-0">
+            <h1 id="sidebar-app-title" class="font-bold text-sm tracking-wide text-white truncate">SIPBB</h1>
+            <p id="sidebar-village-name" class="text-xs text-blue-200 truncate">Desa Wani Lumbumpetigo</p>
+          </div>
+        </div>
+        <button
+          onclick="toggleSidebar(false)"
+          class="md:hidden p-1.5 rounded-lg text-blue-200 hover:text-white hover:bg-white/10"
+          aria-label="Tutup menu"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <nav class="flex-1 py-4 px-2 space-y-1 overflow-y-auto" aria-label="Navigasi Utama">
+        <button
+          onclick="showPage('dashboard')"
+          data-page="dashboard"
+          class="sidebar-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Dashboard</span>
+        </button>
+        <button
+          onclick="showPage('taxpayers')"
+          data-page="taxpayers"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="users" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Data Wajib Pajak</span>
+        </button>
+        <button
+          onclick="showPage('payment')"
+          data-page="payment"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="credit-card" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pembayaran PBB</span>
+        </button>
+        <button
+          onclick="showPage('reports')"
+          data-page="reports"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="file-text" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Laporan</span>
+        </button>
+        <button
+          onclick="showPage('charts')"
+          data-page="charts"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Grafik</span>
+        </button>
+        <button
+          onclick="showPage('users')"
+          data-page="users"
+          class="sidebar-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-blue-50 hover:bg-white/10 transition-colors text-left"
+        >
+          <i data-lucide="shield" class="w-4 h-4 text-emerald-300 flex-shrink-0"></i>
+          <span>Pengguna</span>
+        </button>
+      <div class="p-4 border-t border-blue-800/80 text-xs text-blue-200/90 bg-black/15 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <span>Status Sinkronisasi</span>
+          <span id="sidebar-sync-badge" class="inline-flex items-center gap-1.5 text-emerald-300 font-medium">
+            <span id="sidebar-sync-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span id="sidebar-sync-text">Lokal / Cache</span>
+          </span>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <p id="sidebar-kecamatan" class="text-[11px] text-blue-300/80 truncate">Kec. Tanantovea, Kab. Donggala</p>
+          <button
+            type="button"
+            onclick="syncFromGoogleSheets(true)"
+            class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[10px] font-semibold text-emerald-200 flex-shrink-0 transition-colors"
+            title="Sinkronkan sekarang dengan Google Sheets"
+          >
+            Sync
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Column -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- Sticky Top Header -->
+      <header class="no-print bg-white dark:bg-slate-900 border-b border-gray-200/80 dark:border-slate-800 shadow-sm px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-20">
+        <div class="flex items-center gap-3 min-w-0">
+          <button
+            onclick="toggleSidebar()"
+            class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label="Buka menu navigasi"
+          >
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <div class="min-w-0">
+            <h2 id="header-page-title" class="font-bold text-slate-800 dark:text-white text-base sm:text-lg truncate">
+              Dashboard SIPBB
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+              <span id="header-village-subtitle">Desa Wani Lumbumpetigo</span> • Tahun Pajak <span id="header-tax-year" class="font-semibold text-blue-700 dark:text-emerald-400">2026</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 relative">
+          <button
+            onclick="toggleDarkMode()"
+            class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            title="Mode Gelap / Terang"
+            aria-label="Toggle dark mode"
+          >
+            <i id="dark-mode-icon" data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Notifications Trigger -->
+          <div class="relative">
+            <button
+              id="notif-btn"
+              onclick="toggleNotifications(event)"
+              class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors relative"
+              title="Notifikasi"
+              aria-label="Notifikasi"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+            </button>
+
+            <!-- Notifications Popover -->
+            <div
+              id="notif-popover"
+              class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden"
+            >
+              <div class="px-4 py-3 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gray-50/70 dark:bg-slate-800/60">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-sm text-slate-800 dark:text-white">Notifikasi Sistem</span>
+                  <span id="notif-count-badge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">0</span>
+                </div>
+                <button
+                  onclick="clearNotifications()"
+                  class="text-xs text-blue-600 dark:text-emerald-400 hover:underline font-medium"
+                >
+                  Bersihkan semua
+                </button>
+              </div>
+              <div id="notif-list" class="max-h-72 overflow-y-auto divide-y divide-gray-100 dark:divide-slate-800 text-sm"></div>
+            </div>
+          </div>
+
+          <!-- Active User Badge -->
+          <button
+            onclick="showPage('users')"
+            class="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700/80 border border-blue-200/70 dark:border-slate-700 transition-colors"
+            title="Manajemen Pengguna"
+          >
+            <div class="w-7 h-7 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
+              AD
+            </div>
+            <span class="hidden sm:inline text-xs font-semibold text-slate-700 dark:text-slate-200">Admin Desa</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Workspace -->
+      <main class="flex-1 p-4 md:p-6 bg-gray-50/90 dark:bg-slate-950">
+        <!-- ==================== 1. DASHBOARD ==================== -->
+        <section id="page-dashboard" class="page-section active space-y-6">
+          <!-- 6 Stat Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-blue-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Wajib Pajak</p>
+                  <p id="stat-total-wp" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">0</p>
+                  <p id="stat-wp-sub" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Wajib pajak terdaftar</p>
+                </div>
+                <div class="w-11 h-11 bg-blue-100 dark:bg-blue-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="users" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-emerald-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total SPPT</p>
+                  <p id="stat-total-sppt" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">0</p>
+                  <p id="stat-sppt-sub" class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">SPPT aktif terbit</p>
+                </div>
+                <div class="w-11 h-11 bg-emerald-100 dark:bg-emerald-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="file-text" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-indigo-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Target PBB</p>
+                  <p id="stat-target-pbb" class="text-2xl font-bold text-slate-800 dark:text-white mt-1">Rp 0</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akumulasi ketetapan & target</p>
+                </div>
+                <div class="w-11 h-11 bg-indigo-100 dark:bg-indigo-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="target" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-teal-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Pembayaran</p>
+                  <p id="stat-total-paid" class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-1">Rp 0</p>
+                  <p id="stat-paid-count" class="text-xs text-slate-500 dark:text-slate-400 mt-1">0 SPPT berstatus Lunas</p>
+                </div>
+                <div class="w-11 h-11 bg-teal-100 dark:bg-teal-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="banknote" class="w-5 h-5 text-teal-600 dark:text-teal-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-rose-500">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Tunggakan</p>
+                  <p id="stat-total-arrears" class="text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1">Rp 0</p>
+                  <p id="stat-unpaid-count" class="text-xs text-slate-500 dark:text-slate-400 mt-1">0 SPPT belum lunas</p>
+                </div>
+                <div class="w-11 h-11 bg-rose-100 dark:bg-rose-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-600 dark:text-rose-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-card bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-cyan-600">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Persentase Pelunasan</p>
+                  <p id="stat-percent-paid" class="text-2xl font-bold text-blue-700 dark:text-blue-400 mt-1">0%</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Rasio realisasi terhadap target</p>
+                </div>
+                <div class="w-11 h-11 bg-cyan-100 dark:bg-cyan-950/80 rounded-xl flex items-center justify-center">
+                  <i data-lucide="percent" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- Monthly Payment Bar Chart -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-semibold text-slate-800 dark:text-white text-base">Pembayaran per Bulan</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Distribusi transaksi pembayaran PBB (Jan – Des)</p>
+                </div>
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                  Real-time
+                </span>
+              </div>
+              <div id="dashboard-monthly-chart" class="grid grid-cols-6 sm:grid-cols-12 gap-1.5 sm:gap-2 items-end h-48 pt-6 border-b border-gray-200 dark:border-slate-800 pb-2"></div>
+            </div>
+
+            <!-- Per-Dusun Progress Bars -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-semibold text-slate-800 dark:text-white text-base">Capaian Pelunasan per Dusun</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Persentase nilai PBB lunas di wilayah Desa Wani Lumbumpetigo</p>
+                </div>
+                <button
+                  onclick="showPage('taxpayers')"
+                  class="text-xs font-semibold text-blue-600 dark:text-emerald-400 hover:underline"
+                >
+                  Lihat detail →
+                </button>
+              </div>
+              <div id="dashboard-dusun-bars" class="space-y-3.5"></div>
+            </div>
+          </div>
+
+          <!-- Recent Payments & Quick Actions -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-semibold text-slate-800 dark:text-white text-base">Transaksi Pembayaran Terbaru</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Catatan pembayaran PBB yang baru saja diproses</p>
+              </div>
+              <button
+                onclick="showPage('payment')"
+                class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                Input Pembayaran
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-2.5 text-left rounded-tl-lg">Tanggal</th>
+                    <th class="px-3 py-2.5 text-left">NOP</th>
+                    <th class="px-3 py-2.5 text-left">Nama WP</th>
+                    <th class="px-3 py-2.5 text-left">Dusun</th>
+                    <th class="px-3 py-2.5 text-left">Metode</th>
+                    <th class="px-3 py-2.5 text-right rounded-tr-lg">Nominal</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-payments" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 2. DATA WAJIB PAJAK ==================== -->
+        <section id="page-taxpayers" class="page-section space-y-5">
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Data Wajib Pajak & SPPT</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Kelola data objek pajak, status pembayaran, import/export, dan rincian SPPT</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  onclick="openTaxpayerModal()"
+                  class="px-3.5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="user-plus" class="w-4 h-4"></i>
+                  Tambah Data
+                </button>
+                <button
+                  onclick="triggerImportFile()"
+                  class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  Import
+                </button>
+                <input
+                  type="file"
+                  id="import-file-input"
+                  accept=".csv,.json"
+                  class="hidden"
+                  onchange="handleImportFile(event)"
+                />
+                <button
+                  onclick="exportTaxpayersCSV()"
+                  class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                  Export
+                </button>
+              </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <div class="lg:col-span-2 relative">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input
+                  type="text"
+                  id="search-taxpayer"
+                  oninput="renderTaxpayersTable()"
+                  placeholder="Cari NOP atau Nama Wajib Pajak..."
+                  class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <select
+                id="filter-dusun"
+                onchange="renderTaxpayersTable()"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="ALL">Semua Dusun</option>
+                <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+              </select>
+
+              <select
+                id="filter-status"
+                onchange="renderTaxpayersTable()"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="ALL">Semua Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+              </select>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-3 text-left">No</th>
+                    <th class="px-3 py-3 text-left">NOP</th>
+                    <th class="px-3 py-3 text-left">Nama WP</th>
+                    <th class="px-3 py-3 text-left">Dusun</th>
+                    <th class="px-3 py-3 text-center">Tahun</th>
+                    <th class="px-3 py-3 text-right">Nilai PBB</th>
+                    <th class="px-3 py-3 text-center">Status</th>
+                    <th class="px-3 py-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="taxpayer-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+            <div id="taxpayer-table-summary" class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"></div>
+          </div>
+        </section>
+
+        <!-- ==================== 3. PEMBAYARAN PBB ==================== -->
+        <section id="page-payment" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-slate-800 dark:text-white text-lg">Form Pembayaran PBB</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Ketik atau pilih NOP terdaftar untuk memuat data otomatis</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                  Loket Desa
+                </span>
+              </div>
+
+              <form id="payment-form" onsubmit="handlePaymentSubmit(event)" class="space-y-4">
+                <div>
+                  <label for="pay-nop" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                    NOP (Nomor Objek Pajak) <span class="text-rose-500">*</span>
+                  </label>
+                  <input
+                    id="pay-nop"
+                    list="nop-datalist"
+                    type="text"
+                    required
+                    oninput="handleNopLookup(this.value)"
+                    placeholder="Contoh: 72.03.080.004.001-0001.0"
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <datalist id="nop-datalist"></datalist>
+                  <p id="pay-lookup-hint" class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Pilih NOP dari daftar atau masukkan NOP baru.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="pay-name" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Nama Wajib Pajak <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="pay-name"
+                      type="text"
+                      required
+                      placeholder="Nama lengkap wajib pajak"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="pay-dusun" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Dusun
+                    </label>
+                    <select
+                      id="pay-dusun"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                      <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                      <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                      <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                      <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="pay-amount" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Besaran Pajak (Rp) <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="pay-amount"
+                      type="number"
+                      min="1000"
+                      step="500"
+                      required
+                      value="85000"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="pay-method" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
+                      Metode Pembayaran
+                    </label>
+                    <select
+                      id="pay-method"
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                      <option value="Tunai">Tunai</option>
+                      <option value="Transfer">Transfer Bank</option>
+                      <option value="QRIS">QRIS</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    type="submit"
+                    class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm inline-flex items-center gap-2 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                    Simpan Pembayaran
+                  </button>
+                  <button
+                    type="button"
+                    onclick="resetPaymentForm(true)"
+                    class="px-5 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg text-sm transition-colors"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+
+              <!-- Confirmation Receipt Box -->
+              <div
+                id="payment-success"
+                class="hidden mt-5 p-4 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 rounded-xl"
+              >
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <i data-lucide="check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-emerald-800 dark:text-emerald-300 text-base tracking-wide">LUNAS</span>
+                        <span id="receipt-id" class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-200"></span>
+                      </div>
+                      <p id="receipt-detail" class="text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 mt-1"></p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 self-end sm:self-center">
+                    <button
+                      type="button"
+                      onclick="window.print()"
+                      class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg text-xs font-semibold inline-flex items-center gap-1"
+                    >
+                      <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                      Cetak Struk
+                    </button>
+                    <button
+                      type="button"
+                      onclick="resetPaymentForm(true)"
+                      class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold"
+                    >
+                      Transaksi Baru
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unpaid Quick Queue -->
+            <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h4 class="font-bold text-slate-800 dark:text-white text-base mb-1">Daftar Belum Lunas</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Klik salah satu wajib pajak untuk mengisi form secara otomatis</p>
+              <div id="unpaid-quick-list" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 4. LAPORAN ==================== -->
+        <section id="page-reports" class="page-section space-y-5">
+          <div class="print-card bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="print-only-header mb-4 pb-3 border-b border-slate-300">
+              <h2 class="text-xl font-bold uppercase">Laporan Realisasi & Tunggakan PBB</h2>
+              <p id="print-report-meta" class="text-sm text-slate-600"></p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Laporan PBB Desa</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Filter data berdasarkan tahun pajak, dusun, dan status pelunasan</p>
+              </div>
+              <div class="no-print flex flex-wrap gap-2">
+                <button
+                  onclick="printReport()"
+                  class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="printer" class="w-4 h-4"></i>
+                  Cetak PDF
+                </button>
+                <button
+                  onclick="exportReportCSV()"
+                  class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                  Export Excel
+                </button>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="no-print grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <select
+                id="report-year"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Tahun</option>
+                <option value="2026" selected>Tahun 2026</option>
+                <option value="2025">Tahun 2025</option>
+              </select>
+
+              <select
+                id="report-dusun"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Dusun</option>
+                <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+                <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+                <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+                <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+              </select>
+
+              <select
+                id="report-status"
+                class="px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+              >
+                <option value="ALL">Semua Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+              </select>
+
+              <button
+                onclick="renderReport()"
+                class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="filter" class="w-4 h-4"></i>
+                Tampilkan
+              </button>
+            </div>
+
+            <!-- Report Summary Cards -->
+            <div id="report-summary" class="hidden grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700">
+                <p class="text-xs text-slate-500 dark:text-slate-400">Total Data</p>
+                <p id="rep-sum-count" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">0 SPPT</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-900">
+                <p class="text-xs text-blue-700 dark:text-blue-300">Total Nilai PBB</p>
+                <p id="rep-sum-nilai" class="text-lg font-bold text-blue-800 dark:text-blue-200 mt-0.5">Rp 0</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-900">
+                <p class="text-xs text-emerald-700 dark:text-emerald-300">Total Lunas</p>
+                <p id="rep-sum-lunas" class="text-lg font-bold text-emerald-800 dark:text-emerald-200 mt-0.5">Rp 0</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/40 border border-rose-200/70 dark:border-rose-900">
+                <p class="text-xs text-rose-700 dark:text-rose-300">Total Tunggakan</p>
+                <p id="rep-sum-tunggakan" class="text-lg font-bold text-rose-800 dark:text-rose-200 mt-0.5">Rp 0</p>
+              </div>
+            </div>
+
+            <!-- Report Table / Empty Prompt -->
+            <div id="report-empty" class="text-center py-12 text-slate-400 dark:text-slate-500 border border-dashed border-gray-200 dark:border-slate-800 rounded-xl">
+              <i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-2 opacity-80"></i>
+              <p class="font-medium text-sm">Pilih filter dan klik "Tampilkan" untuk melihat laporan</p>
+            </div>
+
+            <div id="report-table-wrap" class="hidden overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-2.5 text-left">No</th>
+                    <th class="px-3 py-2.5 text-left">NOP</th>
+                    <th class="px-3 py-2.5 text-left">Nama WP</th>
+                    <th class="px-3 py-2.5 text-left">Dusun</th>
+                    <th class="px-3 py-2.5 text-center">Tahun</th>
+                    <th class="px-3 py-2.5 text-right">Nilai PBB</th>
+                    <th class="px-3 py-2.5 text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="report-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 5. GRAFIK ==================== -->
+        <section id="page-charts" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- Target vs Realisasi -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Target vs Realisasi PBB</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Perbandingan target penerimaan desa dengan realisasi terbayar</p>
+
+              <div class="flex items-end justify-center gap-10 h-52 pt-6 border-b border-gray-200 dark:border-slate-800 pb-2">
+                <div class="flex flex-col items-center h-full justify-end w-24">
+                  <span id="chart-target-label" class="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1.5">Rp 0</span>
+                  <div class="w-full bg-blue-500/90 dark:bg-blue-500 rounded-t-lg bar-anim" style="height: 100%"></div>
+                </div>
+                <div class="flex flex-col items-center h-full justify-end w-24">
+                  <span id="chart-realisasi-label" class="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1.5">Rp 0</span>
+                  <div id="chart-realisasi-bar" class="w-full bg-emerald-500 rounded-t-lg bar-anim" style="height: 0%"></div>
+                </div>
+              </div>
+              <div class="flex justify-center gap-14 mt-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <span>Target PBB</span>
+                <span>Realisasi</span>
+              </div>
+            </div>
+
+            <!-- Persentase Pelunasan Donut -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+              <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Persentase Pelunasan</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Tingkat penyelesaian ketetapan PBB Desa Wani Lumbumpetigo</p>
+
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-6 py-3">
+                <div class="relative w-40 h-40 flex-shrink-0">
+                  <svg viewBox="0 0 36 36" class="w-40 h-40 -rotate-90">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="currentColor"
+                      class="text-gray-200 dark:text-slate-800"
+                      stroke-width="3.2"
+                    ></circle>
+                    <circle
+                      id="donut-progress-circle"
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#10b981"
+                      stroke-width="3.2"
+                      stroke-dasharray="0 100"
+                      stroke-linecap="round"
+                      style="transition: stroke-dasharray 0.6s ease;"
+                    ></circle>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="donut-percent-text" class="font-bold text-2xl text-slate-800 dark:text-white">0%</span>
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400">Terbayar</span>
+                  </div>
+                </div>
+
+                <div class="space-y-2.5 text-sm w-full sm:w-auto">
+                  <div class="flex items-center justify-between sm:justify-start gap-3">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                    <span class="text-slate-600 dark:text-slate-300">Lunas:</span>
+                    <span id="donut-legend-paid" class="font-bold text-emerald-700 dark:text-emerald-400">Rp 0</span>
+                  </div>
+                  <div class="flex items-center justify-between sm:justify-start gap-3">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 flex-shrink-0"></span>
+                    <span class="text-slate-600 dark:text-slate-300">Tunggakan:</span>
+                    <span id="donut-legend-unpaid" class="font-bold text-rose-600 dark:text-rose-400">Rp 0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Breakdown per Dusun -->
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <h3 class="font-bold text-slate-800 dark:text-white text-base mb-1">Rincian Capaian per Dusun</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Perbandingan ketetapan, realisasi, dan tunggakan tiap dusun</p>
+            <div id="charts-dusun-breakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </div>
+        </section>
+
+        <!-- ==================== 6. PENGGUNA ==================== -->
+        <section id="page-users" class="page-section space-y-5">
+          <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Manajemen Pengguna</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Kelola akun operator, perangkat desa, dan hak akses sistem</p>
+              </div>
+              <button
+                onclick="openUserModal()"
+                class="px-3.5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+              >
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Tambah Pengguna
+              </button>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-800">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase">
+                  <tr>
+                    <th class="px-3 py-3 text-left">Nama</th>
+                    <th class="px-3 py-3 text-left">Username</th>
+                    <th class="px-3 py-3 text-left">Level Akses</th>
+                    <th class="px-3 py-3 text-center">Status</th>
+                    <th class="px-3 py-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody" class="divide-y divide-gray-100 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 7. PENGATURAN ==================== -->
+        <section id="page-settings" class="page-section space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-5xl">
+            <!-- Appearance & Village Settings -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 space-y-5">
+              <div>
+                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Pengaturan Aplikasi & Desa</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Sesuaikan tampilan, identitas desa, tahun pajak, dan target PBB</p>
+              </div>
+
+              <!-- Dark Mode Switch Row -->
+              <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800/70 border border-gray-200/60 dark:border-slate-700">
+                <div>
+                  <p class="text-sm font-semibold text-slate-800 dark:text-white">Mode Gelap (Dark Mode)</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Kurangi silau layar saat bekerja malam hari</p>
+                </div>
+                <button
+                  type="button"
+                  id="settings-dark-toggle"
+                  onclick="toggleDarkMode()"
+                  role="switch"
+                  aria-checked="false"
+                  class="w-12 h-7 bg-gray-300 dark:bg-emerald-600 rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <span
+                    id="settings-dark-knob"
+                    class="w-5 h-5 bg-white rounded-full shadow transform transition-transform translate-x-1 flex items-center justify-center"
+                  ></span>
+                </button>
+              </div>
+
+              <form id="settings-form" onsubmit="saveSettings(event)" class="space-y-3.5">
+                <div>
+                  <label for="set-village-name" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                    Nama Desa
+                  </label>
+                  <input
+                    id="set-village-name"
+                    type="text"
+                    required
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label for="set-kecamatan" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                    Kecamatan & Kabupaten
+                  </label>
+                  <input
+                    id="set-kecamatan"
+                    type="text"
+                    required
+                    class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                  />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label for="set-tax-year" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                      Tahun Pajak Aktif
+                    </label>
+                    <input
+                      id="set-tax-year"
+                      type="number"
+                      min="2020"
+                      max="2035"
+                      required
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="set-target-pbb" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 mb-1">
+                      Target PBB Desa (Rp)
+                    </label>
+                    <input
+                      id="set-target-pbb"
+                      type="number"
+                      min="0"
+                      step="10000"
+                      required
+                      class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full sm:w-auto px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg inline-flex items-center justify-center gap-2 shadow-sm transition-colors"
+                >
+                  <i data-lucide="save" class="w-4 h-4"></i>
+                  Simpan Pengaturan
+                </button>
+              </form>
+            </div>
+
+            <!-- Backup & Restore Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 space-y-4">
+              <div class="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-bold text-slate-800 dark:text-white text-lg">Google Sheets Web App & Backup Data</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Simpan permanen ke Google Sheets melalui Google Apps Script atau backup/restore JSON</p>
+                </div>
+                <button
+                  type="button"
+                  onclick="openAppsScriptModal()"
+                  class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                  Kode Apps Script (Code.gs)
+                </button>
+              </div>
+
+              <!-- Google Apps Script Web App URL Configuration -->
+              <div class="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/35 border border-indigo-200/80 dark:border-indigo-900 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="set-sheets-url" class="text-sm font-bold text-indigo-950 dark:text-indigo-200">
+                    URL Google Apps Script Web App
+                  </label>
+                  <span id="sheets-connection-pill" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                    Belum Terhubung
+                  </span>
+                </div>
+                <input
+                  id="set-sheets-url"
+                  type="url"
+                  placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                  class="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-indigo-300 dark:border-indigo-700 rounded-lg text-xs font-mono text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <div class="flex items-center justify-between gap-2">
+                  <label class="inline-flex items-center gap-2 text-xs text-indigo-900 dark:text-indigo-200 cursor-pointer">
+                    <input
+                      id="set-auto-sync"
+                      type="checkbox"
+                      checked
+                      class="rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span>Otomatis kirim & tarik data saat tambah/ubah/bayar</span>
+                  </label>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    onclick="saveSheetsConfigOnly()"
+                    class="px-3.5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                    Simpan URL
+                  </button>
+                  <button
+                    type="button"
+                    onclick="testGoogleSheetsConnection()"
+                    class="px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                    Test Koneksi
+                  </button>
+                  <button
+                    type="button"
+                    onclick="syncFromGoogleSheets(true)"
+                    class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="cloud-download" class="w-3.5 h-3.5"></i>
+                    Tarik dari Sheet
+                  </button>
+                  <button
+                    type="button"
+                    onclick="pushFullStateToGoogleSheets()"
+                    class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i>
+                    Kirim Semua ke Sheet
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/35 border border-blue-200/70 dark:border-blue-900 space-y-2">
+                <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">Unduh Backup Lengkap (.JSON)</p>
+                <p class="text-xs text-blue-700 dark:text-blue-300">
+                  Mencakup data wajib pajak, riwayat pembayaran, pengguna, notifikasi, dan pengaturan desa.
+                </p>
+                <button
+                  type="button"
+                  onclick="backupDatabaseJSON()"
+                  class="mt-1 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="database-backup" class="w-4 h-4"></i>
+                  Backup Database
+                </button>
+              </div>
+
+              <div class="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/35 border border-emerald-200/70 dark:border-emerald-900 space-y-2">
+                <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-200">Restore dari Berkas Backup (.JSON)</p>
+                <p class="text-xs text-emerald-700 dark:text-emerald-300">
+                  Pulihkan seluruh data dari file backup JSON yang pernah diunduh sebelumnya.
+                </p>
+                <button
+                  type="button"
+                  onclick="document.getElementById('restore-json-input').click()"
+                  class="mt-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                  Restore Data JSON
+                </button>
+                <input
+                  type="file"
+                  id="restore-json-input"
+                  accept=".json,application/json"
+                  class="hidden"
+                  onchange="handleRestoreJSON(event)"
+                />
+              </div>
+
+              <div class="p-4 rounded-xl bg-rose-50/70 dark:bg-rose-950/35 border border-rose-200/70 dark:border-rose-900 space-y-2">
+                <p class="text-sm font-semibold text-rose-900 dark:text-rose-200">Reset ke Data Awal Contoh</p>
+                <p class="text-xs text-rose-700 dark:text-rose-300">
+                  Mengembalikan seluruh data ke kondisi awal sampel Desa Wani Lumbumpetigo.
+                </p>
+                <button
+                  type="button"
+                  onclick="resetToDefaultData()"
+                  class="mt-1 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                  Reset Data Default
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Bottom-Left Circular Scroll-Percentage Back-to-Top Button -->
+  <button
+    id="scroll-percent"
+    type="button"
+    onclick="scrollToTopSmooth()"
+    title="Kembali ke atas"
+    aria-label="Persentase gulir dan kembali ke atas"
+    class="no-print is-hidden fixed bottom-5 left-5 z-30 w-12 h-12 rounded-full bg-blue-900 dark:bg-emerald-700 text-white shadow-lg border-2 border-emerald-400/70 dark:border-emerald-300/70 flex flex-col items-center justify-center hover:bg-blue-800 dark:hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+  >
+    <i data-lucide="arrow-up" class="w-3.5 h-3.5 -mb-0.5"></i>
+    <span id="scroll-percent-value" class="text-[10px] font-bold leading-tight">0%</span>
+  </button>
+
+  <!-- ==================== MODAL: TAMBAH / EDIT WAJIB PAJAK ==================== -->
+  <div
+    id="taxpayer-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-lg overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <h4 id="taxpayer-modal-title" class="font-bold text-slate-800 dark:text-white text-base">Tambah Data Wajib Pajak</h4>
+        <button onclick="closeTaxpayerModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form id="taxpayer-form" onsubmit="saveTaxpayer(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="tp-edit-id" />
+        <div>
+          <label for="tp-nop" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            NOP (Nomor Objek Pajak) *
+          </label>
+          <input
+            id="tp-nop"
+            type="text"
+            required
+            placeholder="72.03.080.004.001-0010.0"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white"
+          />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="tp-name" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Nama Wajib Pajak *
+            </label>
+            <input
+              id="tp-name"
+              type="text"
+              required
+              placeholder="Nama lengkap"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-dusun" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Dusun *
+            </label>
+            <select
+              id="tp-dusun"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Dusun 1 (Petigo)">Dusun 1 (Petigo)</option>
+              <option value="Dusun 2 (Lumbum)">Dusun 2 (Lumbum)</option>
+              <option value="Dusun 3 (Kavatua)">Dusun 3 (Kavatua)</option>
+              <option value="Dusun 4 (Wani Barat)">Dusun 4 (Wani Barat)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div>
+            <label for="tp-nilai" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Nilai PBB (Rp) *
+            </label>
+            <input
+              id="tp-nilai"
+              type="number"
+              min="1000"
+              step="500"
+              required
+              value="75000"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-year" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Tahun Pajak
+            </label>
+            <input
+              id="tp-year"
+              type="number"
+              min="2020"
+              max="2035"
+              value="2026"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label for="tp-status" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Status
+            </label>
+            <select
+              id="tp-status"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Belum Lunas">Belum Lunas</option>
+              <option value="Lunas">Lunas</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="tp-address" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Alamat Objek Pajak / Luas (Opsional)
+          </label>
+          <input
+            id="tp-address"
+            type="text"
+            placeholder="Contoh: Jl. Trans Sulawesi, Tanah 240 m² / Bangunan 72 m²"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+          />
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+          <button
+            type="button"
+            onclick="closeTaxpayerModal()"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-medium"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm"
+          >
+            Simpan Data
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: DETAIL SPPT WAJIB PAJAK ==================== -->
+  <div
+    id="detail-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-800 dark:text-white text-base">Rincian SPPT Wajib Pajak</h4>
+          <p id="detail-nop-sub" class="text-xs font-mono text-slate-500 dark:text-slate-400"></p>
+        </div>
+        <button onclick="closeDetailModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="detail-modal-body" class="p-5 space-y-4 text-sm"></div>
+      <div id="detail-modal-footer" class="px-5 py-3.5 bg-gray-50 dark:bg-slate-800/60 border-t border-gray-100 dark:border-slate-800 flex flex-wrap justify-between gap-2"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: TAMBAH / EDIT PENGGUNA ==================== -->
+  <div
+    id="user-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-md overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <h4 id="user-modal-title" class="font-bold text-slate-800 dark:text-white text-base">Tambah Pengguna</h4>
+        <button onclick="closeUserModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form id="user-form" onsubmit="saveUser(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="usr-edit-id" />
+        <div>
+          <label for="usr-name" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Nama Lengkap *
+          </label>
+          <input
+            id="usr-name"
+            type="text"
+            required
+            placeholder="Contoh: Bendahara Desa"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+          />
+        </div>
+        <div>
+          <label for="usr-username" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+            Username *
+          </label>
+          <input
+            id="usr-username"
+            type="text"
+            required
+            placeholder="contoh: bendahara"
+            class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-800 dark:text-white"
+          />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="usr-role" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Level Akses
+            </label>
+            <select
+              id="usr-role"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Administrator">Administrator</option>
+              <option value="Operator">Operator</option>
+              <option value="Bendahara">Bendahara</option>
+              <option value="Kepala Desa">Kepala Desa</option>
+            </select>
+          </div>
+          <div>
+            <label for="usr-status" class="block text-xs font-semibold uppercase text-slate-600 dark:text-slate-300 mb-1">
+              Status Akun
+            </label>
+            <select
+              id="usr-status"
+              class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white"
+            >
+              <option value="Aktif">Aktif</option>
+              <option value="Non-Aktif">Non-Aktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+          <button
+            type="button"
+            onclick="closeUserModal()"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-medium"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm"
+          >
+            Simpan Pengguna
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PANDUAN & KODE GOOGLE APPS SCRIPT (Code.gs) ==================== -->
+  <div
+    id="apps-script-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-[1px] p-4"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-800 dark:text-white text-base">Integrasi Permanen Google Sheets (Code.gs)</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Salin kode di bawah ke Google Sheets → Extensions → Apps Script, lalu Deploy sebagai Web App</p>
+        </div>
+        <button onclick="closeAppsScriptModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/35 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 space-y-1 text-xs">
+          <p class="font-bold">Langkah Singkat Deploy Web App:</p>
+          <p>1. Buka <strong>Google Sheets</strong> baru → klik menu <strong>Extensions</strong> → <strong>Apps Script</strong>.</p>
+          <p>2. Hapus kode bawaan, tempel kode di bawah ini, lalu klik <strong>Save</strong>.</p>
+          <p>3. Klik <strong>Deploy</strong> → <strong>New deployment</strong> → pilih type <strong>Web app</strong> → set <strong>Execute as: Me</strong> &amp; <strong>Who has access: Anyone</strong> → klik <strong>Deploy</strong>.</p>
+          <p>4. Salin <strong>Web app URL</strong> (<code>https://script.google.com/macros/s/.../exec</code>) dan tempel ke kolom URL di menu Pengaturan.</p>
+        </div>
+        <div class="relative">
+          <button
+            type="button"
+            onclick="copyAppsScriptCode()"
+            class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm mb-2"
+          >
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            Salin Kode Code.gs
+          </button>
+          <pre id="apps-script-code-block" class="p-4 rounded-xl bg-slate-950 text-emerald-300 font-mono text-[11px] leading-relaxed overflow-x-auto select-all"></pre>
+        </div>
+      </div>
+      <div class="px-5 py-3.5 bg-gray-50 dark:bg-slate-800/60 border-t border-gray-100 dark:border-slate-800 flex justify-end">
+        <button
+          type="button"
+          onclick="closeAppsScriptModal()"
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 text-white rounded-lg text-xs font-semibold"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'sipbb_wani_lumbumpetigo_v1';
+
+    const APPS_SCRIPT_CODE = `const SHEET_TABS = {
+  taxpayers: 'WajibPajak',
+  payments: 'Pembayaran',
+  users: 'Pengguna',
+  settings: 'Pengaturan'
+};
+
+function doGet(e) {
+  try {
+    const action = (e && e.parameter && e.parameter.action) || 'getAll';
+    if (action === 'ping') {
+      return jsonResponse({ ok: true, message: 'SIPBB Web App aktif', timestamp: new Date().toISOString() });
+    }
+    const payload = readAllSheetsData();
+    return jsonResponse({ ok: true, data: payload });
+  } catch (err) {
+    return jsonResponse({ ok: false, error: err.message });
+  }
+}
+
+function doPost(e) {
+  try {
+    const raw = e && e.postData && e.postData.contents ? e.postData.contents : '{}';
+    const body = JSON.parse(raw);
+    const action = body.action || 'syncAll';
+
+    if (action === 'ping') {
+      return jsonResponse({ ok: true, message: 'Koneksi POST berhasil', timestamp: new Date().toISOString() });
+    }
+
+    if (action === 'syncAll' && body.data) {
+      writeAllSheetsData(body.data);
+      return jsonResponse({ ok: true, message: 'Seluruh data tersimpan ke Google Sheets' });
+    }
+
+    if (action === 'upsertTaxpayer' && body.taxpayer) {
+      upsertRowById(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'], body.taxpayer);
+      return jsonResponse({ ok: true, message: 'Wajib pajak tersimpan' });
+    }
+
+    if (action === 'deleteTaxpayer' && body.id) {
+      deleteRowById(SHEET_TABS.taxpayers, body.id);
+      return jsonResponse({ ok: true, message: 'Wajib pajak dihapus' });
+    }
+
+    if (action === 'recordPayment') {
+      if (body.taxpayer) {
+        upsertRowById(SHEET_TABS.taxpayers, ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'], body.taxpayer);
+      }
+      if (body.payment) {
+        appendRow(SHEET_TABS.payments, ['id','date','monthIndex','nop','name','dusun','method','amount'], body.payment);
+      }
+      return jsonResponse({ ok: true, message: 'Pembayaran tercatat di Google Sheets' });
+    }
+
+    if (action === 'saveUser' && body.user) {
+      upsertRowById(SHEET_TABS.users, ['id','name','username','role','status'], body.user);
+      return jsonResponse({ ok: true, message: 'Pengguna tersimpan' });
+    }
+
+    if (action === 'deleteUser' && body.id) {
+      deleteRowById(SHEET_TABS.users, body.id);
+      return jsonResponse({ ok: true, message: 'Pengguna dihapus' });
+    }
+
+    if (action === 'saveSettings' && body.settings) {
+      writeSettingsTab(body.settings);
+      return jsonResponse({ ok: true, message: 'Pengaturan tersimpan' });
+    }
+
+    if (body.data) {
+      writeAllSheetsData(body.data);
+      return jsonResponse({ ok: true, message: 'Data tersinkronisasi' });
+    }
+
+    return jsonResponse({ ok: false, error: 'Aksi tidak dikenali: ' + action });
+  } catch (err) {
+    return jsonResponse({ ok: false, error: err.message });
+  }
+}
+
+function getOrCreateSheet(name, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+  }
+  if (sheet.getLastRow() === 0 && headers && headers.length > 0) {
+    sheet.appendRow(headers);
+  }
+  return sheet;
+}
+
+function readSheetObjects(name, headers) {
+  const sheet = getOrCreateSheet(name, headers);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return [];
+  const values = sheet.getRange(1, 1, lastRow, headers.length).getValues();
+  const cols = values[0];
+  return values.slice(1).filter(r => r[0] !== '' && r[0] !== null).map(row => {
+    const obj = {};
+    cols.forEach((col, idx) => {
+      obj[col] = row[idx];
+    });
+    return obj;
+  });
+}
+
+function replaceSheetRows(name, headers, items) {
+  const sheet = getOrCreateSheet(name, headers);
+  sheet.clearContents();
+  sheet.appendRow(headers);
+  if (Array.isArray(items) && items.length > 0) {
+    const matrix = items.map(item => headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : '')));
+    sheet.getRange(2, 1, matrix.length, headers.length).setValues(matrix);
+  }
+}
+
+function upsertRowById(name, headers, item) {
+  const sheet = getOrCreateSheet(name, headers);
+  const lastRow = sheet.getLastRow();
+  const rowValues = headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : ''));
+  if (lastRow > 1) {
+    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i < ids.length; i++) {
+      if (String(ids[i][0]) === String(item.id)) {
+        sheet.getRange(i + 2, 1, 1, headers.length).setValues([rowValues]);
+        return;
+      }
+    }
+  }
+  sheet.appendRow(rowValues);
+}
+
+function appendRow(name, headers, item) {
+  const sheet = getOrCreateSheet(name, headers);
+  const rowValues = headers.map(h => (item[h] !== undefined && item[h] !== null ? item[h] : ''));
+  sheet.appendRow(rowValues);
+}
+
+function deleteRowById(name, id) {
+  const sheet = getOrCreateSheet(name, ['id']);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return;
+  const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  for (let i = ids.length - 1; i >= 0; i--) {
+    if (String(ids[i][0]) === String(id)) {
+      sheet.deleteRow(i + 2);
+    }
+  }
+}
+
+function writeSettingsTab(settings) {
+  const sheet = getOrCreateSheet(SHEET_TABS.settings, ['key', 'value']);
+  const entries = [
+    ['villageName', settings.villageName || 'Desa Wani Lumbumpetigo'],
+    ['kecamatan', settings.kecamatan || 'Kec. Tanantovea, Kab. Donggala'],
+    ['taxYear', Number(settings.taxYear) || 2026],
+    ['targetPBB', Number(settings.targetPBB) || 7276036]
+  ];
+  sheet.clearContents();
+  sheet.appendRow(['key', 'value']);
+  sheet.getRange(2, 1, entries.length, 2).setValues(entries);
+}
+
+function readSettingsTab() {
+  const rows = readSheetObjects(SHEET_TABS.settings, ['key', 'value']);
+  const out = {};
+  rows.forEach(r => {
+    if (r.key) out[r.key] = r.value;
+  });
+  return {
+    villageName: out.villageName || 'Desa Wani Lumbumpetigo',
+    kecamatan: out.kecamatan || 'Kec. Tanantovea, Kab. Donggala',
+    taxYear: Number(out.taxYear) || 2026,
+    targetPBB: Number(out.targetPBB) || 7276036
+  };
+}
+
+function writeAllSheetsData(data) {
+  if (Array.isArray(data.taxpayers)) {
+    replaceSheetRows(
+      SHEET_TABS.taxpayers,
+      ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth'],
+      data.taxpayers
+    );
+  }
+  if (Array.isArray(data.payments)) {
+    replaceSheetRows(
+      SHEET_TABS.payments,
+      ['id','date','monthIndex','nop','name','dusun','method','amount'],
+      data.payments
+    );
+  }
+  if (Array.isArray(data.users)) {
+    replaceSheetRows(
+      SHEET_TABS.users,
+      ['id','name','username','role','status'],
+      data.users
+    );
+  }
+  if (data.settings) {
+    writeSettingsTab(data.settings);
+  }
+}
+
+function readAllSheetsData() {
+  const taxpayers = readSheetObjects(
+    SHEET_TABS.taxpayers,
+    ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth']
+  ).map(t => ({
+    ...t,
+    nilai: Number(t.nilai) || 0,
+    year: Number(t.year) || 2026,
+    paidMonth: t.paidMonth === '' || t.paidMonth === null ? null : Number(t.paidMonth)
+  }));
+
+  const payments = readSheetObjects(
+    SHEET_TABS.payments,
+    ['id','date','monthIndex','nop','name','dusun','method','amount']
+  ).map(p => ({
+    ...p,
+    monthIndex: Number(p.monthIndex) || 0,
+    amount: Number(p.amount) || 0
+  }));
+
+  const users = readSheetObjects(
+    SHEET_TABS.users,
+    ['id','name','username','role','status']
+  );
+
+  const settings = readSettingsTab();
+
+  return { taxpayers, payments, users, settings };
+}
+
+function jsonResponse(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+    const DUSUN_LIST = [
+      'Dusun 1 (Petigo)',
+      'Dusun 2 (Lumbum)',
+      'Dusun 3 (Kavatua)',
+      'Dusun 4 (Wani Barat)',
+    ];
+
+    const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    const DEFAULT_STATE = {
+      darkMode: false,
+      activePage: 'dashboard',
+      sheetsConfig: {
+        webAppUrl: '',
+        autoSync: true,
+        lastSyncAt: null,
+        connected: false,
+      },
+      settings: {
+        villageName: 'Desa Wani Lumbumpetigo',
+        kecamatan: 'Kec. Tanantovea, Kab. Donggala',
+        taxYear: 2026,
+        targetPBB: 7276036,
+      },
+      taxpayers: [
+        {
+          id: 'tp-1',
+          nop: '72.03.080.004.001-0001.0',
+          name: 'Ahmad Yusuf',
+          dusun: 'Dusun 1 (Petigo)',
+          nilai: 85000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Trans Sulawesi RT 01, Tanah 210 m² / Bangunan 64 m²',
+          paidDate: '2026-02-14',
+          paidMonth: 1,
+        },
+        {
+          id: 'tp-2',
+          nop: '72.03.080.004.001-0002.0',
+          name: 'Siti Rahmah',
+          dusun: 'Dusun 2 (Lumbum)',
+          nilai: 62000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Lorong Pesisir RT 02, Tanah 180 m² / Bangunan 48 m²',
+          paidDate: null,
+          paidMonth: null,
+        },
+        {
+          id: 'tp-3',
+          nop: '72.03.080.004.001-0003.0',
+          name: 'Budi Santoso',
+          dusun: 'Dusun 1 (Petigo)',
+          nilai: 120000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Jl. Poros Wani RT 03, Tanah 320 m² / Bangunan 90 m²',
+          paidDate: '2026-03-09',
+          paidMonth: 2,
+        },
+        {
+          id: 'tp-4',
+          nop: '72.03.080.004.001-0004.0',
+          name: 'Fatimah Zahra',
+          dusun: 'Dusun 3 (Kavatua)',
+          nilai: 55000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Dusun Kavatua RT 01, Tanah 160 m² / Bangunan 42 m²',
+          paidDate: null,
+          paidMonth: null,
+        },
+        {
+          id: 'tp-5',
+          nop: '72.03.080.004.001-0005.0',
+          name: 'Hendra Wijaya',
+          dusun: 'Dusun 4 (Wani Barat)',
+          nilai: 95000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Wani Barat RT 02, Tanah 250 m² / Bangunan 72 m²',
+          paidDate: '2026-04-18',
+          paidMonth: 3,
+        },
+        {
+          id: 'tp-6',
+          nop: '72.03.080.004.001-0006.0',
+          name: 'Nurhayati Latif',
+          dusun: 'Dusun 2 (Lumbum)',
+          nilai: 78000,
+          year: 2026,
+          status: 'Lunas',
+          address: 'Lumbum Tengah RT 01, Tanah 200 m² / Bangunan 60 m²',
+          paidDate: '2026-05-11',
+          paidMonth: 4,
+        },
+        {
+          id: 'tp-7',
+          nop: '72.03.080.004.001-0007.0',
+          name: 'Ruslan Palopo',
+          dusun: 'Dusun 3 (Kavatua)',
+          nilai: 110000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Perkebunan Kavatua, Tanah 450 m² / Bangunan 65 m²',
+          paidDate: null,
+          paidMonth: null,
+        },
+        {
+          id: 'tp-8',
+          nop: '72.03.080.004.001-0008.0',
+          name: 'Marlina Dg. Ngai',
+          dusun: 'Dusun 4 (Wani Barat)',
+          nilai: 68000,
+          year: 2026,
+          status: 'Belum Lunas',
+          address: 'Pantai Barat Wani RT 04, Tanah 175 m² / Bangunan 54 m²',
+          paidDate: null,
+          paidMonth: null,
+        },
+      ],
+      payments: [
+        {
+          id: 'TRX-20260214-01',
+          date: '2026-02-14',
+          monthIndex: 1,
+          nop: '72.03.080.004.001-0001.0',
+          name: 'Ahmad Yusuf',
+          dusun: 'Dusun 1 (Petigo)',
+          method: 'Tunai',
+          amount: 85000,
+        },
+        {
+          id: 'TRX-20260309-02',
+          date: '2026-03-09',
+          monthIndex: 2,
+          nop: '72.03.080.004.001-0003.0',
+          name: 'Budi Santoso',
+          dusun: 'Dusun 1 (Petigo)',
+          method: 'Transfer',
+          amount: 120000,
+        },
+        {
+          id: 'TRX-20260418-03',
+          date: '2026-04-18',
+          monthIndex: 3,
+          nop: '72.03.080.004.001-0005.0',
+          name: 'Hendra Wijaya',
+          dusun: 'Dusun 4 (Wani Barat)',
+          method: 'QRIS',
+          amount: 95000,
+        },
+        {
+          id: 'TRX-20260511-04',
+          date: '2026-05-11',
+          monthIndex: 4,
+          nop: '72.03.080.004.001-0006.0',
+          name: 'Nurhayati Latif',
+          dusun: 'Dusun 2 (Lumbum)',
+          method: 'Tunai',
+          amount: 78000,
+        },
+      ],
+      users: [
+        { id: 'usr-1', name: 'Admin Desa', username: 'admin', role: 'Administrator', status: 'Aktif' },
+        { id: 'usr-2', name: 'Operator Pelayanan 1', username: 'operator1', role: 'Operator', status: 'Aktif' },
+        { id: 'usr-3', name: 'Kepala Desa Wani Lumbumpetigo', username: 'kades', role: 'Kepala Desa', status: 'Aktif' },
+      ],
+      notifications: [
+        {
+          id: 'ntf-1',
+          title: 'Target PBB 2026 Diperbarui',
+          message: 'Ketetapan target PBB Desa Wani Lumbumpetigo sebesar Rp 7.276.036 aktif.',
+          time: 'Hari ini',
+          type: 'info',
+        },
+        {
+          id: 'ntf-2',
+          title: '4 SPPT Belum Lunas',
+          message: 'Segera lakukan penagihan kolektif di Dusun 2, Dusun 3, dan Dusun 4.',
+          time: 'Baru saja',
+          type: 'warning',
+        },
+      ],
+    };
+
+    function cloneDefaultState() {
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return cloneDefaultState();
+        const parsed = JSON.parse(raw);
+        const mergedSettings = {
+          ...DEFAULT_STATE.settings,
+          ...(parsed.settings || {}),
+        };
+        if (Number(mergedSettings.targetPBB) === 89450000) {
+          mergedSettings.targetPBB = 7276036;
+        }
+        return {
+          ...cloneDefaultState(),
+          ...parsed,
+          sheetsConfig: {
+            ...DEFAULT_STATE.sheetsConfig,
+            ...(parsed.sheetsConfig || {}),
+          },
+          settings: mergedSettings,
+          taxpayers: Array.isArray(parsed.taxpayers) ? parsed.taxpayers : cloneDefaultState().taxpayers,
+          payments: Array.isArray(parsed.payments) ? parsed.payments : cloneDefaultState().payments,
+          users: Array.isArray(parsed.users) ? parsed.users : cloneDefaultState().users,
+          notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
+        };
+      } catch (err) {
+        console.error('Gagal memuat state lokal:', err);
+        return cloneDefaultState();
+      }
+    }
+
+    let appState = loadState();
+    let reportFilterApplied = false;
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        console.error('Gagal menyimpan ke localStorage:', err);
+      }
+    }
+
+    function formatRupiah(num) {
+      const val = Math.round(Number(num) || 0);
+      return 'Rp ' + val.toLocaleString('id-ID');
+    }
+
+    function formatShortRupiah(num) {
+      const val = Number(num) || 0;
+      if (val >= 1000000) {
+        return 'Rp ' + (val / 1000000).toFixed(2).replace('.', ',') + ' jt';
+      }
+      if (val >= 1000) {
+        return 'Rp ' + Math.round(val / 1000) + ' rb';
+      }
+      return formatRupiah(val);
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const colors = {
+        success: 'bg-emerald-600 text-white border-emerald-500',
+        error: 'bg-rose-600 text-white border-rose-500',
+        info: 'bg-blue-700 text-white border-blue-600',
+        warning: 'bg-amber-600 text-white border-amber-500',
+      };
+      const icons = {
+        success: 'check-circle-2',
+        error: 'alert-circle',
+        info: 'info',
+        warning: 'alert-triangle',
+      };
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg border text-xs sm:text-sm font-medium transition-all duration-300 ${colors[type] || colors.info}`;
+      el.innerHTML = `<i data-lucide="${icons[type] || 'info'}" class="w-4 h-4 flex-shrink-0"></i><span class="flex-1">${escapeHtml(message)}</span>`;
+      container.appendChild(el);
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(12px)';
+        setTimeout(() => el.remove(), 260);
+      }, 3400);
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function pushNotification(title, message, type = 'info') {
+      appState.notifications.unshift({
+        id: 'ntf-' + Date.now(),
+        title,
+        message,
+        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        type,
+      });
+      if (appState.notifications.length > 20) {
+        appState.notifications = appState.notifications.slice(0, 20);
+      }
+      saveState();
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notif-list');
+      const badge = document.getElementById('notif-count-badge');
+      const dot = document.getElementById('notif-dot');
+      if (!list || !badge || !dot) return;
+
+      const count = appState.notifications.length;
+      badge.textContent = count;
+      dot.classList.toggle('hidden', count === 0);
+
+      if (count === 0) {
+        list.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Tidak ada notifikasi baru</div>`;
+        return;
+      }
+
+      list.innerHTML = appState.notifications
+        .map(
+          (n) => `
+          <div class="p-3.5 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-xs text-slate-800 dark:text-slate-100">${escapeHtml(n.title)}</p>
+              <span class="text-[10px] text-slate-400">${escapeHtml(n.time)}</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(n.message)}</p>
+          </div>`
+        )
+        .join('');
+    }
+
+    function toggleNotifications(e) {
+      if (e) e.stopPropagation();
+      const pop = document.getElementById('notif-popover');
+      if (pop) pop.classList.toggle('hidden');
+    }
+
+    function clearNotifications() {
+      appState.notifications = [];
+      saveState();
+      renderNotifications();
+      showToast('Semua notifikasi dibersihkan', 'info');
+    }
+
+    document.addEventListener('click', (e) => {
+      const pop = document.getElementById('notif-popover');
+      const btn = document.getElementById('notif-btn');
+      if (pop && !pop.classList.contains('hidden') && !pop.contains(e.target) && (!btn || !btn.contains(e.target))) {
+        pop.classList.add('hidden');
+      }
+    });
+
+    // ==================== NAVIGATION & THEME ====================
+    const PAGE_TITLES = {
+      dashboard: 'Dashboard SIPBB',
+      taxpayers: 'Data Wajib Pajak & SPPT',
+      payment: 'Pembayaran PBB',
+      reports: 'Laporan PBB Desa',
+      charts: 'Grafik Realisasi PBB',
+      users: 'Manajemen Pengguna',
+      settings: 'Pengaturan Sistem',
+    };
+
+    function showPage(page) {
+      const target = document.getElementById('page-' + page);
+      if (!target) return;
+
+      document.querySelectorAll('.page-section').forEach((s) => s.classList.remove('active'));
+      target.classList.add('active');
+
+      document.querySelectorAll('.sidebar-item').forEach((b) => {
+        b.classList.toggle('active', b.getAttribute('data-page') === page);
+      });
+
+      const titleEl = document.getElementById('header-page-title');
+      if (titleEl) titleEl.textContent = PAGE_TITLES[page] || 'Sistem Informasi PBB';
+
+      appState.activePage = page;
+      saveState();
+
+      if (page === 'dashboard') renderDashboard();
+      if (page === 'taxpayers') renderTaxpayersTable();
+      if (page === 'payment') {
+        populateNopDatalist();
+        renderUnpaidQuickList();
+      }
+      if (page === 'charts') renderChartsPage();
+      if (page === 'users') renderUsersTable();
+      if (page === 'settings') loadSettingsForm();
+
+      if (window.innerWidth < 768) toggleSidebar(false);
+    }
+
+    function toggleSidebar(forceState) {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebar-overlay');
+      if (!sb || !ov) return;
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : sb.classList.contains('-translate-x-full');
+      sb.classList.toggle('-translate-x-full', !shouldOpen);
+      ov.classList.toggle('hidden', !shouldOpen);
+    }
+
+    function applyDarkModeUI() {
+      const isDark = Boolean(appState.darkMode);
+      document.documentElement.classList.toggle('dark', isDark);
+
+      const icon = document.getElementById('dark-mode-icon');
+      if (icon) {
+        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      }
+
+      const toggleBtn = document.getElementById('settings-dark-toggle');
+      const knob = document.getElementById('settings-dark-knob');
+      if (toggleBtn && knob) {
+        toggleBtn.setAttribute('aria-checked', isDark ? 'true' : 'false');
+        knob.classList.toggle('translate-x-6', isDark);
+        knob.classList.toggle('translate-x-1', !isDark);
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleDarkMode() {
+      appState.darkMode = !appState.darkMode;
+      saveState();
+      applyDarkModeUI();
+    }
+
+    function applyVillageMetadataUI() {
+      const s = appState.settings;
+      const sbVillage = document.getElementById('sidebar-village-name');
+      const sbKec = document.getElementById('sidebar-kecamatan');
+      const hdVillage = document.getElementById('header-village-subtitle');
+      const hdYear = document.getElementById('header-tax-year');
+
+      if (sbVillage) sbVillage.textContent = s.villageName;
+      if (sbKec) sbKec.textContent = s.kecamatan;
+      if (hdVillage) hdVillage.textContent = s.villageName;
+      if (hdYear) hdYear.textContent = s.taxYear;
+    }
+
+    // ==================== GOOGLE SHEETS SYNC ====================
+    function updateSyncStatusUI(statusText, stateType = 'local') {
+      const dot = document.getElementById('sidebar-sync-dot');
+      const text = document.getElementById('sidebar-sync-text');
+      const pill = document.getElementById('sheets-connection-pill');
+
+      const dotColors = {
+        connected: 'bg-emerald-400',
+        syncing: 'bg-sky-400 animate-pulse',
+        error: 'bg-rose-400',
+        local: 'bg-amber-400',
+      };
+
+      if (dot) {
+        dot.className = `w-2 h-2 rounded-full ${dotColors[stateType] || dotColors.local}`;
+      }
+      if (text) {
+        text.textContent = statusText;
+      }
+      if (pill) {
+        if (stateType === 'connected') {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+          pill.textContent = 'Terhubung ke Google Sheets';
+        } else if (stateType === 'syncing') {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300';
+          pill.textContent = 'Menyinkronkan...';
+        } else if (stateType === 'error') {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+          pill.textContent = 'Gagal Koneksi';
+        } else {
+          pill.className = 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+          pill.textContent = 'Belum Terhubung';
+        }
+      }
+    }
+
+    function openAppsScriptModal() {
+      const modal = document.getElementById('apps-script-modal');
+      const block = document.getElementById('apps-script-code-block');
+      if (block) block.textContent = APPS_SCRIPT_CODE;
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeAppsScriptModal() {
+      const modal = document.getElementById('apps-script-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function copyAppsScriptCode() {
+      const ta = document.createElement('textarea');
+      ta.value = APPS_SCRIPT_CODE;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Kode Code.gs berhasil disalin ke clipboard!', 'success');
+      } catch (e) {
+        showToast('Gagal menyalin otomatis, silakan blok & salin manual.', 'warning');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function saveSheetsConfigOnly() {
+      const urlInput = document.getElementById('set-sheets-url');
+      const autoSyncInput = document.getElementById('set-auto-sync');
+      const url = urlInput ? urlInput.value.trim() : '';
+
+      appState.sheetsConfig.webAppUrl = url;
+      appState.sheetsConfig.autoSync = autoSyncInput ? autoSyncInput.checked : true;
+      saveState();
+
+      if (!url) {
+        appState.sheetsConfig.connected = false;
+        saveState();
+        updateSyncStatusUI('Lokal / Cache', 'local');
+        showToast('URL dikosongkan. Aplikasi berjalan dalam mode penyimpanan lokal.', 'info');
+        return;
+      }
+
+      showToast('URL Web App Google Sheets disimpan.', 'success');
+      testGoogleSheetsConnection();
+    }
+
+    async function testGoogleSheetsConnection() {
+      const url = (document.getElementById('set-sheets-url')?.value || appState.sheetsConfig.webAppUrl || '').trim();
+      if (!url) {
+        showToast('Masukkan URL Google Apps Script Web App terlebih dahulu.', 'warning');
+        return;
+      }
+      appState.sheetsConfig.webAppUrl = url;
+      saveState();
+      updateSyncStatusUI('Menguji...', 'syncing');
+
+      try {
+        const sep = url.includes('?') ? '&' : '?';
+        const res = await fetch(`${url}${sep}action=ping`, { method: 'GET' });
+        const json = await res.json();
+        if (json && json.ok) {
+          appState.sheetsConfig.connected = true;
+          appState.sheetsConfig.lastSyncAt = new Date().toISOString();
+          saveState();
+          updateSyncStatusUI('Google Sheets', 'connected');
+          showToast('Koneksi ke Google Sheets berhasil!', 'success');
+        } else {
+          throw new Error(json?.error || 'Respons tidak valid');
+        }
+      } catch (err) {
+        appState.sheetsConfig.connected = false;
+        saveState();
+        updateSyncStatusUI('Gagal Sync', 'error');
+        showToast('Gagal terhubung ke Google Sheets: ' + err.message, 'error');
+      }
+    }
+
+    async function syncFromGoogleSheets(notifyUser = false) {
+      const url = (appState.sheetsConfig.webAppUrl || '').trim();
+      if (!url) {
+        if (notifyUser) showToast('URL Web App Google Sheets belum diatur di menu Pengaturan.', 'warning');
+        return;
+      }
+
+      updateSyncStatusUI('Menarik data...', 'syncing');
+      try {
+        const sep = url.includes('?') ? '&' : '?';
+        const res = await fetch(`${url}${sep}action=getAll`, { method: 'GET' });
+        const json = await res.json();
+        if (!json || !json.ok || !json.data) {
+          throw new Error(json?.error || 'Format data Google Sheets tidak valid');
+        }
+
+        const remote = json.data;
+        if (Array.isArray(remote.taxpayers) && remote.taxpayers.length > 0) {
+          appState.taxpayers = remote.taxpayers;
+        }
+        if (Array.isArray(remote.payments)) {
+          appState.payments = remote.payments;
+        }
+        if (Array.isArray(remote.users) && remote.users.length > 0) {
+          appState.users = remote.users;
+        }
+        if (remote.settings) {
+          appState.settings = {
+            ...appState.settings,
+            ...remote.settings,
+          };
+        }
+
+        appState.sheetsConfig.connected = true;
+        appState.sheetsConfig.lastSyncAt = new Date().toISOString();
+        saveState();
+        refreshAllViews();
+        updateSyncStatusUI('Google Sheets', 'connected');
+        if (notifyUser) showToast('Data berhasil disinkronkan dari Google Sheets!', 'success');
+      } catch (err) {
+        updateSyncStatusUI('Gagal Sync', 'error');
+        if (notifyUser) showToast('Gagal menarik data dari Google Sheets: ' + err.message, 'error');
+      }
+    }
+
+    async function pushActionToGoogleSheets(payload, silent = true) {
+      const url = (appState.sheetsConfig.webAppUrl || '').trim();
+      if (!url) return false;
+      if (silent && !appState.sheetsConfig.autoSync) return false;
+
+      updateSyncStatusUI('Menyimpan...', 'syncing');
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (json && json.ok) {
+          appState.sheetsConfig.connected = true;
+          appState.sheetsConfig.lastSyncAt = new Date().toISOString();
+          saveState();
+          updateSyncStatusUI('Google Sheets', 'connected');
+          return true;
+        }
+        throw new Error(json?.error || 'Gagal menyimpan ke Sheet');
+      } catch (err) {
+        updateSyncStatusUI('Gagal Sync', 'error');
+        if (!silent) showToast('Gagal mengirim ke Google Sheets: ' + err.message, 'error');
+        return false;
+      }
+    }
+
+    async function pushFullStateToGoogleSheets() {
+      const url = (appState.sheetsConfig.webAppUrl || '').trim();
+      if (!url) {
+        showToast('Masukkan URL Web App Google Sheets di Pengaturan terlebih dahulu.', 'warning');
+        return;
+      }
+      const ok = await pushActionToGoogleSheets(
+        {
+          action: 'syncAll',
+          data: {
+            taxpayers: appState.taxpayers,
+            payments: appState.payments,
+            users: appState.users,
+            settings: appState.settings,
+          },
+        },
+        false
+      );
+      if (ok) {
+        showToast('Seluruh data berhasil dikirim & tersimpan permanen di Google Sheets!', 'success');
+      }
+    }
+
+    // ==================== METRICS & DASHBOARD ====================
+    function computeMetrics() {
+      const tps = appState.taxpayers;
+      const totalWP = tps.length;
+      const totalSPPT = tps.length;
+      const sumKetetapan = tps.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+      const targetPBB = Number(appState.settings.targetPBB) || sumKetetapan;
+
+      const paidList = tps.filter((t) => t.status === 'Lunas');
+      const unpaidList = tps.filter((t) => t.status !== 'Lunas');
+
+      const totalPaid = paidList.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+      const totalArrears = unpaidList.reduce((acc, t) => acc + (Number(t.nilai) || 0), 0);
+
+      const denominator = targetPBB > 0 ? targetPBB : sumKetetapan || 1;
+      const percentPaid = Math.min(100, (totalPaid / denominator) * 100);
+
+      return {
+        totalWP,
+        totalSPPT,
+        sumKetetapan,
+        targetPBB,
+        totalPaid,
+        totalArrears,
+        paidCount: paidList.length,
+        unpaidCount: unpaidList.length,
+        percentPaid,
+      };
+    }
+
+    function renderDashboard() {
+      const m = computeMetrics();
+
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setTxt('stat-total-wp', m.totalWP.toLocaleString('id-ID'));
+      setTxt('stat-total-sppt', m.totalSPPT.toLocaleString('id-ID'));
+      setTxt('stat-target-pbb', formatRupiah(m.targetPBB));
+      setTxt('stat-total-paid', formatRupiah(m.totalPaid));
+      setTxt('stat-paid-count', `${m.paidCount} SPPT berstatus Lunas`);
+      setTxt('stat-total-arrears', formatRupiah(m.totalArrears));
+      setTxt('stat-unpaid-count', `${m.unpaidCount} SPPT belum lunas`);
+      setTxt('stat-percent-paid', m.percentPaid.toFixed(1).replace('.', ',') + '%');
+
+      // Monthly bar chart
+      const monthlyTotals = new Array(12).fill(0);
+      appState.payments.forEach((p) => {
+        const idx = Number(p.monthIndex);
+        if (idx >= 0 && idx < 12) {
+          monthlyTotals[idx] += Number(p.amount) || 0;
+        }
+      });
+      const maxMonth = Math.max(...monthlyTotals, 1);
+
+      const monthlyContainer = document.getElementById('dashboard-monthly-chart');
+      if (monthlyContainer) {
+        monthlyContainer.innerHTML = monthlyTotals
+          .map((val, idx) => {
+            const pct = val > 0 ? Math.max(12, Math.round((val / maxMonth) * 100)) : 4;
+            const barClass = val > 0 ? 'bg-gradient-to-t from-blue-700 to-emerald-500' : 'bg-gray-200 dark:bg-slate-800';
+            return `
+              <div class="flex flex-col items-center justify-end h-full group" title="${MONTH_NAMES[idx]}: ${formatRupiah(val)}">
+                <span class="text-[9px] font-semibold text-slate-500 dark:text-slate-400 mb-1 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
+                  ${val > 0 ? Math.round(val / 1000) + 'k' : ''}
+                </span>
+                <div class="w-full max-w-[26px] rounded-t-md bar-anim ${barClass}" style="height: ${pct}%"></div>
+                <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-1.5">${MONTH_NAMES[idx]}</span>
+              </div>
+            `;
+          })
+          .join('');
+      }
+
+      // Per-dusun progress bars
+      const dusunContainer = document.getElementById('dashboard-dusun-bars');
+      if (dusunContainer) {
+        dusunContainer.innerHTML = DUSUN_LIST.map((dusun) => {
+          const items = appState.taxpayers.filter((t) => t.dusun === dusun);
+          const total = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const paid = items
+            .filter((t) => t.status === 'Lunas')
+            .reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const pct = total > 0 ? Math.round((paid / total) * 100) : 0;
+          const color = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-blue-600' : 'bg-amber-500';
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-semibold text-slate-700 dark:text-slate-200">${escapeHtml(dusun)}</span>
+                <span class="text-slate-500 dark:text-slate-400">${formatRupiah(paid)} / ${formatRupiah(total)} (<strong class="text-slate-700 dark:text-slate-200">${pct}%</strong>)</span>
+              </div>
+              <div class="h-2.5 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full ${color} rounded-full bar-anim" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Recent payments table
+      const recentBody = document.getElementById('dashboard-recent-payments');
+      if (recentBody) {
+        const recent = [...appState.payments].slice(-5).reverse();
+        if (recent.length === 0) {
+          recentBody.innerHTML = `<tr><td colspan="6" class="px-3 py-6 text-center text-xs text-slate-400">Belum ada transaksi pembayaran tercatat</td></tr>`;
+        } else {
+          recentBody.innerHTML = recent
+            .map(
+              (p) => `
+              <tr class="hover:bg-gray-50/80 dark:hover:bg-slate-800/50 transition-colors">
+                <td class="px-3 py-2.5 text-xs text-slate-600 dark:text-slate-300">${escapeHtml(p.date)}</td>
+                <td class="px-3 py-2.5 font-mono text-xs text-slate-700 dark:text-slate-200">${escapeHtml(p.nop)}</td>
+                <td class="px-3 py-2.5 font-medium text-slate-800 dark:text-white">${escapeHtml(p.name)}</td>
+                <td class="px-3 py-2.5 text-xs text-slate-600 dark:text-slate-300">${escapeHtml(p.dusun)}</td>
+                <td class="px-3 py-2.5">
+                  <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300">${escapeHtml(p.method)}</span>
+                </td>
+                <td class="px-3 py-2.5 text-right font-semibold text-emerald-700 dark:text-emerald-400">${formatRupiah(p.amount)}</td>
+              </tr>`
+            )
+            .join('');
+        }
+      }
+    }
+
+    // ==================== DATA WAJIB PAJAK ====================
+    function getFilteredTaxpayers() {
+      const q = (document.getElementById('search-taxpayer')?.value || '').trim().toLowerCase();
+      const dusun = document.getElementById('filter-dusun')?.value || 'ALL';
+      const status = document.getElementById('filter-status')?.value || 'ALL';
+
+      return appState.taxpayers.filter((t) => {
+        const matchQuery =
+          !q ||
+          String(t.name).toLowerCase().includes(q) ||
+          String(t.nop).toLowerCase().includes(q) ||
+          String(t.dusun).toLowerCase().includes(q);
+        const matchDusun = dusun === 'ALL' || t.dusun === dusun;
+        const matchStatus = status === 'ALL' || t.status === status;
+        return matchQuery && matchDusun && matchStatus;
+      });
+    }
+
+    function renderTaxpayersTable() {
+      const tbody = document.getElementById('taxpayer-tbody');
+      const summary = document.getElementById('taxpayer-table-summary');
+      if (!tbody) return;
+
+      const filtered = getFilteredTaxpayers();
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-xs text-slate-400">Tidak ada data wajib pajak yang cocok dengan filter</td></tr>`;
+      } else {
+        tbody.innerHTML = filtered
+          .map((t, idx) => {
+            const isLunas = t.status === 'Lunas';
+            return `
+              <tr class="hover:bg-gray-50/80 dark:hover:bg-slate-800/50 transition-colors">
+                <td class="px-3 py-3 text-xs text-slate-500 dark:text-slate-400">${idx + 1}</td>
+                <td class="px-3 py-3 font-mono text-xs text-slate-700 dark:text-slate-200 whitespace-nowrap">${escapeHtml(t.nop)}</td>
+                <td class="px-3 py-3 font-semibold text-slate-800 dark:text-white">${escapeHtml(t.name)}</td>
+                <td class="px-3 py-3 text-xs text-slate-600 dark:text-slate-300">${escapeHtml(t.dusun)}</td>
+                <td class="px-3 py-3 text-center text-xs text-slate-600 dark:text-slate-300">${escapeHtml(t.year)}</td>
+                <td class="px-3 py-3 text-right font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap">${formatRupiah(t.nilai)}</td>
+                <td class="px-3 py-3 text-center">
+                  <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
+                    isLunas
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                  }">
+                    ${escapeHtml(t.status)}
+                  </span>
+                </td>
+                <td class="px-3 py-3 text-center whitespace-nowrap">
+                  <div class="inline-flex items-center gap-1.5">
+                    <button
+                      onclick="openDetailModal('${escapeHtml(t.id)}')"
+                      class="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-blue-950 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold"
+                    >
+                      Lihat
+                    </button>
+                    <button
+                      onclick="openTaxpayerModal('${escapeHtml(t.id)}')"
+                      class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold"
+                    >
+                      Edit
+                    </button>
+                    ${
+                      !isLunas
+                        ? `<button
+                            onclick="payTaxpayerDirectly('${escapeHtml(t.id)}')"
+                            class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold"
+                          >
+                            Bayar
+                          </button>`
+                        : ''
+                    }
+                    <button
+                      onclick="deleteTaxpayer('${escapeHtml(t.id)}')"
+                      class="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 dark:bg-rose-950 dark:hover:bg-rose-900 text-rose-600 dark:text-rose-300 text-xs font-semibold"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </td>
+              </tr>`;
+          })
+          .join('');
+      }
+
+      if (summary) {
+        const totalSum = filtered.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+        summary.innerHTML = `
+          <span>Menampilkan <strong>${filtered.length}</strong> dari <strong>${appState.taxpayers.length}</strong> Wajib Pajak</span>
+          <span>Total Ketetapan Tampil: <strong class="text-slate-800 dark:text-white">${formatRupiah(totalSum)}</strong></span>
+        `;
+      }
+    }
+
+    function openTaxpayerModal(id = null) {
+      const modal = document.getElementById('taxpayer-modal');
+      const title = document.getElementById('taxpayer-modal-title');
+      document.getElementById('tp-edit-id').value = id || '';
+
+      if (id) {
+        const tp = appState.taxpayers.find((x) => x.id === id);
+        if (!tp) return;
+        title.textContent = 'Edit Data Wajib Pajak';
+        document.getElementById('tp-nop').value = tp.nop;
+        document.getElementById('tp-name').value = tp.name;
+        document.getElementById('tp-dusun').value = tp.dusun;
+        document.getElementById('tp-nilai').value = tp.nilai;
+        document.getElementById('tp-year').value = tp.year || appState.settings.taxYear;
+        document.getElementById('tp-status').value = tp.status;
+        document.getElementById('tp-address').value = tp.address || '';
+      } else {
+        title.textContent = 'Tambah Data Wajib Pajak';
+        const nextNum = String(appState.taxpayers.length + 1).padStart(4, '0');
+        document.getElementById('tp-nop').value = `72.03.080.004.001-${nextNum}.0`;
+        document.getElementById('tp-name').value = '';
+        document.getElementById('tp-dusun').value = DUSUN_LIST[0];
+        document.getElementById('tp-nilai').value = 75000;
+        document.getElementById('tp-year').value = appState.settings.taxYear;
+        document.getElementById('tp-status').value = 'Belum Lunas';
+        document.getElementById('tp-address').value = '';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeTaxpayerModal() {
+      const modal = document.getElementById('taxpayer-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    async function saveTaxpayer(e) {
+      e.preventDefault();
+      const editId = document.getElementById('tp-edit-id').value;
+      const nop = document.getElementById('tp-nop').value.trim();
+      const name = document.getElementById('tp-name').value.trim();
+      const dusun = document.getElementById('tp-dusun').value;
+      const nilai = Math.max(0, Number(document.getElementById('tp-nilai').value) || 0);
+      const year = Number(document.getElementById('tp-year').value) || appState.settings.taxYear;
+      const status = document.getElementById('tp-status').value;
+      const address = document.getElementById('tp-address').value.trim();
+
+      const now = new Date();
+      const todayIso = now.toISOString().slice(0, 10);
+      let savedRecord = null;
+
+      if (editId) {
+        const idx = appState.taxpayers.findIndex((x) => x.id === editId);
+        if (idx !== -1) {
+          const prev = appState.taxpayers[idx];
+          savedRecord = {
+            ...prev,
+            nop,
+            name,
+            dusun,
+            nilai,
+            year,
+            status,
+            address,
+            paidDate: status === 'Lunas' ? prev.paidDate || todayIso : null,
+            paidMonth: status === 'Lunas' ? (prev.paidMonth ?? now.getMonth()) : null,
+          };
+          appState.taxpayers[idx] = savedRecord;
+        }
+        showToast(`Data wajib pajak "${name}" diperbarui.`, 'success');
+      } else {
+        savedRecord = {
+          id: 'tp-' + Date.now(),
+          nop,
+          name,
+          dusun,
+          nilai,
+          year,
+          status,
+          address,
+          paidDate: status === 'Lunas' ? todayIso : null,
+          paidMonth: status === 'Lunas' ? now.getMonth() : null,
+        };
+        appState.taxpayers.unshift(savedRecord);
+        pushNotification('Wajib Pajak Baru', `${name} (${nop}) ditambahkan ke database.`, 'info');
+        showToast(`Wajib pajak "${name}" berhasil ditambahkan.`, 'success');
+      }
+
+      saveState();
+      closeTaxpayerModal();
+      refreshAllViews();
+
+      if (savedRecord) {
+        pushActionToGoogleSheets({ action: 'upsertTaxpayer', taxpayer: savedRecord }, true);
+      }
+    }
+
+    function deleteTaxpayer(id) {
+      const tp = appState.taxpayers.find((x) => x.id === id);
+      if (!tp) return;
+      appState.taxpayers = appState.taxpayers.filter((x) => x.id !== id);
+      saveState();
+      refreshAllViews();
+      showToast(`Data "${tp.name}" telah dihapus.`, 'warning');
+      pushActionToGoogleSheets({ action: 'deleteTaxpayer', id }, true);
+    }
+
+    function openDetailModal(id) {
+      const tp = appState.taxpayers.find((x) => x.id === id);
+      if (!tp) return;
+
+      document.getElementById('detail-nop-sub').textContent = `NOP: ${tp.nop}`;
+      const isLunas = tp.status === 'Lunas';
+
+      document.getElementById('detail-modal-body').innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-gray-50 dark:bg-slate-800/70 border border-gray-200/70 dark:border-slate-700">
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Nama Wajib Pajak</p>
+            <p class="font-bold text-slate-800 dark:text-white">${escapeHtml(tp.name)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Wilayah Dusun</p>
+            <p class="font-semibold text-slate-800 dark:text-white">${escapeHtml(tp.dusun)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tahun Pajak</p>
+            <p class="font-semibold text-slate-800 dark:text-white">${escapeHtml(tp.year)}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Ketetapan PBB Terhutang</p>
+            <p class="font-bold text-blue-700 dark:text-blue-400 text-base">${formatRupiah(tp.nilai)}</p>
+          </div>
+          <div class="sm:col-span-2">
+            <p class="text-xs text-slate-500 dark:text-slate-400">Lokasi / Keterangan Objek Pajak</p>
+            <p class="text-slate-700 dark:text-slate-200">${escapeHtml(tp.address || 'Desa Wani Lumbumpetigo')}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Status Pembayaran</p>
+            <span class="inline-block mt-0.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+              isLunas
+                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+            }">
+              ${escapeHtml(tp.status)}
+            </span>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tanggal Pelunasan</p>
+            <p class="font-medium text-slate-700 dark:text-slate-200">${escapeHtml(tp.paidDate || '-')}</p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('detail-modal-footer').innerHTML = `
+        <button
+          type="button"
+          onclick="closeDetailModal()"
+          class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-semibold"
+        >
+          Tutup
+        </button>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            onclick="closeDetailModal(); openTaxpayerModal('${escapeHtml(tp.id)}')"
+            class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-semibold"
+          >
+            Edit Data
+          </button>
+          ${
+            !isLunas
+              ? `<button
+                  type="button"
+                  onclick="closeDetailModal(); payTaxpayerDirectly('${escapeHtml(tp.id)}')"
+                  class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold"
+                >
+                  Proses Pembayaran
+                </button>`
+              : ''
+          }
+        </div>
+      `;
+
+      const modal = document.getElementById('detail-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('detail-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function payTaxpayerDirectly(id) {
+      const tp = appState.taxpayers.find((x) => x.id === id);
+      if (!tp) return;
+      showPage('payment');
+      document.getElementById('pay-nop').value = tp.nop;
+      handleNopLookup(tp.nop);
+    }
+
+    // ==================== IMPORT & EXPORT ====================
+    function triggerImportFile() {
+      const input = document.getElementById('import-file-input');
+      if (input) {
+        input.value = '';
+        input.click();
+      }
+    }
+
+    function handleImportFile(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = String(e.target?.result || '').trim();
+          let importedCount = 0;
+
+          if (file.name.toLowerCase().endsWith('.json')) {
+            const arr = JSON.parse(text);
+            if (!Array.isArray(arr)) throw new Error('Format JSON harus berupa array data wajib pajak');
+            arr.forEach((item, idx) => {
+              if (!item.name && !item.nop) return;
+              appState.taxpayers.push({
+                id: 'tp-imp-' + Date.now() + '-' + idx,
+                nop: String(item.nop || `72.03.080.004.001-${String(appState.taxpayers.length + 1).padStart(4, '0')}.0`),
+                name: String(item.name || 'Wajib Pajak'),
+                dusun: DUSUN_LIST.includes(item.dusun) ? item.dusun : DUSUN_LIST[0],
+                nilai: Number(item.nilai) || 75000,
+                year: Number(item.year) || appState.settings.taxYear,
+                status: item.status === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+                address: String(item.address || ''),
+                paidDate: item.status === 'Lunas' ? new Date().toISOString().slice(0, 10) : null,
+                paidMonth: item.status === 'Lunas' ? new Date().getMonth() : null,
+              });
+              importedCount++;
+            });
+          } else {
+            const lines = text.split(/\r?\n/).filter((l) => l.trim());
+            const startIdx = lines[0]?.toLowerCase().includes('nop') ? 1 : 0;
+            for (let i = startIdx; i < lines.length; i++) {
+              const sep = lines[i].includes(';') ? ';' : ',';
+              const cols = lines[i].split(sep).map((c) => c.replace(/^"|"$/g, '').trim());
+              if (cols.length < 2) continue;
+              const [nop, name, dusun, nilai, status, year] = cols;
+              appState.taxpayers.push({
+                id: 'tp-csv-' + Date.now() + '-' + i,
+                nop: nop || `72.03.080.004.001-${String(appState.taxpayers.length + 1).padStart(4, '0')}.0`,
+                name: name || 'Wajib Pajak',
+                dusun: DUSUN_LIST.includes(dusun) ? dusun : DUSUN_LIST[0],
+                nilai: Number(String(nilai || '75000').replace(/[^\d]/g, '')) || 75000,
+                year: Number(year) || appState.settings.taxYear,
+                status: status === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+                address: '',
+                paidDate: status === 'Lunas' ? new Date().toISOString().slice(0, 10) : null,
+                paidMonth: status === 'Lunas' ? new Date().getMonth() : null,
+              });
+              importedCount++;
+            }
+          }
+
+          if (importedCount === 0) {
+            showToast('Tidak ada baris data valid yang dapat diimpor.', 'warning');
+            return;
+          }
+
+          saveState();
+          refreshAllViews();
+          showToast(`Berhasil mengimpor ${importedCount} data wajib pajak.`, 'success');
+          pushNotification('Import Data', `${importedCount} data wajib pajak diimpor dari berkas.`, 'info');
+          pushActionToGoogleSheets(
+            {
+              action: 'syncAll',
+              data: {
+                taxpayers: appState.taxpayers,
+                payments: appState.payments,
+                users: appState.users,
+                settings: appState.settings,
+              },
+            },
+            true
+          );
+        } catch (err) {
+          showToast('Gagal mengimpor berkas: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function downloadCSV(filename, rows) {
+      const csvContent =
+        '\uFEFF' +
+        rows
+          .map((row) =>
+            row
+              .map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`)
+              .join(',')
+          )
+          .join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function exportTaxpayersCSV() {
+      const data = getFilteredTaxpayers();
+      const rows = [
+        ['No', 'NOP', 'Nama Wajib Pajak', 'Dusun', 'Tahun Pajak', 'Nilai PBB', 'Status', 'Tanggal Bayar'],
+        ...data.map((t, i) => [
+          i + 1,
+          t.nop,
+          t.name,
+          t.dusun,
+          t.year,
+          t.nilai,
+          t.status,
+          t.paidDate || '-',
+        ]),
+      ];
+      downloadCSV(`data-wajib-pajak-${appState.settings.taxYear}.csv`, rows);
+      showToast('Data Wajib Pajak diekspor ke CSV.', 'success');
+    }
+
+    // ==================== PEMBAYARAN PBB ====================
+    function populateNopDatalist() {
+      const dl = document.getElementById('nop-datalist');
+      if (!dl) return;
+      dl.innerHTML = appState.taxpayers
+        .map((t) => `<option value="${escapeHtml(t.nop)}">${escapeHtml(t.name)} (${escapeHtml(t.status)})</option>`)
+        .join('');
+    }
+
+    function handleNopLookup(nopValue) {
+      const clean = String(nopValue || '').trim();
+      const hint = document.getElementById('pay-lookup-hint');
+      const found = appState.taxpayers.find((t) => t.nop === clean);
+      if (found) {
+        document.getElementById('pay-name').value = found.name;
+        document.getElementById('pay-dusun').value = found.dusun;
+        document.getElementById('pay-amount').value = found.nilai;
+        if (hint) {
+          hint.innerHTML =
+            found.status === 'Lunas'
+              ? `<span class="text-emerald-600 dark:text-emerald-400 font-semibold">SPPT ditemukan: ${escapeHtml(found.name)} — Sudah berstatus LUNAS (${escapeHtml(found.paidDate || '-')}).</span>`
+              : `<span class="text-blue-600 dark:text-blue-400 font-semibold">SPPT ditemukan: ${escapeHtml(found.name)} • Tagihan ${formatRupiah(found.nilai)}.</span>`;
+        }
+      } else if (hint) {
+        hint.textContent = 'NOP baru: data wajib pajak akan otomatis terdaftar saat pembayaran disimpan.';
+      }
+    }
+
+    function renderUnpaidQuickList() {
+      const container = document.getElementById('unpaid-quick-list');
+      if (!container) return;
+      const unpaid = appState.taxpayers.filter((t) => t.status !== 'Lunas');
+      if (unpaid.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-900">
+            <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">Seluruh SPPT Telah Lunas!</p>
+            <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">Tidak ada tunggakan tersisa.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = unpaid
+        .map(
+          (t) => `
+          <button
+            type="button"
+            onclick="selectUnpaidForPayment('${escapeHtml(t.nop)}')"
+            class="w-full text-left p-3 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 bg-gray-50/70 dark:bg-slate-800/60 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-all"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-semibold text-sm text-slate-800 dark:text-white truncate">${escapeHtml(t.name)}</span>
+              <span class="font-bold text-xs text-emerald-700 dark:text-emerald-400 whitespace-nowrap">${formatRupiah(t.nilai)}</span>
+            </div>
+            <div class="flex items-center justify-between gap-2 mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <span class="font-mono">${escapeHtml(t.nop)}</span>
+              <span>${escapeHtml(t.dusun)}</span>
+            </div>
+          </button>`
+        )
+        .join('');
+    }
+
+    function selectUnpaidForPayment(nop) {
+      const input = document.getElementById('pay-nop');
+      if (input) {
+        input.value = nop;
+        handleNopLookup(nop);
+        input.focus();
+      }
+    }
+
+    function handlePaymentSubmit(e) {
+      e.preventDefault();
+      const nop = document.getElementById('pay-nop').value.trim();
+      const name = document.getElementById('pay-name').value.trim();
+      const dusun = document.getElementById('pay-dusun').value;
+      const amount = Math.max(1000, Number(document.getElementById('pay-amount').value) || 0);
+      const method = document.getElementById('pay-method').value;
+
+      const now = new Date();
+      const todayIso = now.toISOString().slice(0, 10);
+      const monthIndex = now.getMonth();
+
+      let targetTp = appState.taxpayers.find((t) => t.nop === nop);
+      if (targetTp) {
+        targetTp.name = name;
+        targetTp.dusun = dusun;
+        targetTp.nilai = amount;
+        targetTp.status = 'Lunas';
+        targetTp.paidDate = todayIso;
+        targetTp.paidMonth = monthIndex;
+      } else {
+        targetTp = {
+          id: 'tp-' + Date.now(),
+          nop,
+          name,
+          dusun,
+          nilai: amount,
+          year: appState.settings.taxYear,
+          status: 'Lunas',
+          address: '',
+          paidDate: todayIso,
+          paidMonth: monthIndex,
+        };
+        appState.taxpayers.unshift(targetTp);
+      }
+
+      const trxId = `TRX-${todayIso.replace(/-/g, '')}-${String(appState.payments.length + 1).padStart(2, '0')}`;
+      const paymentRecord = {
+        id: trxId,
+        date: todayIso,
+        monthIndex,
+        nop,
+        name,
+        dusun,
+        method,
+        amount,
+      };
+      appState.payments.push(paymentRecord);
+
+      saveState();
+      refreshAllViews();
+
+      const receiptBox = document.getElementById('payment-success');
+      const receiptIdEl = document.getElementById('receipt-id');
+      const receiptDetailEl = document.getElementById('receipt-detail');
+      if (receiptIdEl) receiptIdEl.textContent = trxId;
+      if (receiptDetailEl) {
+        receiptDetailEl.textContent = `${name} (${nop}) • ${formatRupiah(amount)} via ${method} pada ${todayIso}`;
+      }
+      if (receiptBox) receiptBox.classList.remove('hidden');
+
+      pushNotification('Pembayaran PBB Lunas', `${name} melunasi PBB sebesar ${formatRupiah(amount)} (${method}).`, 'success');
+      showToast(`Pembayaran ${name} (${formatRupiah(amount)}) berhasil disimpan!`, 'success');
+
+      pushActionToGoogleSheets(
+        {
+          action: 'recordPayment',
+          taxpayer: targetTp,
+          payment: paymentRecord,
+        },
+        true
+      );
+    }
+
+    function resetPaymentForm(hideReceipt = false) {
+      const form = document.getElementById('payment-form');
+      if (form) form.reset();
+      const hint = document.getElementById('pay-lookup-hint');
+      if (hint) hint.textContent = 'Pilih NOP dari daftar atau masukkan NOP baru.';
+      if (hideReceipt) {
+        document.getElementById('payment-success')?.classList.add('hidden');
+      }
+    }
+
+    // ==================== LAPORAN ====================
+    function getFilteredReportItems() {
+      const yearVal = document.getElementById('report-year')?.value || 'ALL';
+      const dusunVal = document.getElementById('report-dusun')?.value || 'ALL';
+      const statusVal = document.getElementById('report-status')?.value || 'ALL';
+
+      return appState.taxpayers.filter((t) => {
+        const matchYear = yearVal === 'ALL' || String(t.year) === String(yearVal);
+        const matchDusun = dusunVal === 'ALL' || t.dusun === dusunVal;
+        const matchStatus = statusVal === 'ALL' || t.status === statusVal;
+        return matchYear && matchDusun && matchStatus;
+      });
+    }
+
+    function renderReport() {
+      reportFilterApplied = true;
+      const items = getFilteredReportItems();
+
+      const emptyBox = document.getElementById('report-empty');
+      const tableWrap = document.getElementById('report-table-wrap');
+      const summaryBox = document.getElementById('report-summary');
+      const tbody = document.getElementById('report-tbody');
+
+      if (emptyBox) emptyBox.classList.add('hidden');
+      if (tableWrap) tableWrap.classList.remove('hidden');
+      if (summaryBox) {
+        summaryBox.classList.remove('hidden');
+        summaryBox.classList.add('grid');
+      }
+
+      const totalNilai = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+      const totalLunas = items
+        .filter((t) => t.status === 'Lunas')
+        .reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+      const totalTunggakan = totalNilai - totalLunas;
+
+      document.getElementById('rep-sum-count').textContent = `${items.length} SPPT`;
+      document.getElementById('rep-sum-nilai').textContent = formatRupiah(totalNilai);
+      document.getElementById('rep-sum-lunas').textContent = formatRupiah(totalLunas);
+      document.getElementById('rep-sum-tunggakan').textContent = formatRupiah(totalTunggakan);
+
+      const yearLabel = document.getElementById('report-year')?.value || 'Semua';
+      const dusunLabel = document.getElementById('report-dusun')?.value || 'Semua Dusun';
+      const statusLabel = document.getElementById('report-status')?.value || 'Semua Status';
+      const metaEl = document.getElementById('print-report-meta');
+      if (metaEl) {
+        metaEl.textContent = `${appState.settings.villageName} • Tahun: ${yearLabel} • Dusun: ${dusunLabel} • Status: ${statusLabel}`;
+      }
+
+      if (tbody) {
+        if (items.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" class="px-3 py-8 text-center text-xs text-slate-400">Tidak ada data laporan sesuai kriteria filter</td></tr>`;
+        } else {
+          tbody.innerHTML = items
+            .map(
+              (t, idx) => `
+              <tr>
+                <td class="px-3 py-2.5 text-xs text-slate-500">${idx + 1}</td>
+                <td class="px-3 py-2.5 font-mono text-xs">${escapeHtml(t.nop)}</td>
+                <td class="px-3 py-2.5 font-medium">${escapeHtml(t.name)}</td>
+                <td class="px-3 py-2.5 text-xs">${escapeHtml(t.dusun)}</td>
+                <td class="px-3 py-2.5 text-center text-xs">${escapeHtml(t.year)}</td>
+                <td class="px-3 py-2.5 text-right font-semibold">${formatRupiah(t.nilai)}</td>
+                <td class="px-3 py-2.5 text-center">
+                  <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${
+                    t.status === 'Lunas'
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                  }">${escapeHtml(t.status)}</span>
+                </td>
+              </tr>`
+            )
+            .join('');
+        }
+      }
+    }
+
+    function printReport() {
+      if (!reportFilterApplied) renderReport();
+      window.print();
+    }
+
+    function exportReportCSV() {
+      if (!reportFilterApplied) renderReport();
+      const items = getFilteredReportItems();
+      const rows = [
+        ['No', 'NOP', 'Nama Wajib Pajak', 'Dusun', 'Tahun', 'Nilai PBB', 'Status'],
+        ...items.map((t, idx) => [idx + 1, t.nop, t.name, t.dusun, t.year, t.nilai, t.status]),
+      ];
+      downloadCSV(`laporan-pbb-${appState.settings.taxYear}.csv`, rows);
+      showToast('Laporan PBB diekspor ke CSV / Excel.', 'success');
+    }
+
+    // ==================== GRAFIK ====================
+    function renderChartsPage() {
+      const m = computeMetrics();
+      const targetEl = document.getElementById('chart-target-label');
+      const realEl = document.getElementById('chart-realisasi-label');
+      const barEl = document.getElementById('chart-realisasi-bar');
+
+      if (targetEl) targetEl.textContent = formatShortRupiah(m.targetPBB);
+      if (realEl) realEl.textContent = formatShortRupiah(m.totalPaid);
+      if (barEl) barEl.style.height = `${Math.max(4, Math.round(m.percentPaid))}%`;
+
+      const circle = document.getElementById('donut-progress-circle');
+      const pctText = document.getElementById('donut-percent-text');
+      const legPaid = document.getElementById('donut-legend-paid');
+      const legUnpaid = document.getElementById('donut-legend-unpaid');
+
+      if (circle) circle.setAttribute('stroke-dasharray', `${m.percentPaid.toFixed(1)} 100`);
+      if (pctText) pctText.textContent = `${m.percentPaid.toFixed(1).replace('.', ',')}%`;
+      if (legPaid) legPaid.textContent = formatRupiah(m.totalPaid);
+      if (legUnpaid) legUnpaid.textContent = formatRupiah(m.totalArrears);
+
+      const breakdown = document.getElementById('charts-dusun-breakdown');
+      if (breakdown) {
+        breakdown.innerHTML = DUSUN_LIST.map((dusun) => {
+          const items = appState.taxpayers.filter((t) => t.dusun === dusun);
+          const total = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const paid = items
+            .filter((t) => t.status === 'Lunas')
+            .reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const unpaid = total - paid;
+          const pct = total > 0 ? Math.round((paid / total) * 100) : 0;
+
+          return `
+            <div class="p-4 rounded-xl bg-gray-50/80 dark:bg-slate-800/60 border border-gray-200/70 dark:border-slate-700 space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-sm text-slate-800 dark:text-white">${escapeHtml(dusun)}</h4>
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">${pct}%</span>
+              </div>
+              <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full bar-anim" style="width: ${pct}%"></div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
+                <span>Lunas: <strong class="text-emerald-700 dark:text-emerald-400">${formatRupiah(paid)}</strong></span>
+                <span>Tunggakan: <strong class="text-rose-600 dark:text-rose-400">${formatRupiah(unpaid)}</strong></span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // ==================== PENGGUNA ====================
+    function renderUsersTable() {
+      const tbody = document.getElementById('users-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = appState.users
+        .map((u) => {
+          const isActive = u.status === 'Aktif';
+          return `
+            <tr class="hover:bg-gray-50/80 dark:hover:bg-slate-800/50 transition-colors">
+              <td class="px-3 py-3 font-semibold text-slate-800 dark:text-white">${escapeHtml(u.name)}</td>
+              <td class="px-3 py-3 font-mono text-xs text-slate-600 dark:text-slate-300">${escapeHtml(u.username)}</td>
+              <td class="px-3 py-3 text-xs text-slate-700 dark:text-slate-200">${escapeHtml(u.role)}</td>
+              <td class="px-3 py-3 text-center">
+                <button
+                  onclick="toggleUserStatus('${escapeHtml(u.id)}')"
+                  class="px-2.5 py-1 rounded-full text-xs font-semibold ${
+                    isActive
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'bg-gray-200 text-gray-700 dark:bg-slate-800 dark:text-slate-400'
+                  }"
+                  title="Klik untuk ubah status"
+                >
+                  ${escapeHtml(u.status)}
+                </button>
+              </td>
+              <td class="px-3 py-3 text-center whitespace-nowrap">
+                <div class="inline-flex items-center gap-1.5">
+                  <button
+                    onclick="openUserModal('${escapeHtml(u.id)}')"
+                    class="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onclick="deleteUser('${escapeHtml(u.id)}')"
+                    class="px-2.5 py-1 rounded bg-rose-50 hover:bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-300 text-xs font-semibold"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        })
+        .join('');
+    }
+
+    function openUserModal(id = null) {
+      const modal = document.getElementById('user-modal');
+      const title = document.getElementById('user-modal-title');
+      document.getElementById('usr-edit-id').value = id || '';
+
+      if (id) {
+        const u = appState.users.find((x) => x.id === id);
+        if (!u) return;
+        title.textContent = 'Edit Pengguna';
+        document.getElementById('usr-name').value = u.name;
+        document.getElementById('usr-username').value = u.username;
+        document.getElementById('usr-role').value = u.role;
+        document.getElementById('usr-status').value = u.status;
+      } else {
+        title.textContent = 'Tambah Pengguna';
+        document.getElementById('usr-name').value = '';
+        document.getElementById('usr-username').value = '';
+        document.getElementById('usr-role').value = 'Operator';
+        document.getElementById('usr-status').value = 'Aktif';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeUserModal() {
+      const modal = document.getElementById('user-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function saveUser(e) {
+      e.preventDefault();
+      const editId = document.getElementById('usr-edit-id').value;
+      const name = document.getElementById('usr-name').value.trim();
+      const username = document.getElementById('usr-username').value.trim();
+      const role = document.getElementById('usr-role').value;
+      const status = document.getElementById('usr-status').value;
+
+      let savedUser = null;
+      if (editId) {
+        const idx = appState.users.findIndex((x) => x.id === editId);
+        if (idx !== -1) {
+          savedUser = { ...appState.users[idx], name, username, role, status };
+          appState.users[idx] = savedUser;
+        }
+        showToast(`Akun pengguna "${name}" diperbarui.`, 'success');
+      } else {
+        savedUser = {
+          id: 'usr-' + Date.now(),
+          name,
+          username,
+          role,
+          status,
+        };
+        appState.users.push(savedUser);
+        showToast(`Pengguna "${name}" ditambahkan.`, 'success');
+      }
+
+      saveState();
+      closeUserModal();
+      renderUsersTable();
+      if (savedUser) {
+        pushActionToGoogleSheets({ action: 'saveUser', user: savedUser }, true);
+      }
+    }
+
+    function toggleUserStatus(id) {
+      const u = appState.users.find((x) => x.id === id);
+      if (!u) return;
+      u.status = u.status === 'Aktif' ? 'Non-Aktif' : 'Aktif';
+      saveState();
+      renderUsersTable();
+      showToast(`Status akun "${u.name}" diubah menjadi ${u.status}.`, 'info');
+      pushActionToGoogleSheets({ action: 'saveUser', user: u }, true);
+    }
+
+    function deleteUser(id) {
+      if (appState.users.length <= 1) {
+        showToast('Minimal harus terdapat 1 akun pengguna aktif.', 'warning');
+        return;
+      }
+      const u = appState.users.find((x) => x.id === id);
+      if (!u) return;
+      appState.users = appState.users.filter((x) => x.id !== id);
+      saveState();
+      renderUsersTable();
+      showToast(`Pengguna "${u.name}" dihapus.`, 'warning');
+      pushActionToGoogleSheets({ action: 'deleteUser', id }, true);
+    }
+
+    // ==================== PENGATURAN & BACKUP ====================
+    function loadSettingsForm() {
+      const s = appState.settings;
+      const sc = appState.sheetsConfig;
+
+      const vName = document.getElementById('set-village-name');
+      const vKec = document.getElementById('set-kecamatan');
+      const vYear = document.getElementById('set-tax-year');
+      const vTarget = document.getElementById('set-target-pbb');
+      const sUrl = document.getElementById('set-sheets-url');
+      const sAuto = document.getElementById('set-auto-sync');
+
+      if (vName) vName.value = s.villageName;
+      if (vKec) vKec.value = s.kecamatan;
+      if (vYear) vYear.value = s.taxYear;
+      if (vTarget) vTarget.value = s.targetPBB;
+      if (sUrl) sUrl.value = sc.webAppUrl || '';
+      if (sAuto) sAuto.checked = sc.autoSync !== false;
+
+      applyDarkModeUI();
+      updateSyncStatusUI(
+        sc.webAppUrl ? (sc.connected ? 'Google Sheets' : 'Siap Sync') : 'Lokal / Cache',
+        sc.webAppUrl ? (sc.connected ? 'connected' : 'local') : 'local'
+      );
+    }
+
+    function saveSettings(e) {
+      e.preventDefault();
+      appState.settings.villageName = document.getElementById('set-village-name').value.trim() || 'Desa Wani Lumbumpetigo';
+      appState.settings.kecamatan = document.getElementById('set-kecamatan').value.trim() || 'Kec. Tanantovea, Kab. Donggala';
+      appState.settings.taxYear = Number(document.getElementById('set-tax-year').value) || 2026;
+      appState.settings.targetPBB = Math.max(0, Number(document.getElementById('set-target-pbb').value) || 0);
+
+      saveState();
+      refreshAllViews();
+      showToast('Pengaturan desa & target PBB berhasil disimpan.', 'success');
+      pushActionToGoogleSheets({ action: 'saveSettings', settings: appState.settings }, true);
+    }
+
+    function backupDatabaseJSON() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        app: 'SIPBB Desa Wani Lumbumpetigo',
+        data: appState,
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-sipbb-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup database JSON berhasil diunduh.', 'success');
+    }
+
+    function handleRestoreJSON(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(String(e.target?.result || '{}'));
+          const restored = parsed.data ? parsed.data : parsed;
+          if (!Array.isArray(restored.taxpayers)) {
+            throw new Error('Struktur file backup JSON tidak valid');
+          }
+          appState = {
+            ...cloneDefaultState(),
+            ...restored,
+            settings: {
+              ...DEFAULT_STATE.settings,
+              ...(restored.settings || {}),
+            },
+          };
+          saveState();
+          refreshAllViews();
+          showToast('Database berhasil dipulihkan dari file backup!', 'success');
+        } catch (err) {
+          showToast('Gagal memulihkan backup: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToDefaultData() {
+      const preservedUrl = appState.sheetsConfig.webAppUrl;
+      appState = cloneDefaultState();
+      appState.sheetsConfig.webAppUrl = preservedUrl;
+      saveState();
+      refreshAllViews();
+      showToast('Data berhasil dikembalikan ke kondisi awal.', 'info');
+    }
+
+    // ==================== SCROLL PERCENTAGE BUTTON ====================
+    function updateScrollPercent() {
+      const btn = document.getElementById('scroll-percent');
+      const label = document.getElementById('scroll-percent-value');
+      if (!btn || !label) return;
+
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+
+      label.textContent = pct + '%';
+      btn.classList.toggle('is-hidden', scrollTop < 120);
+    }
+
+    function scrollToTopSmooth() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', updateScrollPercent, { passive: true });
+
+    // ==================== INITIALIZATION ====================
+    function refreshAllViews() {
+      applyDarkModeUI();
+      applyVillageMetadataUI();
+      renderNotifications();
+      renderDashboard();
+      renderTaxpayersTable();
+      populateNopDatalist();
+      renderUnpaidQuickList();
+      renderChartsPage();
+      renderUsersTable();
+      loadSettingsForm();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      refreshAllViews();
+      updateScrollPercent();
+
+      if (appState.activePage && document.getElementById('page-' + appState.activePage)) {
+        showPage(appState.activePage);
+      }
+
+      if (appState.sheetsConfig.webAppUrl && appState.sheetsConfig.autoSync) {
+        syncFromGoogleSheets(false);
+      }
+    });
+  </script>
+</body>
+</html>
