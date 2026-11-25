@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+    <title>Pencarian Data User Terverifikasi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- Brand & Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                            Pencarian Data User Terverifikasi
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-500">
+                            Sistem Direktori & Verifikasi Keanggotaan Terpadu
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Connection Status & Action Buttons -->
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <!-- Status Indicator Badge -->
+                    <div id="connection-badge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                        <span id="connection-dot" class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                        <span id="connection-text">Memuat data...</span>
+                    </div>
+
+                    <!-- Refresh Button -->
+                    <button id="btn-refresh" onclick="fetchSheetData(true)" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-blue-600 active:scale-95 transition shadow-sm" title="Muat ulang data dari Google Sheets">
+                        <i id="refresh-icon" data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span>Muat Ulang</span>
+                    </button>
+
+                    <!-- Export CSV Button -->
+                    <button onclick="exportToCSV()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95 transition shadow-sm shadow-emerald-600/20" title="Unduh data hasil filter ke CSV">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Ekspor CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+        <!-- Fallback Warning Banner (Hidden by default) -->
+        <div id="fallback-banner" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+                <div class="text-sm text-amber-800">
+                    <p class="font-semibold">Menampilkan Data Simulasi (Mode Demo / Fallback)</p>
+                    <p class="text-xs text-amber-700 mt-0.5" id="fallback-reason">Tidak dapat terhubung ke Google Sheets secara langsung atau sheet masih kosong.</p>
+                </div>
+            </div>
+            <button onclick="fetchSheetData(true)" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition shrink-0">
+                Coba Hubungkan Ulang
+            </button>
+        </div>
+
+        <!-- Dashboard Summary Cards -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Total User -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Data User</p>
+                        <p id="stat-total" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3 flex items-center gap-1">
+                    <span id="stat-filtered-note">Seluruh data terdaftar</span>
+                </p>
+            </div>
+
+            <!-- Terverifikasi -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">User Terverifikasi</p>
+                        <p id="stat-verified" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <i data-lucide="badge-check" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    <span id="stat-verified-pct" class="font-semibold text-emerald-600">0%</span> dari total user
+                </p>
+            </div>
+
+            <!-- Status Lainnya -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Status Lainnya</p>
+                        <p id="stat-other" class="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <i data-lucide="clock" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    Menunggu / Belum terverifikasi
+                </p>
+            </div>
+
+            <!-- Jumlah Daerah -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Sebaran Daerah</p>
+                        <p id="stat-regions" class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <i data-lucide="map-pin" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">
+                    Wilayah / daerah unik tercatat
+                </p>
+            </div>
+        </section>
+
+        <!-- Search & Filter Controls -->
+        <section class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4">
+                <!-- Instant Search Box -->
+                <div class="lg:col-span-5 relative">
+                    <label for="search-input" class="block text-xs font-semibold text-slate-600 mb-1.5">Pencarian Cepat</label>
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Cari nama, username, email, telpon, jabatan..."
+                            class="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition"
+                        >
+                        <button id="clear-search" onclick="clearSearchInput()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Status -->
+                <div class="sm:col-span-4 lg:col-span-2">
+                    <label for="filter-status" class="block text-xs font-semibold text-slate-600 mb-1.5">Status</label>
+                    <select id="filter-status" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition">
+                        <option value="">Semua Status</option>
+                    </select>
+                </div>
+
+                <!-- Filter Daerah -->
+                <div class="sm:col-span-4 lg:col-span-2">
+                    <label for="filter-daerah" class="block text-xs font-semibold text-slate-600 mb-1.5">Daerah</label>
+                    <select id="filter-daerah" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition">
+                        <option value="">Semua Daerah</option>
+                    </select>
+                </div>
+
+                <!-- Filter Jabatan -->
+                <div class="sm:col-span-4 lg:col-span-3">
+                    <label for="filter-jabatan" class="block text-xs font-semibold text-slate-600 mb-1.5">Jabatan</label>
+                    <select id="filter-jabatan" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition">
+                        <option value="">Semua Jabatan</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action Bar: Result Count, Reset Filter, View Mode Toggle -->
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <p class="text-xs sm:text-sm text-slate-600">
+                        Menampilkan <span id="result-count" class="font-bold text-slate-900">0</span> data user
+                    </p>
+                    <button id="btn-reset" onclick="resetFilters()" class="hidden inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg transition">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                        Reset Filter
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <!-- Rows per page -->
+                    <div class="flex items-center gap-1.5 text-xs text-slate-600">
+                        <span>Tampilkan:</span>
+                        <select id="page-size" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs font-medium text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <!-- View Toggle (Table vs Cards) -->
+                    <div class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200">
+                        <button id="view-table-btn" onclick="setViewMode('table')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-blue-600 shadow-sm transition" title="Tampilan Tabel">
+                            <i data-lucide="table" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Tabel</span>
+                        </button>
+                        <button id="view-card-btn" onclick="setViewMode('card')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition" title="Tampilan Kartu">
+                            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Kartu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Display Area -->
+        <section id="data-container">
+            <!-- Loading State -->
+            <div id="loading-state" class="bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+                <p class="text-sm font-semibold text-slate-700 mt-4">Mengambil data dari Google Sheets...</p>
+                <p class="text-xs text-slate-400 mt-1">Mohon tunggu sebentar</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                    <i data-lucide="search-x" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-800 mt-4">Data tidak ditemukan</h3>
+                <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                    Tidak ada data user yang cocok dengan kata kunci pencarian atau filter yang Anda pilih.
+                </p>
+                <button onclick="resetFilters()" class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    Reset Semua Filter
+                </button>
+            </div>
+
+            <!-- Table View -->
+            <div id="table-view" class="hidden bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/90 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500 select-none">
+                                <th onclick="sortBy('NO')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>NO</span>
+                                        <span id="sort-NO" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('STATUS')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>STATUS</span>
+                                        <span id="sort-STATUS" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('NAMA')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>NAMA & USERNAME</span>
+                                        <span id="sort-NAMA" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('EMAIL')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>EMAIL</span>
+                                        <span id="sort-EMAIL" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('NOMOR_TELPON')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>NOMOR TELPON</span>
+                                        <span id="sort-NOMOR_TELPON" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('JABATAN')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>JABATAN</span>
+                                        <span id="sort-JABATAN" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th onclick="sortBy('DAERAH')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 hover:text-slate-800 transition whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <span>DAERAH</span>
+                                        <span id="sort-DAERAH" class="text-slate-400">↕</span>
+                                    </div>
+                                </th>
+                                <th class="py-3.5 px-4 text-right whitespace-nowrap">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card View -->
+            <div id="card-view" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Cards injected by JS -->
+            </div>
+
+            <!-- Pagination Controls -->
+            <div id="pagination-container" class="hidden mt-4 bg-white rounded-2xl border border-slate-200/80 px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                <p class="text-xs text-slate-600">
+                    Menampilkan <span id="page-start" class="font-semibold text-slate-900">1</span> - <span id="page-end" class="font-semibold text-slate-900">10</span> dari <span id="page-total" class="font-semibold text-slate-900">0</span> user
+                </p>
+                <div id="pagination-buttons" class="flex flex-wrap items-center gap-1.5">
+                    <!-- Pagination buttons injected by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+            <p>&copy; 2026 Aplikasi Pencarian Data User Terverifikasi.</p>
+            <p id="last-updated">Terakhir diperbarui: -</p>
+        </div>
+    </footer>
+
+    <!-- User Detail Modal (Digital ID Card) -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all" onclick="event.stopPropagation()">
+            <!-- Modal Banner Header -->
+            <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 px-6 py-6 text-white relative">
+                <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+                <div class="flex items-center gap-2 text-blue-100 text-xs font-semibold uppercase tracking-wider mb-3">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Kartu Identitas User Digital</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="modal-avatar" class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-2xl font-extrabold text-white shrink-0">
+                        US
+                    </div>
+                    <div class="min-w-0">
+                        <h3 id="modal-nama" class="text-xl font-bold truncate">Nama Lengkap User</h3>
+                        <p id="modal-username" class="text-sm text-blue-100 truncate">@username</p>
+                        <div id="modal-status-badge" class="mt-2 inline-block"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body Details -->
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <div>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Nomor Urut (NO)</span>
+                        <span id="modal-no" class="text-sm font-bold text-slate-800 mt-0.5 block">-</span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Daerah / Wilayah</span>
+                        <span id="modal-daerah" class="text-sm font-bold text-slate-800 mt-0.5 block">-</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Jabatan -->
+                    <div class="flex items-start gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="briefcase" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs text-slate-400 font-medium">Jabatan</p>
+                            <p id="modal-jabatan" class="text-sm font-semibold text-slate-800 break-words">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs text-slate-400 font-medium">Alamat Email</p>
+                                <p id="modal-email" class="text-sm font-semibold text-slate-800 truncate">-</p>
+                            </div>
+                        </div>
+                        <button id="modal-copy-email" class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition shrink-0" title="Salin Email">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Nomor Telpon -->
+                    <div class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="phone" class="w-4 h-4"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs text-slate-400 font-medium">Nomor Telepon</p>
+                                <p id="modal-telpon" class="text-sm font-semibold text-slate-800 truncate">-</p>
+                            </div>
+                        </div>
+                        <button id="modal-copy-telpon" class="p-2 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition shrink-0" title="Salin Nomor Telepon">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3">
+                <button id="modal-copy-all" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition">
+                    <i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i>
+                    Salin Semua Info
+                </button>
+                <button onclick="closeModal()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span id="toast-message">Berhasil disalin ke clipboard!</span>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // KONFIGURASI SUMBER DATA & FALLBACK
+        // ==========================================
+        const PUBHTML_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXkRYUE2A4NBhV2GwytrtA1QT0jI20AaL39cEV2QRRjCg3P80t9rqpUnXdmf8E-RILr6rwTkql_OXd/pubhtml?gid=1494972675&single=true";
+        // Konversi otomatis dari pubhtml ke format CSV
+        const CSV_URL = PUBHTML_URL.replace("pubhtml?", "pub?") + "&output=csv";
+
+        // Data Contoh (Fallback jika terjadi kendala jaringan / CORS / sheet kosong)
+        const FALLBACK_DATA = [
+            { NO: "1", STATUS: "Terverifikasi", NAMA: "Ahmad Fauzi", USERNAME: "ahmad.fauzi", EMAIL: "ahmad.fauzi@instansi.go.id", NOMOR_TELPON: "0812-3456-7890", JABATAN: "Koordinator Wilayah", DAERAH: "DKI Jakarta" },
+            { NO: "2", STATUS: "Terverifikasi", NAMA: "Siti Rahmawati", USERNAME: "sitirahma", EMAIL: "siti.rahma@instansi.go.id", NOMOR_TELPON: "0813-9876-5432", JABATAN: "Admin Verifikator", DAERAH: "Jawa Barat" },
+            { NO: "3", STATUS: "Belum Terverifikasi", NAMA: "Budi Santoso", USERNAME: "budisantoso88", EMAIL: "budi.santoso@domain.com", NOMOR_TELPON: "0857-1122-3344", JABATAN: "Staf Operasional", DAERAH: "Jawa Tengah" },
+            { NO: "4", STATUS: "Terverifikasi", NAMA: "Dewi Lestari", USERNAME: "dewilestari", EMAIL: "dewi.lestari@instansi.go.id", NOMOR_TELPON: "0821-5566-7788", JABATAN: "Kepala Bidang Data", DAERAH: "Jawa Timur" },
+            { NO: "5", STATUS: "Terverifikasi", NAMA: "Rizky Pratama", USERNAME: "rizky.p", EMAIL: "rizky.pratama@instansi.go.id", NOMOR_TELPON: "0819-4433-2211", JABATAN: "Analis Sistem", DAERAH: "DI Yogyakarta" },
+            { NO: "6", STATUS: "Pending", NAMA: "Nurul Hidayah", USERNAME: "nurul_h", EMAIL: "nurul.hidayah@domain.com", NOMOR_TELPON: "0878-9900-1122", JABATAN: "Petugas Lapangan", DAERAH: "Banten" },
+            { NO: "7", STATUS: "Terverifikasi", NAMA: "Hendra Wijaya", USERNAME: "hendrawijaya", EMAIL: "hendra.w@instansi.go.id", NOMOR_TELPON: "0812-8877-6655", JABATAN: "Koordinator Daerah", DAERAH: "Bali" },
+            { NO: "8", STATUS: "Terverifikasi", NAMA: "Putri Maharani", USERNAME: "putrimaharani", EMAIL: "putri.m@instansi.go.id", NOMOR_TELPON: "0852-3344-5566", JABATAN: "Admin Verifikator", DAERAH: "Sumatera Utara" },
+            { NO: "9", STATUS: "Belum Terverifikasi", NAMA: "Eko Saputra", USERNAME: "ekosaputra", EMAIL: "eko.saputra@domain.com", NOMOR_TELPON: "0813-7788-9900", JABATAN: "Staf Administrasi", DAERAH: "Sulawesi Selatan" },
+            { NO: "10", STATUS: "Terverifikasi", NAMA: "Anisa Fitriani", USERNAME: "anisafitri", EMAIL: "anisa.f@instansi.go.id", NOMOR_TELPON: "0822-6655-4433", JABATAN: "Supervisor", DAERAH: "Kalimantan Timur" },
+            { NO: "11", STATUS: "Terverifikasi", NAMA: "Dimas Anggara", USERNAME: "dimas.anggara", EMAIL: "dimas.a@instansi.go.id", NOMOR_TELPON: "0811-2233-4455", JABATAN: "Koordinator Wilayah", DAERAH: "DKI Jakarta" },
+            { NO: "12", STATUS: "Terverifikasi", NAMA: "Rina Marlina", USERNAME: "rinamarlina", EMAIL: "rina.m@instansi.go.id", NOMOR_TELPON: "0856-7788-1122", JABATAN: "Staf Operasional", DAERAH: "Jawa Barat" }
+        ];
+
+        // ==========================================
+        // STATE APLIKASI
+        // ==========================================
+        let allUsers = [];
+        let filteredUsers = [];
+        let currentPage = 1;
+        let pageSize = 10;
+        let sortColumn = 'NO';
+        let sortAsc = true;
+        let viewMode = window.innerWidth < 768 ? 'card' : 'table'; // Otomatis kartu di layar kecil
+        let isLiveMode = false;
+
+        // ==========================================
+        // INISIALISASI
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateViewModeButtons();
+            setupEventListeners();
+            fetchSheetData(false);
+        });
+
+        function setupEventListeners() {
+            // Instant Search
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', () => {
+                document.getElementById('clear-search').classList.toggle('hidden', !searchInput.value);
+                currentPage = 1;
+                applyFilters();
+            });
+
+            // Dropdown Filters
+            ['filter-status', 'filter-daerah', 'filter-jabatan'].forEach(id => {
+                document.getElementById(id).addEventListener('change', () => {
+                    currentPage = 1;
+                    applyFilters();
+                });
+            });
+
+            // Page Size
+            document.getElementById('page-size').addEventListener('change', (e) => {
+                pageSize = parseInt(e.target.value, 10);
+                currentPage = 1;
+                renderData();
+            });
+
+            // Close modal on backdrop click or Escape key
+            const modal = document.getElementById('detail-modal');
+            modal.addEventListener('click', closeModal);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        }
+
+        // ==========================================
+        // PENGAMBILAN & PARSING CSV GOOGLE SHEETS
+        // ==========================================
+        async function fetchSheetData(isManualRefresh = false) {
+            const refreshIcon = document.getElementById('refresh-icon');
+            const loadingState = document.getElementById('loading-state');
+            
+            if (isManualRefresh) {
+                refreshIcon.classList.add('animate-spin');
+            }
+            if (allUsers.length === 0) {
+                loadingState.classList.remove('hidden');
+            }
+
+            try {
+                // Tambahkan cache-buster agar selalu mengambil data terbaru saat refresh
+                const fetchUrl = `${CSV_URL}&t=${Date.now()}`;
+                const response = await fetch(fetchUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+
+                const csvText = await response.text();
+                const parsedData = parseCSVToUsers(csvText);
+
+                if (!parsedData || parsedData.length === 0) {
+                    throw new Error("Spreadsheet kosong atau format header tidak sesuai.");
+                }
+
+                allUsers = parsedData;
+                isLiveMode = true;
+                setConnectionStatus(true);
+                document.getElementById('fallback-banner').classList.add('hidden');
+                
+                if (isManualRefresh) {
+                    showToast("Data berhasil diperbarui dari Google Sheets!");
+                }
+            } catch (error) {
+                console.warn("Gagal mengambil data live Google Sheets, beralih ke data fallback:", error);
+                allUsers = [...FALLBACK_DATA];
+                isLiveMode = false;
+                setConnectionStatus(false);
+                
+                const banner = document.getElementById('fallback-banner');
+                const reason = document.getElementById('fallback-reason');
+                banner.classList.remove('hidden');
+                reason.textContent = `Kendala akses (${error.message}). Menampilkan ${FALLBACK_DATA.length} data contoh agar fitur tetap dapat diuji.`;
+                
+                if (isManualRefresh) {
+                    showToast("Menggunakan data cadangan (Mode Demo).");
+                }
+            } finally {
+                refreshIcon.classList.remove('animate-spin');
+                loadingState.classList.add('hidden');
+                
+                updateTimestamp();
+                populateFilterDropdowns();
+                applyFilters();
+            }
+        }
+
+        /**
+         * Parser CSV handal (RFC 4180 compliant)
+         * Menangani tanda kutip ganda, koma di dalam sel, serta baris baru di dalam sel.
+         */
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let insideQuotes = false;
+
+            // Normalisasi line endings
+            const cleanText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+            for (let i = 0; i < cleanText.length; i++) {
+                const char = cleanText[i];
+                const nextChar = cleanText[i + 1];
+
+                if (char === '"') {
+                    if (insideQuotes && nextChar === '"') {
+                        // Escaped quote ("")
+                        currentCell += '"';
+                        i++;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (char === ',' && !insideQuotes) {
+                    currentRow.push(currentCell.trim());
+                    currentCell = '';
+                } else if (char === '\n' && !insideQuotes) {
+                    currentRow.push(currentCell.trim());
+                    if (currentRow.some(cell => cell !== '')) {
+                        rows.push(currentRow);
+                    }
+                    currentRow = [];
+                    currentCell = '';
+                } else {
+                    currentCell += char;
+                }
+            }
+
+            // Sisa sel/baris terakhir
+            if (currentCell !== '' || currentRow.length > 0) {
+                currentRow.push(currentCell.trim());
+                if (currentRow.some(cell => cell !== '')) {
+                    rows.push(currentRow);
+                }
+            }
+
+            return rows;
+        }
+
+        function parseCSVToUsers(csvText) {
+            const rows = parseCSV(csvText);
+            if (rows.length < 2) return [];
+
+            // Cari baris header (mengandung NAMA atau STATUS)
+            let headerRowIndex = 0;
+            for (let i = 0; i < Math.min(rows.length, 5); i++) {
+                const rowUpper = rows[i].map(c => c.toUpperCase());
+                if (rowUpper.includes('NAMA') || rowUpper.includes('STATUS') || rowUpper.includes('USERNAME')) {
+                    headerRowIndex = i;
+                    break;
+                }
+            }
+
+            const headers = rows[headerRowIndex].map(h => h.toUpperCase().trim());
+            
+            // Pemetaan indeks kolom fleksibel
+            const findCol = (keywords, fallbackIdx) => {
+                const idx = headers.findIndex(h => keywords.some(k => h === k || h.includes(k)));
+                return idx !== -1 ? idx : fallbackIdx;
+            };
+
+            const idxNo = findCol(['NO', 'NOMOR'], 0);
+            const idxStatus = findCol(['STATUS', 'VERIFIKASI'], 1);
+            const idxNama = findCol(['NAMA', 'NAME'], 2);
+            const idxUsername = findCol(['USERNAME', 'USER'], 3);
+            const idxEmail = findCol(['EMAIL', 'E-MAIL', 'SUREL'], 4);
+            const idxTelpon = findCol(['NOMOR TELPON', 'TELPON', 'TELEPON', 'NO HP', 'HP', 'WHATSAPP', 'WA'], 5);
+            const idxJabatan = findCol(['JABATAN', 'POSISI', 'ROLE'], 6);
+            const idxDaerah = findCol(['DAERAH', 'WILAYAH', 'KOTA', 'PROVINSI', 'CABANG'], 7);
+
+            const users = [];
+            for (let i = headerRowIndex + 1; i < rows.length; i++) {
+                const r = rows[i];
+                const nama = r[idxNama] || '';
+                const username = r[idxUsername] || '';
+                const email = r[idxEmail] || '';
+
+                // Lewati baris yang benar-benar kosong
+                if (!nama && !username && !email) continue;
+
+                users.push({
+                    NO: r[idxNo] || String(users.length + 1),
+                    STATUS: r[idxStatus] || 'Belum Terverifikasi',
+                    NAMA: nama || '-',
+                    USERNAME: username || '-',
+                    EMAIL: email || '-',
+                    NOMOR_TELPON: r[idxTelpon] || '-',
+                    JABATAN: r[idxJabatan] || '-',
+                    DAERAH: r[idxDaerah] || '-'
+                });
+            }
+
+            return users;
+        }
+
+        function setConnectionStatus(live) {
+            const badge = document.getElementById('connection-badge');
+            const dot = document.getElementById('connection-dot');
+            const text = document.getElementById('connection-text');
+
+            if (live) {
+                badge.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200";
+                dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+                text.textContent = "Live: Google Sheets";
+            } else {
+                badge.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200";
+                dot.className = "w-2 h-2 rounded-full bg-amber-500";
+                text.textContent = "Mode Demo (Fallback)";
+            }
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const formatted = now.toLocaleString('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            document.getElementById('last-updated').textContent = `Terakhir diperbarui: ${formatted}`;
+        }
+
+        // ==========================================
+        // FILTER, PENCARIAN & STATISTIK
+        // ==========================================
+        function populateFilterDropdowns() {
+            populateSelect('filter-status', 'Semua Status', allUsers.map(u => u.STATUS));
+            populateSelect('filter-daerah', 'Semua Daerah', allUsers.map(u => u.DAERAH));
+            populateSelect('filter-jabatan', 'Semua Jabatan', allUsers.map(u => u.JABATAN));
+        }
+
+        function populateSelect(elementId, defaultLabel, values) {
+            const select = document.getElementById(elementId);
+            const currentValue = select.value;
+            const uniqueValues = [...new Set(values.filter(v => v && v !== '-'))].sort((a, b) => a.localeCompare(b, 'id'));
+
+            select.innerHTML = `<option value="">${defaultLabel}</option>`;
+            uniqueValues.forEach(val => {
+                const option = document.createElement('option');
+                option.value = val;
+                option.textContent = val;
+                select.appendChild(option);
+            });
+
+            if (uniqueValues.includes(currentValue)) {
+                select.value = currentValue;
+            }
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('filter-status').value;
+            const daerahFilter = document.getElementById('filter-daerah').value;
+            const jabatanFilter = document.getElementById('filter-jabatan').value;
+
+            const hasActiveFilter = query !== '' || statusFilter !== '' || daerahFilter !== '' || jabatanFilter !== '';
+            document.getElementById('btn-reset').classList.toggle('hidden', !hasActiveFilter);
+
+            filteredUsers = allUsers.filter(user => {
+                const matchStatus = !statusFilter || user.STATUS === statusFilter;
+                const matchDaerah = !daerahFilter || user.DAERAH === daerahFilter;
+                const matchJabatan = !jabatanFilter || user.JABATAN === jabatanFilter;
+
+                const matchQuery = !query || [
+                    user.NO,
+                    user.STATUS,
+                    user.NAMA,
+                    user.USERNAME,
+                    user.EMAIL,
+                    user.NOMOR_TELPON,
+                    user.JABATAN,
+                    user.DAERAH
+                ].some(field => String(field).toLowerCase().includes(query));
+
+                return matchStatus && matchDaerah && matchJabatan && matchQuery;
+            });
+
+            sortDataArray();
+            updateDashboardStats();
+            renderData();
+        }
+
+        function clearSearchInput() {
+            const input = document.getElementById('search-input');
+            input.value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+            currentPage = 1;
+            applyFilters();
+            input.focus();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+            document.getElementById('filter-status').value = '';
+            document.getElementById('filter-daerah').value = '';
+            document.getElementById('filter-jabatan').value = '';
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function isVerifiedStatus(status) {
+            const s = String(status).toLowerCase().trim();
+            return (s.includes('terverifikasi') || s.includes('verified') || s === 'aktif' || s === 'valid') && !s.includes('belum') && !s.includes('unverified') && !s.includes('tidak');
+        }
+
+        function updateDashboardStats() {
+            const total = allUsers.length;
+            const verifiedCount = allUsers.filter(u => isVerifiedStatus(u.STATUS)).length;
+            const otherCount = total - verifiedCount;
+            const uniqueRegions = new Set(allUsers.map(u => u.DAERAH).filter(d => d && d !== '-')).size;
+            const verifiedPct = total > 0 ? Math.round((verifiedCount / total) * 100) : 0;
+
+            document.getElementById('stat-total').textContent = total.toLocaleString('id-ID');
+            document.getElementById('stat-verified').textContent = verifiedCount.toLocaleString('id-ID');
+            document.getElementById('stat-verified-pct').textContent = `${verifiedPct}%`;
+            document.getElementById('stat-other').textContent = otherCount.toLocaleString('id-ID');
+            document.getElementById('stat-regions').textContent = uniqueRegions.toLocaleString('id-ID');
+            document.getElementById('result-count').textContent = filteredUsers.length.toLocaleString('id-ID');
+
+            const filteredNote = document.getElementById('stat-filtered-note');
+            if (filteredUsers.length !== total) {
+                filteredNote.innerHTML = `Filter aktif: <strong class="text-blue-600">${filteredUsers.length}</strong> cocok`;
+            } else {
+                filteredNote.textContent = 'Seluruh data terdaftar';
+            }
+        }
+
+        // ==========================================
+        // PENGURUTAN (SORTING)
+        // ==========================================
+        function sortBy(column) {
+            if (sortColumn === column) {
+                sortAsc = !sortAsc;
+            } else {
+                sortColumn = column;
+                sortAsc = true;
+            }
+            updateSortIndicators();
+            sortDataArray();
+            renderData();
+        }
+
+        function sortDataArray() {
+            filteredUsers.sort((a, b) => {
+                let valA = a[sortColumn] ?? '';
+                let valB = b[sortColumn] ?? '';
+
+                // Pengurutan numerik khusus kolom NO
+                if (sortColumn === 'NO') {
+                    const numA = parseFloat(String(valA).replace(/[^\d.-]/g, ''));
+                    const numB = parseFloat(String(valB).replace(/[^\d.-]/g, ''));
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        return sortAsc ? numA - numB : numB - numA;
+                    }
+                }
+
+                const cmp = String(valA).localeCompare(String(valB), 'id', { sensitivity: 'base' });
+                return sortAsc ? cmp : -cmp;
+            });
+        }
+
+        function updateSortIndicators() {
+            const cols = ['NO', 'STATUS', 'NAMA', 'EMAIL', 'NOMOR_TELPON', 'JABATAN', 'DAERAH'];
+            cols.forEach(c => {
+                const el = document.getElementById(`sort-${c}`);
+                if (!el) return;
+                if (c === sortColumn) {
+                    el.textContent = sortAsc ? '↑' : '↓';
+                    el.className = 'text-blue-600 font-bold';
+                } else {
+                    el.textContent = '↕';
+                    el.className = 'text-slate-400';
+                }
+            });
+        }
+
+        // ==========================================
+        // RENDERING DATA (TABEL, KARTU & PAGINATION)
+        // ==========================================
+        function setViewMode(mode) {
+            viewMode = mode;
+            updateViewModeButtons();
+            renderData();
+        }
+
+        function updateViewModeButtons() {
+            const tableBtn = document.getElementById('view-table-btn');
+            const cardBtn = document.getElementById('view-card-btn');
+
+            if (viewMode === 'table') {
+                tableBtn.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-blue-600 shadow-sm transition";
+                cardBtn.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition";
+            } else {
+                cardBtn.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-blue-600 shadow-sm transition";
+                tableBtn.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition";
+            }
+        }
+
+        function getStatusBadgeHTML(status) {
+            const verified = isVerifiedStatus(status);
+            if (verified) {
+                return `
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 whitespace-nowrap">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        ${escapeHTML(status)}
+                    </span>
+                `;
+            }
+            const s = String(status).toLowerCase();
+            if (s.includes('tolak') || s.includes('reject') || s.includes('nonaktif') || s.includes('suspend')) {
+                return `
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200/80 whitespace-nowrap">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                        ${escapeHTML(status)}
+                    </span>
+                `;
+            }
+            return `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/80 whitespace-nowrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    ${escapeHTML(status)}
+                </span>
+            `;
+        }
+
+        function getInitials(name) {
+            if (!name || name === '-') return 'US';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+            return (parts[0][0] + parts[1][0]).toUpperCase();
+        }
+
+        function renderData() {
+            const emptyState = document.getElementById('empty-state');
+            const tableView = document.getElementById('table-view');
+            const cardView = document.getElementById('card-view');
+            const paginationContainer = document.getElementById('pagination-container');
+
+            if (filteredUsers.length === 0) {
+                emptyState.classList.remove('hidden');
+                tableView.classList.add('hidden');
+                cardView.classList.add('hidden');
+                paginationContainer.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            paginationContainer.classList.remove('hidden');
+
+            const totalItems = filteredUsers.length;
+            const totalPages = Math.ceil(totalItems / pageSize);
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = Math.min(startIdx + pageSize, totalItems);
+            const pageItems = filteredUsers.slice(startIdx, endIdx);
+
+            if (viewMode === 'table') {
+                tableView.classList.remove('hidden');
+                cardView.classList.add('hidden');
+                renderTableRows(pageItems, startIdx);
+            } else {
+                tableView.classList.add('hidden');
+                cardView.classList.remove('hidden');
+                renderCards(pageItems, startIdx);
+            }
+
+            renderPagination(startIdx, endIdx, totalItems, totalPages);
+            lucide.createIcons();
+        }
+
+        function renderTableRows(items, startIdx) {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = items.map((user, idx) => {
+                const globalIndex = startIdx + idx;
+                const cleanUsername = user.USERNAME.startsWith('@') ? user.USERNAME : `@${user.USERNAME}`;
+                return `
+                    <tr onclick="openDetailModal(${globalIndex})" class="hover:bg-blue-50/50 transition cursor-pointer group">
+                        <td class="py-3.5 px-4 font-semibold text-slate-600 whitespace-nowrap">${escapeHTML(user.NO)}</td>
+                        <td class="py-3.5 px-4 whitespace-nowrap">${getStatusBadgeHTML(user.STATUS)}</td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white transition">
+                                    ${getInitials(user.NAMA)}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-semibold text-slate-900 truncate group-hover:text-blue-600 transition">${escapeHTML(user.NAMA)}</p>
+                                    <p class="text-xs text-slate-500 truncate">${escapeHTML(cleanUsername)}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-slate-700 truncate max-w-[180px]" title="${escapeHTML(user.EMAIL)}">${escapeHTML(user.EMAIL)}</span>
+                                ${user.EMAIL !== '-' ? `
+                                <button onclick="event.stopPropagation(); copyText('${escapeAttr(user.EMAIL)}', 'Email')" class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-100/70 transition" title="Salin Email">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                </button>` : ''}
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-slate-700 font-medium">${escapeHTML(user.NOMOR_TELPON)}</span>
+                                ${user.NOMOR_TELPON !== '-' ? `
+                                <button onclick="event.stopPropagation(); copyText('${escapeAttr(user.NOMOR_TELPON)}', 'Nomor telepon')" class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-100/70 transition" title="Salin Nomor Telepon">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                </button>` : ''}
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 text-slate-700">
+                            <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">
+                                ${escapeHTML(user.JABATAN)}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>${escapeHTML(user.DAERAH)}</span>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                            <button onclick="event.stopPropagation(); openDetailModal(${globalIndex})" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white transition">
+                                <span>Detail</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderCards(items, startIdx) {
+            const cardView = document.getElementById('card-view');
+            cardView.innerHTML = items.map((user, idx) => {
+                const globalIndex = startIdx + idx;
+                const cleanUsername = user.USERNAME.startsWith('@') ? user.USERNAME : `@${user.USERNAME}`;
+                return `
+                    <div onclick="openDetailModal(${globalIndex})" class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition cursor-pointer flex flex-col justify-between group">
+                        <div>
+                            <!-- Card Top: No & Status -->
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-lg">#${escapeHTML(user.NO)}</span>
+                                ${getStatusBadgeHTML(user.STATUS)}
+                            </div>
+
+                            <!-- User Profile -->
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                                    ${getInitials(user.NAMA)}
+                                </div>
+                                <div class="min-w-0">
+                                    <h3 class="font-bold text-slate-900 truncate group-hover:text-blue-600 transition">${escapeHTML(user.NAMA)}</h3>
+                                    <p class="text-xs text-slate-500 truncate">${escapeHTML(cleanUsername)}</p>
+                                </div>
+                            </div>
+
+                            <!-- Info List -->
+                            <div class="space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                        <span class="truncate">${escapeHTML(user.EMAIL)}</span>
+                                    </div>
+                                    ${user.EMAIL !== '-' ? `
+                                    <button onclick="event.stopPropagation(); copyText('${escapeAttr(user.EMAIL)}', 'Email')" class="p-1 text-slate-400 hover:text-blue-600 shrink-0" title="Salin Email">
+                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    </button>` : ''}
+                                </div>
+
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                        <span class="truncate">${escapeHTML(user.NOMOR_TELPON)}</span>
+                                    </div>
+                                    ${user.NOMOR_TELPON !== '-' ? `
+                                    <button onclick="event.stopPropagation(); copyText('${escapeAttr(user.NOMOR_TELPON)}', 'Nomor telepon')" class="p-1 text-slate-400 hover:text-emerald-600 shrink-0" title="Salin Nomor Telepon">
+                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    </button>` : ''}
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="briefcase" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                    <span class="truncate font-medium text-slate-700">${escapeHTML(user.JABATAN)}</span>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                    <span class="truncate">${escapeHTML(user.DAERAH)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex justify-end">
+                            <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 group-hover:translate-x-0.5 transition">
+                                Lihat Kartu Detail
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPagination(startIdx, endIdx, totalItems, totalPages) {
+            document.getElementById('page-start').textContent = startIdx + 1;
+            document.getElementById('page-end').textContent = endIdx;
+            document.getElementById('page-total').textContent = totalItems;
+
+            const container = document.getElementById('pagination-buttons');
+            let html = '';
+
+            // Prev button
+            html += `
+                <button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 ${currentPage === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-700 hover:bg-slate-50'} transition">
+                    Sebelumnya
+                </button>
+            `;
+
+            // Page numbers
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            for (let p = startPage; p <= endPage; p++) {
+                if (p === currentPage) {
+                    html += `<button class="w-8 h-8 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm">${p}</button>`;
+                } else {
+                    html += `<button onclick="goToPage(${p})" class="w-8 h-8 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">${p}</button>`;
+                }
+            }
+
+            // Next button
+            html += `
+                <button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 ${currentPage === totalPages ? 'text-slate-300 cursor-not-allowed' : 'text-slate-700 hover:bg-slate-50'} transition">
+                    Berikutnya
+                </button>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredUsers.length / pageSize);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderData();
+            document.getElementById('data-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ==========================================
+        // MODAL DETAIL USER
+        // ==========================================
+        function openDetailModal(index) {
+            const user = filteredUsers[index];
+            if (!user) return;
+
+            const cleanUsername = user.USERNAME.startsWith('@') ? user.USERNAME : `@${user.USERNAME}`;
+
+            document.getElementById('modal-avatar').textContent = getInitials(user.NAMA);
+            document.getElementById('modal-nama').textContent = user.NAMA;
+            document.getElementById('modal-username').textContent = cleanUsername;
+            document.getElementById('modal-status-badge').innerHTML = getStatusBadgeHTML(user.STATUS);
+            document.getElementById('modal-no').textContent = `#${user.NO}`;
+            document.getElementById('modal-daerah').textContent = user.DAERAH;
+            document.getElementById('modal-jabatan').textContent = user.JABATAN;
+            document.getElementById('modal-email').textContent = user.EMAIL;
+            document.getElementById('modal-telpon').textContent = user.NOMOR_TELPON;
+
+            document.getElementById('modal-copy-email').onclick = () => copyText(user.EMAIL, 'Email');
+            document.getElementById('modal-copy-telpon').onclick = () => copyText(user.NOMOR_TELPON, 'Nomor telepon');
+            document.getElementById('modal-copy-all').onclick = () => {
+                const summary = `DATA USER TERVERIFIKASI\nNo: ${user.NO}\nStatus: ${user.STATUS}\nNama: ${user.NAMA}\nUsername: ${cleanUsername}\nEmail: ${user.EMAIL}\nNo. Telpon: ${user.NOMOR_TELPON}\nJabatan: ${user.JABATAN}\nDaerah: ${user.DAERAH}`;
+                copyText(summary, 'Seluruh informasi user');
+            };
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // ==========================================
+        // UTILITAS: COPY TO CLIPBOARD, TOAST & EKSPOR CSV
+        // ==========================================
+        function copyText(text, label = 'Teks') {
+            if (!text || text === '-') return;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast(`${label} berhasil disalin!`);
+            } catch (err) {
+                showToast(`Gagal menyalin ${label.toLowerCase()}.`);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 2800);
+        }
+
+        function exportToCSV() {
+            if (filteredUsers.length === 0) {
+                showToast("Tidak ada data untuk diekspor.");
+                return;
+            }
+
+            const headers = ['NO', 'STATUS', 'NAMA', 'USERNAME', 'EMAIL', 'NOMOR TELPON', 'JABATAN', 'DAERAH'];
+            const escapeCSVCell = (val) => {
+                const str = String(val ?? '');
+                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                    return `"${str.replace(/"/g, '""')}"`;
+                }
+                return str;
+            };
+
+            const csvRows = [
+                headers.join(','),
+                ...filteredUsers.map(u => [
+                    u.NO,
+                    u.STATUS,
+                    u.NAMA,
+                    u.USERNAME,
+                    u.EMAIL,
+                    u.NOMOR_TELPON,
+                    u.JABATAN,
+                    u.DAERAH
+                ].map(escapeCSVCell).join(','))
+            ];
+
+            const csvContent = "\uFEFF" + csvRows.join('\n'); // BOM UTF-8 agar rapi di Excel
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            const dateStr = new Date().toISOString().slice(0, 10);
+            link.href = url;
+            link.setAttribute('download', `data-user-terverifikasi-${dateStr}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`Berhasil mengunduh ${filteredUsers.length} data ke CSV!`);
+        }
+
+        function escapeHTML(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeAttr(str) {
+            return String(str ?? '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
