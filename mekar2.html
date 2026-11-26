@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>E-Absensi Kader Posyandu MEKAR II - Desa Wani Lumbumpetigo</title>
+    <!-- Favicon & App Touch Icon -->
+    <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        tealbrand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        indigobrand: {
+                            600: '#4f46e5',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar & Mobile App Feel */
+        body {
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f1f5f9;
+            overscroll-behavior-y: contain;
+        }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Glassmorphism Card */
+        .glass-header {
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 45%, #312e81 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Signature Pad Styling */
+        #signatureCanvas {
+            touch-action: none;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        /* Hide Scrollbar for Horizontal Chips */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Print Styles for Official A4/F4 Document */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 15mm;
+                background: white !important;
+                box-shadow: none !important;
+                border: none !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-24 selection:bg-teal-600 selection:text-white">
+
+    <!-- ==================== HEADER RESMI (ANDROID APP BAR) ==================== -->
+    <header class="glass-header text-white pt-5 pb-14 px-4 rounded-b-[2rem] shadow-lg relative overflow-hidden no-print">
+        <!-- Decorative Circles -->
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute bottom-0 -left-10 w-32 h-32 bg-indigo-400/20 rounded-full blur-xl pointer-events-none"></div>
+
+        <div class="max-w-2xl mx-auto relative z-10">
+            <!-- Top Badge & Regulation Info Button -->
+            <div class="flex items-center justify-between mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/15 text-teal-100 border border-white/20 backdrop-blur-sm">
+                    <i class="fa-solid fa-shield-halved text-teal-300"></i>
+                    STANDAR ADMINISTRASI DESA RI
+                </span>
+                <button onclick="openModal('modalRegulasi')" class="text-xs bg-white/15 hover:bg-white/25 active:scale-95 transition px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-scale-balanced text-amber-300"></i>
+                    <span>Dasar Hukum</span>
+                </button>
+            </div>
+
+            <!-- Institution Title & Logo -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-16 h-16 rounded-2xl bg-white/95 border-2 border-teal-200/70 p-1.5 flex items-center justify-center shrink-0 shadow-md backdrop-blur-md overflow-hidden">
+                    <img 
+                        src="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png" 
+                        alt="Logo Posyandu MEKAR II" 
+                        class="w-full h-full object-contain drop-shadow-sm"
+                        onerror="this.onerror=null; this.src='https://placehold.co/120x120/0f766e/ffffff?text=MEKAR+II';"
+                    >
+                </div>
+                <div>
+                    <p class="text-[11px] uppercase tracking-wider text-teal-200 font-semibold">Pemerintah Desa Wani Lumbumpetigo</p>
+                    <h1 class="font-display text-xl sm:text-2xl font-extrabold tracking-tight leading-tight text-white">
+                        POSYANDU MEKAR II
+                    </h1>
+                    <p class="text-xs text-slate-200 mt-0.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-rose-400"></i> Kec. Tanantovea • Kab. Donggala
+                    </p>
+                </div>
+            </div>
+
+            <!-- Live Clock & Date Pill -->
+            <div class="mt-4 bg-black/25 border border-white/15 rounded-2xl p-3 flex items-center justify-between backdrop-blur-md">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-teal-500/30 flex items-center justify-center text-teal-200">
+                        <i class="fa-regular fa-calendar-check text-lg"></i>
+                    </div>
+                    <div>
+                        <div id="liveDateText" class="text-xs sm:text-sm font-semibold text-white">Memuat tanggal...</div>
+                        <div class="text-[11px] text-teal-200">Waktu Indonesia Tengah (WITA)</div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div id="liveClockText" class="font-display text-lg sm:text-xl font-extrabold text-amber-300 tracking-wider">00:00:00</div>
+                    <div class="text-[10px] uppercase tracking-widest text-white/70">REAL-TIME</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+    <main class="max-w-2xl mx-auto px-4 -mt-9 relative z-20 space-y-4">
+
+        <!-- ==================== TAB 1: ABSENSI HARI INI ==================== -->
+        <section id="tab-absensi" class="tab-content space-y-4">
+            
+            <!-- Card Pengaturan Sesi Kegiatan & GPS -->
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                    <h2 class="font-display font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <span class="w-2 h-5 rounded-full bg-teal-600 inline-block"></span>
+                        DETAIL KEGIATAN POSYANDU
+                    </h2>
+                    <span id="sessionStatusBadge" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                        <i class="fa-solid fa-circle text-[7px] mr-1 animate-pulse"></i> Aktif
+                    </span>
+                </div>
+
+                <!-- Tanggal & Jenis Kegiatan -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pelaksanaan</label>
+                        <input type="date" id="attendanceDate" onchange="loadSessionForDate()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Jenis Kegiatan / Agenda</label>
+                        <select id="activityType" onchange="saveCurrentSession()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none">
+                            <option value="Pelayanan Rutin Bulanan Posyandu">Pelayanan Rutin Bulanan</option>
+                            <option value="Kelas Ibu Hamil & Ibu Balita">Kelas Ibu Hamil & Balita</option>
+                            <option value="Kunjungan Rumah / Sweeping Sasaran">Kunjungan Rumah / Sweeping</option>
+                            <option value="Rapat Koordinasi & Evaluasi Kader">Rapat Koordinasi Kader</option>
+                            <option value="Penyuluhan Gizi & Pencegahan Stunting">Penyuluhan Gizi & Stunting</option>
+                            <option value="Pemberian Makanan Tambahan (PMT)">Pemberian Makanan Tambahan (PMT)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Verifikasi GPS Lokasi Posyandu -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-700">Verifikasi Titik Koordinat GPS</div>
+                            <div id="gpsStatusText" class="text-[11px] text-slate-500 mt-0.5">Belum diverifikasi (Opsional)</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="getGPSLocation()" id="btnGetGPS" class="min-h-[40px] px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shrink-0 shadow-sm">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <span>Ambil Lokasi GPS</span>
+                    </button>
+                </div>
+
+                <!-- Quick Stats Bar -->
+                <div class="grid grid-cols-5 gap-1.5 pt-1">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2 text-center">
+                        <div id="countH" class="font-display font-extrabold text-base text-emerald-700">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">HADIR</div>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl p-2 text-center">
+                        <div id="countI" class="font-display font-extrabold text-base text-sky-700">0</div>
+                        <div class="text-[10px] font-bold text-sky-600">IZIN</div>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-2 text-center">
+                        <div id="countS" class="font-display font-extrabold text-base text-amber-700">0</div>
+                        <div class="text-[10px] font-bold text-amber-600">SAKIT</div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-2 text-center">
+                        <div id="countDL" class="font-display font-extrabold text-base text-purple-700">0</div>
+                        <div class="text-[10px] font-bold text-purple-600">DINAS</div>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">
+                        <div id="countA" class="font-display font-extrabold text-base text-rose-700">0</div>
+                        <div class="text-[10px] font-bold text-rose-600">ALPA</div>
+                    </div>
+                </div>
+
+                <!-- Quick Bulk Action Buttons -->
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" onclick="markAllPresent()" class="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>Hadir Semua & Check-In</span>
+                    </button>
+                    <button type="button" onclick="checkoutAllPresent()" class="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 active:scale-[0.98] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Check-Out Semua</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daftar Kartu Absensi Kader Posyandu MEKAR II -->
+            <div class="flex items-center justify-between px-1">
+                <h3 class="font-display font-bold text-slate-700 text-sm">Daftar Kader Posyandu MEKAR II</h3>
+                <span id="totalKaderBadge" class="text-xs font-semibold text-teal-700 bg-teal-100 px-2.5 py-0.5 rounded-full">5 Kader</span>
+            </div>
+
+            <div id="kaderAttendanceList" class="space-y-3.5">
+                <!-- Rendered dynamically by JS -->
+            </div>
+
+            <!-- Tombol Simpan & Kirim WhatsApp -->
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-2.5">
+                <button type="button" onclick="saveAndNotify()" class="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-teal-600 to-indigo-700 hover:from-teal-700 hover:to-indigo-800 active:scale-[0.99] text-white font-display font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-base"></i>
+                    <span>SIMPAN DATA ABSENSI HARI INI</span>
+                </button>
+                <button type="button" onclick="shareToWhatsApp()" class="w-full min-h-[44px] rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 active:scale-[0.99] text-emerald-800 font-semibold text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i>
+                    <span>Bagikan Ringkasan Absensi ke Grup WhatsApp</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: REKAPITULASI & RIWAYAT ==================== -->
+        <section id="tab-rekap" class="tab-content hidden space-y-4">
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="font-display font-bold text-slate-800 text-base">Rekapitulasi Kehadiran</h2>
+                        <p class="text-xs text-slate-500">Statistik & Riwayat Tersimpan di Perangkat</p>
+                    </div>
+                    <button onclick="exportCSV()" class="min-h-[40px] px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-file-excel"></i>
+                        <span>Ekspor CSV</span>
+                    </button>
+                </div>
+
+                <!-- Filter Bulan -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Filter Bulan Rekapitulasi</label>
+                    <input type="month" id="rekapMonthFilter" onchange="renderRekapTab()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium text-slate-800">
+                </div>
+
+                <!-- Visual Progress / Persentase Kehadiran -->
+                <div class="bg-gradient-to-br from-teal-900 to-indigo-900 rounded-2xl p-4 text-white shadow-inner">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-teal-200 uppercase tracking-wider">Tingkat Kehadiran Bulan Ini</span>
+                        <span id="rekapPercentage" class="font-display text-2xl font-extrabold text-amber-300">0%</span>
+                    </div>
+                    <div class="w-full bg-white/15 rounded-full h-3 overflow-hidden">
+                        <div id="rekapProgressBar" class="bg-gradient-to-r from-teal-400 to-emerald-400 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <div id="rekapSummaryText" class="text-[11px] text-slate-200 mt-2">
+                        Total 0 sesi kegiatan tercatat pada bulan ini.
+                    </div>
+                </div>
+
+                <!-- Tabel Rekap Per Kader -->
+                <div>
+                    <h3 class="font-display font-bold text-slate-700 text-xs uppercase tracking-wider mb-2">Rekap Per Kader Posyandu MEKAR II</h3>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                    <th class="p-2.5">Nama & Jabatan</th>
+                                    <th class="p-2 text-center text-emerald-700">H</th>
+                                    <th class="p-2 text-center text-sky-700">I</th>
+                                    <th class="p-2 text-center text-amber-700">S</th>
+                                    <th class="p-2 text-center text-purple-700">DL</th>
+                                    <th class="p-2 text-center text-rose-700">A</th>
+                                    <th class="p-2.5 text-right">%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rekapPerKaderBody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Filled dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Sesi Tersimpan -->
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-3">
+                <h3 class="font-display font-bold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-teal-600"></i>
+                    <span>Riwayat Daftar Hadir Tersimpan</span>
+                </h3>
+                <div id="historySessionsList" class="space-y-2.5">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: LAPORAN RESMI & CETAK A4/F4 ==================== -->
+        <section id="tab-laporan" class="tab-content hidden space-y-4">
+            <!-- Action Bar untuk Cetak / PDF -->
+            <div class="glass-card rounded-2xl p-4 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 no-print">
+                <div>
+                    <h2 class="font-display font-bold text-slate-800 text-sm">Format Laporan Resmi Pemerintahan</h2>
+                    <p class="text-xs text-slate-500">Siap cetak A4/F4 atau Simpan PDF untuk SPJ Dana Desa</p>
+                </div>
+                <div class="flex w-full sm:w-auto gap-2">
+                    <button onclick="window.print()" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Simpan PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pengaturan Pejabat Penandatangan -->
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-3 no-print">
+                <h3 class="font-display font-bold text-slate-700 text-xs uppercase tracking-wider">Pengaturan Pengesahan Pejabat Desa</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Kepala Desa Wani Lumbumpetigo</label>
+                        <input type="text" id="kadesNameInput" value="KEPALA DESA WANI LUMBUMPETIGO" oninput="updateReportPreview()" class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Bidan Desa / Pembina (Opsional)</label>
+                        <input type="text" id="bidanNameInput" placeholder="Contoh: Bd. Siti Aminah, A.Md.Keb" oninput="updateReportPreview()" class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-medium">
+                    </div>
+                </div>
+            </div>
+
+            <!-- KERTAS DOKUMEN RESMI (PRINTABLE AREA) -->
+            <div class="overflow-x-auto pb-4">
+                <div id="printArea" class="bg-white rounded-xl shadow-lg border border-slate-300 p-5 sm:p-8 min-w-[650px] text-black font-serif">
+                    <!-- KOP SURAT RESMI -->
+                    <div class="border-b-4 border-double border-black pb-3 mb-4 flex items-center justify-between gap-4">
+                        <div class="w-20 h-20 flex items-center justify-center shrink-0">
+                            <img 
+                                src="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png" 
+                                alt="Logo Posyandu MEKAR II" 
+                                class="w-full h-full object-contain"
+                                onerror="this.onerror=null; this.src='https://placehold.co/120x120/ffffff/000000?text=MEKAR+II';"
+                            >
+                        </div>
+                        <div class="text-center flex-1">
+                            <div class="text-sm font-bold tracking-wide uppercase">PEMERINTAH KABUPATEN DONGGALA</div>
+                            <div class="text-sm font-bold tracking-wide uppercase">KECAMATAN TANANTOVEA</div>
+                            <div class="text-base font-extrabold tracking-wider uppercase">DESA WANI LUMBUMPETIGO</div>
+                            <div class="text-lg font-extrabold tracking-widest uppercase mt-0.5">POS PELAYANAN TERPADU (POSYANDU) MEKAR II</div>
+                            <div class="text-[11px] italic mt-0.5">Sekretariat: Jl. Trans Palu - Sabang, Desa Wani Lumbumpetigo, Kode Pos 94352</div>
+                        </div>
+                        <div class="w-20 shrink-0"></div>
+                    </div>
+
+                    <!-- JUDUL DOKUMEN -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-base font-bold uppercase underline tracking-wide">DAFTAR HADIR KADER POSYANDU MEKAR II</h2>
+                        <p class="text-xs mt-1">Sesuai Permendagri No. 19 Tahun 2011 & Permendagri No. 18 Tahun 2018 tentang Lembaga Kemasyarakatan Desa</p>
+                    </div>
+
+                    <!-- IDENTITAS KEGIATAN -->
+                    <table class="w-full text-xs mb-4">
+                        <tr>
+                            <td class="w-36 py-0.5 font-semibold">Hari / Tanggal</td>
+                            <td class="w-4">:</td>
+                            <td id="repDate" class="font-medium">-</td>
+                            <td class="w-28 py-0.5 font-semibold">Desa / Posyandu</td>
+                            <td class="w-4">:</td>
+                            <td>Wani Lumbumpetigo / MEKAR II</td>
+                        </tr>
+                        <tr>
+                            <td class="py-0.5 font-semibold">Jenis Kegiatan</td>
+                            <td>:</td>
+                            <td id="repActivity" class="font-medium">-</td>
+                            <td class="py-0.5 font-semibold">Koordinat GPS</td>
+                            <td>:</td>
+                            <td id="repGPS" class="text-[11px]">-</td>
+                        </tr>
+                    </table>
+
+                    <!-- TABEL DAFTAR HADIR RESMI -->
+                    <table class="w-full border-collapse border border-black text-xs mb-6">
+                        <thead>
+                            <tr class="bg-slate-100 text-center font-bold">
+                                <th class="border border-black p-2 w-10">No</th>
+                                <th class="border border-black p-2 text-left">Nama Lengkap Kader</th>
+                                <th class="border border-black p-2 w-28">Jabatan</th>
+                                <th class="border border-black p-2 w-20">Status</th>
+                                <th class="border border-black p-2 w-24">Jam Datang</th>
+                                <th class="border border-black p-2 w-24">Jam Pulang</th>
+                                <th class="border border-black p-2 w-32">Tanda Tangan</th>
+                                <th class="border border-black p-2">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <!-- Filled dynamically -->
+                        </tbody>
+                    </table>
+
+                    <!-- REKAP RINGKAS DI BAWAH TABEL -->
+                    <div id="repSummaryBox" class="text-xs mb-6 border border-black p-2.5 bg-slate-50">
+                        <strong>Rekapitulasi Kehadiran:</strong> Hadir: 0 | Izin: 0 | Sakit: 0 | Dinas Luar: 0 | Tanpa Keterangan: 0
+                    </div>
+
+                    <!-- BLOK PENGESAHAN TANDA TANGAN RESMI -->
+                    <div class="grid grid-cols-3 gap-4 text-xs text-center mt-6 pt-2">
+                        <div>
+                            <p>Mengetahui,</p>
+                            <p class="font-bold">Kepala Desa Wani Lumbumpetigo</p>
+                            <div class="h-16"></div>
+                            <p id="repKadesName" class="font-bold underline uppercase">KEPALA DESA WANI LUMBUMPETIGO</p>
+                        </div>
+                        <div>
+                            <p>&nbsp;</p>
+                            <p id="repBidanTitle" class="font-bold">Ketua Posyandu MEKAR II</p>
+                            <div class="h-16 flex items-center justify-center" id="repKetuaSig"></div>
+                            <p class="font-bold underline uppercase">NOVAYANTI</p>
+                        </div>
+                        <div>
+                            <p id="repSignDate">Wani Lumbumpetigo, .........................</p>
+                            <p class="font-bold">Sekretaris Posyandu MEKAR II</p>
+                            <div class="h-16 flex items-center justify-center" id="repSekretarisSig"></div>
+                            <p class="font-bold underline uppercase">ISMIATI</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: KELOLA DATA KADER ==================== -->
+        <section id="tab-kader" class="tab-content hidden space-y-4">
+            <div class="glass-card rounded-2xl p-4 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="font-display font-bold text-slate-800 text-base">Data Kader Posyandu MEKAR II</h2>
+                        <p class="text-xs text-slate-500">SK Kepala Desa Wani Lumbumpetigo</p>
+                    </div>
+                    <button onclick="openModal('modalAddKader')" class="min-h-[42px] px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Tambah Kader</span>
+                    </button>
+                </div>
+
+                <div id="masterKaderList" class="space-y-2.5">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 flex justify-between items-center">
+                    <span class="text-[11px] text-slate-400">Data tersimpan otomatis di memori HP</span>
+                    <button onclick="resetDefaultKaders()" class="text-xs text-rose-600 hover:underline font-semibold">
+                        Reset ke 5 Kader Awal
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== BOTTOM NAVIGATION BAR (NATIVE ANDROID STYLE) ==================== -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-40 no-print">
+        <div class="max-w-2xl mx-auto grid grid-cols-4 h-16">
+            <button onclick="switchTab('absensi')" id="nav-absensi" class="nav-btn flex flex-col items-center justify-center gap-1 text-teal-700 font-bold transition">
+                <div class="w-10 h-7 rounded-full bg-teal-100 flex items-center justify-center nav-pill">
+                    <i class="fa-solid fa-clipboard-user text-base"></i>
+                </div>
+                <span class="text-[11px]">Absensi</span>
+            </button>
+            <button onclick="switchTab('rekap')" id="nav-rekap" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-500 font-medium transition">
+                <div class="w-10 h-7 rounded-full flex items-center justify-center nav-pill">
+                    <i class="fa-solid fa-chart-pie text-base"></i>
+                </div>
+                <span class="text-[11px]">Rekap</span>
+            </button>
+            <button onclick="switchTab('laporan')" id="nav-laporan" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-500 font-medium transition">
+                <div class="w-10 h-7 rounded-full flex items-center justify-center nav-pill">
+                    <i class="fa-solid fa-file-signature text-base"></i>
+                </div>
+                <span class="text-[11px]">Laporan</span>
+            </button>
+            <button onclick="switchTab('kader')" id="nav-kader" class="nav-btn flex flex-col items-center justify-center gap-1 text-slate-500 font-medium transition">
+                <div class="w-10 h-7 rounded-full flex items-center justify-center nav-pill">
+                    <i class="fa-solid fa-users-gear text-base"></i>
+                </div>
+                <span class="text-[11px]">Kader</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== MODAL TANDA TANGAN DIGITAL (TOUCH PAD) ==================== -->
+    <div id="modalSignature" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4 animate-slide-up">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-teal-600">Paraf / Tanda Tangan Digital</span>
+                    <h3 id="sigKaderName" class="font-display font-bold text-lg text-slate-800">NOVAYANTI</h3>
+                    <p id="sigKaderRole" class="text-xs text-slate-500">Ketua Posyandu MEKAR II</p>
+                </div>
+                <button onclick="closeModal('modalSignature')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="text-xs text-slate-500 bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-center gap-2">
+                <i class="fa-solid fa-hand-pointer text-amber-600"></i>
+                <span>Gunakan jari Anda pada layar HP untuk membubuhkan tanda tangan di kotak bawah ini.</span>
+            </div>
+
+            <!-- Canvas Signature -->
+            <div class="border-2 border-dashed border-slate-300 rounded-2xl overflow-hidden bg-slate-50 relative">
+                <canvas id="signatureCanvas" class="w-full h-48 block cursor-crosshair"></canvas>
+                <div class="absolute bottom-2 right-3 text-[10px] text-slate-400 pointer-events-none">Area Tanda Tangan Sah</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+                <button type="button" onclick="clearSignatureCanvas()" class="min-h-[46px] rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs hover:bg-slate-50 flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-eraser"></i>
+                    <span>Ulangi / Hapus</span>
+                </button>
+                <button type="button" onclick="saveSignature()" class="min-h-[46px] rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Simpan Tanda Tangan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL TAMBAH KADER BARU ==================== -->
+    <div id="modalAddKader" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-display font-bold text-base text-slate-800">Tambah Kader Posyandu MEKAR II</h3>
+                <button onclick="closeModal('modalAddKader')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Kader (Sesuai KTP)</label>
+                    <input type="text" id="newKaderName" placeholder="Contoh: RAHMAWATI" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 text-sm uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Jabatan dalam Kepengurusan</label>
+                    <select id="newKaderRole" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                        <option value="Anggota">Anggota</option>
+                        <option value="Ketua">Ketua</option>
+                        <option value="Sekretaris">Sekretaris</option>
+                        <option value="Bendahara">Bendahara</option>
+                        <option value="Kader Pembantu">Kader Pembantu</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="addNewKader()" class="w-full min-h-[46px] rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-md">
+                Simpan Kader Baru
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL DASAR HUKUM & STANDAR RI ==================== -->
+    <div id="modalRegulasi" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced text-teal-600 text-lg"></i>
+                    <h3 class="font-display font-bold text-base text-slate-800">Landasan Hukum Administrasi Posyandu</h3>
+                </div>
+                <button onclick="closeModal('modalRegulasi')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+                <div class="p-3 rounded-xl bg-teal-50 border border-teal-200">
+                    <div class="font-bold text-teal-900 mb-1">1. Permendagri Nomor 19 Tahun 2011</div>
+                    <p>Tentang Pedoman Pengintegrasian Layanan Sosial Dasar di Pos Pelayanan Terpadu (Posyandu), yang mewajibkan tertib administrasi pencatatan kegiatan dan kehadiran kader.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200">
+                    <div class="font-bold text-indigo-900 mb-1">2. Permendagri Nomor 18 Tahun 2018</div>
+                    <p>Tentang Lembaga Kemasyarakatan Desa dan Lembaga Adat Desa, yang menetapkan Posyandu sebagai LKD mitra Pemerintah Desa dalam pelayanan masyarakat.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50 border border-amber-200">
+                    <div class="font-bold text-amber-900 mb-1">3. Standar Pertanggungjawaban Dana Desa (SPJ)</div>
+                    <p>Daftar hadir yang dilengkapi waktu kehadiran, jenis kegiatan, tanda tangan sah kader, dan pengesahan Kepala Desa menjadi bukti otentik penyaluran insentif kader.</p>
+                </div>
+            </div>
+            <button onclick="closeModal('modalRegulasi')" class="w-full min-h-[44px] rounded-xl bg-slate-800 text-white font-bold text-xs">
+                Tutup & Mengerti
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== CUSTOM TOAST NOTIFICATION (NO ALERT) ==================== -->
+    <div id="toastNotification" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300 max-w-sm w-[92%]">
+        <div class="bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-xl border border-white/10 flex items-center gap-3 backdrop-blur-md">
+            <div id="toastIcon" class="w-7 h-7 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div id="toastMessage" class="text-xs font-medium leading-snug">Pesan notifikasi</div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
+    <script>
+        // --- 1. DATA AWAL KADER POSYANDU MEKAR II (SESUAI PERMINTAAN) ---
+        const DEFAULT_KADERS = [
+            { id: 'kader_1', name: 'NOVAYANTI', role: 'Ketua' },
+            { id: 'kader_2', name: 'ISMIATI', role: 'Sekretaris' },
+            { id: 'kader_3', name: 'NISMA', role: 'Bendahara' },
+            { id: 'kader_4', name: 'SULFIANI', role: 'Anggota' },
+            { id: 'kader_5', name: "NUR'AFNI", role: 'Anggota' }
+        ];
+
+        const STORAGE_KEYS = {
+            KADERS: 'posyandu_mekar2_kaders_v1',
+            SESSIONS: 'posyandu_mekar2_sessions_v1',
+            SETTINGS: 'posyandu_mekar2_settings_v1'
+        };
+
+        let kaders = [];
+        let sessions = {}; // Keyed by YYYY-MM-DD
+        let currentSigningKaderId = null;
+
+        // --- 2. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            initDateAndClock();
+            setupSignatureCanvas();
+
+            // Set default date to today (Local YYYY-MM-DD)
+            const todayStr = getTodayLocalISO();
+            document.getElementById('attendanceDate').value = todayStr;
+            document.getElementById('rekapMonthFilter').value = todayStr.substring(0, 7);
+
+            loadSessionForDate();
+            renderMasterKaderList();
+            renderRekapTab();
+            updateReportPreview();
+        });
+
+        function getTodayLocalISO() {
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000;
+            return new Date(now.getTime() - offset).toISOString().split('T')[0];
+        }
+
+        function getCurrentTimeHM() {
+            const now = new Date();
+            return now.toTimeString().slice(0, 5);
+        }
+
+        function loadFromStorage() {
+            try {
+                const savedKaders = localStorage.getItem(STORAGE_KEYS.KADERS);
+                kaders = savedKaders ? JSON.parse(savedKaders) : [...DEFAULT_KADERS];
+
+                const savedSessions = localStorage.getItem(STORAGE_KEYS.SESSIONS);
+                sessions = savedSessions ? JSON.parse(savedSessions) : {};
+
+                const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+                if (savedSettings) {
+                    const parsed = JSON.parse(savedSettings);
+                    if (parsed.kadesName) document.getElementById('kadesNameInput').value = parsed.kadesName;
+                    if (parsed.bidanName) document.getElementById('bidanNameInput').value = parsed.bidanName;
+                }
+            } catch (e) {
+                console.error('Error reading localStorage:', e);
+                kaders = [...DEFAULT_KADERS];
+                sessions = {};
+            }
+        }
+
+        function persistKaders() {
+            localStorage.setItem(STORAGE_KEYS.KADERS, JSON.stringify(kaders));
+        }
+
+        function persistSessions() {
+            localStorage.setItem(STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
+        }
+
+        // --- 3. REAL-TIME CLOCK & INDONESIAN DATE FORMATTER ---
+        function initDateAndClock() {
+            const updateClock = () => {
+                const now = new Date();
+                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+                const dayName = days[now.getDay()];
+                const dateNum = now.getDate();
+                const monthName = months[now.getMonth()];
+                const yearNum = now.getFullYear();
+
+                document.getElementById('liveDateText').textContent = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+                document.getElementById('liveClockText').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function formatIndoDate(isoDateStr) {
+            if (!isoDateStr) return '-';
+            const [y, m, d] = isoDateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d);
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${days[dateObj.getDay()]}, ${d} ${months[m - 1]} ${y}`;
+        }
+
+        function formatIndoDateShort(isoDateStr) {
+            if (!isoDateStr) return '-';
+            const [y, m, d] = isoDateStr.split('-').map(Number);
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${d} ${months[m - 1]} ${y}`;
+        }
+
+        // --- 4. SESSION & ATTENDANCE MANAGEMENT ---
+        function getActiveDate() {
+            return document.getElementById('attendanceDate').value || getTodayLocalISO();
+        }
+
+        function ensureSessionExists(dateStr) {
+            if (!sessions[dateStr]) {
+                sessions[dateStr] = {
+                    date: dateStr,
+                    activity: document.getElementById('activityType').value || 'Pelayanan Rutin Bulanan Posyandu',
+                    gps: '',
+                    records: {}
+                };
+            }
+            // Ensure every active kader has a record object
+            kaders.forEach(k => {
+                if (!sessions[dateStr].records[k.id]) {
+                    sessions[dateStr].records[k.id] = {
+                        kaderId: k.id,
+                        name: k.name,
+                        role: k.role,
+                        status: '', // H, I, S, DL, A
+                        checkIn: '',
+                        checkOut: '',
+                        signature: '',
+                        note: ''
+                    };
+                } else {
+                    // Sync latest name/role
+                    sessions[dateStr].records[k.id].name = k.name;
+                    sessions[dateStr].records[k.id].role = k.role;
+                }
+            });
+            return sessions[dateStr];
+        }
+
+        function loadSessionForDate() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+
+            document.getElementById('activityType').value = session.activity;
+            const gpsText = document.getElementById('gpsStatusText');
+            if (session.gps) {
+                gpsText.innerHTML = `<span class="text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>${session.gps}</span>`;
+            } else {
+                gpsText.textContent = 'Belum diverifikasi (Opsional)';
+            }
+
+            renderKaderAttendanceCards();
+            updateReportPreview();
+        }
+
+        function saveCurrentSession() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.activity = document.getElementById('activityType').value;
+            persistSessions();
+            updateStatsCounters();
+            updateReportPreview();
+        }
+
+        function setKaderStatus(kaderId, statusCode) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            rec.status = statusCode;
+
+            // Auto fill check-in time if Hadir (H) and empty
+            if (statusCode === 'H' && !rec.checkIn) {
+                rec.checkIn = getCurrentTimeHM();
+            } else if (statusCode !== 'H') {
+                rec.checkIn = '';
+                rec.checkOut = '';
+            }
+
+            persistSessions();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+        }
+
+        function updateKaderTime(kaderId, field, value) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[kaderId][field] = value;
+            persistSessions();
+            updateReportPreview();
+        }
+
+        function quickCheckIn(kaderId) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            rec.status = 'H';
+            rec.checkIn = getCurrentTimeHM();
+            persistSessions();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`Check-in ${rec.name} pukul ${rec.checkIn} WITA`);
+        }
+
+        function quickCheckOut(kaderId) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            if (!rec.checkIn) rec.checkIn = getCurrentTimeHM();
+            rec.status = 'H';
+            rec.checkOut = getCurrentTimeHM();
+            persistSessions();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`Check-out ${rec.name} pukul ${rec.checkOut} WITA`);
+        }
+
+        function updateKaderNote(kaderId, value) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[kaderId].note = value;
+            persistSessions();
+            updateReportPreview();
+        }
+
+        function markAllPresent() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const nowHM = getCurrentTimeHM();
+            kaders.forEach(k => {
+                const rec = session.records[k.id];
+                rec.status = 'H';
+                if (!rec.checkIn) rec.checkIn = nowHM;
+            });
+            persistSessions();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast('Semua kader ditandai HADIR & Check-In!');
+        }
+
+        function checkoutAllPresent() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const nowHM = getCurrentTimeHM();
+            let count = 0;
+            kaders.forEach(k => {
+                const rec = session.records[k.id];
+                if (rec.status === 'H') {
+                    rec.checkOut = nowHM;
+                    count++;
+                }
+            });
+            persistSessions();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`${count} kader yang hadir berhasil Check-Out pukul ${nowHM}`);
+        }
+
+        // --- 5. RENDER KADER ATTENDANCE CARDS (ANDROID FRIENDLY UI) ---
+        function renderKaderAttendanceCards() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const container = document.getElementById('kaderAttendanceList');
+            document.getElementById('totalKaderBadge').textContent = `${kaders.length} Kader`;
+
+            container.innerHTML = kaders.map((k, index) => {
+                const rec = session.records[k.id];
+                const st = rec.status;
+
+                // Role Badge Color
+                let roleBadge = 'bg-slate-100 text-slate-700';
+                if (k.role === 'Ketua') roleBadge = 'bg-amber-100 text-amber-800 border border-amber-300';
+                else if (k.role === 'Sekretaris') roleBadge = 'bg-indigo-100 text-indigo-800 border border-indigo-200';
+                else if (k.role === 'Bendahara') roleBadge = 'bg-teal-100 text-teal-800 border border-teal-200';
+
+                // Card left border accent based on attendance status
+                let borderAccent = 'border-l-4 border-l-slate-300';
+                if (st === 'H') borderAccent = 'border-l-4 border-l-emerald-500';
+                else if (st === 'I') borderAccent = 'border-l-4 border-l-sky-500';
+                else if (st === 'S') borderAccent = 'border-l-4 border-l-amber-500';
+                else if (st === 'DL') borderAccent = 'border-l-4 border-l-purple-500';
+                else if (st === 'A') borderAccent = 'border-l-4 border-l-rose-500';
+
+                const statusButtons = [
+                    { code: 'H', label: 'Hadir', active: 'bg-emerald-600 text-white border-emerald-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50' },
+                    { code: 'I', label: 'Izin', active: 'bg-sky-600 text-white border-sky-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-sky-50' },
+                    { code: 'S', label: 'Sakit', active: 'bg-amber-500 text-white border-amber-500 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-amber-50' },
+                    { code: 'DL', label: 'Dinas', active: 'bg-purple-600 text-white border-purple-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-purple-50' },
+                    { code: 'A', label: 'Alpa', active: 'bg-rose-600 text-white border-rose-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50' }
+                ];
+
+                return `
+                <div class="glass-card rounded-2xl p-4 shadow-sm ${borderAccent} transition-all space-y-3">
+                    <!-- Top Row: Number, Avatar, Name & Role -->
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600 to-indigo-700 text-white font-display font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                                ${index + 1}
+                            </div>
+                            <div>
+                                <h4 class="font-display font-extrabold text-slate-800 text-sm sm:text-base tracking-tight">${k.name}</h4>
+                                <span class="inline-block mt-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold ${roleBadge}">
+                                    ${k.role}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Signature Button -->
+                        <button type="button" onclick="openSignatureModal('${k.id}')" class="min-h-[42px] px-3 py-1.5 rounded-xl border ${rec.signature ? 'bg-teal-50 border-teal-300 text-teal-800' : 'bg-slate-50 border-slate-300 text-slate-600'} active:scale-95 transition flex items-center gap-1.5 text-xs font-semibold">
+                            ${rec.signature 
+                                ? `<img src="${rec.signature}" alt="TTD" class="h-6 w-12 object-contain bg-white rounded border border-teal-200"><i class="fa-solid fa-pen text-[10px] text-teal-600"></i>` 
+                                : `<i class="fa-solid fa-signature text-teal-600"></i><span>Paraf/TTD</span>`
+                            }
+                        </button>
+                    </div>
+
+                    <!-- Status Selection Grid (Thumb-friendly 5 buttons) -->
+                    <div class="grid grid-cols-5 gap-1.5">
+                        ${statusButtons.map(btn => `
+                            <button type="button" onclick="setKaderStatus('${k.id}', '${btn.code}')" 
+                                class="min-h-[42px] rounded-xl border text-xs font-bold transition active:scale-95 flex flex-col items-center justify-center ${st === btn.code ? btn.active : btn.idle}">
+                                <span>${btn.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Time In / Out & Note Row -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Jam Datang</span>
+                                <button type="button" onclick="quickCheckIn('${k.id}')" class="text-[10px] font-bold text-teal-700 hover:underline">Sekarang</button>
+                            </div>
+                            <input type="time" value="${rec.checkIn}" onchange="updateKaderTime('${k.id}', 'checkIn', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold text-slate-800">
+                        </div>
+
+                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Jam Pulang</span>
+                                <button type="button" onclick="quickCheckOut('${k.id}')" class="text-[10px] font-bold text-indigo-700 hover:underline">Sekarang</button>
+                            </div>
+                            <input type="time" value="${rec.checkOut}" onchange="updateKaderTime('${k.id}', 'checkOut', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold text-slate-800">
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1 bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Keterangan</label>
+                            <input type="text" value="${rec.note}" placeholder="Opsional..." onchange="updateKaderNote('${k.id}', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-slate-800">
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            updateStatsCounters();
+        }
+
+        function updateStatsCounters() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const counts = { H: 0, I: 0, S: 0, DL: 0, A: 0 };
+
+            kaders.forEach(k => {
+                const st = session.records[k.id]?.status;
+                if (counts.hasOwnProperty(st)) counts[st]++;
+            });
+
+            document.getElementById('countH').textContent = counts.H;
+            document.getElementById('countI').textContent = counts.I;
+            document.getElementById('countS').textContent = counts.S;
+            document.getElementById('countDL').textContent = counts.DL;
+            document.getElementById('countA').textContent = counts.A;
+        }
+
+        // --- 6. GPS GEOLOCATION ---
+        function getGPSLocation() {
+            const btn = document.getElementById('btnGetGPS');
+            const statusEl = document.getElementById('gpsStatusText');
+
+            if (!navigator.geolocation) {
+                showToast('Perangkat/Browser tidak mendukung GPS', true);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Mencari GPS...</span>`;
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    const acc = Math.round(pos.coords.accuracy);
+                    const gpsString = `${lat}, ${lng} (±${acc}m)`;
+
+                    const dateStr = getActiveDate();
+                    const session = ensureSessionExists(dateStr);
+                    session.gps = gpsString;
+                    persistSessions();
+
+                    statusEl.innerHTML = `<span class="text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>${gpsString}</span>`;
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-location-crosshairs"></i><span>Perbarui GPS</span>`;
+                    updateReportPreview();
+                    showToast('Titik koordinat GPS Posyandu berhasil dikunci!');
+                },
+                (err) => {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-location-crosshairs"></i><span>Ambil Lokasi GPS</span>`;
+                    showToast('Gagal mengambil GPS. Pastikan izin lokasi HP aktif.', true);
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // --- 7. TOUCH SIGNATURE PAD (HTML5 CANVAS) ---
+        let canvas, ctx, isDrawing = false;
+
+        function setupSignatureCanvas() {
+            canvas = document.getElementById('signatureCanvas');
+            ctx = canvas.getContext('2d');
+
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            };
+
+            const startDraw = (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            };
+
+            const draw = (e) => {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+            };
+
+            const endDraw = () => {
+                isDrawing = false;
+            };
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', endDraw);
+        }
+
+        function openSignatureModal(kaderId) {
+            currentSigningKaderId = kaderId;
+            const kader = kaders.find(k => k.id === kaderId);
+            if (!kader) return;
+
+            document.getElementById('sigKaderName').textContent = kader.name;
+            document.getElementById('sigKaderRole').textContent = `${kader.role} • Posyandu MEKAR II`;
+
+            openModal('modalSignature');
+
+            // Resize canvas properly after modal becomes visible
+            setTimeout(() => {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * 2;
+                canvas.height = rect.height * 2;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Load existing signature if present
+                const dateStr = getActiveDate();
+                const rec = ensureSessionExists(dateStr).records[kaderId];
+                if (rec && rec.signature) {
+                    const img = new Image();
+                    img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    img.src = rec.signature;
+                }
+            }, 50);
+        }
+
+        function clearSignatureCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveSignature() {
+            if (!currentSigningKaderId) return;
+            const dataURL = canvas.toDataURL('image/png');
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[currentSigningKaderId].signature = dataURL;
+
+            // Auto mark Hadir if status is still empty
+            if (!session.records[currentSigningKaderId].status) {
+                session.records[currentSigningKaderId].status = 'H';
+                session.records[currentSigningKaderId].checkIn = getCurrentTimeHM();
+            }
+
+            persistSessions();
+            closeModal('modalSignature');
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast('Tanda tangan digital berhasil disimpan!');
+        }
+
+        // --- 8. SAVE, WHATSAPP SHARE & CSV EXPORT ---
+        function saveAndNotify() {
+            saveCurrentSession();
+            renderRekapTab();
+            showToast('Data Absensi Posyandu MEKAR II tersimpan aman!');
+        }
+
+        function shareToWhatsApp() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const statusLabels = { H: 'Hadir ✅', I: 'Izin ℹ️', S: 'Sakit 🤒', DL: 'Dinas Luar 🏛️', A: 'Alpa ❌', '': 'Belum diisi ⏳' };
+
+            let text = `*LAPORAN ABSENSI KADER POSYANDU MEKAR II*\n`;
+            text += `Desa Wani Lumbumpetigo\n`;
+            text += `📅 Tanggal: ${formatIndoDate(dateStr)}\n`;
+            text += `📋 Kegiatan: ${session.activity}\n`;
+            if (session.gps) text += `📍 GPS: ${session.gps}\n`;
+            text += `----------------------------------\n`;
+
+            kaders.forEach((k, i) => {
+                const rec = session.records[k.id];
+                const jam = rec.checkIn ? ` (${rec.checkIn}${rec.checkOut ? '-' + rec.checkOut : ''})` : '';
+                text += `${i + 1}. *${k.name}* (${k.role})\n   Status: ${statusLabels[rec.status]}${jam}\n`;
+            });
+
+            text += `----------------------------------\n`;
+            text += `_Dikirim via Aplikasi E-Absensi Posyandu MEKAR II_`;
+
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function exportCSV() {
+            const monthFilter = document.getElementById('rekapMonthFilter').value;
+            const matchingDates = Object.keys(sessions).filter(d => !monthFilter || d.startsWith(monthFilter)).sort();
+
+            if (matchingDates.length === 0) {
+                showToast('Tidak ada data absensi pada bulan tersebut.', true);
+                return;
+            }
+
+            let csv = 'Tanggal,Kegiatan,GPS,No,Nama Kader,Jabatan,Status,Jam Datang,Jam Pulang,Keterangan\n';
+            matchingDates.forEach(dateStr => {
+                const s = sessions[dateStr];
+                kaders.forEach((k, idx) => {
+                    const r = s.records[k.id] || {};
+                    const row = [
+                        dateStr,
+                        `"${(s.activity || '').replace(/"/g, '""')}"`,
+                        `"${s.gps || '-'}"`,
+                        idx + 1,
+                        `"${k.name}"`,
+                        `"${k.role}"`,
+                        r.status || '-',
+                        r.checkIn || '-',
+                        r.checkOut || '-',
+                        `"${(r.note || '').replace(/"/g, '""')}"`
+                    ];
+                    csv += row.join(',') + '\n';
+                });
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekap_Absensi_Posyandu_MEKAR_II_${monthFilter || 'Semua'}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File Excel/CSV berhasil diunduh!');
+        }
+
+        // --- 9. REKAPITULASI & RIWAYAT TAB ---
+        function renderRekapTab() {
+            const monthFilter = document.getElementById('rekapMonthFilter').value;
+            const matchingDates = Object.keys(sessions).filter(d => !monthFilter || d.startsWith(monthFilter)).sort().reverse();
+
+            const statsPerKader = {};
+            kaders.forEach(k => {
+                statsPerKader[k.id] = { name: k.name, role: k.role, H: 0, I: 0, S: 0, DL: 0, A: 0, total: 0 };
+            });
+
+            let totalHadirAll = 0;
+            let totalPossibleAll = 0;
+
+            matchingDates.forEach(dateStr => {
+                const s = sessions[dateStr];
+                kaders.forEach(k => {
+                    const r = s.records[k.id];
+                    if (r && r.status) {
+                        statsPerKader[k.id][r.status] = (statsPerKader[k.id][r.status] || 0) + 1;
+                        statsPerKader[k.id].total++;
+                        totalPossibleAll++;
+                        if (r.status === 'H') totalHadirAll++;
+                    }
+                });
+            });
+
+            const pct = totalPossibleAll > 0 ? Math.round((totalHadirAll / totalPossibleAll) * 100) : 0;
+            document.getElementById('rekapPercentage').textContent = `${pct}%`;
+            document.getElementById('rekapProgressBar').style.width = `${pct}%`;
+            document.getElementById('rekapSummaryText').textContent = `Total ${matchingDates.length} sesi kegiatan tercatat pada periode ini.`;
+
+            // Table body per kader
+            const tbody = document.getElementById('rekapPerKaderBody');
+            tbody.innerHTML = kaders.map(k => {
+                const st = statsPerKader[k.id];
+                const kPct = st.total > 0 ? Math.round((st.H / st.total) * 100) : 0;
+                return `
+                    <tr>
+                        <td class="p-2.5">
+                            <div class="font-bold text-slate-800">${k.name}</div>
+                            <div class="text-[10px] text-slate-500">${k.role}</div>
+                        </td>
+                        <td class="p-2 text-center font-bold text-emerald-700">${st.H}</td>
+                        <td class="p-2 text-center font-bold text-sky-700">${st.I}</td>
+                        <td class="p-2 text-center font-bold text-amber-700">${st.S}</td>
+                        <td class="p-2 text-center font-bold text-purple-700">${st.DL}</td>
+                        <td class="p-2 text-center font-bold text-rose-700">${st.A}</td>
+                        <td class="p-2.5 text-right font-extrabold text-slate-800">${kPct}%</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // History list
+            const historyEl = document.getElementById('historySessionsList');
+            if (matchingDates.length === 0) {
+                historyEl.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">Belum ada riwayat absensi tersimpan pada bulan ini.</div>`;
+            } else {
+                historyEl.innerHTML = matchingDates.map(d => {
+                    const s = sessions[d];
+                    let hCount = 0;
+                    kaders.forEach(k => { if (s.records[k.id]?.status === 'H') hCount++; });
+                    return `
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">${formatIndoDate(d)}</div>
+                                <div class="text-[11px] text-slate-600">${s.activity}</div>
+                                <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                                    Hadir: ${hCount} / ${kaders.length} Kader
+                                </span>
+                            </div>
+                            <button onclick="openHistoryDate('${d}')" class="min-h-[38px] px-3 py-1.5 rounded-xl bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 shrink-0">
+                                Buka
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function openHistoryDate(dateStr) {
+            document.getElementById('attendanceDate').value = dateStr;
+            loadSessionForDate();
+            switchTab('absensi');
+            showToast(`Menampilkan absensi tanggal ${formatIndoDateShort(dateStr)}`);
+        }
+
+        // --- 10. LAPORAN RESMI A4/F4 PREVIEW ---
+        function updateReportPreview() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+
+            const kadesName = document.getElementById('kadesNameInput').value || 'KEPALA DESA WANI LUMBUMPETIGO';
+            const bidanName = document.getElementById('bidanNameInput').value.trim();
+
+            // Save settings
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({ kadesName, bidanName }));
+
+            document.getElementById('repDate').textContent = formatIndoDate(dateStr);
+            document.getElementById('repActivity').textContent = session.activity;
+            document.getElementById('repGPS').textContent = session.gps || 'Desa Wani Lumbumpetigo';
+            document.getElementById('repKadesName').textContent = kadesName;
+            document.getElementById('repSignDate').textContent = `Wani Lumbumpetigo, ${formatIndoDateShort(dateStr)}`;
+
+            const statusFull = { H: 'Hadir', I: 'Izin', S: 'Sakit', DL: 'Dinas Luar', A: 'Alpa', '': '-' };
+            const counts = { H: 0, I: 0, S: 0, DL: 0, A: 0 };
+
+            let ketuaSigHTML = '';
+            let sekretarisSigHTML = '';
+
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = kaders.map((k, idx) => {
+                const r = session.records[k.id] || {};
+                if (counts.hasOwnProperty(r.status)) counts[r.status]++;
+
+                if (k.role === 'Ketua' && r.signature) {
+                    ketuaSigHTML = `<img src="${r.signature}" class="h-14 object-contain">`;
+                }
+                if (k.role === 'Sekretaris' && r.signature) {
+                    sekretarisSigHTML = `<img src="${r.signature}" class="h-14 object-contain">`;
+                }
+
+                return `
+                    <tr>
+                        <td class="border border-black p-2 text-center">${idx + 1}</td>
+                        <td class="border border-black p-2 font-bold">${k.name}</td>
+                        <td class="border border-black p-2 text-center">${k.role}</td>
+                        <td class="border border-black p-2 text-center font-semibold">${statusFull[r.status || '']}</td>
+                        <td class="border border-black p-2 text-center">${r.checkIn || '-'}</td>
+                        <td class="border border-black p-2 text-center">${r.checkOut || '-'}</td>
+                        <td class="border border-black p-1 text-center h-12">
+                            ${r.signature ? `<img src="${r.signature}" alt="TTD" class="h-10 mx-auto object-contain">` : ''}
+                        </td>
+                        <td class="border border-black p-2">${r.note || ''}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('repKetuaSig').innerHTML = ketuaSigHTML;
+            document.getElementById('repSekretarisSig').innerHTML = sekretarisSigHTML;
+
+            document.getElementById('repSummaryBox').innerHTML = `
+                <strong>Rekapitulasi Kehadiran:</strong> 
+                Hadir: <b>${counts.H}</b> | 
+                Izin: <b>${counts.I}</b> | 
+                Sakit: <b>${counts.S}</b> | 
+                Dinas Luar: <b>${counts.DL}</b> | 
+                Tanpa Keterangan: <b>${counts.A}</b>
+                ${bidanName ? `<span class="float-right">Pembina/Bidan Desa: <b>${bidanName}</b></span>` : ''}
+            `;
+        }
+
+        // --- 11. KELOLA DATA KADER ---
+        function renderMasterKaderList() {
+            const listEl = document.getElementById('masterKaderList');
+            listEl.innerHTML = kaders.map((k, idx) => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-teal-600 text-white font-bold text-xs flex items-center justify-center">
+                            ${idx + 1}
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800">${k.name}</div>
+                            <div class="text-xs text-slate-500">${k.role}</div>
+                        </div>
+                    </div>
+                    <button onclick="removeKader('${k.id}')" class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center" title="Hapus Kader">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addNewKader() {
+            const nameInput = document.getElementById('newKaderName');
+            const roleInput = document.getElementById('newKaderRole');
+            const name = nameInput.value.trim().toUpperCase();
+            const role = roleInput.value;
+
+            if (!name) {
+                showToast('Nama kader wajib diisi!', true);
+                return;
+            }
+
+            const newId = 'kader_' + Date.now();
+            kaders.push({ id: newId, name, role });
+            persistKaders();
+
+            nameInput.value = '';
+            closeModal('modalAddKader');
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapTab();
+            showToast(`Kader ${name} berhasil ditambahkan!`);
+        }
+
+        function removeKader(kaderId) {
+            if (kaders.length <= 1) {
+                showToast('Minimal harus ada 1 kader terdaftar.', true);
+                return;
+            }
+            kaders = kaders.filter(k => k.id !== kaderId);
+            persistKaders();
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapTab();
+            showToast('Kader dihapus dari daftar aktif.');
+        }
+
+        function resetDefaultKaders() {
+            kaders = [...DEFAULT_KADERS];
+            persistKaders();
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapTab();
+            showToast('Daftar kader dikembalikan ke 5 pengurus inti MEKAR II.');
+        }
+
+        // --- 12. NAVIGATION & MODALS & TOAST ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-teal-700', 'font-bold');
+                btn.classList.add('text-slate-500', 'font-medium');
+                btn.querySelector('.nav-pill').classList.remove('bg-teal-100');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            activeBtn.classList.remove('text-slate-500', 'font-medium');
+            activeBtn.classList.add('text-teal-700', 'font-bold');
+            activeBtn.querySelector('.nav-pill').classList.add('bg-teal-100');
+
+            if (tabName === 'rekap') renderRekapTab();
+            if (tabName === 'laporan') updateReportPreview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        let toastTimer;
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            msgEl.textContent = msg;
+            if (isError) {
+                iconEl.className = 'w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0';
+                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconEl.className = 'w-7 h-7 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0';
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            }
+
+            toast.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3200);
+        }
+    </script>
+</body>
+</html>
