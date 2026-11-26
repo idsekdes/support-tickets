@@ -1814,12 +1814,32 @@ function readAllSheetsData() {
   const taxpayers = readSheetObjects(
     SHEET_TABS.taxpayers,
     ['id','nop','name','dusun','nilai','year','status','address','paidDate','paidMonth']
-  ).map(t => ({
-    ...t,
-    nilai: Number(t.nilai) || 0,
-    year: Number(t.year) || 2026,
-    paidMonth: t.paidMonth === '' || t.paidMonth === null || t.paidMonth === undefined ? null : Number(t.paidMonth)
-  }));
+  ).map((t, idx) => {
+    const cleanNop = String(t.nop || '').trim();
+    const cleanName = String(t.name || t.id || '').trim();
+    const rawId = String(t.id || '').trim();
+    const safeId = (!rawId || rawId === cleanName)
+      ? ('tp-' + (cleanNop ? cleanNop.replace(/[^0-9a-zA-Z]/g, '') : (idx + 1)))
+      : rawId;
+    const rawNilai = typeof t.nilai === 'number'
+      ? t.nilai
+      : Number(String(t.nilai || '0').replace(/[^0-9.-]/g, ''));
+    const validDusun = ['Dusun 1 (Petigo)', 'Dusun 2 (Lumbum)', 'Dusun 3 (Kavatua)'];
+    const rawDusun = String(t.dusun || '').trim();
+    const normalizedDusun = validDusun.includes(rawDusun) ? rawDusun : 'Dusun 1 (Petigo)';
+
+    return {
+      ...t,
+      id: safeId,
+      nop: cleanNop,
+      name: cleanName,
+      dusun: normalizedDusun,
+      nilai: Number.isFinite(rawNilai) ? rawNilai : 0,
+      year: Number(t.year) || 2026,
+      status: String(t.status || '').trim() === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+      paidMonth: t.paidMonth === '' || t.paidMonth === null || t.paidMonth === undefined ? null : Number(t.paidMonth)
+    };
+  });
 
   const payments = readSheetObjects(
     SHEET_TABS.payments,
@@ -2304,7 +2324,24 @@ function jsonResponse(obj) {
 
         const remote = json.data;
         if (Array.isArray(remote.taxpayers) && remote.taxpayers.length > 0) {
-          appState.taxpayers = remote.taxpayers;
+          appState.taxpayers = remote.taxpayers.map((t, idx) => {
+            const cleanNop = String(t.nop || '').trim();
+            const cleanName = String(t.name || t.id || '').trim();
+            const rawId = String(t.id || '').trim();
+            const safeId = (!rawId || rawId === cleanName)
+              ? `tp-${cleanNop ? cleanNop.replace(/[^0-9a-zA-Z]/g, '') : idx + 1}`
+              : rawId;
+            return {
+              ...t,
+              id: safeId,
+              nop: cleanNop,
+              name: cleanName,
+              dusun: DUSUN_LIST.includes(String(t.dusun || '').trim()) ? String(t.dusun).trim() : DUSUN_LIST[0],
+              nilai: Number(String(t.nilai ?? 0).replace(/[^\d.-]/g, '')) || 0,
+              year: Number(t.year) || appState.settings.taxYear,
+              status: String(t.status || '').trim() === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+            };
+          });
         }
         if (Array.isArray(remote.payments)) {
           appState.payments = remote.payments;
@@ -2876,18 +2913,71 @@ function jsonResponse(obj) {
             });
           } else {
             const lines = text.split(/\r?\n/).filter((l) => l.trim());
-            const startIdx = lines[0]?.toLowerCase().includes('nop') ? 1 : 0;
+            const firstLine = (lines[0] || '').toLowerCase();
+            const hasHeader = firstLine.includes('nop') || firstLine.includes('name') || firstLine.includes('nama');
+            const sep = (lines[0] || '').includes(';') ? ';' : ',';
+            const headerCols = hasHeader
+              ? lines[0].split(sep).map((c) => c.replace(/^"|"$/g, '').trim().toLowerCase())
+              : [];
+            const startIdx = hasHeader ? 1 : 0;
+
+            const normalizeDusunName = (val) => {
+              const s = String(val || '').trim();
+              if (DUSUN_LIST.includes(s)) return s;
+              const low = s.toLowerCase();
+              if (low.includes('1') || low.includes('petigo')) return 'Dusun 1 (Petigo)';
+              if (low.includes('2') || low.includes('lumbum')) return 'Dusun 2 (Lumbum)';
+              if (low.includes('3') || low.includes('kavatua')) return 'Dusun 3 (Kavatua)';
+              return DUSUN_LIST[0];
+            };
+
             for (let i = startIdx; i < lines.length; i++) {
-              const sep = lines[i].includes(';') ? ';' : ',';
               const cols = lines[i].split(sep).map((c) => c.replace(/^"|"$/g, '').trim());
               if (cols.length < 2) continue;
-              const [nop, name, dusun, nilai, status, year] = cols;
+
+              let rawId = '';
+              let nop = '';
+              let name = '';
+              let dusun = '';
+              let nilaiRaw = '';
+              let status = '';
+              let year = '';
+
+              if (headerCols.length > 0) {
+                const idxId = headerCols.indexOf('id');
+                const idxNop = headerCols.indexOf('nop');
+                const idxName = headerCols.findIndex((h) => h === 'name' || h === 'nama' || h === 'nama wp');
+                const idxDusun = headerCols.indexOf('dusun');
+                const idxNilai = headerCols.findIndex((h) => h === 'nilai' || h === 'nilai pbb' || h === 'pbb');
+                const idxStatus = headerCols.indexOf('status');
+                const idxYear = headerCols.findIndex((h) => h === 'year' || h === 'tahun');
+
+                rawId = idxId >= 0 ? (cols[idxId] || '') : '';
+                nop = idxNop >= 0 ? (cols[idxNop] || '') : '';
+                name = idxName >= 0 ? (cols[idxName] || '') : '';
+                dusun = idxDusun >= 0 ? (cols[idxDusun] || '') : '';
+                nilaiRaw = idxNilai >= 0 ? (cols[idxNilai] || '') : '';
+                status = idxStatus >= 0 ? (cols[idxStatus] || '') : '';
+                year = idxYear >= 0 ? (cols[idxYear] || '') : '';
+              } else if (cols.length >= 6 && /^\d{2}\.\d{2}/.test(cols[1])) {
+                [rawId, nop, name, dusun, nilaiRaw, year, status] = cols;
+              } else {
+                [nop, name, dusun, nilaiRaw, status, year] = cols;
+              }
+
+              const cleanNop = nop || `72.05.070.012.001.${String(appState.taxpayers.length + 1).padStart(4, '0')}.0`;
+              const cleanName = name || rawId || 'Wajib Pajak';
+              const safeId = (!rawId || rawId === cleanName)
+                ? `tp-${cleanNop.replace(/[^0-9a-zA-Z]/g, '') || (Date.now() + '-' + i)}`
+                : rawId;
+              const parsedNilai = Number(String(nilaiRaw || '0').replace(/[^\d]/g, ''));
+
               appState.taxpayers.push({
-                id: 'tp-csv-' + Date.now() + '-' + i,
-                nop: nop || `72.03.080.004.001-${String(appState.taxpayers.length + 1).padStart(4, '0')}.0`,
-                name: name || 'Wajib Pajak',
-                dusun: DUSUN_LIST.includes(dusun) ? dusun : DUSUN_LIST[0],
-                nilai: Number(String(nilai || '75000').replace(/[^\d]/g, '')) || 75000,
+                id: safeId,
+                nop: cleanNop,
+                name: cleanName,
+                dusun: normalizeDusunName(dusun),
+                nilai: Number.isFinite(parsedNilai) ? parsedNilai : 0,
                 year: Number(year) || appState.settings.taxYear,
                 status: status === 'Lunas' ? 'Lunas' : 'Belum Lunas',
                 address: '',
