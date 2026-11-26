@@ -448,7 +448,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Kepala Desa Wani Lumbumpetigo</label>
-                        <input type="text" id="kadesNameInput" value="KEPALA DESA WANI LUMBUMPETIGO" oninput="updateReportPreview()" class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-medium">
+                        <input type="text" id="kadesNameInput" value="AMIR RAMANG" oninput="updateReportPreview()" class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-medium">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Bidan Desa / Pembina (Opsional)</label>
@@ -567,7 +567,7 @@
                             <p>Mengetahui,</p>
                             <p class="font-bold">Kepala Desa Wani Lumbumpetigo</p>
                             <div class="h-16"></div>
-                            <p id="repKadesName" class="font-bold underline uppercase">KEPALA DESA WANI LUMBUMPETIGO</p>
+                            <p id="repKadesName" class="font-bold underline uppercase">AMIR RAMANG</p>
                         </div>
                     </div>
                 </div>
@@ -1462,7 +1462,7 @@
             const dateStr = getActiveDate();
             const session = ensureSessionExists(dateStr);
 
-            const kadesName = document.getElementById('kadesNameInput').value || 'KEPALA DESA WANI LUMBUMPETIGO';
+            const kadesName = document.getElementById('kadesNameInput').value || 'AMIR RAMANG';
             const bidanName = document.getElementById('bidanNameInput').value.trim();
 
             // Save settings
