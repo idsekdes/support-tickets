@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>E-Absensi Kader Posyandu MEKAR II - Desa Wani Lumbumpetigo</title>
     <!-- Favicon & App Touch Icon -->
-    <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
-    <link rel="shortcut icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
-    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png">
+    <link rel="shortcut icon" type="image/png" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
@@ -76,8 +76,66 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Print Styles for Official A4/F4 Document */
+        /* Official Document Typography & Layout (Screen Preview & Print) */
+        .official-doc {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            color: #0f172a;
+            line-height: 1.35;
+        }
+        .official-meta-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 10pt;
+            line-height: 1.35;
+        }
+        .official-meta-table td {
+            vertical-align: top;
+            padding: 2px 2px;
+            word-wrap: break-word;
+        }
+        .official-att-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 9.5pt;
+        }
+        .official-att-table th,
+        .official-att-table td {
+            border: 1px solid #1e293b;
+            padding: 6px 6px;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
+        .official-att-table th {
+            background-color: #f1f5f9 !important;
+            font-weight: bold;
+            text-align: center;
+            color: #0f172a;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .official-sig-img {
+            max-height: 34px;
+            width: auto;
+            margin: 0 auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Print Styles for Official A4 Document */
+        @page {
+            size: A4 portrait;
+            margin: 12mm 14mm;
+        }
+
         @media print {
+            html, body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
             body * {
                 visibility: hidden;
             }
@@ -88,13 +146,30 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 100%;
-                margin: 0;
-                padding: 15mm;
-                background: white !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
                 box-shadow: none !important;
                 border: none !important;
-                color: black !important;
+                border-radius: 0 !important;
+                color: #000000 !important;
+            }
+            .official-att-table th {
+                background-color: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .official-rekap-box {
+                background-color: #f8fafc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .official-sign-block {
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
             .no-print {
                 display: none !important;
@@ -353,10 +428,14 @@
             <div class="glass-card rounded-2xl p-4 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 no-print">
                 <div>
                     <h2 class="font-display font-bold text-slate-800 text-sm">Format Laporan Resmi Pemerintahan</h2>
-                    <p class="text-xs text-slate-500">Siap cetak A4/F4 atau Simpan PDF untuk SPJ Dana Desa</p>
+                    <p class="text-xs text-slate-500">Standar A4 Portrait siap cetak atau Simpan PDF untuk SPJ Desa</p>
                 </div>
                 <div class="flex w-full sm:w-auto gap-2">
-                    <button onclick="window.print()" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2">
+                    <button type="button" onclick="openPdfPreviewModal()" class="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 transition">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>Pratinjau PDF</span>
+                    </button>
+                    <button type="button" onclick="triggerDirectPrint()" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 transition">
                         <i class="fa-solid fa-print"></i>
                         <span>Cetak / Simpan PDF</span>
                     </button>
@@ -380,65 +459,79 @@
 
             <!-- KERTAS DOKUMEN RESMI (PRINTABLE AREA) -->
             <div class="overflow-x-auto pb-4">
-                <div id="printArea" class="bg-white rounded-xl shadow-lg border border-slate-300 p-5 sm:p-8 min-w-[650px] text-black font-serif">
-                    <!-- KOP SURAT RESMI -->
-                    <div class="border-b-4 border-double border-black pb-3 mb-4 flex items-center justify-between gap-4">
-                        <div class="w-20 h-20 flex items-center justify-center shrink-0">
-                            <img 
-                                src="https://res.cloudinary.com/di8stbg60/image/upload/v1795705191/Logo_Posyandu_Mekar_II_Berbentuk_Lencana-removebg-preview_wtm0pq.png" 
-                                alt="Logo Posyandu MEKAR II" 
-                                class="w-full h-full object-contain"
-                                onerror="this.onerror=null; this.src='https://placehold.co/120x120/ffffff/000000?text=MEKAR+II';"
-                            >
-                        </div>
-                        <div class="text-center flex-1">
-                            <div class="text-sm font-bold tracking-wide uppercase">PEMERINTAH KABUPATEN DONGGALA</div>
-                            <div class="text-sm font-bold tracking-wide uppercase">KECAMATAN TANANTOVEA</div>
-                            <div class="text-base font-extrabold tracking-wider uppercase">DESA WANI LUMBUMPETIGO</div>
-                            <div class="text-lg font-extrabold tracking-widest uppercase mt-0.5">POS PELAYANAN TERPADU (POSYANDU) MEKAR II</div>
-                            <div class="text-[11px] italic mt-0.5">Sekretariat: Jl. Trans Palu - Sabang, Desa Wani Lumbumpetigo, Kode Pos 94352</div>
-                        </div>
-                        <div class="w-20 shrink-0"></div>
+                <div id="printArea" class="official-doc bg-white rounded-xl shadow-lg border border-slate-300 p-6 sm:p-8 w-[740px] mx-auto text-slate-900">
+                    <!-- KOP SURAT RESMI FULL-WIDTH -->
+                    <div class="mb-3">
+                        <img 
+                            src="https://res.cloudinary.com/di8stbg60/image/upload/v1795706762/kop-surat-wani-lptg_xwi50x.png" 
+                            alt="Kop Surat Pemerintah Desa Wani Lumbumpetigo" 
+                            class="w-full h-auto object-contain block"
+                            onerror="this.onerror=null; this.src='https://placehold.co/800x150/ffffff/0f172a?text=PEMERINTAH+DESA+WANI+LUMBUMPETIGO+-+POSYANDU+MEKAR+II';"
+                        >
                     </div>
 
-                    <!-- JUDUL DOKUMEN -->
+                    <!-- JUDUL DOKUMEN & DASAR HUKUM -->
                     <div class="text-center mb-4">
-                        <h2 class="text-base font-bold uppercase underline tracking-wide">DAFTAR HADIR KADER POSYANDU MEKAR II</h2>
-                        <p class="text-xs mt-1">Sesuai Permendagri No. 19 Tahun 2011 & Permendagri No. 18 Tahun 2018 tentang Lembaga Kemasyarakatan Desa</p>
+                        <h2 class="font-bold uppercase tracking-wide inline-block border-b-2 border-slate-900 pb-0.5" style="font-size: 14pt;">
+                            DAFTAR HADIR KADER POSYANDU MEKAR II
+                        </h2>
+                        <p class="italic text-slate-800 mt-1" style="font-size: 9.5pt;">
+                            Sesuai Permendagri No. 19 Tahun 2011 &amp; Permendagri No. 18 Tahun 2018 tentang Lembaga Kemasyarakatan Desa
+                        </p>
                     </div>
 
-                    <!-- IDENTITAS KEGIATAN -->
-                    <table class="w-full text-xs mb-4">
-                        <tr>
-                            <td class="w-36 py-0.5 font-semibold">Hari / Tanggal</td>
-                            <td class="w-4">:</td>
-                            <td id="repDate" class="font-medium">-</td>
-                            <td class="w-28 py-0.5 font-semibold">Desa / Posyandu</td>
-                            <td class="w-4">:</td>
-                            <td>Wani Lumbumpetigo / MEKAR II</td>
-                        </tr>
-                        <tr>
-                            <td class="py-0.5 font-semibold">Jenis Kegiatan</td>
-                            <td>:</td>
-                            <td id="repActivity" class="font-medium">-</td>
-                            <td class="py-0.5 font-semibold">Koordinat GPS</td>
-                            <td>:</td>
-                            <td id="repGPS" class="text-[11px]">-</td>
-                        </tr>
+                    <!-- IDENTITAS KEGIATAN (TABEL METADATA SEJAJAR PRESISI) -->
+                    <table class="official-meta-table mb-4">
+                        <colgroup>
+                            <col style="width: 17%;">
+                            <col style="width: 2%;">
+                            <col style="width: 33%;">
+                            <col style="width: 16%;">
+                            <col style="width: 2%;">
+                            <col style="width: 30%;">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">Hari / Tanggal</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repDate" class="font-normal pr-2">-</td>
+                                <td class="font-bold">Desa / Posyandu</td>
+                                <td class="font-bold text-center">:</td>
+                                <td class="font-normal">Wani Lumbumpetigo / MEKAR II</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Jenis Kegiatan</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repActivity" class="font-normal pr-2">-</td>
+                                <td class="font-bold">Koordinat GPS</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repGPS" class="font-normal">-</td>
+                            </tr>
+                        </tbody>
                     </table>
 
                     <!-- TABEL DAFTAR HADIR RESMI -->
-                    <table class="w-full border-collapse border border-black text-xs mb-6">
+                    <table class="official-att-table mb-3">
+                        <colgroup>
+                            <col style="width: 5%;">
+                            <col style="width: 25%;">
+                            <col style="width: 13%;">
+                            <col style="width: 11%;">
+                            <col style="width: 10%;">
+                            <col style="width: 10%;">
+                            <col style="width: 14%;">
+                            <col style="width: 12%;">
+                        </colgroup>
                         <thead>
-                            <tr class="bg-slate-100 text-center font-bold">
-                                <th class="border border-black p-2 w-10">No</th>
-                                <th class="border border-black p-2 text-left">Nama Lengkap Kader</th>
-                                <th class="border border-black p-2 w-28">Jabatan</th>
-                                <th class="border border-black p-2 w-20">Status</th>
-                                <th class="border border-black p-2 w-24">Jam Datang</th>
-                                <th class="border border-black p-2 w-24">Jam Pulang</th>
-                                <th class="border border-black p-2 w-32">Tanda Tangan</th>
-                                <th class="border border-black p-2">Keterangan</th>
+                            <tr>
+                                <th>No</th>
+                                <th style="text-align: left;">Nama Lengkap Kader</th>
+                                <th>Jabatan</th>
+                                <th>Status</th>
+                                <th>Jam Datang</th>
+                                <th>Jam Pulang</th>
+                                <th>Tanda Tangan</th>
+                                <th>Keterangan</th>
                             </tr>
                         </thead>
                         <tbody id="reportTableBody">
@@ -447,29 +540,34 @@
                     </table>
 
                     <!-- REKAP RINGKAS DI BAWAH TABEL -->
-                    <div id="repSummaryBox" class="text-xs mb-6 border border-black p-2.5 bg-slate-50">
-                        <strong>Rekapitulasi Kehadiran:</strong> Hadir: 0 | Izin: 0 | Sakit: 0 | Dinas Luar: 0 | Tanpa Keterangan: 0
+                    <div id="repSummaryBox" class="official-rekap-box border border-slate-800 px-3 py-2 mb-5 bg-slate-50" style="font-size: 9.5pt;">
+                        <strong>Rekapitulasi Kehadiran:</strong> Hadir: 0 | Izin: 0 | Sakit: 0 | Dinas Luar: 0 | Alpa: 0 | Total Kader: 5
                     </div>
 
                     <!-- BLOK PENGESAHAN TANDA TANGAN RESMI -->
-                    <div class="grid grid-cols-3 gap-4 text-xs text-center mt-6 pt-2">
-                        <div>
+                    <div class="official-sign-block mt-4 pt-1" style="font-size: 10pt;">
+                        <!-- Baris Atas: Ketua (Kiri) & Sekretaris (Kanan) -->
+                        <div class="grid grid-cols-2 gap-8 text-center mb-5">
+                            <div>
+                                <p>&nbsp;</p>
+                                <p class="font-bold">Ketua Posyandu MEKAR II</p>
+                                <div class="h-14 flex items-center justify-center my-1" id="repKetuaSig"></div>
+                                <p class="font-bold underline uppercase">NOVAYANTI</p>
+                            </div>
+                            <div>
+                                <p id="repSignDate">Wani Lumbumpetigo, .........................</p>
+                                <p class="font-bold">Sekretaris Posyandu MEKAR II</p>
+                                <div class="h-14 flex items-center justify-center my-1" id="repSekretarisSig"></div>
+                                <p class="font-bold underline uppercase">ISMIATI</p>
+                            </div>
+                        </div>
+
+                        <!-- Baris Bawah Tengah: Mengetahui Kepala Desa -->
+                        <div class="text-center max-w-xs mx-auto">
                             <p>Mengetahui,</p>
                             <p class="font-bold">Kepala Desa Wani Lumbumpetigo</p>
                             <div class="h-16"></div>
                             <p id="repKadesName" class="font-bold underline uppercase">KEPALA DESA WANI LUMBUMPETIGO</p>
-                        </div>
-                        <div>
-                            <p>&nbsp;</p>
-                            <p id="repBidanTitle" class="font-bold">Ketua Posyandu MEKAR II</p>
-                            <div class="h-16 flex items-center justify-center" id="repKetuaSig"></div>
-                            <p class="font-bold underline uppercase">NOVAYANTI</p>
-                        </div>
-                        <div>
-                            <p id="repSignDate">Wani Lumbumpetigo, .........................</p>
-                            <p class="font-bold">Sekretaris Posyandu MEKAR II</p>
-                            <div class="h-16 flex items-center justify-center" id="repSekretarisSig"></div>
-                            <p class="font-bold underline uppercase">ISMIATI</p>
                         </div>
                     </div>
                 </div>
@@ -633,6 +731,35 @@
             <button onclick="closeModal('modalRegulasi')" class="w-full min-h-[44px] rounded-xl bg-slate-800 text-white font-bold text-xs">
                 Tutup & Mengerti
             </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL PRATINJAU CETAK / PDF ==================== -->
+    <div id="modalPdfPreview" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex flex-col no-print">
+        <div class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-white/10 shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-sm leading-tight">Pratinjau Dokumen PDF (A4)</h3>
+                    <p class="text-[11px] text-slate-300">Posyandu MEKAR II • Desa Wani Lumbumpetigo</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="triggerDirectPrint()" class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Cetak / PDF</span>
+                </button>
+                <button type="button" onclick="closeModal('modalPdfPreview')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 overflow-auto p-3 sm:p-6 bg-slate-700/90">
+            <div id="pdfPreviewContainer" class="bg-white shadow-2xl mx-auto p-6 sm:p-10 w-[740px] rounded-sm">
+                <!-- Cloned content from #printArea -->
+            </div>
         </div>
     </div>
 
@@ -1359,24 +1486,24 @@
                 if (counts.hasOwnProperty(r.status)) counts[r.status]++;
 
                 if (k.role === 'Ketua' && r.signature) {
-                    ketuaSigHTML = `<img src="${r.signature}" class="h-14 object-contain">`;
+                    ketuaSigHTML = `<img src="${r.signature}" alt="TTD Ketua" class="official-sig-img">`;
                 }
                 if (k.role === 'Sekretaris' && r.signature) {
-                    sekretarisSigHTML = `<img src="${r.signature}" class="h-14 object-contain">`;
+                    sekretarisSigHTML = `<img src="${r.signature}" alt="TTD Sekretaris" class="official-sig-img">`;
                 }
 
                 return `
                     <tr>
-                        <td class="border border-black p-2 text-center">${idx + 1}</td>
-                        <td class="border border-black p-2 font-bold">${k.name}</td>
-                        <td class="border border-black p-2 text-center">${k.role}</td>
-                        <td class="border border-black p-2 text-center font-semibold">${statusFull[r.status || '']}</td>
-                        <td class="border border-black p-2 text-center">${r.checkIn || '-'}</td>
-                        <td class="border border-black p-2 text-center">${r.checkOut || '-'}</td>
-                        <td class="border border-black p-1 text-center h-12">
-                            ${r.signature ? `<img src="${r.signature}" alt="TTD" class="h-10 mx-auto object-contain">` : ''}
+                        <td style="text-align: center;">${idx + 1}</td>
+                        <td style="text-align: left; font-weight: bold;">${k.name}</td>
+                        <td style="text-align: center;">${k.role}</td>
+                        <td style="text-align: center; font-weight: bold;">${statusFull[r.status || '']}</td>
+                        <td style="text-align: center;">${r.checkIn || '-'}</td>
+                        <td style="text-align: center;">${r.checkOut || '-'}</td>
+                        <td style="text-align: center; height: 42px; padding: 3px 4px;">
+                            ${r.signature ? `<img src="${r.signature}" alt="TTD" class="official-sig-img">` : ''}
                         </td>
-                        <td class="border border-black p-2">${r.note || ''}</td>
+                        <td style="text-align: left; font-size: 8.5pt;">${r.note || ''}</td>
                     </tr>
                 `;
             }).join('');
@@ -1385,14 +1512,35 @@
             document.getElementById('repSekretarisSig').innerHTML = sekretarisSigHTML;
 
             document.getElementById('repSummaryBox').innerHTML = `
-                <strong>Rekapitulasi Kehadiran:</strong> 
-                Hadir: <b>${counts.H}</b> | 
-                Izin: <b>${counts.I}</b> | 
-                Sakit: <b>${counts.S}</b> | 
-                Dinas Luar: <b>${counts.DL}</b> | 
-                Tanpa Keterangan: <b>${counts.A}</b>
-                ${bidanName ? `<span class="float-right">Pembina/Bidan Desa: <b>${bidanName}</b></span>` : ''}
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px;">
+                    <div>
+                        <strong>Rekapitulasi Kehadiran:</strong> 
+                        Hadir: <b>${counts.H}</b> | 
+                        Izin: <b>${counts.I}</b> | 
+                        Sakit: <b>${counts.S}</b> | 
+                        Dinas Luar: <b>${counts.DL}</b> | 
+                        Alpa: <b>${counts.A}</b> | 
+                        Total Kader: <b>${kaders.length}</b>
+                    </div>
+                    ${bidanName ? `<div>Pembina/Bidan Desa: <b>${bidanName}</b></div>` : ''}
+                </div>
             `;
+        }
+
+        function openPdfPreviewModal() {
+            updateReportPreview();
+            const printSource = document.getElementById('printArea');
+            const previewContainer = document.getElementById('pdfPreviewContainer');
+            previewContainer.innerHTML = printSource.innerHTML;
+            openModal('modalPdfPreview');
+        }
+
+        function triggerDirectPrint() {
+            updateReportPreview();
+            closeModal('modalPdfPreview');
+            setTimeout(() => {
+                window.print();
+            }, 150);
         }
 
         // --- 11. KELOLA DATA KADER ---
