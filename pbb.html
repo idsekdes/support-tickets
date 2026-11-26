@@ -655,7 +655,7 @@
                       min="1000"
                       step="500"
                       required
-                      value="20000"
+                      value="85000"
                       class="w-full px-3.5 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                   </div>
@@ -1181,6 +1181,50 @@
                 </div>
               </div>
 
+              <!-- Pagu Ketetapan per Dusun -->
+              <div class="p-4 rounded-xl bg-teal-50/70 dark:bg-teal-950/35 border border-teal-200/80 dark:border-teal-900 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <div>
+                    <p class="text-sm font-bold text-teal-950 dark:text-teal-200">Pagu Ketetapan per Dusun</p>
+                    <p class="text-[11px] text-teal-800/80 dark:text-teal-300/80">Digunakan sebagai acuan capaian pelunasan tiap dusun di Dashboard &amp; Grafik</p>
+                  </div>
+                  <span id="pagu-dusun-total-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200">
+                    Total: Rp 7.036.736
+                  </span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  <div>
+                    <label for="pagu-dusun-1" class="block font-semibold text-slate-700 dark:text-slate-200 mb-1">Dusun 1 (Petigo)</label>
+                    <input id="pagu-dusun-1" type="number" min="0" step="1" oninput="updatePaguDusunPreview()" class="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-teal-300 dark:border-teal-700 rounded-lg text-sm text-slate-800 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="pagu-dusun-2" class="block font-semibold text-slate-700 dark:text-slate-200 mb-1">Dusun 2 (Lumbum)</label>
+                    <input id="pagu-dusun-2" type="number" min="0" step="1" oninput="updatePaguDusunPreview()" class="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-teal-300 dark:border-teal-700 rounded-lg text-sm text-slate-800 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="pagu-dusun-3" class="block font-semibold text-slate-700 dark:text-slate-200 mb-1">Dusun 3 (Kavatua)</label>
+                    <input id="pagu-dusun-3" type="number" min="0" step="1" oninput="updatePaguDusunPreview()" class="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-teal-300 dark:border-teal-700 rounded-lg text-sm text-slate-800 dark:text-white" />
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    onclick="savePaguDusunSettings()"
+                    class="px-3.5 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
+                  >
+                    <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                    Simpan Pagu Dusun
+                  </button>
+                  <button
+                    type="button"
+                    onclick="resetDefaultPaguDusun()"
+                    class="px-3 py-2 bg-white dark:bg-slate-900 border border-teal-300 dark:border-teal-700 text-teal-800 dark:text-teal-200 hover:bg-teal-100/60 text-xs font-semibold rounded-lg"
+                  >
+                    Reset Pagu Resmi
+                  </button>
+                </div>
+              </div>
+
               <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/35 border border-blue-200/70 dark:border-blue-900 space-y-2">
                 <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">Unduh Backup Lengkap (.JSON)</p>
                 <p class="text-xs text-blue-700 dark:text-blue-300">
@@ -1219,9 +1263,9 @@
               </div>
 
               <div class="p-4 rounded-xl bg-rose-50/70 dark:bg-rose-950/35 border border-rose-200/70 dark:border-rose-900 space-y-2">
-                <p class="text-sm font-semibold text-rose-900 dark:text-rose-200">Reset ke Data Awal Contoh</p>
+                <p class="text-sm font-semibold text-rose-900 dark:text-rose-200">Kosongkan / Reset Data Lokal</p>
                 <p class="text-xs text-rose-700 dark:text-rose-300">
-                  Mengembalikan seluruh data ke kondisi awal sampel Desa Wani Lumbumpetigo.
+                  Menghapus seluruh data wajib pajak &amp; pembayaran lokal serta mengembalikan pengaturan resmi desa.
                 </p>
                 <button
                   type="button"
@@ -1229,7 +1273,7 @@
                   class="mt-1 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-1.5 shadow-sm transition-colors"
                 >
                   <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                  Reset Data Default
+                  Reset Data Bersih
                 </button>
               </div>
             </div>
@@ -1702,12 +1746,16 @@ function deleteRowById(name, id) {
 function writeSettingsTab(settings) {
   const sheet = getOrCreateSheet(SHEET_TABS.settings, ['key', 'value']);
   const targetVal = Number(settings.targetPBB);
+  const pagu = settings.paguDusun || {};
   const entries = [
     ['villageName', settings.villageName || 'Desa Wani Lumbumpetigo'],
     ['kecamatan', settings.kecamatan || 'Kec. Tanantovea, Kab. Donggala'],
     ['taxYear', Number(settings.taxYear) || 2026],
     ['autoTargetPBB', settings.autoTargetPBB !== false ? 'true' : 'false'],
-    ['targetPBB', Number.isFinite(targetVal) && targetVal >= 0 ? targetVal : 7276036]
+    ['targetPBB', Number.isFinite(targetVal) && targetVal >= 0 ? targetVal : 7036736],
+    ['paguDusun1', Number(pagu['Dusun 1 (Petigo)']) || 2121267],
+    ['paguDusun2', Number(pagu['Dusun 2 (Lumbum)']) || 2334305],
+    ['paguDusun3', Number(pagu['Dusun 3 (Kavatua)']) || 2581164]
   ];
   sheet.clearContents();
   sheet.appendRow(['key', 'value']);
@@ -1726,7 +1774,12 @@ function readSettingsTab() {
     kecamatan: out.kecamatan || 'Kec. Tanantovea, Kab. Donggala',
     taxYear: Number(out.taxYear) || 2026,
     autoTargetPBB: out.autoTargetPBB !== undefined ? String(out.autoTargetPBB) !== 'false' : true,
-    targetPBB: Number.isFinite(parsedTarget) && parsedTarget > 0 ? parsedTarget : 7276036
+    targetPBB: Number.isFinite(parsedTarget) && parsedTarget > 0 ? parsedTarget : 7036736,
+    paguDusun: {
+      'Dusun 1 (Petigo)': out.paguDusun1 !== undefined ? Number(out.paguDusun1) : 2121267,
+      'Dusun 2 (Lumbum)': out.paguDusun2 !== undefined ? Number(out.paguDusun2) : 2334305,
+      'Dusun 3 (Kavatua)': out.paguDusun3 !== undefined ? Number(out.paguDusun3) : 2581164
+    }
   };
 }
 
@@ -1798,6 +1851,12 @@ function jsonResponse(obj) {
       'Dusun 3 (Kavatua)',
     ];
 
+    const DEFAULT_PAGU_DUSUN = {
+      'Dusun 1 (Petigo)': 2121267,
+      'Dusun 2 (Lumbum)': 2334305,
+      'Dusun 3 (Kavatua)': 2581164,
+    };
+
     const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
     const DEFAULT_STATE = {
@@ -1814,148 +1873,11 @@ function jsonResponse(obj) {
         kecamatan: 'Kec. Tanantovea, Kab. Donggala',
         taxYear: 2026,
         autoTargetPBB: true,
-        targetPBB: 7276036,
+        targetPBB: 7036736,
+        paguDusun: { ...DEFAULT_PAGU_DUSUN },
       },
-      taxpayers: [
-        {
-          id: 'tp-1',
-          nop: '72.03.080.004.001-0001.0',
-          name: 'Herman L',
-          dusun: 'Dusun 1 (Petigo)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Lunas',
-          address: 'Jl. Trans Sulawesi RT 01, Tanah 210 m² / Bangunan 64 m²',
-          paidDate: '2026-02-14',
-          paidMonth: 1,
-        },
-        {
-          id: 'tp-2',
-          nop: '72.03.080.004.001-0002.0',
-          name: 'Siti Rahmah',
-          dusun: 'Dusun 2 (Lumbum)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Belum Lunas',
-          address: 'Lorong Pesisir RT 02, Tanah 180 m² / Bangunan 48 m²',
-          paidDate: null,
-          paidMonth: null,
-        },
-        {
-          id: 'tp-3',
-          nop: '72.03.080.004.001-0003.0',
-          name: 'Indar',
-          dusun: 'Dusun 1 (Petigo)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Lunas',
-          address: 'Jl. Poros Wani RT 03, Tanah 320 m² / Bangunan 90 m²',
-          paidDate: '2026-03-09',
-          paidMonth: 2,
-        },
-        {
-          id: 'tp-4',
-          nop: '72.03.080.004.001-0004.0',
-          name: 'Fatimah Zahra',
-          dusun: 'Dusun 3 (Kavatua)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Belum Lunas',
-          address: 'Dusun Kavatua RT 01, Tanah 160 m² / Bangunan 42 m²',
-          paidDate: null,
-          paidMonth: null,
-        },
-        {
-          id: 'tp-5',
-          nop: '72.03.080.004.001-0005.0',
-          name: 'Hendra Wijaya',
-          dusun: 'Dusun 3 (Kavatua)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Lunas',
-          address: 'Wani Kavatua RT 02, Tanah 250 m² / Bangunan 72 m²',
-          paidDate: '2026-04-18',
-          paidMonth: 3,
-        },
-        {
-          id: 'tp-6',
-          nop: '72.03.080.004.001-0006.0',
-          name: 'Nurhayati Latif',
-          dusun: 'Dusun 2 (Lumbum)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Lunas',
-          address: 'Lumbum Tengah RT 01, Tanah 200 m² / Bangunan 60 m²',
-          paidDate: '2026-05-11',
-          paidMonth: 4,
-        },
-        {
-          id: 'tp-7',
-          nop: '72.03.080.004.001-0007.0',
-          name: 'Ruslan Palopo',
-          dusun: 'Dusun 3 (Kavatua)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Belum Lunas',
-          address: 'Perkebunan Kavatua, Tanah 450 m² / Bangunan 65 m²',
-          paidDate: null,
-          paidMonth: null,
-        },
-        {
-          id: 'tp-8',
-          nop: '72.03.080.004.001-0008.0',
-          name: 'Marlina Dg. Ngai',
-          dusun: 'Dusun 3 (Kavatua)',
-          nilai: 20000,
-          year: 2026,
-          status: 'Belum Lunas',
-          address: 'Pantai Barat Wani RT 04, Tanah 175 m² / Bangunan 54 m²',
-          paidDate: null,
-          paidMonth: null,
-        },
-      ],
-      payments: [
-        {
-          id: 'TRX-20260214-01',
-          date: '2026-02-14',
-          monthIndex: 1,
-          nop: '72.03.080.004.001-0001.0',
-          name: 'Ahmad Yusuf',
-          dusun: 'Dusun 1 (Petigo)',
-          method: 'Tunai',
-          amount: 20000,
-        },
-        {
-          id: 'TRX-20260309-02',
-          date: '2026-03-09',
-          monthIndex: 2,
-          nop: '72.03.080.004.001-0003.0',
-          name: 'Budi Santoso',
-          dusun: 'Dusun 1 (Petigo)',
-          method: 'Transfer',
-          amount: 20000,
-        },
-        {
-          id: 'TRX-20260418-03',
-          date: '2026-04-18',
-          monthIndex: 3,
-          nop: '72.03.080.004.001-0005.0',
-          name: 'Hendra Wijaya',
-          dusun: 'Dusun 3 (Kavatua)',
-          method: 'QRIS',
-          amount: 20000,
-        },
-        {
-          id: 'TRX-20260511-04',
-          date: '2026-05-11',
-          monthIndex: 4,
-          nop: '72.03.080.004.001-0006.0',
-          name: 'Nurhayati Latif',
-          dusun: 'Dusun 2 (Lumbum)',
-          method: 'Tunai',
-          amount: 20000,
-        },
-      ],
+      taxpayers: [],
+      payments: [],
       users: [
         { id: 'usr-1', name: 'Admin Desa', username: 'admin', role: 'Administrator', status: 'Aktif' },
         { id: 'usr-2', name: 'Operator Pelayanan 1', username: 'operator1', role: 'Operator', status: 'Aktif' },
@@ -1964,17 +1886,10 @@ function jsonResponse(obj) {
       notifications: [
         {
           id: 'ntf-1',
-          title: 'Target PBB Otomatis Aktif',
-          message: 'Target PBB dihitung otomatis dari total akumulasi ketetapan SPPT Wajib Pajak.',
+          title: 'Siap Input & Sinkronisasi Data',
+          message: 'Silakan tambah, import CSV/JSON, atau tarik data dari Google Sheets.',
           time: 'Hari ini',
           type: 'info',
-        },
-        {
-          id: 'ntf-2',
-          title: '4 SPPT Belum Lunas',
-          message: 'Segera lakukan penagihan kolektif di Dusun 2, Dusun 3, dan Dusun 4.',
-          time: 'Baru saja',
-          type: 'warning',
         },
       ],
     };
@@ -1988,17 +1903,31 @@ function jsonResponse(obj) {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return cloneDefaultState();
         const parsed = JSON.parse(raw);
+        const rawPagu = (parsed.settings && parsed.settings.paguDusun) || {};
         const mergedSettings = {
           ...DEFAULT_STATE.settings,
           ...(parsed.settings || {}),
+          paguDusun: {
+            'Dusun 1 (Petigo)': rawPagu['Dusun 1 (Petigo)'] !== undefined ? Number(rawPagu['Dusun 1 (Petigo)']) : DEFAULT_PAGU_DUSUN['Dusun 1 (Petigo)'],
+            'Dusun 2 (Lumbum)': rawPagu['Dusun 2 (Lumbum)'] !== undefined ? Number(rawPagu['Dusun 2 (Lumbum)']) : DEFAULT_PAGU_DUSUN['Dusun 2 (Lumbum)'],
+            'Dusun 3 (Kavatua)': rawPagu['Dusun 3 (Kavatua)'] !== undefined ? Number(rawPagu['Dusun 3 (Kavatua)']) : DEFAULT_PAGU_DUSUN['Dusun 3 (Kavatua)'],
+          },
         };
         if (parsed.settings?.autoTargetPBB === undefined) {
           mergedSettings.autoTargetPBB = true;
         }
-        // Ganti nilai legacy 89450000 jika masih tersimpan di cache lama
-        if (Number(mergedSettings.targetPBB) === 89450000) {
-          mergedSettings.targetPBB = 7276036;
+        // Ganti nilai legacy 89450000 atau 7276036 (yang masih menyertakan Dusun 4)
+        if (Number(mergedSettings.targetPBB) === 89450000 || Number(mergedSettings.targetPBB) === 7276036) {
+          mergedSettings.targetPBB = 7036736;
         }
+        const sampleIds = new Set(['tp-1', 'tp-2', 'tp-3', 'tp-4', 'tp-5', 'tp-6', 'tp-7', 'tp-8']);
+        const samplePaymentIds = new Set(['TRX-20260214-01', 'TRX-20260309-02', 'TRX-20260418-03', 'TRX-20260511-04']);
+        const cleanedTaxpayers = Array.isArray(parsed.taxpayers)
+          ? parsed.taxpayers.filter((t) => !sampleIds.has(t.id))
+          : [];
+        const cleanedPayments = Array.isArray(parsed.payments)
+          ? parsed.payments.filter((p) => !samplePaymentIds.has(p.id))
+          : [];
         return {
           ...cloneDefaultState(),
           ...parsed,
@@ -2007,8 +1936,8 @@ function jsonResponse(obj) {
             ...(parsed.sheetsConfig || {}),
           },
           settings: mergedSettings,
-          taxpayers: Array.isArray(parsed.taxpayers) ? parsed.taxpayers : cloneDefaultState().taxpayers,
-          payments: Array.isArray(parsed.payments) ? parsed.payments : cloneDefaultState().payments,
+          taxpayers: cleanedTaxpayers,
+          payments: cleanedPayments,
           users: Array.isArray(parsed.users) ? parsed.users : cloneDefaultState().users,
           notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
         };
@@ -2384,12 +2313,18 @@ function jsonResponse(obj) {
           appState.users = remote.users;
         }
         if (remote.settings) {
+          const remotePagu = remote.settings.paguDusun || {};
           const nextSettings = {
             ...appState.settings,
             ...remote.settings,
+            paguDusun: {
+              'Dusun 1 (Petigo)': remotePagu['Dusun 1 (Petigo)'] !== undefined ? Number(remotePagu['Dusun 1 (Petigo)']) : appState.settings.paguDusun['Dusun 1 (Petigo)'],
+              'Dusun 2 (Lumbum)': remotePagu['Dusun 2 (Lumbum)'] !== undefined ? Number(remotePagu['Dusun 2 (Lumbum)']) : appState.settings.paguDusun['Dusun 2 (Lumbum)'],
+              'Dusun 3 (Kavatua)': remotePagu['Dusun 3 (Kavatua)'] !== undefined ? Number(remotePagu['Dusun 3 (Kavatua)']) : appState.settings.paguDusun['Dusun 3 (Kavatua)'],
+            },
           };
-          if (Number(nextSettings.targetPBB) === 89450000) {
-            nextSettings.targetPBB = 7276036;
+          if (Number(nextSettings.targetPBB) === 89450000 || Number(nextSettings.targetPBB) === 7276036) {
+            nextSettings.targetPBB = 7036736;
           }
           appState.settings = nextSettings;
         }
@@ -2467,7 +2402,7 @@ function jsonResponse(obj) {
       const rawConfiguredTarget = Number(appState.settings.targetPBB);
       const configuredTarget =
         !Number.isFinite(rawConfiguredTarget) || rawConfiguredTarget <= 0 || rawConfiguredTarget === 89450000
-          ? 7276036
+          ? 7036736
           : rawConfiguredTarget;
       const targetPBB = isAutoTarget
         ? Math.max(configuredTarget, sumKetetapan)
@@ -2553,17 +2488,19 @@ function jsonResponse(obj) {
       if (dusunContainer) {
         dusunContainer.innerHTML = DUSUN_LIST.map((dusun) => {
           const items = appState.taxpayers.filter((t) => t.dusun === dusun);
-          const total = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const sumSppt = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const paguResmi = Number(appState.settings.paguDusun?.[dusun]) || 0;
+          const total = Math.max(paguResmi, sumSppt);
           const paid = items
             .filter((t) => t.status === 'Lunas')
             .reduce((a, b) => a + (Number(b.nilai) || 0), 0);
-          const pct = total > 0 ? Math.round((paid / total) * 100) : 0;
+          const pct = total > 0 ? Math.min(100, Math.round((paid / total) * 100)) : 0;
           const color = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-blue-600' : 'bg-amber-500';
           return `
             <div>
               <div class="flex items-center justify-between text-xs mb-1">
                 <span class="font-semibold text-slate-700 dark:text-slate-200">${escapeHtml(dusun)}</span>
-                <span class="text-slate-500 dark:text-slate-400">${formatRupiah(paid)} / ${formatRupiah(total)} (<strong class="text-slate-700 dark:text-slate-200">${pct}%</strong>)</span>
+                <span class="text-slate-500 dark:text-slate-400">${formatRupiah(paid)} / Pagu ${formatRupiah(total)} (<strong class="text-slate-700 dark:text-slate-200">${pct}%</strong>)</span>
               </div>
               <div class="h-2.5 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div class="h-full ${color} rounded-full bar-anim" style="width: ${pct}%"></div>
@@ -3302,17 +3239,22 @@ function jsonResponse(obj) {
       if (breakdown) {
         breakdown.innerHTML = DUSUN_LIST.map((dusun) => {
           const items = appState.taxpayers.filter((t) => t.dusun === dusun);
-          const total = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const sumSppt = items.reduce((a, b) => a + (Number(b.nilai) || 0), 0);
+          const paguResmi = Number(appState.settings.paguDusun?.[dusun]) || 0;
+          const total = Math.max(paguResmi, sumSppt);
           const paid = items
             .filter((t) => t.status === 'Lunas')
             .reduce((a, b) => a + (Number(b.nilai) || 0), 0);
-          const unpaid = total - paid;
-          const pct = total > 0 ? Math.round((paid / total) * 100) : 0;
+          const unpaid = Math.max(0, total - paid);
+          const pct = total > 0 ? Math.min(100, Math.round((paid / total) * 100)) : 0;
 
           return `
             <div class="p-4 rounded-xl bg-gray-50/80 dark:bg-slate-800/60 border border-gray-200/70 dark:border-slate-700 space-y-2">
               <div class="flex items-center justify-between">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-white">${escapeHtml(dusun)}</h4>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-800 dark:text-white">${escapeHtml(dusun)}</h4>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Pagu Ketetapan: <strong>${formatRupiah(total)}</strong></p>
+                </div>
                 <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">${pct}%</span>
               </div>
               <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -3320,7 +3262,7 @@ function jsonResponse(obj) {
               </div>
               <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
                 <span>Lunas: <strong class="text-emerald-700 dark:text-emerald-400">${formatRupiah(paid)}</strong></span>
-                <span>Tunggakan: <strong class="text-rose-600 dark:text-rose-400">${formatRupiah(unpaid)}</strong></span>
+                <span>Sisa Pagu: <strong class="text-rose-600 dark:text-rose-400">${formatRupiah(unpaid)}</strong></span>
               </div>
             </div>
           `;
@@ -3509,6 +3451,15 @@ function jsonResponse(obj) {
       if (sUrl) sUrl.value = sc.webAppUrl || '';
       if (sAuto) sAuto.checked = sc.autoSync !== false;
 
+      const pagu = { ...DEFAULT_PAGU_DUSUN, ...(s.paguDusun || {}) };
+      const p1 = document.getElementById('pagu-dusun-1');
+      const p2 = document.getElementById('pagu-dusun-2');
+      const p3 = document.getElementById('pagu-dusun-3');
+      if (p1) p1.value = pagu['Dusun 1 (Petigo)'];
+      if (p2) p2.value = pagu['Dusun 2 (Lumbum)'];
+      if (p3) p3.value = pagu['Dusun 3 (Kavatua)'];
+      updatePaguDusunPreview();
+
       applyDarkModeUI();
       updateSyncStatusUI(
         sc.webAppUrl ? (sc.connected ? 'Google Sheets' : 'Siap Sync') : 'Lokal / Cache',
@@ -3528,6 +3479,46 @@ function jsonResponse(obj) {
       saveState();
       refreshAllViews();
       showToast('Pengaturan desa & target PBB berhasil disimpan.', 'success');
+      pushActionToGoogleSheets({ action: 'saveSettings', settings: appState.settings }, true);
+    }
+
+    function updatePaguDusunPreview() {
+      const v1 = Number(document.getElementById('pagu-dusun-1')?.value) || 0;
+      const v2 = Number(document.getElementById('pagu-dusun-2')?.value) || 0;
+      const v3 = Number(document.getElementById('pagu-dusun-3')?.value) || 0;
+      const badge = document.getElementById('pagu-dusun-total-badge');
+      if (badge) {
+        badge.textContent = `Total: ${formatRupiah(v1 + v2 + v3)}`;
+      }
+    }
+
+    function savePaguDusunSettings() {
+      const v1 = Math.max(0, Math.round(Number(document.getElementById('pagu-dusun-1')?.value) || 0));
+      const v2 = Math.max(0, Math.round(Number(document.getElementById('pagu-dusun-2')?.value) || 0));
+      const v3 = Math.max(0, Math.round(Number(document.getElementById('pagu-dusun-3')?.value) || 0));
+
+      appState.settings.paguDusun = {
+        'Dusun 1 (Petigo)': v1,
+        'Dusun 2 (Lumbum)': v2,
+        'Dusun 3 (Kavatua)': v3,
+      };
+      const totalPagu = v1 + v2 + v3;
+      if (totalPagu > 0) {
+        appState.settings.targetPBB = totalPagu;
+      }
+
+      saveState();
+      refreshAllViews();
+      showToast(`Pagu ketetapan per dusun disimpan (${formatRupiah(totalPagu)}).`, 'success');
+      pushActionToGoogleSheets({ action: 'saveSettings', settings: appState.settings }, true);
+    }
+
+    function resetDefaultPaguDusun() {
+      appState.settings.paguDusun = { ...DEFAULT_PAGU_DUSUN };
+      appState.settings.targetPBB = 7036736;
+      saveState();
+      refreshAllViews();
+      showToast('Pagu ketetapan per dusun dikembalikan ke pagu resmi desa.', 'info');
       pushActionToGoogleSheets({ action: 'saveSettings', settings: appState.settings }, true);
     }
 
