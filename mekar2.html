@@ -833,8 +833,13 @@
                 const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
                 if (savedSettings) {
                     const parsed = JSON.parse(savedSettings);
-                    if (parsed.kadesName) document.getElementById('kadesNameInput').value = parsed.kadesName;
+                    const kadesVal = (parsed.kadesName && parsed.kadesName !== 'KEPALA DESA WANI LUMBUMPETIGO')
+                        ? parsed.kadesName
+                        : 'AMIR RAMANG';
+                    document.getElementById('kadesNameInput').value = kadesVal;
                     if (parsed.bidanName) document.getElementById('bidanNameInput').value = parsed.bidanName;
+                } else {
+                    document.getElementById('kadesNameInput').value = 'AMIR RAMANG';
                 }
             } catch (e) {
                 console.error('Error reading localStorage:', e);
@@ -1309,6 +1314,7 @@
         function shareToWhatsApp() {
             const dateStr = getActiveDate();
             const session = ensureSessionExists(dateStr);
+            const kadesName = document.getElementById('kadesNameInput').value.trim() || 'AMIR RAMANG';
             const statusLabels = { H: 'Hadir ✅', I: 'Izin ℹ️', S: 'Sakit 🤒', DL: 'Dinas Luar 🏛️', A: 'Alpa ❌', '': 'Belum diisi ⏳' };
 
             let text = `*LAPORAN ABSENSI KADER POSYANDU MEKAR II*\n`;
@@ -1325,6 +1331,7 @@
             });
 
             text += `----------------------------------\n`;
+            text += `Mengetahui,\nKepala Desa Wani Lumbumpetigo: *${kadesName}*\n`;
             text += `_Dikirim via Aplikasi E-Absensi Posyandu MEKAR II_`;
 
             const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
@@ -1333,6 +1340,7 @@
 
         function exportCSV() {
             const monthFilter = document.getElementById('rekapMonthFilter').value;
+            const kadesName = document.getElementById('kadesNameInput').value.trim() || 'AMIR RAMANG';
             const matchingDates = Object.keys(sessions).filter(d => !monthFilter || d.startsWith(monthFilter)).sort();
 
             if (matchingDates.length === 0) {
@@ -1340,7 +1348,7 @@
                 return;
             }
 
-            let csv = 'Tanggal,Kegiatan,GPS,No,Nama Kader,Jabatan,Status,Jam Datang,Jam Pulang,Keterangan\n';
+            let csv = 'Tanggal,Kegiatan,GPS,No,Nama Kader,Jabatan,Status,Jam Datang,Jam Pulang,Keterangan,Kepala Desa Pengesah\n';
             matchingDates.forEach(dateStr => {
                 const s = sessions[dateStr];
                 kaders.forEach((k, idx) => {
@@ -1355,7 +1363,8 @@
                         r.status || '-',
                         r.checkIn || '-',
                         r.checkOut || '-',
-                        `"${(r.note || '').replace(/"/g, '""')}"`
+                        `"${(r.note || '').replace(/"/g, '""')}"`,
+                        `"${kadesName.replace(/"/g, '""')}"`
                     ];
                     csv += row.join(',') + '\n';
                 });
@@ -1462,7 +1471,7 @@
             const dateStr = getActiveDate();
             const session = ensureSessionExists(dateStr);
 
-            const kadesName = document.getElementById('kadesNameInput').value || 'AMIR RAMANG';
+            const kadesName = document.getElementById('kadesNameInput').value.trim() || 'AMIR RAMANG';
             const bidanName = document.getElementById('bidanNameInput').value.trim();
 
             // Save settings
