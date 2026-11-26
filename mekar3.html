@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>E-Absensi Kader Posyandu MEKAR 3 - Desa Wani Lumbumpetigo</title>
+    <!-- Favicon & App Touch Icon (Logo Resmi Kabupaten Donggala) -->
+    <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        serifdoc: ['Merriweather', 'Times New Roman', 'serif'],
+                    },
+                    colors: {
+                        tealbrand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        navybrand: {
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Mobile-First Android Smooth UX */
+        body {
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f1f5f9;
+            background-image: radial-gradient(#cbd5e1 0.75px, #f8fafc 0.75px);
+            background-size: 20px 20px;
+            overscroll-behavior-y: contain;
+        }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Navy-Teal Health Gov Header (Sama Persis Gaya Mekar II) */
+        .mekar3-header {
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 45%, #1e3a8a 100%);
+            border-bottom: 3px solid #2dd4bf;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(203, 213, 225, 0.85);
+        }
+
+        /* Touch Signature Canvas */
+        #signatureCanvas {
+            touch-action: none;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        /* Official A4 Document Formatting (Screen Preview & Print) */
+        .official-doc {
+            font-family: 'Times New Roman', Times, 'Merriweather', Georgia, serif;
+            color: #0f172a;
+            line-height: 1.35;
+        }
+        .official-meta-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 10pt;
+            line-height: 1.38;
+        }
+        .official-meta-table td {
+            vertical-align: top;
+            padding: 2.5px 2px;
+            word-wrap: break-word;
+        }
+        .official-att-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 9.5pt;
+        }
+        .official-att-table th,
+        .official-att-table td {
+            border: 1px solid #0f172a;
+            padding: 6px 6px;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
+        .official-att-table th {
+            background-color: #f0fdfa !important;
+            font-weight: bold;
+            text-align: center;
+            color: #0f172a;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .official-sig-img {
+            max-height: 34px;
+            width: auto;
+            margin: 0 auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Print Media Rules (Clean A4 Output) */
+        @page {
+            size: A4 portrait;
+            margin: 12mm 14mm;
+        }
+
+        @media print {
+            html, body {
+                background: #ffffff !important;
+                background-image: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                color: #000000 !important;
+            }
+            .official-att-table th {
+                background-color: #f0fdfa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .official-rekap-box {
+                background-color: #f8fafc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .official-sign-block {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-12 selection:bg-teal-700 selection:text-white">
+
+    <!-- ==================== HEADER APLIKASI ANDROID (NAVY-TEAL) ==================== -->
+    <header class="mekar3-header text-white pt-5 pb-14 px-4 rounded-b-[2rem] shadow-lg relative overflow-hidden no-print">
+        <!-- Decorative Elements -->
+        <div class="absolute -top-12 -right-12 w-44 h-44 bg-teal-300/15 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute bottom-0 -left-10 w-36 h-36 bg-blue-400/20 rounded-full blur-xl pointer-events-none"></div>
+
+        <div class="max-w-3xl mx-auto relative z-10">
+            <!-- Baris Atas: Logo + Identitas Lembaga (Kiri) & Badge Regulasi Kompak (Kanan) -->
+            <div class="flex items-center justify-between gap-3">
+                <!-- Sisi Kiri: Bingkai Logo & Judul -->
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/95 p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border border-teal-200/80">
+                        <img 
+                            src="https://res.cloudinary.com/di8stbg60/image/upload/v1795710445/Logo-donggala-fix-2026_hhlyih.jpg" 
+                            alt="Logo Kabupaten Donggala - Posyandu MEKAR 3" 
+                            class="w-full h-full object-contain rounded-xl"
+                            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                        >
+                        <svg class="hidden w-full h-full" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Fallback Lencana Posyandu MEKAR 3">
+                            <rect width="64" height="64" rx="12" fill="#0F766E"/>
+                            <circle cx="32" cy="30" r="21" stroke="#FDE047" stroke-width="2.5"/>
+                            <path d="M32 19V41M21 30H43" stroke="#99F6E4" stroke-width="4" stroke-linecap="round"/>
+                            <text x="32" y="57" text-anchor="middle" fill="#FDE047" font-size="8.5" font-weight="bold" font-family="sans-serif">MEKAR 3</text>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-teal-200 truncate">
+                            PEMERINTAH DESA WANI LUMBUMPETIGO
+                        </p>
+                        <h1 id="headerPosyanduTitle" class="font-display text-lg sm:text-xl font-extrabold tracking-tight leading-tight text-white truncate">
+                            POSYANDU MEKAR 3
+                        </h1>
+                        <p id="headerSubtitle" class="text-xs text-slate-200 truncate mt-0.5">
+                            Desa Wani Lumbumpetigo • Kec. Tanantovea, Kab. Donggala
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sisi Kanan: Badge Regulasi Kompak -->
+                <button type="button" onclick="openModal('modalRegulasi')" class="shrink-0 text-right bg-white/15 hover:bg-white/25 active:scale-95 transition backdrop-blur-sm border border-white/25 rounded-xl px-2.5 py-1.5">
+                    <div class="text-[10px] sm:text-[11px] font-bold text-amber-300 leading-tight whitespace-nowrap">Permendagri No. 19/2011</div>
+                    <div class="text-[10px] sm:text-[11px] font-semibold text-white/95 leading-tight whitespace-nowrap">&amp; No. 18/2018</div>
+                </button>
+            </div>
+
+            <!-- Baris Kedua: Tanggal & Jam Digital Real-Time WITA (1 Baris Utuh) -->
+            <div class="mt-4 bg-black/25 backdrop-blur-sm border border-white/15 rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2 min-w-0">
+                    <i class="fa-regular fa-calendar-check text-teal-300 text-sm shrink-0"></i>
+                    <span id="liveDateText" class="font-semibold text-white whitespace-nowrap truncate">Memuat tanggal...</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span id="liveClockText" class="font-mono font-bold text-amber-300 tracking-wide whitespace-nowrap">00:00:00 WITA</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-400/20 border border-teal-300/30 text-[10px] font-extrabold text-teal-100">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        AKTIF
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN CONTAINER & FLOATING TAB NAV ==================== -->
+    <main class="max-w-3xl mx-auto px-3.5 sm:px-4 -mt-9 relative z-20 space-y-4">
+
+        <!-- Kartu Tab Navigasi Mengambang (4 Kolom Sejajar Rapi) -->
+        <nav class="bg-white rounded-2xl shadow-lg border border-slate-200/80 p-1.5 grid grid-cols-4 gap-1 no-print" aria-label="Menu Navigasi Utama">
+            <button type="button" onclick="switchTab('absensi')" id="nav-absensi" class="nav-btn min-h-[44px] rounded-xl bg-teal-700 text-white font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs transition">
+                <i class="fa-solid fa-clipboard-check text-amber-300"></i>
+                <span>Absensi</span>
+            </button>
+            <button type="button" onclick="switchTab('kader')" id="nav-kader" class="nav-btn min-h-[44px] rounded-xl text-slate-600 hover:bg-teal-50 font-display font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition">
+                <i class="fa-solid fa-user-nurse"></i>
+                <span>Kader</span>
+            </button>
+            <button type="button" onclick="switchTab('laporan')" id="nav-laporan" class="nav-btn min-h-[44px] rounded-xl text-slate-600 hover:bg-teal-50 font-display font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>Laporan</span>
+            </button>
+            <button type="button" onclick="switchTab('pengaturan')" id="nav-pengaturan" class="nav-btn min-h-[44px] rounded-xl text-slate-600 hover:bg-teal-50 font-display font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Pengaturan</span>
+            </button>
+        </nav>
+
+        <!-- ==================== TAB 1: ABSENSI ==================== -->
+        <section id="tab-absensi" class="tab-content space-y-4">
+            
+            <!-- Card Sesi Kegiatan & GPS -->
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                    <h2 class="font-display font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <span class="w-2 h-5 rounded-full bg-teal-600 inline-block"></span>
+                        DETAIL KEGIATAN POSYANDU MEKAR 3
+                    </h2>
+                    <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        <i class="fa-solid fa-circle text-[7px] mr-1 text-emerald-600 animate-pulse"></i> Tersimpan Otomatis
+                    </span>
+                </div>
+
+                <!-- Tanggal & Pilihan 8 Jenis Agenda Kegiatan Posyandu -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Pelaksanaan</label>
+                        <input type="date" id="attendanceDate" onchange="loadSessionForDate()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis Agenda Kegiatan Posyandu</label>
+                        <select id="activityType" onchange="saveCurrentSession()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 outline-none">
+                            <option value="Pelayanan Posyandu Rutin / Penimbangan Balita & Ibu Hamil">Pelayanan Posyandu Rutin / Penimbangan Balita &amp; Ibu Hamil</option>
+                            <option value="Posyandu Lansia & PTM">Posyandu Lansia &amp; PTM</option>
+                            <option value="Pemberian Makanan Tambahan (PMT)">Pemberian Makanan Tambahan (PMT)</option>
+                            <option value="Imunisasi & Pemberian Vitamin A">Imunisasi &amp; Pemberian Vitamin A</option>
+                            <option value="Penyuluhan Kesehatan & Pencegahan Stunting">Penyuluhan Kesehatan &amp; Pencegahan Stunting</option>
+                            <option value="Sweeping / Kunjungan Rumah Balita">Sweeping / Kunjungan Rumah Balita</option>
+                            <option value="Rapat Koordinasi Kader & Bidan Desa">Rapat Koordinasi Kader &amp; Bidan Desa</option>
+                            <option value="Kerja Bakti / Pembersihan Lingkungan Posyandu">Kerja Bakti / Pembersihan Lingkungan Posyandu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Kunci Koordinat GPS Geolocation -->
+                <div class="bg-slate-50 border border-slate-200/90 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Verifikasi Titik Koordinat GPS</div>
+                            <div id="gpsStatusText" class="text-[11px] text-slate-500 mt-0.5">Belum dikunci (Klik tombol untuk validasi lokasi)</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="getGPSLocation()" id="btnGetGPS" class="min-h-[42px] px-3.5 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shrink-0 shadow-sm">
+                        <i class="fa-solid fa-satellite-dish text-teal-200"></i>
+                        <span>Kunci Koordinat GPS</span>
+                    </button>
+                </div>
+
+                <!-- Ringkasan Statistik Real-Time (Hadir, Izin, Sakit, Dinas Luar, Alpa, Total Kader) -->
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 pt-0.5">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2 text-center">
+                        <div id="countH" class="font-display font-extrabold text-base text-emerald-700">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">HADIR</div>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl p-2 text-center">
+                        <div id="countI" class="font-display font-extrabold text-base text-sky-700">0</div>
+                        <div class="text-[10px] font-bold text-sky-600">IZIN</div>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-2 text-center">
+                        <div id="countS" class="font-display font-extrabold text-base text-amber-700">0</div>
+                        <div class="text-[10px] font-bold text-amber-600">SAKIT</div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-2 text-center">
+                        <div id="countDL" class="font-display font-extrabold text-base text-purple-700">0</div>
+                        <div class="text-[10px] font-bold text-purple-600">DINAS LUAR</div>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">
+                        <div id="countA" class="font-display font-extrabold text-base text-rose-700">0</div>
+                        <div class="text-[10px] font-bold text-rose-600">ALPA</div>
+                    </div>
+                    <div class="bg-slate-100 border border-slate-300 rounded-xl p-2 text-center">
+                        <div id="countTotal" class="font-display font-extrabold text-base text-slate-800">5</div>
+                        <div class="text-[10px] font-bold text-slate-600">TOTAL</div>
+                    </div>
+                </div>
+
+                <!-- Aksi Cepat: Hadir Semua & Check-Out Semua -->
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" onclick="markAllPresent()" class="flex-1 min-h-[44px] px-3 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 active:scale-[0.98] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-check-double text-amber-300"></i>
+                        <span>Hadir Semua</span>
+                    </button>
+                    <button type="button" onclick="checkoutAllPresent()" class="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 active:scale-[0.98] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket text-teal-300"></i>
+                        <span>Check-Out Semua</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Header Daftar Kartu Kader -->
+            <div class="flex items-center justify-between px-1">
+                <h3 class="font-display font-bold text-slate-800 text-sm">Daftar Kader Posyandu MEKAR 3</h3>
+                <span id="totalKaderBadge" class="text-xs font-bold text-teal-800 bg-teal-100 border border-teal-200 px-2.5 py-0.5 rounded-full">5 Kader</span>
+            </div>
+
+            <!-- Kartu Kader Dinamis -->
+            <div id="kaderAttendanceList" class="space-y-3.5">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Simpan & Bagikan WhatsApp -->
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-2.5">
+                <button type="button" onclick="saveAndNotify()" class="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-teal-700 via-teal-600 to-blue-800 hover:from-teal-800 hover:to-blue-900 active:scale-[0.99] text-white font-display font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-amber-300 text-base"></i>
+                    <span>SIMPAN DATA ABSENSI HARI INI</span>
+                </button>
+                <button type="button" onclick="shareToWhatsApp()" class="w-full min-h-[44px] rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 active:scale-[0.99] text-emerald-900 font-bold text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i>
+                    <span>Bagikan Ringkasan Laporan ke WhatsApp</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: DATA KADER ==================== -->
+        <section id="tab-kader" class="tab-content hidden space-y-4">
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="font-display font-bold text-slate-900 text-base">Pengurus &amp; Kader MEKAR 3</h2>
+                        <p class="text-xs text-slate-500">SK Kepala Desa Wani Lumbumpetigo</p>
+                    </div>
+                    <button type="button" onclick="openKaderFormModal()" class="min-h-[42px] px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-user-plus text-amber-300"></i>
+                        <span>Tambah Kader</span>
+                    </button>
+                </div>
+
+                <!-- Daftar Kader -->
+                <div id="masterKaderList" class="space-y-2.5">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 flex flex-wrap justify-between items-center gap-2">
+                    <span class="text-[11px] text-slate-500"><i class="fa-solid fa-database text-teal-600 mr-1"></i>Tersimpan lokal (posyandu_mekar_3_v1)</span>
+                    <button type="button" onclick="resetDefaultKaders()" class="text-xs text-rose-600 hover:text-rose-800 underline font-bold">
+                        Reset Kader ke 5 Pengurus Inti MEKAR 3
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: LAPORAN & CETAK ==================== -->
+        <section id="tab-laporan" class="tab-content hidden space-y-4">
+            
+            <!-- Statistik Rekapitulasi Kehadiran Bulanan -->
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-4 no-print">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="font-display font-bold text-slate-900 text-base">Rekapitulasi &amp; Laporan Resmi A4</h2>
+                        <p class="text-xs text-slate-500">Rekap kehadiran bulanan per kader &amp; dokumen SPJ Desa</p>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="exportCSV()" class="min-h-[38px] px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span>Ekspor Excel (.CSV)</span>
+                        </button>
+                        <button type="button" onclick="shareToWhatsApp()" class="min-h-[38px] px-3 py-1.5 rounded-xl bg-green-600 hover:bg-green-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Bulan & Tanggal Dokumen -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Periode Bulan Rekapitulasi</label>
+                        <input type="month" id="rekapMonthFilter" onchange="renderRekapStats()" class="w-full min-h-[42px] px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Dokumen Cetak / PDF</label>
+                        <input type="date" id="reportDatePicker" onchange="syncReportDate(this.value)" class="w-full min-h-[42px] px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                    </div>
+                </div>
+
+                <!-- Progress Card Persentase Kehadiran -->
+                <div class="bg-gradient-to-br from-teal-900 via-teal-800 to-blue-900 rounded-2xl p-4 text-white shadow-inner">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-teal-200 uppercase tracking-wider">Tingkat Kehadiran Bulan Terpilih</span>
+                        <span id="rekapPercentage" class="font-display text-2xl font-extrabold text-amber-300">0%</span>
+                    </div>
+                    <div class="w-full bg-white/15 rounded-full h-3 overflow-hidden">
+                        <div id="rekapProgressBar" class="bg-gradient-to-r from-teal-400 to-emerald-400 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <div id="rekapSummaryText" class="text-[11px] text-slate-200 mt-2">
+                        Total 0 sesi kegiatan tercatat pada bulan ini.
+                    </div>
+                </div>
+
+                <!-- Tabel Rekapitulasi Bulanan Per Kader -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200">
+                                <th class="p-2.5">Nama &amp; Jabatan</th>
+                                <th class="p-2 text-center text-emerald-700">H</th>
+                                <th class="p-2 text-center text-sky-700">I</th>
+                                <th class="p-2 text-center text-amber-700">S</th>
+                                <th class="p-2 text-center text-purple-700">DL</th>
+                                <th class="p-2 text-center text-rose-700">A</th>
+                                <th class="p-2.5 text-right">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekapPerKaderBody" class="divide-y divide-slate-100 bg-white">
+                            <!-- Filled dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tombol Aksi Utama Pratinjau PDF & Cetak -->
+                <div class="grid grid-cols-2 gap-2.5 pt-1">
+                    <button type="button" onclick="openPdfPreviewModal()" class="min-h-[46px] px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-eye text-amber-300"></i>
+                        <span>Pratinjau PDF</span>
+                    </button>
+                    <button type="button" onclick="triggerDirectPrint()" class="min-h-[46px] px-3.5 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 active:scale-95 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Simpan PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KERTAS DOKUMEN RESMI A4 (PRINTABLE AREA - SAMA PERSIS MEKAR II) -->
+            <div class="overflow-x-auto pb-2">
+                <div id="printArea" class="official-doc bg-white rounded-xl shadow-lg border border-slate-300 p-6 sm:p-8 w-[740px] mx-auto text-slate-900">
+                    <!-- KOP SURAT RESMI FULL-WIDTH -->
+                    <div class="mb-3">
+                        <img 
+                            src="https://res.cloudinary.com/di8stbg60/image/upload/v1795706762/kop-surat-wani-lptg_xwi50x.png" 
+                            alt="Kop Surat Pemerintah Desa Wani Lumbumpetigo" 
+                            class="w-full h-auto object-contain block"
+                            onerror="this.onerror=null; this.src='https://placehold.co/800x150/ffffff/0f172a?text=PEMERINTAH+DESA+WANI+LUMBUMPETIGO+-+POSYANDU+MEKAR+3';"
+                        >
+                    </div>
+
+                    <!-- JUDUL DOKUMEN & DASAR HUKUM -->
+                    <div class="text-center mb-4">
+                        <h2 id="repDocTitle" class="font-bold uppercase tracking-wide inline-block border-b-2 border-slate-900 pb-0.5" style="font-size: 14pt;">
+                            DAFTAR HADIR KADER POSYANDU MEKAR 3
+                        </h2>
+                        <p class="italic text-slate-800 mt-1" style="font-size: 9.5pt;">
+                            Sesuai Permendagri No. 19 Tahun 2011 &amp; Permendagri No. 18 Tahun 2018 tentang Lembaga Kemasyarakatan Desa
+                        </p>
+                    </div>
+
+                    <!-- IDENTITAS KEGIATAN (2 KOLOM SEJAJAR PRESISI) -->
+                    <table class="official-meta-table mb-4">
+                        <colgroup>
+                            <col style="width: 17%;">
+                            <col style="width: 2%;">
+                            <col style="width: 33%;">
+                            <col style="width: 16%;">
+                            <col style="width: 2%;">
+                            <col style="width: 30%;">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">Hari / Tanggal</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repDate" class="font-normal pr-2">-</td>
+                                <td class="font-bold">Desa / Posyandu</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repDesaPosyandu" class="font-normal">Wani Lumbumpetigo / MEKAR 3</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Jenis Kegiatan</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repActivity" class="font-normal pr-2">-</td>
+                                <td class="font-bold">Koordinat GPS</td>
+                                <td class="font-bold text-center">:</td>
+                                <td id="repGPS" class="font-normal">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- TABEL DAFTAR HADIR RESMI -->
+                    <table class="official-att-table mb-3">
+                        <colgroup>
+                            <col style="width: 5%;">
+                            <col style="width: 25%;">
+                            <col style="width: 13%;">
+                            <col style="width: 11%;">
+                            <col style="width: 10%;">
+                            <col style="width: 10%;">
+                            <col style="width: 14%;">
+                            <col style="width: 12%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th style="text-align: left;">Nama Lengkap Kader</th>
+                                <th>Jabatan</th>
+                                <th>Status</th>
+                                <th>Jam Datang</th>
+                                <th>Jam Pulang</th>
+                                <th>Tanda Tangan</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <!-- Filled dynamically -->
+                        </tbody>
+                    </table>
+
+                    <!-- KOTAK REKAPITULASI KEHADIRAN -->
+                    <div id="repSummaryBox" class="official-rekap-box border border-slate-900 px-3 py-2 mb-5 bg-slate-50" style="font-size: 9.5pt;">
+                        <strong>Rekapitulasi Kehadiran:</strong> Hadir: 0 | Izin: 0 | Sakit: 0 | Dinas Luar: 0 | Alpa: 0 | Total Kader: 5
+                    </div>
+
+                    <!-- BLOK PENGESAHAN 3 TANDA TANGAN (TERKUNCI PAGE-BREAK-INSIDE AVOID) -->
+                    <div class="official-sign-block mt-4 pt-1" style="font-size: 10pt;">
+                        <!-- Baris Atas: Kiri (Ketua) & Kanan (Sekretaris) -->
+                        <div class="grid grid-cols-2 gap-8 text-center mb-5">
+                            <div>
+                                <p>Mengetahui,</p>
+                                <p id="repKetuaTitle" class="font-bold">Ketua Posyandu MEKAR 3</p>
+                                <div class="h-14 flex items-center justify-center my-1" id="repKetuaSig"></div>
+                                <p id="repKetuaName" class="font-bold underline uppercase">ISNAWATI</p>
+                            </div>
+                            <div>
+                                <p id="repSignDate">Wani Lumbumpetigo, .........................</p>
+                                <p id="repSekretarisTitle" class="font-bold">Sekretaris Posyandu MEKAR 3</p>
+                                <div class="h-14 flex items-center justify-center my-1" id="repSekretarisSig"></div>
+                                <p id="repSekretarisName" class="font-bold underline uppercase">ULFIANI</p>
+                            </div>
+                        </div>
+
+                        <!-- Baris Bawah Tengah: Mengesahkan Kepala Desa -->
+                        <div class="text-center max-w-xs mx-auto">
+                            <p>Mengesahkan,</p>
+                            <p id="repKadesTitle" class="font-bold">Kepala Desa Wani Lumbumpetigo</p>
+                            <div class="h-16"></div>
+                            <p id="repKadesName" class="font-bold underline uppercase">AMIR RAMANG</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Sesi Tersimpan -->
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-3 no-print">
+                <h3 class="font-display font-bold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-teal-600"></i>
+                    <span>Riwayat Sesi Absensi Tersimpan</span>
+                </h3>
+                <div id="historySessionsList" class="space-y-2">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: PENGATURAN ==================== -->
+        <section id="tab-pengaturan" class="tab-content hidden space-y-4">
+            <div class="glass-panel rounded-2xl p-4 shadow-md space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="font-display font-bold text-slate-900 text-base">Pengaturan Identitas &amp; Pengesahan</h2>
+                    <p class="text-xs text-slate-500">Konfigurasi data lembaga Posyandu MEKAR 3 &amp; Pemerintah Desa</p>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lembaga Posyandu</label>
+                        <input type="text" id="setPosyanduName" value="Posyandu MEKAR 3" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Desa</label>
+                            <input type="text" id="setDesaName" value="Wani Lumbumpetigo" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Kecamatan</label>
+                            <input type="text" id="setKecamatanName" value="Tanantovea" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Kabupaten</label>
+                            <input type="text" id="setKabupatenName" value="Donggala" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kepala Desa Wani Lumbumpetigo</label>
+                            <input type="text" id="setKadesName" value="AMIR RAMANG" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-bold text-slate-900 uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Bidan Desa / Pembina (Opsional)</label>
+                            <input type="text" id="setBidanName" placeholder="Contoh: Bd. Siti Aminah, A.Md.Keb" oninput="saveSettings()" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-medium text-slate-800">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zona Pemeliharaan & Reset Data -->
+                <div class="pt-3 border-t border-slate-200 space-y-2.5">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-rose-700">Pemeliharaan &amp; Reset Data</h3>
+                    <p class="text-[11px] text-slate-500">Gunakan tombol di bawah untuk mengembalikan susunan 5 pengurus inti Posyandu MEKAR 3 atau menghapus seluruh riwayat absensi di perangkat ini.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <button type="button" onclick="resetDefaultKaders()" class="min-h-[44px] px-3 py-2 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                            <span>Reset 5 Pengurus Inti MEKAR 3</span>
+                        </button>
+                        <button type="button" onclick="openModal('modalConfirmReset')" class="min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-trash-arrow-up"></i>
+                            <span>Reset Semua Data MEKAR 3</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== MODAL TANDA TANGAN DIGITAL (TOUCH CANVAS) ==================== -->
+    <div id="modalSignature" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Tanda Tangan Digital Layar Sentuh</span>
+                    <h3 id="sigKaderName" class="font-display font-bold text-lg text-slate-900">ISNAWATI</h3>
+                    <p id="sigKaderRole" class="text-xs text-slate-500">Ketua • Posyandu MEKAR 3</p>
+                </div>
+                <button type="button" onclick="closeModal('modalSignature')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-center gap-2">
+                <i class="fa-solid fa-hand-pointer text-amber-600"></i>
+                <span>Gunakan jari Anda pada layar HP Android untuk membubuhkan tanda tangan di kotak bawah ini.</span>
+            </div>
+
+            <div class="border-2 border-dashed border-slate-300 rounded-2xl overflow-hidden bg-slate-50 relative">
+                <canvas id="signatureCanvas" class="w-full h-48 block cursor-crosshair"></canvas>
+                <div class="absolute bottom-2 right-3 text-[10px] text-slate-400 pointer-events-none">Area Tanda Tangan Sah</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+                <button type="button" onclick="clearSignatureCanvas()" class="min-h-[46px] rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-50 flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-eraser"></i>
+                    <span>Hapus</span>
+                </button>
+                <button type="button" onclick="saveSignature()" class="min-h-[46px] rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-check text-amber-300"></i>
+                    <span>Simpan TTD</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL TAMBAH / EDIT KADER ==================== -->
+    <div id="modalKaderForm" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="kaderFormModalTitle" class="font-display font-bold text-base text-slate-900">Tambah Kader Posyandu MEKAR 3</h3>
+                <button type="button" onclick="closeModal('modalKaderForm')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <input type="hidden" id="editKaderId" value="">
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Kader (Sesuai KTP/SK)</label>
+                    <input type="text" id="kaderFormName" placeholder="Contoh: HASNAWATI" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 text-sm font-semibold uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan Kepengurusan</label>
+                    <select id="kaderFormRole" class="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 text-sm font-semibold bg-white">
+                        <option value="Ketua">Ketua</option>
+                        <option value="Sekretaris">Sekretaris</option>
+                        <option value="Bendahara">Bendahara</option>
+                        <option value="Anggota" selected>Anggota</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" onclick="submitKaderForm()" class="w-full min-h-[46px] rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm shadow-md">
+                Simpan Data Kader
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL PRATINJAU PDF A4 (ZOOM & SCROLL) ==================== -->
+    <div id="modalPdfPreview" class="fixed inset-0 bg-slate-900/85 backdrop-blur-sm z-50 hidden flex flex-col no-print">
+        <div class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-white/10 shrink-0">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-display font-bold text-sm leading-tight truncate">Pratinjau Dokumen PDF (A4)</h3>
+                    <p class="text-[11px] text-slate-300 truncate">Posyandu MEKAR 3 • Desa Wani Lumbumpetigo</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="adjustPdfZoom(-0.15)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center" title="Perkecil">
+                    <i class="fa-solid fa-magnifying-glass-minus text-xs"></i>
+                </button>
+                <span id="pdfZoomLabel" class="text-[11px] font-bold px-1.5 text-amber-300">100%</span>
+                <button type="button" onclick="adjustPdfZoom(0.15)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center" title="Perbesar">
+                    <i class="fa-solid fa-magnifying-glass-plus text-xs"></i>
+                </button>
+                <button type="button" onclick="triggerDirectPrint()" class="min-h-[36px] px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow ml-1">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Cetak / PDF</span>
+                </button>
+                <button type="button" onclick="closeModal('modalPdfPreview')" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center ml-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 overflow-auto p-3 sm:p-6 bg-slate-700/90">
+            <div id="pdfPreviewWrapper" class="origin-top-left transition-transform duration-200 mx-auto" style="width: 740px;">
+                <div id="pdfPreviewContainer" class="bg-white shadow-2xl p-6 sm:p-10 w-[740px] rounded-sm">
+                    <!-- Cloned content from #printArea -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL DASAR HUKUM ==================== -->
+    <div id="modalRegulasi" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced text-teal-600 text-lg"></i>
+                    <h3 class="font-display font-bold text-base text-slate-900">Landasan Hukum Administrasi Posyandu</h3>
+                </div>
+                <button type="button" onclick="closeModal('modalRegulasi')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+                <div class="p-3 rounded-xl bg-teal-50 border border-teal-200">
+                    <div class="font-bold text-teal-900 mb-1">1. Permendagri Nomor 19 Tahun 2011</div>
+                    <p>Tentang Pedoman Pengintegrasian Layanan Sosial Dasar di Pos Pelayanan Terpadu (Posyandu), yang mewajibkan tertib administrasi pencatatan kegiatan dan kehadiran kader.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200">
+                    <div class="font-bold text-blue-900 mb-1">2. Permendagri Nomor 18 Tahun 2018</div>
+                    <p>Tentang Lembaga Kemasyarakatan Desa dan Lembaga Adat Desa, yang menetapkan Posyandu sebagai LKD mitra Pemerintah Desa Wani Lumbumpetigo.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50 border border-amber-200">
+                    <div class="font-bold text-amber-900 mb-1">3. Standar Pertanggungjawaban Dana Desa (SPJ)</div>
+                    <p>Daftar hadir yang dilengkapi waktu kehadiran, jenis kegiatan, titik GPS, tanda tangan sah kader, dan pengesahan Kepala Desa menjadi bukti otentik administrasi desa.</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeModal('modalRegulasi')" class="w-full min-h-[44px] rounded-xl bg-slate-800 text-white font-bold text-xs">
+                Tutup &amp; Mengerti
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL KONFIRMASI RESET SEMUA DATA ==================== -->
+    <div id="modalConfirmReset" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl mx-auto">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="text-center space-y-1">
+                <h3 class="font-display font-bold text-base text-slate-900">Reset Semua Data MEKAR 3?</h3>
+                <p class="text-xs text-slate-500">Seluruh riwayat absensi dan tanda tangan Posyandu MEKAR 3 di HP ini akan dihapus dan dikembalikan ke awal.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+                <button type="button" onclick="closeModal('modalConfirmReset')" class="min-h-[44px] rounded-xl border border-slate-300 text-slate-700 font-bold text-xs">
+                    Batal
+                </button>
+                <button type="button" onclick="executeFullReset()" class="min-h-[44px] rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs">
+                    Ya, Reset Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST NOTIFICATION ==================== -->
+    <div id="toastNotification" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300 max-w-sm w-[92%]">
+        <div class="bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-xl border border-white/10 flex items-center gap-3 backdrop-blur-md">
+            <div id="toastIcon" class="w-7 h-7 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div id="toastMessage" class="text-xs font-semibold leading-snug">Notifikasi</div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // --- 1. DATA AWAL PENGURUS INTI POSYANDU MEKAR 3 ---
+        const DEFAULT_KADERS_MEKAR_3 = [
+            { id: 'm3_kader_1', name: 'ISNAWATI', role: 'Ketua' },
+            { id: 'm3_kader_2', name: 'ULFIANI', role: 'Sekretaris' },
+            { id: 'm3_kader_3', name: "MAS'IDA", role: 'Bendahara' },
+            { id: 'm3_kader_4', name: 'SUKRIANI', role: 'Anggota' },
+            { id: 'm3_kader_5', name: 'ISNAWATI.S', role: 'Anggota' }
+        ];
+
+        const DEFAULT_SETTINGS_MEKAR_3 = {
+            posyanduName: 'Posyandu MEKAR 3',
+            desaName: 'Wani Lumbumpetigo',
+            kecamatanName: 'Tanantovea',
+            kabupatenName: 'Donggala',
+            kadesName: 'AMIR RAMANG',
+            bidanName: ''
+        };
+
+        // Storage Key Terpisah Khusus Posyandu MEKAR 3
+        const STORAGE_KEY_MEKAR_3 = 'posyandu_mekar_3_v1';
+
+        let appState = {
+            kaders: [],
+            sessions: {},
+            settings: { ...DEFAULT_SETTINGS_MEKAR_3 }
+        };
+
+        let currentSigningKaderId = null;
+        let currentPdfZoom = 1.0;
+
+        // --- 2. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAppState();
+            applySettingsToUI();
+            initDateAndClock();
+            setupSignatureCanvas();
+
+            const todayStr = getTodayLocalISO();
+            document.getElementById('attendanceDate').value = todayStr;
+            document.getElementById('reportDatePicker').value = todayStr;
+            document.getElementById('rekapMonthFilter').value = todayStr.substring(0, 7);
+
+            loadSessionForDate();
+            renderMasterKaderList();
+            renderRekapStats();
+            updateReportPreview();
+        });
+
+        function getTodayLocalISO() {
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000;
+            return new Date(now.getTime() - offset).toISOString().split('T')[0];
+        }
+
+        function getCurrentTimeHM() {
+            const now = new Date();
+            return now.toTimeString().slice(0, 5);
+        }
+
+        function loadAppState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_MEKAR_3);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState.kaders = Array.isArray(parsed.kaders) && parsed.kaders.length > 0
+                        ? parsed.kaders
+                        : [...DEFAULT_KADERS_MEKAR_3];
+                    appState.sessions = parsed.sessions || {};
+                    appState.settings = { ...DEFAULT_SETTINGS_MEKAR_3, ...(parsed.settings || {}) };
+                } else {
+                    appState.kaders = [...DEFAULT_KADERS_MEKAR_3];
+                    appState.sessions = {};
+                    appState.settings = { ...DEFAULT_SETTINGS_MEKAR_3 };
+                    persistAppState();
+                }
+            } catch (err) {
+                console.error('Gagal memuat state Mekar 3:', err);
+                appState.kaders = [...DEFAULT_KADERS_MEKAR_3];
+                appState.sessions = {};
+                appState.settings = { ...DEFAULT_SETTINGS_MEKAR_3 };
+            }
+        }
+
+        function persistAppState() {
+            try {
+                localStorage.setItem(STORAGE_KEY_MEKAR_3, JSON.stringify(appState));
+            } catch (err) {
+                console.error('Gagal menyimpan state Mekar 3:', err);
+            }
+        }
+
+        // --- 3. PENGATURAN IDENTITAS ---
+        function applySettingsToUI() {
+            const s = appState.settings;
+            document.getElementById('setPosyanduName').value = s.posyanduName;
+            document.getElementById('setDesaName').value = s.desaName;
+            document.getElementById('setKecamatanName').value = s.kecamatanName;
+            document.getElementById('setKabupatenName').value = s.kabupatenName;
+            document.getElementById('setKadesName').value = s.kadesName;
+            document.getElementById('setBidanName').value = s.bidanName || '';
+
+            document.getElementById('headerPosyanduTitle').textContent = s.posyanduName.toUpperCase();
+            document.getElementById('headerSubtitle').textContent = `Desa ${s.desaName} • Kec. ${s.kecamatanName}, Kab. ${s.kabupatenName}`;
+        }
+
+        function saveSettings() {
+            appState.settings = {
+                posyanduName: document.getElementById('setPosyanduName').value.trim() || 'Posyandu MEKAR 3',
+                desaName: document.getElementById('setDesaName').value.trim() || 'Wani Lumbumpetigo',
+                kecamatanName: document.getElementById('setKecamatanName').value.trim() || 'Tanantovea',
+                kabupatenName: document.getElementById('setKabupatenName').value.trim() || 'Donggala',
+                kadesName: (document.getElementById('setKadesName').value.trim() || 'AMIR RAMANG').toUpperCase(),
+                bidanName: document.getElementById('setBidanName').value.trim()
+            };
+            persistAppState();
+            applySettingsToUI();
+            updateReportPreview();
+        }
+
+        // --- 4. JAM REAL-TIME & FORMAT TANGGAL INDONESIA ---
+        function initDateAndClock() {
+            const updateClock = () => {
+                const now = new Date();
+                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+                const ss = String(now.getSeconds()).padStart(2, '0');
+
+                document.getElementById('liveDateText').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+                document.getElementById('liveClockText').textContent = `${hh}:${mm}:${ss} WITA`;
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function formatIndoDate(isoDateStr) {
+            if (!isoDateStr) return '-';
+            const [y, m, d] = isoDateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d);
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${days[dateObj.getDay()]}, ${d} ${months[m - 1]} ${y}`;
+        }
+
+        function formatIndoDateShort(isoDateStr) {
+            if (!isoDateStr) return '-';
+            const [y, m, d] = isoDateStr.split('-').map(Number);
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${d} ${months[m - 1]} ${y}`;
+        }
+
+        function getInitials(nameStr) {
+            if (!nameStr) return 'K';
+            const clean = nameStr.replace(/[^a-zA-Z\s]/g, ' ').trim();
+            const parts = clean.split(/\s+/).filter(Boolean);
+            if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+            return clean.substring(0, 2).toUpperCase();
+        }
+
+        // --- 5. MANAJEMEN SESI & ABSENSI ---
+        function getActiveDate() {
+            return document.getElementById('attendanceDate').value || getTodayLocalISO();
+        }
+
+        function syncReportDate(newDate) {
+            if (!newDate) return;
+            document.getElementById('attendanceDate').value = newDate;
+            loadSessionForDate();
+        }
+
+        function ensureSessionExists(dateStr) {
+            if (!appState.sessions[dateStr]) {
+                appState.sessions[dateStr] = {
+                    date: dateStr,
+                    activity: document.getElementById('activityType').value || 'Pelayanan Posyandu Rutin / Penimbangan Balita & Ibu Hamil',
+                    gps: '',
+                    records: {}
+                };
+            }
+            appState.kaders.forEach(k => {
+                if (!appState.sessions[dateStr].records[k.id]) {
+                    appState.sessions[dateStr].records[k.id] = {
+                        kaderId: k.id,
+                        name: k.name,
+                        role: k.role,
+                        status: '', // H, I, S, DL, A
+                        checkIn: '',
+                        checkOut: '',
+                        signature: '',
+                        note: ''
+                    };
+                } else {
+                    appState.sessions[dateStr].records[k.id].name = k.name;
+                    appState.sessions[dateStr].records[k.id].role = k.role;
+                }
+            });
+            return appState.sessions[dateStr];
+        }
+
+        function loadSessionForDate() {
+            const dateStr = getActiveDate();
+            document.getElementById('reportDatePicker').value = dateStr;
+            const session = ensureSessionExists(dateStr);
+
+            document.getElementById('activityType').value = session.activity;
+            const gpsEl = document.getElementById('gpsStatusText');
+            if (session.gps) {
+                gpsEl.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>${session.gps}</span>`;
+            } else {
+                gpsEl.textContent = 'Belum dikunci (Klik tombol untuk validasi lokasi)';
+            }
+
+            renderKaderAttendanceCards();
+            updateReportPreview();
+        }
+
+        function saveCurrentSession() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.activity = document.getElementById('activityType').value;
+            persistAppState();
+            updateStatsCounters();
+            updateReportPreview();
+        }
+
+        function setKaderStatus(kaderId, statusCode) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            rec.status = statusCode;
+
+            if (statusCode === 'H' && !rec.checkIn) {
+                rec.checkIn = getCurrentTimeHM();
+            } else if (statusCode !== 'H') {
+                rec.checkIn = '';
+                rec.checkOut = '';
+            }
+
+            persistAppState();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+        }
+
+        function updateKaderTime(kaderId, field, value) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[kaderId][field] = value;
+            persistAppState();
+            updateReportPreview();
+        }
+
+        function quickCheckIn(kaderId) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            rec.status = 'H';
+            rec.checkIn = getCurrentTimeHM();
+            persistAppState();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`Jam datang ${rec.name}: ${rec.checkIn} WITA`);
+        }
+
+        function quickCheckOut(kaderId) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const rec = session.records[kaderId];
+            if (!rec.checkIn) rec.checkIn = getCurrentTimeHM();
+            rec.status = 'H';
+            rec.checkOut = getCurrentTimeHM();
+            persistAppState();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`Jam pulang ${rec.name}: ${rec.checkOut} WITA`);
+        }
+
+        function updateKaderNote(kaderId, value) {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[kaderId].note = value;
+            persistAppState();
+            updateReportPreview();
+        }
+
+        function markAllPresent() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const nowHM = getCurrentTimeHM();
+            appState.kaders.forEach(k => {
+                const rec = session.records[k.id];
+                rec.status = 'H';
+                if (!rec.checkIn) rec.checkIn = nowHM;
+            });
+            persistAppState();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast('Semua kader Posyandu MEKAR 3 ditandai HADIR!');
+        }
+
+        function checkoutAllPresent() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const nowHM = getCurrentTimeHM();
+            let count = 0;
+            appState.kaders.forEach(k => {
+                const rec = session.records[k.id];
+                if (rec.status === 'H') {
+                    rec.checkOut = nowHM;
+                    count++;
+                }
+            });
+            persistAppState();
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast(`${count} kader yang hadir berhasil Check-Out pukul ${nowHM}`);
+        }
+
+        // --- 6. RENDER KARTU ABSENSI KADER ---
+        function renderKaderAttendanceCards() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const container = document.getElementById('kaderAttendanceList');
+            document.getElementById('totalKaderBadge').textContent = `${appState.kaders.length} Kader`;
+
+            container.innerHTML = appState.kaders.map((k, index) => {
+                const rec = session.records[k.id];
+                const st = rec.status;
+                const initials = getInitials(k.name);
+
+                // Role Badge Styling
+                let roleBadge = 'bg-slate-100 text-slate-700 border border-slate-200';
+                if (k.role === 'Ketua') roleBadge = 'bg-amber-100 text-amber-800 border border-amber-300';
+                else if (k.role === 'Sekretaris') roleBadge = 'bg-blue-100 text-blue-800 border border-blue-200';
+                else if (k.role === 'Bendahara') roleBadge = 'bg-teal-100 text-teal-800 border border-teal-200';
+
+                // Left border accent
+                let borderAccent = 'border-l-4 border-l-slate-300';
+                if (st === 'H') borderAccent = 'border-l-4 border-l-emerald-500';
+                else if (st === 'I') borderAccent = 'border-l-4 border-l-sky-500';
+                else if (st === 'S') borderAccent = 'border-l-4 border-l-amber-500';
+                else if (st === 'DL') borderAccent = 'border-l-4 border-l-purple-500';
+                else if (st === 'A') borderAccent = 'border-l-4 border-l-rose-500';
+
+                const statusButtons = [
+                    { code: 'H', label: 'Hadir', active: 'bg-emerald-600 text-white border-emerald-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50' },
+                    { code: 'I', label: 'Izin', active: 'bg-sky-600 text-white border-sky-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-sky-50' },
+                    { code: 'S', label: 'Sakit', active: 'bg-amber-500 text-white border-amber-500 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-amber-50' },
+                    { code: 'DL', label: 'Dinas Luar', active: 'bg-purple-600 text-white border-purple-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-purple-50' },
+                    { code: 'A', label: 'Alpa', active: 'bg-rose-600 text-white border-rose-600 shadow-sm', idle: 'bg-white text-slate-600 border-slate-200 hover:bg-rose-50' }
+                ];
+
+                return `
+                <div class="glass-panel rounded-2xl p-4 shadow-sm ${borderAccent} transition-all space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600 to-blue-800 text-white font-display font-extrabold text-xs flex flex-col items-center justify-center shrink-0 shadow-sm">
+                                <span>${initials}</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[11px] font-bold text-slate-400">#${index + 1}</span>
+                                    <h4 class="font-display font-extrabold text-slate-900 text-sm sm:text-base tracking-tight truncate">${k.name}</h4>
+                                </div>
+                                <span class="inline-block mt-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold ${roleBadge}">
+                                    ${k.role}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Tombol TTD Digital -->
+                        <button type="button" onclick="openSignatureModal('${k.id}')" class="min-h-[42px] px-3 py-1.5 rounded-xl border ${rec.signature ? 'bg-teal-50 border-teal-300 text-teal-800' : 'bg-slate-50 border-slate-300 text-slate-600'} active:scale-95 transition flex items-center gap-1.5 text-xs font-bold shrink-0">
+                            ${rec.signature 
+                                ? `<img src="${rec.signature}" alt="TTD ${k.name}" class="h-6 w-12 object-contain bg-white rounded border border-teal-200"><i class="fa-solid fa-pen text-[10px] text-teal-700"></i>` 
+                                : `<i class="fa-solid fa-signature text-teal-700"></i><span>Paraf/TTD</span>`
+                            }
+                        </button>
+                    </div>
+
+                    <!-- 5 Tombol Status Kehadiran -->
+                    <div class="grid grid-cols-5 gap-1.5">
+                        ${statusButtons.map(btn => `
+                            <button type="button" onclick="setKaderStatus('${k.id}', '${btn.code}')" 
+                                class="min-h-[42px] px-1 rounded-xl border text-[11px] sm:text-xs font-bold transition active:scale-95 flex items-center justify-center text-center leading-tight ${st === btn.code ? btn.active : btn.idle}">
+                                <span>${btn.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Jam Datang, Jam Pulang & Keterangan -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-0.5">
+                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Jam Datang</span>
+                                <button type="button" onclick="quickCheckIn('${k.id}')" class="text-[10px] font-bold text-teal-700 hover:underline">Sekarang</button>
+                            </div>
+                            <input type="time" value="${rec.checkIn}" onchange="updateKaderTime('${k.id}', 'checkIn', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-800">
+                        </div>
+
+                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Jam Pulang</span>
+                                <button type="button" onclick="quickCheckOut('${k.id}')" class="text-[10px] font-bold text-blue-700 hover:underline">Sekarang</button>
+                            </div>
+                            <input type="time" value="${rec.checkOut}" onchange="updateKaderTime('${k.id}', 'checkOut', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-800">
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1 bg-slate-50 p-2 rounded-xl border border-slate-200/80">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Keterangan</label>
+                            <input type="text" value="${rec.note}" placeholder="Opsional..." onchange="updateKaderNote('${k.id}', this.value)" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-slate-800">
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            updateStatsCounters();
+        }
+
+        function updateStatsCounters() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const counts = { H: 0, I: 0, S: 0, DL: 0, A: 0 };
+
+            appState.kaders.forEach(k => {
+                const st = session.records[k.id]?.status;
+                if (counts.hasOwnProperty(st)) counts[st]++;
+            });
+
+            document.getElementById('countH').textContent = counts.H;
+            document.getElementById('countI').textContent = counts.I;
+            document.getElementById('countS').textContent = counts.S;
+            document.getElementById('countDL').textContent = counts.DL;
+            document.getElementById('countA').textContent = counts.A;
+            document.getElementById('countTotal').textContent = appState.kaders.length;
+        }
+
+        // --- 7. GPS GEOLOCATION ---
+        function getGPSLocation() {
+            const btn = document.getElementById('btnGetGPS');
+            const statusEl = document.getElementById('gpsStatusText');
+
+            if (!navigator.geolocation) {
+                showToast('Perangkat tidak mendukung GPS', true);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Mengunci...</span>`;
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    const acc = Math.round(pos.coords.accuracy);
+                    const gpsString = `${lat}, ${lng} (±${acc}m)`;
+
+                    const dateStr = getActiveDate();
+                    const session = ensureSessionExists(dateStr);
+                    session.gps = gpsString;
+                    persistAppState();
+
+                    statusEl.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>${gpsString}</span>`;
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-satellite-dish text-teal-200"></i><span>Perbarui GPS</span>`;
+                    updateReportPreview();
+                    showToast('Titik koordinat GPS Posyandu MEKAR 3 berhasil dikunci!');
+                },
+                () => {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-satellite-dish text-teal-200"></i><span>Kunci Koordinat GPS</span>`;
+                    showToast('Gagal mengambil lokasi GPS. Aktifkan izin lokasi HP Android Anda.', true);
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // --- 8. TOUCH SIGNATURE CANVAS ---
+        let canvas, ctx, isDrawing = false;
+
+        function setupSignatureCanvas() {
+            canvas = document.getElementById('signatureCanvas');
+            ctx = canvas.getContext('2d');
+
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            };
+
+            const startDraw = (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            };
+
+            const draw = (e) => {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 3.2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+            };
+
+            const endDraw = () => { isDrawing = false; };
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', endDraw);
+        }
+
+        function openSignatureModal(kaderId) {
+            currentSigningKaderId = kaderId;
+            const kader = appState.kaders.find(k => k.id === kaderId);
+            if (!kader) return;
+
+            document.getElementById('sigKaderName').textContent = kader.name;
+            document.getElementById('sigKaderRole').textContent = `${kader.role} • ${appState.settings.posyanduName}`;
+            openModal('modalSignature');
+
+            setTimeout(() => {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * 2;
+                canvas.height = rect.height * 2;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const dateStr = getActiveDate();
+                const rec = ensureSessionExists(dateStr).records[kaderId];
+                if (rec && rec.signature) {
+                    const img = new Image();
+                    img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    img.src = rec.signature;
+                }
+            }, 50);
+        }
+
+        function clearSignatureCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveSignature() {
+            if (!currentSigningKaderId) return;
+            const dataURL = canvas.toDataURL('image/png');
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            session.records[currentSigningKaderId].signature = dataURL;
+
+            if (!session.records[currentSigningKaderId].status) {
+                session.records[currentSigningKaderId].status = 'H';
+                session.records[currentSigningKaderId].checkIn = getCurrentTimeHM();
+            }
+
+            persistAppState();
+            closeModal('modalSignature');
+            renderKaderAttendanceCards();
+            updateReportPreview();
+            showToast('Tanda tangan digital berhasil disimpan!');
+        }
+
+        // --- 9. DATA KADER CRUD (TAMBAH, EDIT, HAPUS, RESET) ---
+        function renderMasterKaderList() {
+            const listEl = document.getElementById('masterKaderList');
+            listEl.innerHTML = appState.kaders.map((k, idx) => {
+                let badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
+                if (k.role === 'Ketua') badgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
+                else if (k.role === 'Sekretaris') badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                else if (k.role === 'Bendahara') badgeClass = 'bg-teal-100 text-teal-800 border-teal-200';
+
+                return `
+                <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-2 shadow-xs">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-9 h-9 rounded-xl bg-teal-700 text-white font-display font-extrabold text-xs flex items-center justify-center shrink-0">
+                            ${idx + 1}
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-display font-bold text-sm text-slate-900 truncate">${k.name}</div>
+                            <span class="inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-bold border ${badgeClass}">${k.role}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="openKaderFormModal('${k.id}')" class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 flex items-center justify-center" title="Edit Kader">
+                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                        </button>
+                        <button type="button" onclick="removeKader('${k.id}')" class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 flex items-center justify-center" title="Hapus Kader">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function openKaderFormModal(kaderId = '') {
+            const titleEl = document.getElementById('kaderFormModalTitle');
+            const idInput = document.getElementById('editKaderId');
+            const nameInput = document.getElementById('kaderFormName');
+            const roleInput = document.getElementById('kaderFormRole');
+
+            if (kaderId) {
+                const target = appState.kaders.find(k => k.id === kaderId);
+                if (!target) return;
+                titleEl.textContent = 'Edit Data Kader MEKAR 3';
+                idInput.value = target.id;
+                nameInput.value = target.name;
+                roleInput.value = target.role;
+            } else {
+                titleEl.textContent = 'Tambah Kader Posyandu MEKAR 3';
+                idInput.value = '';
+                nameInput.value = '';
+                roleInput.value = 'Anggota';
+            }
+            openModal('modalKaderForm');
+        }
+
+        function submitKaderForm() {
+            const editId = document.getElementById('editKaderId').value;
+            const name = document.getElementById('kaderFormName').value.trim().toUpperCase();
+            const role = document.getElementById('kaderFormRole').value;
+
+            if (!name) {
+                showToast('Nama kader wajib diisi!', true);
+                return;
+            }
+
+            if (editId) {
+                const idx = appState.kaders.findIndex(k => k.id === editId);
+                if (idx !== -1) {
+                    appState.kaders[idx].name = name;
+                    appState.kaders[idx].role = role;
+                }
+                showToast(`Data kader ${name} diperbarui!`);
+            } else {
+                appState.kaders.push({
+                    id: 'm3_kader_' + Date.now(),
+                    name,
+                    role
+                });
+                showToast(`Kader baru ${name} ditambahkan!`);
+            }
+
+            persistAppState();
+            closeModal('modalKaderForm');
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapStats();
+        }
+
+        function removeKader(kaderId) {
+            if (appState.kaders.length <= 1) {
+                showToast('Minimal harus ada 1 kader terdaftar.', true);
+                return;
+            }
+            appState.kaders = appState.kaders.filter(k => k.id !== kaderId);
+            persistAppState();
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapStats();
+            showToast('Kader berhasil dihapus dari daftar.');
+        }
+
+        function resetDefaultKaders() {
+            appState.kaders = [...DEFAULT_KADERS_MEKAR_3];
+            persistAppState();
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapStats();
+            showToast('Dikembalikan ke 5 Pengurus Inti Posyandu MEKAR 3!');
+        }
+
+        function executeFullReset() {
+            localStorage.removeItem(STORAGE_KEY_MEKAR_3);
+            appState = {
+                kaders: [...DEFAULT_KADERS_MEKAR_3],
+                sessions: {},
+                settings: { ...DEFAULT_SETTINGS_MEKAR_3 }
+            };
+            persistAppState();
+            applySettingsToUI();
+            renderMasterKaderList();
+            loadSessionForDate();
+            renderRekapStats();
+            closeModal('modalConfirmReset');
+            showToast('Seluruh data Posyandu MEKAR 3 berhasil di-reset.');
+        }
+
+        // --- 10. REKAPITULASI BULANAN, CSV & WHATSAPP ---
+        function renderRekapStats() {
+            const monthFilter = document.getElementById('rekapMonthFilter').value;
+            const matchingDates = Object.keys(appState.sessions)
+                .filter(d => !monthFilter || d.startsWith(monthFilter))
+                .sort()
+                .reverse();
+
+            const statsPerKader = {};
+            appState.kaders.forEach(k => {
+                statsPerKader[k.id] = { H: 0, I: 0, S: 0, DL: 0, A: 0, total: 0 };
+            });
+
+            let totalHadirAll = 0;
+            let totalRecordedAll = 0;
+
+            matchingDates.forEach(dateStr => {
+                const s = appState.sessions[dateStr];
+                appState.kaders.forEach(k => {
+                    const r = s.records[k.id];
+                    if (r && r.status) {
+                        statsPerKader[k.id][r.status] = (statsPerKader[k.id][r.status] || 0) + 1;
+                        statsPerKader[k.id].total++;
+                        totalRecordedAll++;
+                        if (r.status === 'H') totalHadirAll++;
+                    }
+                });
+            });
+
+            const pct = totalRecordedAll > 0 ? Math.round((totalHadirAll / totalRecordedAll) * 100) : 0;
+            document.getElementById('rekapPercentage').textContent = `${pct}%`;
+            document.getElementById('rekapProgressBar').style.width = `${pct}%`;
+            document.getElementById('rekapSummaryText').textContent = `Total ${matchingDates.length} sesi kegiatan tercatat pada periode ini.`;
+
+            document.getElementById('rekapPerKaderBody').innerHTML = appState.kaders.map(k => {
+                const st = statsPerKader[k.id] || { H: 0, I: 0, S: 0, DL: 0, A: 0, total: 0 };
+                const kPct = st.total > 0 ? Math.round((st.H / st.total) * 100) : 0;
+                return `
+                    <tr>
+                        <td class="p-2.5">
+                            <div class="font-bold text-slate-900">${k.name}</div>
+                            <div class="text-[10px] text-slate-500">${k.role}</div>
+                        </td>
+                        <td class="p-2 text-center font-bold text-emerald-700">${st.H}</td>
+                        <td class="p-2 text-center font-bold text-sky-700">${st.I}</td>
+                        <td class="p-2 text-center font-bold text-amber-700">${st.S}</td>
+                        <td class="p-2 text-center font-bold text-purple-700">${st.DL}</td>
+                        <td class="p-2 text-center font-bold text-rose-700">${st.A}</td>
+                        <td class="p-2.5 text-right font-extrabold text-teal-900">${kPct}%</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Riwayat Sesi
+            const historyEl = document.getElementById('historySessionsList');
+            if (matchingDates.length === 0) {
+                historyEl.innerHTML = `<div class="text-center py-5 text-xs text-slate-400">Belum ada sesi absensi tersimpan pada bulan terpilih.</div>`;
+            } else {
+                historyEl.innerHTML = matchingDates.map(d => {
+                    const s = appState.sessions[d];
+                    let hCount = 0;
+                    appState.kaders.forEach(k => { if (s.records[k.id]?.status === 'H') hCount++; });
+                    return `
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">${formatIndoDate(d)}</div>
+                                <div class="text-[11px] text-slate-600">${s.activity}</div>
+                                <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                                    Hadir: ${hCount} / ${appState.kaders.length} Kader
+                                </span>
+                            </div>
+                            <button type="button" onclick="openHistoryDate('${d}')" class="min-h-[36px] px-3 py-1.5 rounded-xl bg-teal-700 text-white text-xs font-bold hover:bg-teal-800 shrink-0">
+                                Buka
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function openHistoryDate(dateStr) {
+            document.getElementById('attendanceDate').value = dateStr;
+            loadSessionForDate();
+            switchTab('absensi');
+            showToast(`Memuat absensi tanggal ${formatIndoDateShort(dateStr)}`);
+        }
+
+        function saveAndNotify() {
+            saveCurrentSession();
+            renderRekapStats();
+            showToast('Data Absensi Posyandu MEKAR 3 tersimpan aman!');
+        }
+
+        function shareToWhatsApp() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const s = appState.settings;
+            const statusLabels = { H: 'Hadir ✅', I: 'Izin ℹ️', S: 'Sakit 🤒', DL: 'Dinas Luar 🏛️', A: 'Alpa ❌', '': 'Belum diisi ⏳' };
+
+            let text = `*LAPORAN ABSENSI KADER ${s.posyanduName.toUpperCase()}*\n`;
+            text += `Desa ${s.desaName}, Kec. ${s.kecamatanName}\n`;
+            text += `📅 Tanggal: ${formatIndoDate(dateStr)}\n`;
+            text += `📋 Kegiatan: ${session.activity}\n`;
+            if (session.gps) text += `📍 GPS: ${session.gps}\n`;
+            text += `----------------------------------\n`;
+
+            appState.kaders.forEach((k, i) => {
+                const rec = session.records[k.id];
+                const jam = rec.checkIn ? ` (${rec.checkIn}${rec.checkOut ? '-' + rec.checkOut : ''})` : '';
+                text += `${i + 1}. *${k.name}* (${k.role})\n   Status: ${statusLabels[rec.status]}${jam}\n`;
+            });
+
+            text += `----------------------------------\n`;
+            text += `Mengesahkan,\nKepala Desa ${s.desaName}: *${s.kadesName}*\n`;
+            text += `_E-Absensi ${s.posyanduName}_`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function exportCSV() {
+            const monthFilter = document.getElementById('rekapMonthFilter').value;
+            const s = appState.settings;
+            const matchingDates = Object.keys(appState.sessions)
+                .filter(d => !monthFilter || d.startsWith(monthFilter))
+                .sort();
+
+            if (matchingDates.length === 0) {
+                showToast('Tidak ada data absensi pada bulan terpilih.', true);
+                return;
+            }
+
+            let csv = 'Tanggal,Posyandu,Desa,Kegiatan,Koordinat GPS,No,Nama Kader,Jabatan,Status,Jam Datang,Jam Pulang,Keterangan,Kepala Desa\n';
+            matchingDates.forEach(dateStr => {
+                const ses = appState.sessions[dateStr];
+                appState.kaders.forEach((k, idx) => {
+                    const r = ses.records[k.id] || {};
+                    const row = [
+                        dateStr,
+                        `"${s.posyanduName}"`,
+                        `"${s.desaName}"`,
+                        `"${(ses.activity || '').replace(/"/g, '""')}"`,
+                        `"${ses.gps || '-'}"`,
+                        idx + 1,
+                        `"${k.name}"`,
+                        `"${k.role}"`,
+                        r.status || '-',
+                        r.checkIn || '-',
+                        r.checkOut || '-',
+                        `"${(r.note || '').replace(/"/g, '""')}"`,
+                        `"${s.kadesName}"`
+                    ];
+                    csv += row.join(',') + '\n';
+                });
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekap_Absensi_Posyandu_MEKAR_3_${monthFilter || 'Semua'}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File Excel (.CSV) Posyandu MEKAR 3 berhasil diunduh!');
+        }
+
+        // --- 11. DOKUMEN RESMI A4, MODAL PRATINJAU PDF & ZOOM ---
+        function updateReportPreview() {
+            const dateStr = getActiveDate();
+            const session = ensureSessionExists(dateStr);
+            const s = appState.settings;
+
+            document.getElementById('repDocTitle').textContent = `DAFTAR HADIR KADER ${s.posyanduName.toUpperCase()}`;
+            document.getElementById('repDate').textContent = formatIndoDate(dateStr);
+            document.getElementById('repActivity').textContent = session.activity;
+            document.getElementById('repDesaPosyandu').textContent = `${s.desaName} / ${s.posyanduName.replace(/^Posyandu\s+/i, '')}`;
+            document.getElementById('repGPS').textContent = session.gps || `Desa ${s.desaName}`;
+
+            const statusFull = { H: 'Hadir', I: 'Izin', S: 'Sakit', DL: 'Dinas Luar', A: 'Alpa', '': '-' };
+            const counts = { H: 0, I: 0, S: 0, DL: 0, A: 0 };
+
+            let ketuaObj = appState.kaders.find(k => k.role === 'Ketua') || appState.kaders[0];
+            let sekretarisObj = appState.kaders.find(k => k.role === 'Sekretaris') || appState.kaders[1];
+
+            let ketuaSigHTML = '';
+            let sekretarisSigHTML = '';
+
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = appState.kaders.map((k, idx) => {
+                const r = session.records[k.id] || {};
+                if (counts.hasOwnProperty(r.status)) counts[r.status]++;
+
+                if (ketuaObj && k.id === ketuaObj.id && r.signature) {
+                    ketuaSigHTML = `<img src="${r.signature}" alt="TTD Ketua" class="official-sig-img">`;
+                }
+                if (sekretarisObj && k.id === sekretarisObj.id && r.signature) {
+                    sekretarisSigHTML = `<img src="${r.signature}" alt="TTD Sekretaris" class="official-sig-img">`;
+                }
+
+                return `
+                    <tr>
+                        <td style="text-align: center;">${idx + 1}</td>
+                        <td style="text-align: left; font-weight: bold;">${k.name}</td>
+                        <td style="text-align: center;">${k.role}</td>
+                        <td style="text-align: center; font-weight: bold;">${statusFull[r.status || '']}</td>
+                        <td style="text-align: center;">${r.checkIn || '-'}</td>
+                        <td style="text-align: center;">${r.checkOut || '-'}</td>
+                        <td style="text-align: center; height: 42px; padding: 3px 4px;">
+                            ${r.signature ? `<img src="${r.signature}" alt="TTD" class="official-sig-img">` : ''}
+                        </td>
+                        <td style="text-align: left; font-size: 8.5pt;">${r.note || ''}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Update Blok Pengesahan 3 Tanda Tangan Resmi
+            document.getElementById('repKetuaTitle').textContent = `Ketua ${s.posyanduName}`;
+            document.getElementById('repKetuaName').textContent = ketuaObj ? ketuaObj.name : 'ISNAWATI';
+            document.getElementById('repKetuaSig').innerHTML = ketuaSigHTML;
+
+            document.getElementById('repSignDate').textContent = `${s.desaName}, ${formatIndoDateShort(dateStr)}`;
+            document.getElementById('repSekretarisTitle').textContent = `Sekretaris ${s.posyanduName}`;
+            document.getElementById('repSekretarisName').textContent = sekretarisObj ? sekretarisObj.name : 'ULFIANI';
+            document.getElementById('repSekretarisSig').innerHTML = sekretarisSigHTML;
+
+            document.getElementById('repKadesTitle').textContent = `Kepala Desa ${s.desaName}`;
+            document.getElementById('repKadesName').textContent = s.kadesName;
+
+            // Update Kotak Rekapitulasi Kehadiran
+            document.getElementById('repSummaryBox').innerHTML = `
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px;">
+                    <div>
+                        <strong>Rekapitulasi Kehadiran:</strong> 
+                        Hadir: <b>${counts.H}</b> | 
+                        Izin: <b>${counts.I}</b> | 
+                        Sakit: <b>${counts.S}</b> | 
+                        Dinas Luar: <b>${counts.DL}</b> | 
+                        Alpa: <b>${counts.A}</b> | 
+                        Total Kader: <b>${appState.kaders.length}</b>
+                    </div>
+                    ${s.bidanName ? `<div>Pembina/Bidan Desa: <b>${s.bidanName}</b></div>` : ''}
+                </div>
+            `;
+        }
+
+        function openPdfPreviewModal() {
+            updateReportPreview();
+            const printSource = document.getElementById('printArea');
+            const previewContainer = document.getElementById('pdfPreviewContainer');
+            previewContainer.innerHTML = printSource.innerHTML;
+
+            const screenW = window.innerWidth;
+            currentPdfZoom = screenW < 780 ? Math.max(0.45, Number(((screenW - 28) / 740).toFixed(2))) : 1.0;
+            applyPdfZoom();
+
+            openModal('modalPdfPreview');
+        }
+
+        function adjustPdfZoom(delta) {
+            currentPdfZoom = Math.min(1.5, Math.max(0.4, Number((currentPdfZoom + delta).toFixed(2))));
+            applyPdfZoom();
+        }
+
+        function applyPdfZoom() {
+            const wrapper = document.getElementById('pdfPreviewWrapper');
+            wrapper.style.transform = `scale(${currentPdfZoom})`;
+            document.getElementById('pdfZoomLabel').textContent = `${Math.round(currentPdfZoom * 100)}%`;
+        }
+
+        function triggerDirectPrint() {
+            updateReportPreview();
+            closeModal('modalPdfPreview');
+            setTimeout(() => {
+                window.print();
+            }, 150);
+        }
+
+        // --- 12. NAVIGATION, MODALS & TOAST ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-teal-700', 'text-white', 'font-bold', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-teal-50', 'font-semibold');
+                const icon = btn.querySelector('i');
+                if (icon) icon.classList.remove('text-amber-300');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-teal-50', 'font-semibold');
+            activeBtn.classList.add('bg-teal-700', 'text-white', 'font-bold', 'shadow-xs');
+            const activeIcon = activeBtn.querySelector('i');
+            if (activeIcon) activeIcon.classList.add('text-amber-300');
+
+            if (tabName === 'kader') renderMasterKaderList();
+            if (tabName === 'laporan') {
+                renderRekapStats();
+                updateReportPreview();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        let toastTimer;
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            msgEl.textContent = msg;
+            if (isError) {
+                iconEl.className = 'w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0';
+                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconEl.className = 'w-7 h-7 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0';
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            }
+
+            toast.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3200);
+        }
+    </script>
+</body>
+</html>
