@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Kirim Pesan WhatsApp Rapi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #e5ddd5;
+      background-image: radial-gradient(#d1c7bd 1px, transparent 1px);
+      background-size: 20px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .wa-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 520px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    .wa-header {
+      background-color: #075e54;
+      color: #ffffff;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wa-header-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .wa-header h1 {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .wa-header p {
+      font-size: 12px;
+      color: #d9fdd3;
+      margin-top: 2px;
+    }
+
+    .wa-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #3b4a54;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-size: 11.5px;
+      color: #667781;
+      font-weight: 400;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #d1d7db;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #25d366;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .btn-tool {
+      background-color: #f0f2f5;
+      color: #111b21;
+      border: 1px solid #d1d7db;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .btn-tool:hover {
+      background-color: #e2e6ea;
+    }
+
+    .btn-tool.rapa {
+      background-color: #e7fce3;
+      border-color: #a8e6a1;
+      color: #075e54;
+    }
+
+    .btn-tool.rapa:hover {
+      background-color: #d4f7ce;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 210px;
+      padding: 12px 14px;
+      border: 1.5px solid #d1d7db;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.55;
+      resize: vertical;
+      color: #111b21;
+    }
+
+    .status-bar {
+      font-size: 12px;
+      color: #075e54;
+      min-height: 18px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+    }
+
+    .btn-send {
+      width: 100%;
+      background-color: #25d366;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-send:hover {
+      background-color: #1ebe5d;
+    }
+
+    .btn-send:active {
+      transform: scale(0.99);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wa-card">
+    <div class="wa-header">
+      <div class="wa-header-icon">💬</div>
+      <div>
+        <h1>Kirim Pesan WhatsApp Rapi</h1>
+        <p>Tempel, rapikan paragraf, dan langsung kirim</p>
+      </div>
+    </div>
+
+    <div class="wa-body">
+      <div class="form-group">
+        <label for="phone">
+          Nomor WhatsApp Tujuan <span class="hint">(Opsional — kosongkan jika ingin pilih kontak di WA)</span>
+        </label>
+        <input type="text" id="phone" placeholder="Contoh: 081234567890 atau 6281234567890">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Isi Pesan</label>
+        <div class="toolbar">
+          <button type="button" class="btn-tool" onclick="pasteText()">📋 Paste Pesan</button>
+          <button type="button" class="btn-tool rapa" onclick="rapikanPesan()">✨ Rapikan (RAPA)</button>
+          <button type="button" class="btn-tool" onclick="isiContoh()">📄 Contoh Pesan</button>
+          <button type="button" class="btn-tool" onclick="hapusPesan()">🗑️ Hapus</button>
+        </div>
+        <textarea id="message" placeholder="Tempel atau ketik pesan Anda di sini..."></textarea>
+        <div class="status-bar" id="status"></div>
+      </div>
+
+      <button type="button" class="btn-send" onclick="kirimWhatsApp()">
+        🚀 Kirim Pesan ke WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const contohTeks = `Tabe, siap terima kasih banyak atas informasinya Bapak/Ibu Admin Diskominfo Kab. Donggala 🙏
+
+Informasi terkait status aktif domain wanilumbumpetigo.desa.id beserta ketentuan masa aktif dan perpanjangannya sudah kami terima dengan baik.
+
+Saat ini kami selaku pengelola website Pemerintah Desa Wani Lumbumpetigo sedang berkoordinasi dengan tim teknis penyedia layanan hosting/server desa (OpenSID) untuk menyiapkan konfigurasi DNS-nya. Segera setelah data Name Server (minimal 2 NS) kami dapatkan, akan langsung kami infokan kembali ke Diskominfo Kab. Donggala untuk diinput ke sistem domain.go.id.
+
+Terima kasih banyak atas bantuan dan fasilitasi pengaktifan domain desa kami. 🙏`;
+
+    // Muat contoh pesan secara otomatis saat halaman dibuka
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("message").value = contohTeks;
+    });
+
+    function showStatus(text, isError = false) {
+      const statusEl = document.getElementById("status");
+      statusEl.style.color = isError ? "#d93025" : "#075e54";
+      statusEl.textContent = text;
+      setTimeout(() => {
+        statusEl.textContent = "";
+      }, 3500);
+    }
+
+    // Fungsi Paste dari Clipboard
+    async function pasteText() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (!text) {
+          showStatus("Clipboard kosong.", true);
+          return;
+        }
+        document.getElementById("message").value = text;
+        rapikanPesan();
+        showStatus("Pesan berhasil ditempel dan dirapikan!");
+      } catch (err) {
+        // Fallback jika browser memblokir akses clipboard otomatis (misalnya dibuka via file://)
+        const textarea = document.getElementById("message");
+        textarea.focus();
+        showStatus("Tekan Ctrl+V (atau Tempel manual) di kotak pesan.", true);
+      }
+    }
+
+    // Fungsi Rapikan (RAPA): membersihkan spasi berlebih & memberi jarak antarparagraf yang rapi
+    function rapikanPesan() {
+      const textarea = document.getElementById("message");
+      let raw = textarea.value;
+      if (!raw.trim()) return;
+
+      const lines = raw
+        .replace(/\r\n/g, "\n")
+        .split("\n")
+        .map(line => line.replace(/[ \t]+/g, " ").trim()) // hapus spasi ganda
+        .filter(line => line.length > 0); // hapus baris kosong berlebih
+
+      // Gabungkan setiap paragraf dengan 1 baris kosong (double newline) agar enak dibaca di WA
+      textarea.value = lines.join("\n\n");
+      showStatus("Format paragraf pesan sudah dirapikan!");
+    }
+
+    function isiContoh() {
+      document.getElementById("message").value = contohTeks;
+      showStatus("Contoh pesan Diskominfo dimuat.");
+    }
+
+    function hapusPesan() {
+      document.getElementById("message").value = "";
+      document.getElementById("message").focus();
+      showStatus("Pesan dikosongkan.");
+    }
+
+    // Format nomor HP Indonesia (08... -> 628...)
+    function formatNomorWA(input) {
+      let num = input.replace(/\D/g, ""); // hanya ambil angka
+      if (num.startsWith("0")) {
+        num = "62" + num.slice(1);
+      }
+      return num;
+    }
+
+    // Kirim ke WhatsApp
+    function kirimWhatsApp() {
+      const phoneInput = document.getElementById("phone").value.trim();
+      const messageText = document.getElementById("message").value.trim();
+
+      if (!messageText) {
+        showStatus("Isi pesan tidak boleh kosong!", true);
+        document.getElementById("message").focus();
+        return;
+      }
+
+      const encodedMessage = encodeURIComponent(messageText);
+      const formattedPhone = formatNomorWA(phoneInput);
+
+      // Gunakan api.whatsapp.com/send agar emoji & baris baru aman di semua browser/HP
+      const waUrl = formattedPhone
+        ? `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodedMessage}`
+        : `https://api.whatsapp.com/send?text=${encodedMessage}`;
+
+      window.open(waUrl, "_blank", "noopener,noreferrer");
+    }
+  </script>
+</body>
+</html>
