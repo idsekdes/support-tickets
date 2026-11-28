@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="id" data-tema="biru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Resmi Desa Wani Lumbumpetigo - Kec. Tanantovea, Kab. Donggala</title>
+  <meta name="description" content="Portal informasi dan layanan digital Pemerintah Desa Wani Lumbumpetigo, Kecamatan Tanantovea, Kabupaten Donggala, Provinsi Sulawesi Tengah.">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Desa Wani Lumbumpetigo - Kabupaten Donggala">
+  <meta property="og:description" content="Portal resmi informasi publik, statistik kependudukan, dan layanan administrasi Desa Wani Lumbumpetigo.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wanilumbumpetigo.desa.id">
+
+  <!-- Bootstrap 5, Font Awesome & Leaflet -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+
+  <style>
+    /* ================= TEMA & VARIABEL ================= */
+    :root, [data-tema="biru"] {
+      --primary: #2563eb;
+      --primary-rgb: 37, 99, 235;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --accent: #f59e0b;
+    }
+    [data-tema="hijau"] {
+      --primary: #15803d;
+      --primary-rgb: 21, 128, 61;
+      --primary-dark: #166534;
+      --primary-light: #dcfce7;
+      --accent: #eab308;
+    }
+    [data-tema="toska"] {
+      --primary: #0f766e;
+      --primary-rgb: 15, 118, 110;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #f97316;
+    }
+    [data-tema="navy"] {
+      --primary: #1e3a8a;
+      --primary-rgb: 30, 58, 138;
+      --primary-dark: #172554;
+      --primary-light: #dbeafe;
+      --accent: #ca8a04;
+    }
+    [data-tema="marun"] {
+      --primary: #9f1239;
+      --primary-rgb: 159, 18, 57;
+      --primary-dark: #881337;
+      --primary-light: #ffe4e6;
+      --accent: #d97706;
+    }
+    [data-tema="nila"] {
+      --primary: #4338ca;
+      --primary-rgb: 67, 56, 202;
+      --primary-dark: #3730a3;
+      --primary-light: #e0e7ff;
+      --accent: #f59e0b;
+    }
+    [data-tema="jingga"] {
+      --primary: #c2410c;
+      --primary-rgb: 194, 65, 12;
+      --primary-dark: #9a3412;
+      --primary-light: #ffedd5;
+      --accent: #0ea5e9;
+    }
+    [data-tema="grafit"] {
+      --primary: #334155;
+      --primary-rgb: 51, 65, 85;
+      --primary-dark: #1e293b;
+      --primary-light: #f1f5f9;
+      --accent: #f59e0b;
+    }
+
+    :root {
+      --success: #059669;
+      --danger: #dc2626;
+      --dark: #1e293b;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--dark);
+      background-color: #ffffff;
+      margin: 0;
+    }
+
+    /* ================= PRELOADER ================= */
+    #village-preloader {
+      position: fixed; inset: 0; z-index: 9999999;
+      background: rgba(255,255,255,0.97);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #village-preloader.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+    .vp-stage { position: relative; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; }
+    .vp-spinner {
+      position: absolute; inset: 10px; border-radius: 50%;
+      border: 3px solid var(--primary-light);
+      border-top-color: var(--primary);
+      animation: vpPutar 1s linear infinite;
+    }
+    .vp-logo img { width: 72px; height: 72px; object-fit: contain; border-radius: 50%; }
+    .loading-text { margin-top: 12px; font-weight: 700; font-size: 0.85rem; color: var(--dark); letter-spacing: 0.5px; }
+    .loading-text span { animation: vpKedip 1.2s infinite; }
+    .loading-text span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-text span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes vpPutar { to { transform: rotate(360deg); } }
+    @keyframes vpKedip { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+    /* ================= TOP BAR & TEMA ================= */
+    .top-bar {
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 6px 0;
+      font-size: 0.78rem;
+      color: var(--gray-600);
+    }
+    .tw-wrap { position: relative; }
+    .tw-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid var(--gray-200); background: #fff;
+      border-radius: 20px; padding: 3px 10px;
+      font-size: 0.74rem; font-weight: 700; color: var(--dark); cursor: pointer;
+    }
+    .tw-swatch { width: 11px; height: 11px; border-radius: 50%; background: var(--primary); }
+    .tw-panel {
+      position: absolute; right: 0; top: calc(100% + 8px); width: 250px;
+      background: #fff; border: 1px solid var(--gray-200); border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.15); padding: 12px; z-index: 1060;
+    }
+    .tw-panel-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.74rem; }
+    .tw-panel-h small { color: var(--gray-400); font-size: 0.65rem; }
+    .tw-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .tw-opsi {
+      display: flex; align-items: center; gap: 7px; border: 1px solid var(--gray-200);
+      background: #fff; border-radius: 8px; padding: 6px 8px;
+      font-size: 0.72rem; font-weight: 600; color: var(--dark); cursor: pointer; text-align: left;
+    }
+    .tw-opsi.on { border-color: var(--primary); background: var(--primary-light); }
+    .tw-dot {
+      width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.55rem;
+    }
+    .tw-opsi:not(.on) .tw-dot i { display: none; }
+
+    /* ================= NAVBAR ================= */
+    .navbar-public {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 10px 0;
+    }
+    .brand-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-img { width: 42px; height: 42px; object-fit: contain; }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .village-name { font-weight: 800; font-size: 0.95rem; color: var(--dark); }
+    .village-location { font-size: 0.62rem; font-weight: 700; color: var(--gray-500); letter-spacing: 0.3px; }
+    .navbar-public .nav-link { font-weight: 700; font-size: 0.85rem; color: var(--dark); padding: 8px 12px !important; }
+    .navbar-public .nav-link:hover, .navbar-public .nav-link.active { color: var(--primary); }
+    .btn-portal {
+      background: var(--primary); color: #fff !important; font-weight: 700;
+      font-size: 0.78rem; padding: 8px 16px; border-radius: 24px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-portal:hover { background: var(--primary-dark); }
+
+    /* ================= HERO SLIDER ================= */
+    .hero-slider { position: relative; height: 60vh; min-height: 360px; max-height: 520px; overflow: hidden; background: #0f172a; }
+    @media (min-width: 768px) { .hero-slider { height: 70vh; max-height: 600px; } }
+    .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.8s ease; }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.25) 60%, rgba(15,23,42,0.15) 100%); }
+    .hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 20px 32px; z-index: 2; color: #fff; }
+    @media (min-width: 768px) { .hero-content { padding: 40px 48px 56px; max-width: 680px; } }
+    .hero-content h1 { font-size: 1.45rem; font-weight: 800; margin: 0 0 8px; line-height: 1.25; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    @media (min-width: 768px) { .hero-content h1 { font-size: 2.15rem; } }
+    .hero-content p { font-size: 0.875rem; margin: 0; opacity: 0.9; line-height: 1.5; }
+    .slider-dots { position: absolute; bottom: 16px; right: 20px; display: flex; gap: 6px; z-index: 3; }
+    @media (min-width: 768px) { .slider-dots { bottom: 24px; right: 48px; } }
+    .slider-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.45); border: none; cursor: pointer; transition: var(--transition); padding: 0; }
+    .slider-dot.active { background: #fff; width: 24px; border-radius: 4px; }
+    .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; background: rgba(255,255,255,0.18); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
+    .slider-nav:hover { background: rgba(255,255,255,0.35); }
+    .slider-nav.prev { left: 14px; }
+    .slider-nav.next { right: 14px; }
+    @media (max-width: 576px) { .slider-nav { display: none; } }
+
+    /* Hero Topbar (SKM, Countdown, Cuaca) */
+    .hero-topbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 6;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 12px; padding: 16px 20px; pointer-events: none;
+    }
+    .hero-topbar > * { pointer-events: auto; }
+    .hero-right-widgets { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+    .skm-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 18px 6px 6px; border-radius: 60px; text-decoration: none; color: #fff;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 55%, #db2777 100%);
+      box-shadow: 0 8px 24px rgba(234,88,12,.45), inset 0 0 0 1px rgba(255,255,255,.25);
+      transition: transform 0.25s ease;
+    }
+    .skm-btn:hover { transform: translateY(-2px); color: #fff; }
+    .skm-ic { width: 38px; height: 38px; border-radius: 50%; background: #fff; color: #ea580c; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .skm-tx { display: flex; flex-direction: column; line-height: 1.15; }
+    .skm-tx small { font-size: 0.6rem; font-weight: 600; opacity: 0.92; text-transform: uppercase; }
+    .skm-tx b { font-size: 0.88rem; font-weight: 800; }
+
+    .countdown-hari-besar {
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.25); border-top: 3px solid var(--primary);
+      border-radius: 14px; padding: 9px 14px; color: #fff; text-align: center;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35); width: 225px;
+    }
+    .countdown-judul { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+    .countdown-timer { display: flex; gap: 8px; justify-content: center; }
+    .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 32px; }
+    .countdown-item span { font-size: 1rem; font-weight: 800; line-height: 1; }
+    .countdown-item small { font-size: 0.5rem; text-transform: uppercase; opacity: 0.85; margin-top: 2px; }
+
+    .cg-wrap { position: relative; }
+    .cg-pill {
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.25); border-radius: 30px;
+      padding: 6px 13px; color: #fff; font-weight: 800; font-size: 0.85rem;
+    }
+    .cg-ikon-cuaca { color: #ffd76e; }
+    .cg-panel {
+      position: absolute; top: calc(100% + 8px); right: 0; width: 260px;
+      background: #fff; border-radius: 16px; box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+      padding: 14px; display: none; z-index: 20; color: var(--dark);
+    }
+    .cg-panel.cg-show { display: block; }
+
+    @media (max-width: 575.98px) {
+      .hero-topbar { padding: 10px 12px; }
+      .skm-tx small { display: none; }
+      .skm-tx b { font-size: 0.75rem; }
+      .skm-ic { width: 32px; height: 32px; font-size: 1.05rem; }
+      .countdown-hari-besar { width: 165px; padding: 6px 8px; }
+      .countdown-judul { font-size: 0.54rem; }
+      .countdown-item { min-width: 26px; }
+      .countdown-item span { font-size: 0.78rem; }
+    }
+
+    /* ================= INFO TICKER ================= */
+    .info-bar { background: var(--gray-50); border-bottom: 1px solid var(--gray-200); height: 40px; display: flex; align-items: center; overflow: hidden; }
+    .info-bar-label { background: var(--primary); color: #fff; padding: 0 18px 0 14px; height: 100%; display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%); }
+    .info-ticker-wrap { flex: 1; overflow: hidden; white-space: nowrap; padding-left: 12px; }
+    .info-ticker-move { display: inline-block; animation: tickerJalan 28s linear infinite; font-size: 0.84rem; }
+    .info-ticker-move:hover { animation-play-state: paused; }
+    .info-ticker-move a { color: var(--dark); text-decoration: none; font-weight: 500; margin-right: 48px; }
+    .info-ticker-move a:hover { color: var(--primary); }
+    @keyframes tickerJalan { 0% { transform: translateX(30%); } 100% { transform: translateX(-100%); } }
+
+    /* ================= SECTION UMUM ================= */
+    .section { padding: 28px 0; }
+    @media (min-width: 768px) { .section { padding: 40px 0; } }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .section-title { font-size: 1.25rem; font-weight: 800; color: var(--dark); margin: 0; position: relative; padding-left: 14px; }
+    @media (min-width: 768px) { .section-title { font-size: 1.45rem; } }
+    .section-title::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 72%; background: var(--primary); border-radius: 2px; }
+    .section-link { font-size: 0.82rem; font-weight: 700; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .section-link:hover { color: var(--primary-dark); }
+    .swipe-hint { font-size: 0.72rem; color: var(--gray-400); display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ================= SAMBUTAN KADES ================= */
+    .kades-card {
+      background: linear-gradient(135deg, #fff 0%, var(--gray-50) 100%);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.08);
+    }
+    .kades-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), #8b5cf6, var(--primary));
+    }
+    .kades-inner { display: flex; flex-direction: column; }
+    @media (min-width: 768px) { .kades-inner { flex-direction: row; } }
+    .kades-photo-section {
+      padding: 28px 24px; text-align: center; display: flex; flex-direction: column; align-items: center;
+      background: linear-gradient(180deg, rgba(var(--primary-rgb), 0.04) 0%, transparent 100%);
+    }
+    @media (min-width: 768px) {
+      .kades-photo-section { width: 270px; flex-shrink: 0; padding: 36px 24px; border-right: 1px solid var(--gray-200); }
+    }
+    .kades-photo-wrapper { position: relative; width: 145px; height: 145px; margin-bottom: 14px; }
+    .kades-photo-ring { position: absolute; inset: -5px; border-radius: 50%; background: conic-gradient(from 0deg, var(--primary), #8b5cf6, #ec4899, var(--primary)); animation: rotateRing 8s linear infinite; }
+    .kades-photo-ring::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #fff; }
+    @keyframes rotateRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .kades-photo { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 4px solid #fff; z-index: 2; }
+    .kades-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .kades-name { font-size: 0.98rem; font-weight: 800; color: var(--dark); margin: 0 0 6px; }
+    .kades-position { display: inline-block; background: var(--primary-light); color: var(--primary); font-size: 0.72rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+    .kades-content { padding: 24px; flex: 1; }
+    @media (min-width: 768px) { .kades-content { padding: 36px 32px; } }
+    .kades-content-title { font-size: 1.15rem; font-weight: 800; color: var(--dark); margin: 0 0 14px; }
+    .kades-text { font-size: 0.9rem; color: var(--gray-600); line-height: 1.75; text-align: justify; margin-bottom: 20px; }
+    .kades-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; font-size: 0.8rem; font-weight: 700; padding: 10px 20px;
+      border-radius: 24px; text-decoration: none; transition: var(--transition);
+    }
+    .kades-btn:hover { transform: translateY(-2px); color: #fff; }
+
+    /* ================= APARATUR DESA ================= */
+    .apx-track {
+      display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+      scroll-behavior: smooth; scrollbar-width: none; padding: 8px 4px 16px;
+    }
+    .apx-track::-webkit-scrollbar { display: none; }
+    .apx-nav {
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gray-200);
+      background: #fff; color: var(--dark); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .apx-nav:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .aparatur-card-modern {
+      width: 185px; flex-shrink: 0; scroll-snap-align: start; position: relative;
+      border-radius: 18px; padding: 3px; border: 0; text-align: center;
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+      transition: var(--transition); cursor: pointer;
+    }
+    .aparatur-card-modern:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(135deg, var(--primary), #8b5cf6, #ec4899);
+      box-shadow: 0 12px 24px rgba(var(--primary-rgb), 0.22);
+    }
+    .aparatur-card-inner { background: #fff; border-radius: 15px; overflow: hidden; display: block; }
+    .aparatur-img-modern { width: 100%; aspect-ratio: 1 / 1.15; overflow: hidden; background: var(--gray-100); display: block; }
+    .aparatur-img-modern img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .aparatur-info-modern { padding: 12px 10px; display: block; }
+    .aparatur-rank-modern { display: inline-block; font-size: 0.62rem; font-weight: 700; color: var(--primary); text-transform: uppercase; padding: 2px 8px; background: var(--primary-light); border-radius: 10px; margin-bottom: 4px; }
+    .aparatur-name-modern { font-size: 0.84rem; font-weight: 800; color: var(--dark); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .aparatur-position-modern { font-size: 0.72rem; color: var(--gray-500); display: block; }
+    .apx-modal { border: 0; border-radius: 22px; overflow: hidden; }
+    .apx-m-head { background: linear-gradient(135deg, #1e3a8a, var(--primary)); padding: 24px; display: flex; gap: 16px; align-items: center; color: #fff; }
+    .apx-m-head img { width: 92px; height: 108px; border-radius: 14px; object-fit: cover; border: 3px solid #fff; background: #e2e8f0; }
+    .apx-dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; font-size: 0.86rem; }
+    .apx-dl dt { color: var(--gray-500); font-weight: 600; }
+    .apx-dl dd { margin: 0; color: var(--dark); font-weight: 700; }
+
+    /* ================= MENU LAYANAN GRID (12 CARD) ================= */
+    .wm-wrap { margin: 10px 0 24px; }
+    .wm-card {
+      --c: #3b82f6;
+      display: flex; align-items: center; gap: 12px; height: 100%; min-height: 76px;
+      padding: 12px 14px; border-radius: 16px; text-decoration: none !important;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 6px 18px -8px rgba(15,23,42,0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .wm-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(15,23,42,0.25); }
+    .wm-icon {
+      flex: 0 0 auto; width: 48px; height: 48px; border-radius: 14px;
+      display: grid; place-items: center; color: #fff; background: var(--c); font-size: 1.25rem;
+    }
+    .wm-text { display: flex; flex-direction: column; min-width: 0; }
+    .wm-title { font-weight: 800; color: #0f172a; font-size: 0.9rem; line-height: 1.2; }
+    .wm-subtitle { color: #64748b; font-size: 0.73rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ================= BERITA TERKINI ================= */
+    .berita-sec {
+      border-radius: 22px; padding: 24px 20px;
+      background: linear-gradient(160deg, rgba(var(--primary-rgb), 0.06) 0%, #ffffff 50%, rgba(var(--primary-rgb), 0.04) 100%);
+      border: 1px solid rgba(var(--primary-rgb), 0.14);
+    }
+    .berita-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 16px; }
+    @media (min-width: 576px) { .berita-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 992px) { .berita-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+    .berita-card { border-radius: var(--radius-md); overflow: hidden; background: #fff; border: 1px solid var(--gray-200); transition: var(--transition); display: flex; flex-direction: column; }
+    .berita-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .berita-img { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: var(--gray-100); }
+    .berita-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .berita-card:hover .berita-img img { transform: scale(1.05); }
+    .berita-date { background: var(--dark); color: #fff; font-size: 0.68rem; padding: 4px 12px; font-weight: 600; }
+    .berita-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .berita-title { font-size: 0.92rem; font-weight: 800; color: var(--dark); margin: 0 0 6px; line-height: 1.4; }
+    .berita-excerpt { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; margin-bottom: 12px; flex: 1; }
+    .berita-btn { display: block; text-align: center; background: var(--gray-50); border: 1px solid var(--gray-200); color: var(--primary); font-size: 0.76rem; font-weight: 700; padding: 7px 12px; border-radius: 8px; text-decoration: none; transition: var(--transition); }
+    .berita-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ================= LAYANAN MANDIRI ================= */
+    .mandiri-wrapper {
+      border-radius: 18px; padding: 26px 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.05);
+    }
+    .mandiri-center-box {
+      background: #fff; border-radius: 14px; padding: 24px 20px;
+      border: 1px solid var(--gray-200); text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .btn-mandiri-login {
+      background: linear-gradient(145deg, #059669, #047857);
+      color: #fff !important; font-weight: 800; font-size: 0.9rem;
+      padding: 11px 22px; border-radius: 8px; width: 100%; max-width: 250px;
+      text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-mandiri-syarat {
+      margin-top: 10px; width: 100%; max-width: 250px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 9px 18px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none;
+      color: #047857 !important; background: #ecfdf5; border: 1px solid #a7f3d0;
+    }
+    .bubble-chat-modern {
+      background: #047857; color: #fff; padding: 10px 14px; border-radius: 10px;
+      font-size: 0.76rem; font-weight: 700; text-align: center; max-width: 210px; margin: 0 auto 10px;
+    }
+
+    /* ================= JADWAL SHALAT ================= */
+    #jw_wlt .jw-grid { display: grid; grid-template-columns: minmax(230px, 28%) 1fr; gap: 14px; align-items: stretch; }
+    #jw_wlt .jw-panel {
+      border-radius: 14px; background: linear-gradient(135deg, var(--primary-light) 0%, #f8fafc 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 22px 18px; border: 1px solid var(--gray-200);
+    }
+    #jw_wlt .jw-title { font-weight: 800; color: var(--primary); font-size: 1.65rem; margin-bottom: 6px; }
+    #jw_wlt .jw-kota { font-weight: 800; color: var(--dark); font-size: 1rem; }
+    #jw_wlt .jw-tanggal { color: var(--gray-500); font-size: 0.88rem; margin-top: 4px; }
+    #jw_wlt .jw-jadwal { display: flex; flex-direction: column; gap: 10px; }
+    #jw_wlt .jw-row-top { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    #jw_wlt .jw-row-bottom { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    #jw_wlt .jw-box { border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; text-align: center; background: #fff; }
+    #jw_wlt .jw-lbl { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; font-size: 0.82rem; padding: 8px 6px; }
+    #jw_wlt .jw-jam { padding: 11px 6px; font-weight: 800; color: var(--dark); font-size: 1.1rem; }
+    @media (max-width: 991.98px) { #jw_wlt .jw-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 575.98px) { #jw_wlt .jw-row-bottom { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ================= STATISTIK PENDUDUK ================= */
+    .stat-section {
+      background: linear-gradient(135deg, var(--gray-50) 0%, #fff 100%);
+      border: 1px solid var(--gray-200); border-radius: var(--radius-xl);
+      padding: 32px 16px; text-align: center;
+    }
+    .stat-title { font-size: 1.45rem; font-weight: 800; margin: 0 0 4px; }
+    .stat-title span { color: var(--primary); }
+    .stat-subtitle { font-size: 0.76rem; color: var(--gray-500); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 26px; }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 10px;
+      max-width: 480px; margin: 0 auto 26px;
+    }
+    @media (min-width: 992px) { .stat-grid { grid-template-columns: repeat(6, 1fr); max-width: 880px; } }
+    .stat-ring-modern { width: 102px; height: 102px; margin: 0 auto; position: relative; }
+    .stat-ring-inner-progress { position: absolute; inset: 4px; border-radius: 50%; background: conic-gradient(var(--ring-color) calc(var(--ring-pct) * 1%), var(--gray-200) 0); }
+    .stat-ring-center {
+      position: absolute; inset: 11px; border-radius: 50%; background: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .stat-ring-center i { font-size: 1rem; margin-bottom: 2px; color: var(--ring-color); }
+    .stat-ring-center h4 { font-size: 0.98rem; font-weight: 800; margin: 0; color: var(--dark); }
+    .stat-ring-center small { font-size: 0.56rem; font-weight: 700; color: var(--gray-500); text-transform: uppercase; }
+    .stat-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: #fff; font-size: 0.82rem; font-weight: 700; padding: 10px 22px; border-radius: 24px; text-decoration: none; }
+    .stat-btn:hover { background: var(--primary-dark); color: #fff; }
+
+    /* ================= JAM KERJA & PETA ================= */
+    .info-box { border-radius: var(--radius-lg); overflow: hidden; background: #fff; height: 100%; border: 1px solid var(--gray-200); box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+    .info-box-header { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #fff; font-weight: 700; padding: 14px 18px; font-size: 0.88rem; display: flex; align-items: center; gap: 12px; }
+    .info-box.map-box .info-box-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+    .info-box.map-box-alt .info-box-header { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); }
+    .info-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.18); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .info-title small { display: block; font-size: 0.62rem; opacity: 0.85; text-transform: uppercase; }
+    .table-jam { width: 100%; font-size: 0.84rem; margin: 0; border-collapse: collapse; }
+    .table-jam thead th { background: var(--gray-100); color: var(--gray-700); font-weight: 700; padding: 10px 8px; text-align: center; font-size: 0.72rem; text-transform: uppercase; }
+    .table-jam td { padding: 10px 8px; text-align: center; border-bottom: 1px solid var(--gray-100); }
+    .table-jam tr.libur td { background: rgba(220,38,38,0.05); color: var(--danger); font-weight: 700; }
+    .table-jam td.hari-cell { font-weight: 700; text-align: left; padding-left: 16px; }
+    .map-container-modern { position: relative; padding: 12px; background: var(--gray-50); }
+    .map-frame { width: 100%; height: 250px; border-radius: var(--radius-md); z-index: 1; }
+    .map-badge { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.95); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 500; }
+
+    /* ================= FOOTER & MOBILE NAV ================= */
+    .footer { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); color: #e2e8f0; padding-top: 50px; font-size: 0.85rem; }
+    .footer-brand { font-size: 0.95rem; font-weight: 800; color: #fff; text-transform: uppercase; }
+    .footer-text { color: #94a3b8; font-size: 0.8rem; line-height: 1.5; }
+    .contact-list li { margin-bottom: 10px; color: #cbd5e1; display: flex; align-items: flex-start; font-size: 0.8rem; }
+    .contact-list i { color: #38bdf8; margin-top: 3px; width: 22px; }
+    .social-icons { display: flex; gap: 10px; margin-top: 10px; }
+    .social-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; }
+    .social-icon.facebook { background: #3b5998; }
+    .social-icon.whatsapp { background: #25D366; }
+    .footer-bottom { background: #090d16; padding: 16px 0; margin-top: 36px; border-top: 1px solid #1e293b; }
+    .footer-bottom-links a { color: #94a3b8; text-decoration: none; font-size: 0.78rem; }
+    .footer-bottom-links .separator { color: #475569; margin: 0 8px; }
+
+    .floating-widget-container { position: fixed; bottom: 26px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
+    .float-btn { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.25); font-size: 1.25rem; }
+    .float-wa { background: #25D366; }
+    .float-email { background: #dc2626; }
+
+    .mobile-bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 1050;
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 6px 10px; border-top: 1px solid var(--gray-200);
+    }
+    .mobile-bottom-nav .nav-item { text-decoration: none; display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 0.65rem; font-weight: 700; }
+    .mobile-bottom-nav .nav-item i { font-size: 1.15rem; margin-bottom: 2px; }
+    .mobile-bottom-nav .nav-item.active { color: var(--primary); }
+    .nav-item-center { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; transform: translateY(-16px); border: 4px solid #fff; text-decoration: none; }
+    @media (max-width: 767.98px) {
+      body { padding-bottom: 66px; }
+      .floating-widget-container { bottom: 82px; right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="village-preloader" role="status" aria-live="polite">
+    <div class="vp-stage">
+      <div class="vp-spinner"></div>
+      <div class="vp-logo">
+        <img src="https://ui-avatars.com/api/?name=WLT&background=2563eb&color=fff&size=128" alt="Logo Desa Wani Lumbumpetigo">
+      </div>
+    </div>
+    <div class="loading-text">Memuat<span>.</span><span>.</span><span>.</span></div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container d-flex justify-content-between justify-content-md-end align-items-center gap-3">
+      <div id="liveDateTime">
+        <i class="fa-regular fa-calendar-check me-1 text-primary"></i> Memuat waktu WITA...
+      </div>
+      <div class="tw-wrap" id="twWrap">
+        <button type="button" class="tw-btn" id="twBtn" aria-expanded="false">
+          <span class="tw-swatch"></span><span>Tema</span><i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="tw-panel" id="twPanel" hidden>
+          <div class="tw-panel-h"><b><i class="fa-solid fa-palette me-1"></i>Warna Tema</b><small>Tersimpan otomatis</small></div>
+          <div class="tw-grid">
+            <button type="button" class="tw-opsi" data-tema="biru"><span class="tw-dot" style="background:#2563eb"><i class="fa-solid fa-check"></i></span>Biru</button>
+            <button type="button" class="tw-opsi" data-tema="hijau"><span class="tw-dot" style="background:#15803d"><i class="fa-solid fa-check"></i></span>Hijau</button>
+            <button type="button" class="tw-opsi" data-tema="toska"><span class="tw-dot" style="background:#0f766e"><i class="fa-solid fa-check"></i></span>Toska</button>
+            <button type="button" class="tw-opsi" data-tema="navy"><span class="tw-dot" style="background:#1e3a8a"><i class="fa-solid fa-check"></i></span>Navy</button>
+            <button type="button" class="tw-opsi" data-tema="marun"><span class="tw-dot" style="background:#9f1239"><i class="fa-solid fa-check"></i></span>Marun</button>
+            <button type="button" class="tw-opsi" data-tema="nila"><span class="tw-dot" style="background:#4338ca"><i class="fa-solid fa-check"></i></span>Nila</button>
+            <button type="button" class="tw-opsi" data-tema="jingga"><span class="tw-dot" style="background:#c2410c"><i class="fa-solid fa-check"></i></span>Jingga</button>
+            <button type="button" class="tw-opsi" data-tema="grafit"><span class="tw-dot" style="background:#334155"><i class="fa-solid fa-check"></i></span>Grafit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-public sticky-top">
+    <div class="container">
+      <a href="#beranda" class="brand-link">
+        <img src="https://ui-avatars.com/api/?name=WLT&background=2563eb&color=fff&size=96" alt="Logo Desa Wani Lumbumpetigo" class="logo-img rounded-circle">
+        <div class="brand-text">
+          <span class="village-name">Desa Wani Lumbumpetigo</span>
+          <span class="village-location">KEC. TANANTOVEA, KAB. DONGGALA • SULAWESI TENGAH</span>
+        </div>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navPortal">
+        <i class="fa-solid fa-bars-staggered fs-4 text-dark"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navPortal">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#beranda">Beranda</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Profil Desa</a>
+            <ul class="dropdown-menu border-0 shadow-sm p-2 rounded-3">
+              <li><a class="dropdown-item rounded-2" href="#sambutan">Sambutan Kepala Desa</a></li>
+              <li><a class="dropdown-item rounded-2" href="#aparatur">Struktur &amp; Aparatur</a></li>
+              <li><a class="dropdown-item rounded-2" href="#statistik">Statistik Wilayah</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
+          <li class="nav-item"><a class="nav-link" href="#mandiri">Layanan Mandiri</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jadwal">Jadwal &amp; Lokasi</a></li>
+        </ul>
+        <div class="d-flex">
+          <a href="#mandiri" class="btn btn-portal">
+            <i class="fa-solid fa-right-to-bracket"></i><span>LOGIN PORTAL</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SLIDER -->
+  <section class="hero-slider" id="beranda">
+    <div class="hero-topbar">
+      <a href="#mandiri" class="skm-btn">
+        <span class="skm-ic"><i class="fa-solid fa-face-smile-beam"></i></span>
+        <span class="skm-tx"><small>Bagaimana pelayanan kami?</small><b>Survey Kepuasan</b></span>
+      </a>
+
+      <div class="hero-right-widgets">
+        <div class="countdown-hari-besar">
+          <div class="countdown-judul">Hari Desa Nasional 2027</div>
+          <div class="countdown-timer" id="countdownTimerBody">
+            <div class="countdown-item"><span id="cdHari">00</span><small>Hari</small></div>
+            <div class="countdown-item"><span id="cdJam">00</span><small>Jam</small></div>
+            <div class="countdown-item"><span id="cdMenit">00</span><small>Menit</small></div>
+            <div class="countdown-item"><span id="cdDetik">00</span><small>Detik</small></div>
+          </div>
+        </div>
+
+        <div class="cg-wrap" id="cgWrap">
+          <div class="cg-pill" id="cgPill">
+            <i class="fa-solid fa-cloud-sun cg-ikon-cuaca"></i>
+            <span>31&deg;C</span>
+            <i class="fa-solid fa-chevron-down small opacity-75"></i>
+          </div>
+          <div class="cg-panel" id="cgPanel">
+            <div class="small fw-bold text-uppercase text-muted mb-2">Cuaca Saat Ini</div>
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <i class="fa-solid fa-cloud-sun fs-1 text-warning"></i>
+              <div>
+                <div class="fs-4 fw-bold lh-1">31&deg;C</div>
+                <div class="small text-secondary fw-semibold">Cerah Berawan</div>
+              </div>
+            </div>
+            <div class="small text-muted"><i class="fa-solid fa-location-dot me-1"></i>Desa Wani Lumbumpetigo, Kec. Tanantovea, Donggala</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gambar slide menggunakan placeholder berkualitas tinggi (ganti URL dengan foto desa Anda) -->
+    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80');"></div>
+
+    <div class="hero-content">
+      <h1 id="slideTitle">SELAMAT DATANG DI DESA WANI LUMBUMPETIGO</h1>
+      <p id="slideDesc">KECAMATAN TANANTOVEA, KABUPATEN DONGGALA, PROVINSI SULAWESI TENGAH</p>
+    </div>
+
+    <div class="slider-dots">
+      <button class="slider-dot active" data-slide="0" aria-label="Slide 1"></button>
+      <button class="slider-dot" data-slide="1" aria-label="Slide 2"></button>
+      <button class="slider-dot" data-slide="2" aria-label="Slide 3"></button>
+    </div>
+    <button class="slider-nav prev" onclick="changeSlide(-1)" aria-label="Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="slider-nav next" onclick="changeSlide(1)" aria-label="Berikutnya"><i class="fa-solid fa-chevron-right"></i></button>
+  </section>
+
+  <!-- INFO TICKER -->
+  <div class="info-bar">
+    <div class="info-bar-label"><i class="fa-solid fa-bolt"></i> INFO DESA</div>
+    <div class="info-bar-content info-ticker-wrap">
+      <div class="info-ticker-move">
+        <a href="#layanan"><i class="fa-solid fa-circle-info text-primary me-1"></i>Layanan administrasi &amp; informasi publik Desa Wani Lumbumpetigo (Dusun I Petigo, Dusun II Lumbum, dan Dusun III Kavatua).</a>
+        <a href="#mandiri"><i class="fa-solid fa-circle-info text-primary me-1"></i>Gunakan Layanan Mandiri untuk pengajuan surat keterangan secara online.</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container my-4">
+    <!-- SAMBUTAN KEPALA DESA -->
+    <section class="section" id="sambutan">
+      <div class="kades-card">
+        <div class="kades-inner">
+          <div class="kades-photo-section">
+            <div class="kades-photo-wrapper">
+              <div class="kades-photo-ring"></div>
+              <div class="kades-photo">
+                <img src="https://ui-avatars.com/api/?name=Kepala+Desa&background=1e3a8a&color=fff&size=300" alt="Kepala Desa Wani Lumbumpetigo">
+              </div>
+            </div>
+            <h5 class="kades-name">Nama Kepala Desa</h5>
+            <span class="kades-position">Kepala Desa Wani Lumbumpetigo</span>
+          </div>
+          <div class="kades-content">
+            <h3 class="kades-content-title">Sambutan Kepala Desa</h3>
+            <p class="kades-text">
+              Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal resmi Pemerintah Desa Wani Lumbumpetigo, Kecamatan Tanantovea, Kabupaten Donggala, Provinsi Sulawesi Tengah. Melalui platform digital ini, kami berkomitmen menghadirkan keterbukaan informasi publik, akurasi data wilayah Dusun I Petigo, Dusun II Lumbum, dan Dusun III Kavatua, serta pelayanan administrasi yang cepat dan transparan bagi seluruh masyarakat.
+            </p>
+            <a href="#layanan" class="kades-btn">Jelajahi Layanan Desa <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APARATUR DESA -->
+    <section class="section" id="aparatur">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Aparatur Desa</h2>
+          <span class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Geser &amp; ketuk kartu untuk detail</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" class="apx-nav" id="apxLeft" aria-label="Geser kiri"><i class="fa-solid fa-chevron-left"></i></button>
+          <button type="button" class="apx-nav" id="apxRight" aria-label="Geser kanan"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+      <div class="apx-track" id="apxTrack">
+        <button type="button" class="aparatur-card-modern apx-card"
+          data-nama="Kepala Desa Wani Lumbumpetigo"
+          data-jabatan="Kepala Desa"
+          data-wilayah="Desa Wani Lumbumpetigo"
+          data-foto="https://ui-avatars.com/api/?name=Kades&background=2563eb&color=fff&size=300">
+          <span class="aparatur-card-inner">
+            <span class="aparatur-img-modern"><img src="https://ui-avatars.com/api/?name=Kades&background=2563eb&color=fff&size=300" alt="Kepala Desa"></span>
+            <span class="aparatur-info-modern">
+              <span class="aparatur-rank-modern">Pemerintahan</span>
+              <span class="aparatur-name-modern">Kepala Desa</span>
+              <span class="aparatur-position-modern">Wani Lumbumpetigo</span>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="aparatur-card-modern apx-card"
+          data-nama="Sekretaris Desa"
+          data-jabatan="Sekretaris Desa"
+          data-wilayah="Sekretariat Desa"
+          data-foto="https://ui-avatars.com/api/?name=Sekdes&background=0f766e&color=fff&size=300">
+          <span class="aparatur-card-inner">
+            <span class="aparatur-img-modern"><img src="https://ui-avatars.com/api/?name=Sekdes&background=0f766e&color=fff&size=300" alt="Sekretaris Desa"></span>
+            <span class="aparatur-info-modern">
+              <span class="aparatur-rank-modern">Sekretariat</span>
+              <span class="aparatur-name-modern">Sekretaris Desa</span>
+              <span class="aparatur-position-modern">Administrasi Umum</span>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="aparatur-card-modern apx-card"
+          data-nama="Kepala Dusun I Petigo"
+          data-jabatan="Kepala Dusun I"
+          data-wilayah="Dusun I Petigo"
+          data-foto="https://ui-avatars.com/api/?name=Dusun+1&background=4338ca&color=fff&size=300">
+          <span class="aparatur-card-inner">
+            <span class="aparatur-img-modern"><img src="https://ui-avatars.com/api/?name=Dusun+1&background=4338ca&color=fff&size=300" alt="Kadus I Petigo"></span>
+            <span class="aparatur-info-modern">
+              <span class="aparatur-rank-modern">Dusun I</span>
+              <span class="aparatur-name-modern">Kadus I Petigo</span>
+              <span class="aparatur-position-modern">Kepala Dusun I</span>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="aparatur-card-modern apx-card"
+          data-nama="Kepala Dusun II Lumbum"
+          data-jabatan="Kepala Dusun II"
+          data-wilayah="Dusun II Lumbum"
+          data-foto="https://ui-avatars.com/api/?name=Dusun+2&background=b45309&color=fff&size=300">
+          <span class="aparatur-card-inner">
+            <span class="aparatur-img-modern"><img src="https://ui-avatars.com/api/?name=Dusun+2&background=b45309&color=fff&size=300" alt="Kadus II Lumbum"></span>
+            <span class="aparatur-info-modern">
+              <span class="aparatur-rank-modern">Dusun II</span>
+              <span class="aparatur-name-modern">Kadus II Lumbum</span>
+              <span class="aparatur-position-modern">Kepala Dusun II</span>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="aparatur-card-modern apx-card"
+          data-nama="Kepala Dusun III Kavatua"
+          data-jabatan="Kepala Dusun III"
+          data-wilayah="Dusun III Kavatua"
+          data-foto="https://ui-avatars.com/api/?name=Dusun+3&background=be123c&color=fff&size=300">
+          <span class="aparatur-card-inner">
+            <span class="aparatur-img-modern"><img src="https://ui-avatars.com/api/?name=Dusun+3&background=be123c&color=fff&size=300" alt="Kadus III Kavatua"></span>
+            <span class="aparatur-info-modern">
+              <span class="aparatur-rank-modern">Dusun III</span>
+              <span class="aparatur-name-modern">Kadus III Kavatua</span>
+              <span class="aparatur-position-modern">Kepala Dusun III</span>
+            </span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- MODAL DETAIL APARATUR -->
+    <div class="modal fade" id="apxModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content apx-modal">
+          <div class="apx-m-head position-relative">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <img id="apxFoto" src="" alt="Foto Aparatur">
+            <div>
+              <h5 class="fw-bold mb-1" id="apxNama">-</h5>
+              <div class="small opacity-90" id="apxJabatan">-</div>
+            </div>
+          </div>
+          <div class="p-4">
+            <dl class="apx-dl">
+              <dt>Jabatan</dt><dd id="apxDetailJabatan">-</dd>
+              <dt>Wilayah Tugas</dt><dd id="apxDetailWilayah">-</dd>
+              <dt>Instansi</dt><dd>Pemerintah Desa Wani Lumbumpetigo</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 MENU LAYANAN DESA -->
+    <section class="section wm-wrap" id="layanan">
+      <div class="section-header">
+        <h2 class="section-title">Layanan &amp; Informasi Desa</h2>
+      </div>
+      <div class="row g-2 g-md-3">
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#statistik" class="wm-card" style="--c:#51677b;">
+            <span class="wm-icon"><i class="fa-solid fa-chart-column"></i></span>
+            <span class="wm-text"><span class="wm-title">Data Wilayah</span><span class="wm-subtitle">Dusun I, II &amp; III</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#mandiri" class="wm-card" style="--c:#8b6fb0;">
+            <span class="wm-icon"><i class="fa-solid fa-basket-shopping"></i></span>
+            <span class="wm-text"><span class="wm-title">Lapak UMKM</span><span class="wm-subtitle">Produk Warga Desa</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#berita" class="wm-card" style="--c:#c0392b;">
+            <span class="wm-icon"><i class="fa-solid fa-book-open-reader"></i></span>
+            <span class="wm-text"><span class="wm-title">Pustaka Desa</span><span class="wm-subtitle">Arsip &amp; Dokumen</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#mandiri" class="wm-card" style="--c:#3f8f89;">
+            <span class="wm-icon"><i class="fa-solid fa-file-signature"></i></span>
+            <span class="wm-text"><span class="wm-title">Surat Online</span><span class="wm-subtitle">Pengajuan Mandiri</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#berita" class="wm-card" style="--c:#f39c12;">
+            <span class="wm-icon"><i class="fa-solid fa-tractor"></i></span>
+            <span class="wm-text"><span class="wm-title">Pembangunan</span><span class="wm-subtitle">Dokumentasi Kegiatan</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#berita" class="wm-card" style="--c:#d38c4b;">
+            <span class="wm-icon"><i class="fa-solid fa-folder-open"></i></span>
+            <span class="wm-text"><span class="wm-title">Produk Hukum</span><span class="wm-subtitle">Peraturan &amp; SK Desa</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#statistik" class="wm-card" style="--c:#c08f5a;">
+            <span class="wm-icon"><i class="fa-solid fa-check-to-slot"></i></span>
+            <span class="wm-text"><span class="wm-title">Data Pemilih</span><span class="wm-subtitle">Informasi DPT</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="https://wa.me/6282345797504" target="_blank" class="wm-card" style="--c:#475569;">
+            <span class="wm-icon"><i class="fa-solid fa-bullhorn"></i></span>
+            <span class="wm-text"><span class="wm-title">Lapor Warga</span><span class="wm-subtitle">Pengaduan &amp; Aspirasi</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#berita" class="wm-card" style="--c:#5f8a5a;">
+            <span class="wm-icon"><i class="fa-solid fa-image"></i></span>
+            <span class="wm-text"><span class="wm-title">Galeri Desa</span><span class="wm-subtitle">Dokumentasi Foto</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#berita" class="wm-card" style="--c:#27ae60;">
+            <span class="wm-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+            <span class="wm-text"><span class="wm-title">Laporan Kegiatan</span><span class="wm-subtitle">Dusun &amp; Lembaga</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#jadwal" class="wm-card" style="--c:#e74c3c;">
+            <span class="wm-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+            <span class="wm-text"><span class="wm-title">Peta Wilayah</span><span class="wm-subtitle">Batas &amp; Lokasi</span></span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="#statistik" class="wm-card" style="--c:#3498db;">
+            <span class="wm-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+            <span class="wm-text"><span class="wm-title">Bantuan Sosial</span><span class="wm-subtitle">Data KPM &amp; BLT</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- BERITA TERKINI -->
+    <section class="section berita-sec" id="berita">
+      <div class="section-header">
+        <h2 class="section-title">Berita Terkini</h2>
+        <a href="#berita" class="section-link">Semua Berita <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="berita-grid">
+        <article class="berita-card">
+          <div class="berita-img">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80" alt="Pelayanan Administrasi Digital">
+          </div>
+          <div class="berita-date"><i class="fa-regular fa-calendar me-1"></i> 28 Nov 2026</div>
+          <div class="berita-body">
+            <h6 class="berita-title">Pelayanan Administrasi Digital Desa Wani Lumbumpetigo</h6>
+            <p class="berita-excerpt">Informasi tata kelola administrasi kependudukan dan layanan surat menyurat warga Desa Wani Lumbumpetigo.</p>
+            <a href="#mandiri" class="berita-btn">Baca Selengkapnya</a>
+          </div>
+        </article>
+
+        <article class="berita-card">
+          <div class="berita-img">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Pemutakhiran Data Kependudukan">
+          </div>
+          <div class="berita-date"><i class="fa-regular fa-calendar me-1"></i> 25 Nov 2026</div>
+          <div class="berita-body">
+            <h6 class="berita-title">Pemutakhiran Data Kependudukan &amp; Wilayah Dusun</h6>
+            <p class="berita-excerpt">Sinkronisasi data warga di Dusun I Petigo, Dusun II Lumbum, dan Dusun III Kavatua untuk akurasi layanan desa.</p>
+            <a href="#statistik" class="berita-btn">Baca Selengkapnya</a>
+          </div>
+        </article>
+
+        <article class="berita-card">
+          <div class="berita-img">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80" alt="Transparansi Informasi Publik">
+          </div>
+          <div class="berita-date"><i class="fa-regular fa-calendar me-1"></i> 20 Nov 2026</div>
+          <div class="berita-body">
+            <h6 class="berita-title">Transparansi Informasi Publik &amp; APBDesa</h6>
+            <p class="berita-excerpt">Akses terbuka informasi program pembangunan, anggaran desa, dan laporan kegiatan masyarakat.</p>
+            <a href="#layanan" class="berita-btn">Baca Selengkapnya</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- LAYANAN MANDIRI -->
+    <section class="section" id="mandiri">
+      <div class="mandiri-wrapper">
+        <div class="row align-items-center g-4">
+          <div class="col-md-4 text-center text-md-start">
+            <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-3">
+              <i class="fa-solid fa-desktop fs-1 text-secondary opacity-50"></i>
+              <div>
+                <h2 class="fw-extrabold mb-0 text-dark" style="font-size:1.75rem;">LAYANAN</h2>
+                <h2 class="fw-extrabold mb-0" style="color:#059669; font-size:1.75rem;">MANDIRI</h2>
+                <span class="text-secondary small d-block mt-1">Akses mandiri surat &amp; data warga</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mandiri-center-box">
+              <img src="https://ui-avatars.com/api/?name=WLT&background=059669&color=fff&size=128" alt="Logo Desa" class="rounded-circle mb-3" style="width:68px; height:68px;">
+              <a href="https://wanilumbumpetigo.desa.id" target="_blank" class="btn-mandiri-login">
+                <span>Login Layanan Mandiri</span>
+                <i class="fa-solid fa-lock"></i>
+              </a>
+              <a href="#layanan" class="btn-mandiri-syarat">
+                <i class="fa-solid fa-list-check"></i><span>Persyaratan Layanan</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <div class="bubble-chat-modern">
+              Hubungi Pemerintah Desa Wani Lumbumpetigo untuk PIN layanan
+            </div>
+            <i class="fa-solid fa-users-line text-secondary opacity-25" style="font-size:4.2rem;"></i>
+            <div class="small fw-bold text-secondary mt-2">Layanan Daring Desa</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JADWAL SHALAT -->
+    <section class="section">
+      <div id="jw_wlt" aria-label="Jadwal Shalat">
+        <div class="jw-grid">
+          <div class="jw-panel">
+            <div class="jw-title">Jadwal Shalat</div>
+            <div class="jw-kota">DONGGALA (WITA)</div>
+            <div class="jw-tanggal">Sabtu, 28/11/2026</div>
+          </div>
+          <div class="jw-jadwal">
+            <div class="jw-row-top">
+              <div class="jw-box"><div class="jw-lbl"><i class="fa-solid fa-cloud-moon me-1"></i>Imsak</div><div class="jw-jam">04:43</div></div>
+              <div class="jw-box"><div class="jw-lbl"><i class="fa-solid fa-cloud-sun me-1"></i>Terbit</div><div class="jw-jam">06:03</div></div>
+            </div>
+            <div class="jw-row-bottom">
+              <div class="jw-box"><div class="jw-lbl">Subuh</div><div class="jw-jam">04:53</div></div>
+              <div class="jw-box"><div class="jw-lbl">Dhuha</div><div class="jw-jam">06:28</div></div>
+              <div class="jw-box"><div class="jw-lbl">Dzuhur</div><div class="jw-jam">12:08</div></div>
+              <div class="jw-box"><div class="jw-lbl">Ashar</div><div class="jw-jam">15:30</div></div>
+              <div class="jw-box"><div class="jw-lbl">Maghrib</div><div class="jw-jam">18:12</div></div>
+              <div class="jw-box"><div class="jw-lbl">Isya</div><div class="jw-jam">19:25</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATISTIK PENDUDUK -->
+    <section class="section" id="statistik">
+      <div class="stat-section">
+        <h2 class="stat-title">Statistik <span>Penduduk</span></h2>
+        <p class="stat-subtitle">DESA WANI LUMBUMPETIGO, KEC. TANANTOVEA</p>
+
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#06b6d4;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:51;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-person"></i>
+                <h4 data-count="1250">0</h4>
+                <small>Laki-laki</small>
+              </div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#ec4899;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:49;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-person-dress"></i>
+                <h4 data-count="1200">0</h4>
+                <small>Perempuan</small>
+              </div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#10b981;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:100;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-users"></i>
+                <h4 data-count="2450">0</h4>
+                <small>Total</small>
+              </div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#f59e0b;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:100;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h4 data-count="3">0</h4>
+                <small>Dusun</small>
+              </div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#64748b;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:15;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h4 data-count="12">0</h4>
+                <small>Meninggal</small>
+              </div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-ring-modern" style="--ring-color:#f97316;">
+              <div class="stat-ring-inner-progress" style="--ring-pct:20;"></div>
+              <div class="stat-ring-center">
+                <i class="fa-solid fa-truck-moving"></i>
+                <h4 data-count="18">0</h4>
+                <small>Pindah</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#layanan" class="stat-btn">Lihat Detail Statistik <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </section>
+
+    <!-- JAM KERJA & PETA -->
+    <section class="section pb-5" id="jadwal">
+      <div class="row g-3">
+        <div class="col-lg-4 col-md-12">
+          <div class="info-box">
+            <div class="info-box-header">
+              <div class="info-icon"><i class="fa-regular fa-clock"></i></div>
+              <div class="info-title">
+                <small>Jadwal Buka</small>
+                Jam Kerja Pelayanan
+              </div>
+            </div>
+            <table class="table-jam">
+              <thead><tr><th style="text-align:left;padding-left:16px;">Hari</th><th>Masuk</th><th>Keluar</th></tr></thead>
+              <tbody>
+                <tr><td class="hari-cell">Senin</td><td>08:00</td><td>16:00</td></tr>
+                <tr><td class="hari-cell">Selasa</td><td>08:00</td><td>16:00</td></tr>
+                <tr><td class="hari-cell">Rabu</td><td>08:00</td><td>16:00</td></tr>
+                <tr><td class="hari-cell">Kamis</td><td>08:00</td><td>16:00</td></tr>
+                <tr><td class="hari-cell">Jumat</td><td>08:00</td><td>16:00</td></tr>
+                <tr class="libur"><td class="hari-cell">Sabtu</td><td colspan="2">LIBUR</td></tr>
+                <tr class="libur"><td class="hari-cell">Minggu</td><td colspan="2">LIBUR</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="info-box map-box">
+            <div class="info-box-header">
+              <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="info-title">
+                <small>Lokasi Kantor</small>
+                Kantor Desa Wani Lumbumpetigo
+              </div>
+            </div>
+            <div class="map-container-modern">
+              <div class="map-badge"><i class="fa-solid fa-building text-primary me-1"></i>Kantor Desa</div>
+              <div id="mapKantorDesa" class="map-frame"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="info-box map-box-alt">
+            <div class="info-box-header">
+              <div class="info-icon"><i class="fa-solid fa-map"></i></div>
+              <div class="info-title">
+                <small>Peta Wilayah</small>
+                Desa Wani Lumbumpetigo
+              </div>
+            </div>
+            <div class="map-container-modern">
+              <div class="map-badge"><i class="fa-solid fa-map-location-dot text-primary me-1"></i>Peta Wilayah</div>
+              <div id="mapWilayahDesa" class="map-frame"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="row g-4 justify-content-between">
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center mb-3">
+            <img src="https://ui-avatars.com/api/?name=WLT&background=2563eb&color=fff&size=80" alt="Logo" class="rounded-circle me-3" style="width:38px;height:38px;">
+            <span class="footer-brand">Desa Wani Lumbumpetigo</span>
+          </div>
+          <p class="footer-text">Portal informasi dan layanan digital administrasi pemerintahan Desa Wani Lumbumpetigo, Kecamatan Tanantovea, Kabupaten Donggala, Provinsi Sulawesi Tengah.</p>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <h6 class="text-white fw-bold mb-3 text-uppercase">Hubungi Kami</h6>
+          <ul class="list-unstyled contact-list">
+            <li><i class="fa-solid fa-location-dot"></i><span>Desa Wani Lumbumpetigo, Kec. Tanantovea, Kab. Donggala, Sulawesi Tengah</span></li>
+            <li><i class="fa-solid fa-phone"></i><span>0823-4579-7504</span></li>
+            <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/6282345797504" target="_blank" class="text-decoration-none text-light">0823-4579-7504 (Chat WA)</a></li>
+            <li><i class="fa-solid fa-envelope"></i><span>pemdes@wanilumbumpetigo.desa.id</span></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <h6 class="text-white fw-bold mb-3 text-uppercase">Media Sosial</h6>
+          <p class="footer-text mb-2">Ikuti informasi dan kegiatan resmi Pemerintah Desa Wani Lumbumpetigo.</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/share/1CcwBuJhsp/?mibextid=wwXIfr" target="_blank" class="social-icon facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://wa.me/6282345797504" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-7 text-center text-md-start mb-2 mb-md-0 footer-bottom-links">
+            <a href="#footer">Kebijakan Privasi</a>
+            <span class="separator">|</span>
+            <a href="#footer">Ketentuan Hukum</a>
+            <span class="separator">|</span>
+            <a href="#footer">Aturan Desa</a>
+          </div>
+          <div class="col-md-5 text-center text-md-end text-secondary small">
+            &copy; 2026 <strong class="text-white">DESA WANI LUMBUMPETIGO</strong>. All Rights Reserved.
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING BUTTONS -->
+  <div class="floating-widget-container">
+    <a href="https://wa.me/6282345797504?text=Halo%20Admin%20Desa%20Wani%20Lumbumpetigo,%20saya%20ingin%20bertanya%20terkait%20layanan%20desa." target="_blank" class="float-btn float-wa" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="mailto:pemdes@wanilumbumpetigo.desa.id" class="float-btn float-email" aria-label="Email">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav d-flex d-md-none">
+    <a href="#beranda" class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></a>
+    <a href="#aparatur" class="nav-item"><i class="fa-solid fa-users"></i><span>Aparatur</span></a>
+    <a href="#layanan" class="nav-item-center" title="Layanan Desa"><i class="fa-solid fa-grid-2 fa-table-cells-large"></i></a>
+    <a href="#berita" class="nav-item"><i class="fa-regular fa-newspaper"></i><span>Berita</span></a>
+    <a href="https://wa.me/6282345797504" target="_blank" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Lapor</span></a>
+  </nav>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <script>
+    // 1. Preloader
+    window.addEventListener("load", function () {
+      const preloader = document.getElementById("village-preloader");
+      if (preloader) {
+        preloader.classList.add("fade-out");
+        setTimeout(() => preloader.remove(), 500);
+      }
+    });
+
+    // 2. Jam Digital WITA
+    function updateClock() {
+      const el = document.getElementById("liveDateTime");
+      if (!el) return;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("id-ID", {
+        weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Makassar"
+      });
+      const timeStr = now.toLocaleTimeString("id-ID", {
+        hour12: false, timeZone: "Asia/Makassar"
+      });
+      el.innerHTML = `<i class="fa-regular fa-calendar-days me-1 text-primary"></i> ${dateStr} <span class="mx-2 text-muted">|</span> <i class="fa-regular fa-clock me-1 text-primary"></i> <strong class="text-dark">${timeStr} WITA</strong>`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 3. Pengalih Tema Warna
+    (function () {
+      const wrap = document.getElementById("twWrap");
+      const btn = document.getElementById("twBtn");
+      const panel = document.getElementById("twPanel");
+      const html = document.documentElement;
+      if (!wrap || !btn || !panel) return;
+
+      function setTema(nama) {
+        html.setAttribute("data-tema", nama);
+        try { localStorage.setItem("bp_tema", nama); } catch (e) {}
+        panel.querySelectorAll(".tw-opsi").forEach(o => {
+          o.classList.toggle("on", o.dataset.tema === nama);
+        });
+      }
+
+      try {
+        const saved = localStorage.getItem("bp_tema");
+        if (saved) setTema(saved); else setTema("biru");
+      } catch (e) { setTema("biru"); }
+
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        panel.hidden = !panel.hidden;
+      });
+      panel.addEventListener("click", function (e) {
+        const opsi = e.target.closest(".tw-opsi");
+        if (opsi) setTema(opsi.dataset.tema);
+      });
+      document.addEventListener("click", function (e) {
+        if (!wrap.contains(e.target)) panel.hidden = true;
+      });
+    })();
+
+    // 4. Widget Cuaca
+    (function () {
+      const pill = document.getElementById("cgPill");
+      const panel = document.getElementById("cgPanel");
+      const wrap = document.getElementById("cgWrap");
+      if (!pill || !panel) return;
+      pill.addEventListener("click", function (e) {
+        e.stopPropagation();
+        panel.classList.toggle("cg-show");
+      });
+      document.addEventListener("click", function (e) {
+        if (!wrap.contains(e.target)) panel.classList.remove("cg-show");
+      });
+    })();
+
+    // 5. Hero Slider
+    (function () {
+      const slides = document.querySelectorAll(".hero-slide");
+      const dots = document.querySelectorAll(".slider-dot");
+      const titleEl = document.getElementById("slideTitle");
+      const descEl = document.getElementById("slideDesc");
+      const slideData = [
+        { title: "SELAMAT DATANG DI DESA WANI LUMBUMPETIGO", desc: "KECAMATAN TANANTOVEA, KABUPATEN DONGGALA, PROVINSI SULAWESI TENGAH" },
+        { title: "PELAYANAN ADMINISTRASI & INFORMASI PUBLIK", desc: "DUSUN I PETIGO, DUSUN II LUMBUM, DAN DUSUN III KAVATUA" },
+        { title: "LAYANAN MANDIRI & TRANSFORMATIF DIGITAL DESA", desc: "MEWUJUDKAN DESA MANDIRI, TERTIB, DAN TRANSPARAN" }
+      ];
+      let current = 0;
+      let timer;
+
+      function goTo(index) {
+        slides[current].classList.remove("active");
+        dots[current].classList.remove("active");
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add("active");
+        dots[current].classList.add("active");
+        titleEl.textContent = slideData[current].title;
+        descEl.textContent = slideData[current].desc;
+      }
+
+      window.changeSlide = function (dir) {
+        goTo(current + dir);
+        resetTimer();
+      };
+      dots.forEach((dot, i) => dot.addEventListener("click", () => { goTo(i); resetTimer(); }));
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), 5000);
+      }
+      resetTimer();
+    })();
+
+    // 6. Countdown Hari Desa Nasional 2027
+    (function () {
+      const target = new Date("2027-01-15T08:00:00+08:00").getTime();
+      const pad = n => String(n).padStart(2, "0");
+      function tick() {
+        const sisa = target - Date.now();
+        if (sisa <= 0) {
+          document.getElementById("countdownTimerBody").innerHTML = '<div class="fw-bold small">Hari Desa Nasional 2027</div>';
+          return;
+        }
+        document.getElementById("cdHari").textContent = pad(Math.floor(sisa / 86400000));
+        document.getElementById("cdJam").textContent = pad(Math.floor((sisa % 86400000) / 3600000));
+        document.getElementById("cdMenit").textContent = pad(Math.floor((sisa % 3600000) / 60000));
+        document.getElementById("cdDetik").textContent = pad(Math.floor((sisa % 60000) / 1000));
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // 7. Aparatur Slider & Modal Detail
+    (function () {
+      const track = document.getElementById("apxTrack");
+      document.getElementById("apxLeft")?.addEventListener("click", () => track.scrollBy({ left: -220, behavior: "smooth" }));
+      document.getElementById("apxRight")?.addEventListener("click", () => track.scrollBy({ left: 220, behavior: "smooth" }));
+
+      const modalEl = document.getElementById("apxModal");
+      const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+      document.querySelectorAll(".apx-card").forEach(card => {
+        card.addEventListener("click", () => {
+          if (!bsModal) return;
+          document.getElementById("apxFoto").src = card.dataset.foto;
+          document.getElementById("apxNama").textContent = card.dataset.nama;
+          document.getElementById("apxJabatan").textContent = card.dataset.jabatan;
+          document.getElementById("apxDetailJabatan").textContent = card.dataset.jabatan;
+          document.getElementById("apxDetailWilayah").textContent = card.dataset.wilayah;
+          bsModal.show();
+        });
+      });
+    })();
+
+    // 8. Animasi Angka Statistik
+    (function () {
+      const counters = document.querySelectorAll(".stat-ring-center h4[data-count]");
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const target = parseInt(el.dataset.count, 10) || 0;
+          const start = performance.now();
+          function step(now) {
+            const p = Math.min((now - start) / 1000, 1);
+            el.textContent = Math.floor(p * target).toLocaleString("id-ID");
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(c => observer.observe(c));
+    })();
+
+    // 9. Peta Leaflet (Kantor Desa & Wilayah Desa)
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof L === "undefined") return;
+      const lat = -0.695600;
+      const lng = 119.862400;
+
+      const mapKantor = L.map("mapKantorDesa", { scrollWheelZoom: false }).setView([lat, lng], 16);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(mapKantor);
+      L.marker([lat, lng]).addTo(mapKantor).bindPopup("<b>Kantor Desa Wani Lumbumpetigo</b><br>Kec. Tanantovea, Kab. Donggala");
+
+      const mapWilayah = L.map("mapWilayahDesa", { scrollWheelZoom: false }).setView([lat, lng], 14);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(mapWilayah);
+      L.circle([lat, lng], { color: "#2563eb", fillColor: "#3b82f6", fillOpacity: 0.15, radius: 900 }).addTo(mapWilayah)
+        .bindPopup("<b>Wilayah Desa Wani Lumbumpetigo</b><br>Dusun I Petigo, Dusun II Lumbum, Dusun III Kavatua");
+    });
+  </script>
+</body>
+</html>
