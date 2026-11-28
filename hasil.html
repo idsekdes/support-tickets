@@ -37,9 +37,11 @@
       --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
       --shadow-md: 0 4px 12px rgba(12, 45, 107, 0.08);
       --shadow-lg: 0 12px 28px rgba(12, 45, 107, 0.12);
+      --shadow-modal: 0 24px 60px rgba(12, 45, 107, 0.24);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 18px;
+      --radius-xl: 22px;
       --radius-full: 9999px;
     }
 
@@ -55,6 +57,10 @@
       color: var(--slate-800);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     /* Top Bar */
@@ -364,6 +370,16 @@
       margin-top: 2px;
     }
 
+    .hint-badge {
+      background: var(--primary-50);
+      color: var(--primary-800);
+      border: 1px solid var(--primary-100);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+    }
+
     .controls-bar {
       padding: 16px 24px;
       background: var(--slate-50);
@@ -464,16 +480,23 @@
       white-space: nowrap;
     }
 
-    tbody tr {
+    tbody tr.warga-row {
       border-bottom: 1px solid var(--slate-100);
-      transition: background-color 0.15s ease;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.12s ease;
     }
 
-    tbody tr:nth-child(even) {
+    tbody tr.warga-row:nth-child(even) {
       background-color: #fafcff;
     }
 
-    tbody tr:hover {
+    tbody tr.warga-row:hover {
+      background-color: var(--primary-50);
+    }
+
+    tbody tr.warga-row:focus-visible {
+      outline: 2px solid var(--primary-600);
+      outline-offset: -2px;
       background-color: var(--primary-50);
     }
 
@@ -504,6 +527,26 @@
       border-radius: 6px;
     }
 
+    .detail-trigger-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: var(--primary-50);
+      color: var(--primary-800);
+      border: 1px solid var(--primary-100);
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    tbody tr.warga-row:hover .detail-trigger-pill {
+      background: var(--primary-700);
+      color: var(--white);
+      border-color: var(--primary-700);
+    }
+
     /* Status Badges */
     .status-badge {
       display: inline-flex;
@@ -532,6 +575,267 @@
       font-size: 14px;
     }
 
+    /* Modal Backdrop & Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .modal-backdrop.is-open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 640px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-modal);
+      border: 1px solid var(--slate-200);
+      overflow: hidden;
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .modal-backdrop.is-open .modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
+      color: var(--white);
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 3px solid var(--accent-gold);
+    }
+
+    .modal-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: 8px;
+      color: #fde68a;
+    }
+
+    .modal-title {
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .modal-subtitle {
+      font-size: 12.5px;
+      color: var(--primary-100);
+      margin-top: 3px;
+    }
+
+    .modal-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.24);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 22px 24px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .detail-summary-banner {
+      background: linear-gradient(120deg, var(--primary-50) 0%, #f8fafc 100%);
+      border: 1px solid var(--primary-100);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .detail-summary-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--slate-500);
+    }
+
+    .detail-summary-value {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--primary-900);
+      margin-top: 2px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .detail-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+    }
+
+    .detail-box-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+    }
+
+    .detail-box-value {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .detail-box-value.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13.5px;
+    }
+
+    .program-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .program-card {
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .program-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .program-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .program-desc {
+      font-size: 12.5px;
+      color: var(--slate-600);
+      line-height: 1.45;
+    }
+
+    .archive-note {
+      background: var(--slate-50);
+      border-left: 4px solid var(--primary-600);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--slate-600);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .archive-note strong {
+      color: var(--slate-800);
+    }
+
+    .modal-footer {
+      padding: 15px 24px;
+      background: var(--slate-50);
+      border-top: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      padding: 9px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      color: var(--slate-700);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--slate-100);
+      color: var(--slate-900);
+    }
+
+    .btn-primary {
+      padding: 9px 18px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: var(--primary-700);
+      color: var(--white);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-900);
+    }
+
     /* Footer */
     .site-footer {
       background: var(--primary-900);
@@ -557,6 +861,21 @@
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 600px) {
+      .detail-grid,
+      .program-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-header {
+        padding: 16px 18px;
+      }
+
+      .modal-body {
+        padding: 18px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -579,7 +898,7 @@
         <div class="hero-tag">Website Perlindungan Sosial (Perlinsos)</div>
         <h1 class="hero-title">Hasil Kelayakan Warga Desa — <span>Wani Lumbumpetigo</span></h1>
         <p class="hero-desc">
-          Rekapitulasi data kelayakan bantuan sosial <strong>BPNT</strong> dan <strong>PKH</strong> warga Desa Wani Lumbumpetigo berdasarkan arsip Portal Perlinsos.
+          Rekapitulasi data kelayakan bantuan sosial <strong>BPNT</strong> dan <strong>PKH</strong> warga Desa Wani Lumbumpetigo berdasarkan arsip Portal Perlinsos. Klik baris warga untuk melihat rincian lengkap.
         </p>
         <div class="hero-meta-row">
           <div class="hero-meta-item">Sumber: Portal Perlinsos</div>
@@ -645,6 +964,7 @@
           <h2 class="panel-title">Daftar Kelayakan Warga — Wani Lumbumpetigo</h2>
           <p class="panel-subtitle" id="resultCountText">Menampilkan data warga terdaftar (No. 151–188 dari dokumen arsip)</p>
         </div>
+        <span class="hint-badge">&#128070; Klik baris warga untuk membuka Modal Rincian</span>
       </div>
 
       <div class="controls-bar">
@@ -677,6 +997,7 @@
               <th>No. KK</th>
               <th>Status BPNT</th>
               <th>Status PKH</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody id="wargaTableBody"></tbody>
@@ -688,6 +1009,89 @@
     </div>
   </main>
 
+  <!-- Modal Rincian Warga -->
+  <div
+    id="detailModal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalWargaName"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <div class="modal-eyebrow">Modal Rincian &bull; Desa Wani Lumbumpetigo</div>
+          <h3 id="modalWargaName" class="modal-title">-</h3>
+          <p id="modalWargaSub" class="modal-subtitle">Nomor Urut Arsip #-</p>
+        </div>
+        <button
+          type="button"
+          id="closeModalBtn"
+          class="modal-close-btn"
+          aria-label="Tutup modal rincian"
+        >&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-summary-banner">
+          <div>
+            <div class="detail-summary-label">Ringkasan Kelayakan Bansos</div>
+            <div id="modalSummaryText" class="detail-summary-value">-</div>
+          </div>
+          <span id="modalSummaryBadge" class="status-badge">-</span>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-box">
+            <div class="detail-box-label">Nomor Induk Kependudukan (NIK)</div>
+            <div id="modalNik" class="detail-box-value mono">-</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-box-label">Nomor Kartu Keluarga (No. KK)</div>
+            <div id="modalKk" class="detail-box-value mono">-</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-box-label">Wilayah Desa</div>
+            <div class="detail-box-value">Wani Lumbumpetigo</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-box-label">Nomor Urut Data</div>
+            <div id="modalNoUrut" class="detail-box-value">-</div>
+          </div>
+        </div>
+
+        <div class="program-cards">
+          <div class="program-card">
+            <div class="program-card-top">
+              <span class="program-name">Bantuan Pangan (BPNT)</span>
+              <span id="modalBpntBadge" class="status-badge">-</span>
+            </div>
+            <p id="modalBpntDesc" class="program-desc">-</p>
+          </div>
+
+          <div class="program-card">
+            <div class="program-card-top">
+              <span class="program-name">Program Keluarga Harapan (PKH)</span>
+              <span id="modalPkhBadge" class="status-badge">-</span>
+            </div>
+            <p id="modalPkhDesc" class="program-desc">-</p>
+          </div>
+        </div>
+
+        <div class="archive-note">
+          <div><strong>Sumber Data:</strong> Portal Perlinsos (kabdonggala.id/perlinsos/desa/warga.php)</div>
+          <div><strong>Pembaruan Arsip:</strong> 2026-11-27 18:44:57 &bull; <strong>Waktu Cetak:</strong> 28/11/26, 06.23</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="copyDetailBtn" class="btn-secondary">Salin Ringkasan</button>
+        <button type="button" id="doneModalBtn" class="btn-primary">Tutup Rincian</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <span>Hasil Kelayakan Warga Desa — Wani Lumbumpetigo &bull; Sumber: Portal Perlinsos</span>
@@ -696,8 +1100,6 @@
   </footer>
 
   <script>
-    // Data warga sesuai dokumen PDF (151 - 188)
-    // Tambahkan baris nomor 1 - 150 ke array ini jika ingin menampilkan seluruh 188 data.
     const wargaData = [
       { no: 151, nama: "SARIMA", nik: "7203****0003", kk: "7203****0013", bpnt: true, pkh: false },
       { no: 152, nama: "SARTIKA PANIGORO", nik: "7203****0001", kk: "7203****0001", bpnt: false, pkh: false },
@@ -745,13 +1147,101 @@
     const emptyState = document.getElementById("emptyState");
     const resultCountText = document.getElementById("resultCountText");
 
+    // Modal elements
+    const detailModal = document.getElementById("detailModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const doneModalBtn = document.getElementById("doneModalBtn");
+    const copyDetailBtn = document.getElementById("copyDetailBtn");
+
+    const modalWargaName = document.getElementById("modalWargaName");
+    const modalWargaSub = document.getElementById("modalWargaSub");
+    const modalSummaryText = document.getElementById("modalSummaryText");
+    const modalSummaryBadge = document.getElementById("modalSummaryBadge");
+    const modalNik = document.getElementById("modalNik");
+    const modalKk = document.getElementById("modalKk");
+    const modalNoUrut = document.getElementById("modalNoUrut");
+    const modalBpntBadge = document.getElementById("modalBpntBadge");
+    const modalPkhBadge = document.getElementById("modalPkhBadge");
+    const modalBpntDesc = document.getElementById("modalBpntDesc");
+    const modalPkhDesc = document.getElementById("modalPkhDesc");
+
     let activeFilter = "all";
+    let selectedWarga = null;
+    let lastFocusedElement = null;
 
     function renderStatusBadge(isLayak) {
       if (isLayak) {
         return `<span class="status-badge status-layak">&#10003; Berpotensi Layak</span>`;
       }
       return `<span class="status-badge status-tidak">&#10005; Tidak Layak</span>`;
+    }
+
+    function openDetailModal(item, triggerEl = null) {
+      selectedWarga = item;
+      lastFocusedElement = triggerEl || document.activeElement;
+
+      modalWargaName.textContent = item.nama;
+      modalWargaSub.textContent = `Data Arsip #${item.no} • Desa Wani Lumbumpetigo`;
+      modalNik.textContent = item.nik;
+      modalKk.textContent = item.kk;
+      modalNoUrut.textContent = `#${item.no}`;
+
+      // Ringkasan kelayakan
+      if (item.bpnt && item.pkh) {
+        modalSummaryText.textContent = "Berpotensi Layak pada Program BPNT & PKH";
+        modalSummaryBadge.className = "status-badge status-layak";
+        modalSummaryBadge.innerHTML = "&#10003; 2 Program Potensial";
+      } else if (item.bpnt) {
+        modalSummaryText.textContent = "Berpotensi Layak pada Program BPNT";
+        modalSummaryBadge.className = "status-badge status-layak";
+        modalSummaryBadge.innerHTML = "&#10003; Potensial BPNT";
+      } else if (item.pkh) {
+        modalSummaryText.textContent = "Berpotensi Layak pada Program PKH";
+        modalSummaryBadge.className = "status-badge status-layak";
+        modalSummaryBadge.innerHTML = "&#10003; Potensial PKH";
+      } else {
+        modalSummaryText.textContent = "Belum Berpotensi Layak pada BPNT maupun PKH";
+        modalSummaryBadge.className = "status-badge status-tidak";
+        modalSummaryBadge.innerHTML = "&#10005; Tidak Layak";
+      }
+
+      // Status BPNT
+      if (item.bpnt) {
+        modalBpntBadge.className = "status-badge status-layak";
+        modalBpntBadge.innerHTML = "&#10003; Berpotensi Layak";
+        modalBpntDesc.textContent = "Tercatat berpotensi layak menerima BPNT berdasarkan arsip Portal Perlinsos.";
+      } else {
+        modalBpntBadge.className = "status-badge status-tidak";
+        modalBpntBadge.innerHTML = "&#10005; Tidak Layak";
+        modalBpntDesc.textContent = "Tidak tercatat berpotensi layak BPNT pada pembaruan arsip saat ini.";
+      }
+
+      // Status PKH
+      if (item.pkh) {
+        modalPkhBadge.className = "status-badge status-layak";
+        modalPkhBadge.innerHTML = "&#10003; Berpotensi Layak";
+        modalPkhDesc.textContent = "Tercatat berpotensi layak menerima PKH berdasarkan arsip Portal Perlinsos.";
+      } else {
+        modalPkhBadge.className = "status-badge status-tidak";
+        modalPkhBadge.innerHTML = "&#10005; Tidak Layak";
+        modalPkhDesc.textContent = "Tidak tercatat berpotensi layak PKH pada pembaruan arsip saat ini.";
+      }
+
+      copyDetailBtn.textContent = "Salin Ringkasan";
+      detailModal.setAttribute("aria-hidden", "false");
+      detailModal.classList.add("is-open");
+      document.body.classList.add("modal-open");
+      closeModalBtn.focus();
+    }
+
+    function closeDetailModal() {
+      detailModal.classList.remove("is-open");
+      detailModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      selectedWarga = null;
+      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        lastFocusedElement.focus();
+      }
     }
 
     function renderTable() {
@@ -780,13 +1270,14 @@
       tbody.innerHTML = filtered
         .map(
           (item) => `
-          <tr>
+          <tr class="warga-row" data-no="${item.no}" tabindex="0" role="button" aria-label="Lihat rincian ${item.nama}">
             <td class="col-num">${item.no}</td>
             <td class="col-name">${item.nama}</td>
             <td><span class="col-code">${item.nik}</span></td>
             <td><span class="col-code">${item.kk}</span></td>
             <td>${renderStatusBadge(item.bpnt)}</td>
             <td>${renderStatusBadge(item.pkh)}</td>
+            <td><span class="detail-trigger-pill">Rincian &rsaquo;</span></td>
           </tr>
         `
         )
@@ -796,6 +1287,68 @@
       resultCountText.textContent = `Menampilkan ${filtered.length} dari ${wargaData.length} baris data yang dimuat (Total arsip desa: 188 warga)`;
     }
 
+    // Event klik & keyboard pada baris tabel
+    tbody.addEventListener("click", (e) => {
+      const row = e.target.closest("tr.warga-row");
+      if (!row) return;
+      const no = Number(row.dataset.no);
+      const item = wargaData.find((w) => w.no === no);
+      if (item) openDetailModal(item, row);
+    });
+
+    tbody.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        const row = e.target.closest("tr.warga-row");
+        if (!row) return;
+        e.preventDefault();
+        const no = Number(row.dataset.no);
+        const item = wargaData.find((w) => w.no === no);
+        if (item) openDetailModal(item, row);
+      }
+    });
+
+    // Tutup modal
+    closeModalBtn.addEventListener("click", closeDetailModal);
+    doneModalBtn.addEventListener("click", closeDetailModal);
+
+    detailModal.addEventListener("click", (e) => {
+      if (e.target === detailModal) {
+        closeDetailModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && detailModal.classList.contains("is-open")) {
+        closeDetailModal();
+      }
+    });
+
+    // Salin ringkasan warga dari dalam modal
+    copyDetailBtn.addEventListener("click", async () => {
+      if (!selectedWarga) return;
+      const summary = [
+        `Rincian Kelayakan Warga — Desa Wani Lumbumpetigo`,
+        `No. Urut: #${selectedWarga.no}`,
+        `Nama Lengkap: ${selectedWarga.nama}`,
+        `NIK: ${selectedWarga.nik}`,
+        `No. KK: ${selectedWarga.kk}`,
+        `Status BPNT: ${selectedWarga.bpnt ? "Berpotensi Layak" : "Tidak Layak"}`,
+        `Status PKH: ${selectedWarga.pkh ? "Berpotensi Layak" : "Tidak Layak"}`,
+        `Sumber: Portal Perlinsos (2026-11-27 18:44:57)`
+      ].join("\n");
+
+      try {
+        await navigator.clipboard.writeText(summary);
+        copyDetailBtn.textContent = "Tersalin!";
+        setTimeout(() => {
+          copyDetailBtn.textContent = "Salin Ringkasan";
+        }, 1800);
+      } catch {
+        copyDetailBtn.textContent = "Gagal Menyalin";
+      }
+    });
+
+    // Pencarian & Filter
     searchInput.addEventListener("input", renderTable);
 
     filterButtons.forEach((btn) => {
