@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggGbqNiUbZmqKIaxT_qPDDMbBes9Hsy-XX88Cr7Ql-DBbrxNMX5RDrLlK2J8gk7_4KybGYVYiK09F7eo2MTHGszfppclIU_ZvW8iaQKhwq2sM_s61fSM2l0SD03me9okqbnUaZikaPXw4LnOUsXZBNHmoCv-FKjSiTMDWPP3nHhTmeOp_6WyQQZqKUMMlO/s120/logo%20donggala-fix-2025.png">
+  <title>Hasil Kelayakan Warga Desa — Wani Lumbumpetigo | Portal Perlinsos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-900: #0c2d6b;
+      --primary-800: #133f8f;
+      --primary-700: #1b52b8;
+      --primary-600: #2563eb;
+      --primary-100: #dbeafe;
+      --primary-50: #eff6ff;
+      --accent-gold: #f59e0b;
+      --accent-amber-bg: #fef3c7;
+      --success-600: #059669;
+      --success-700: #047857;
+      --success-bg: #d1fae5;
+      --danger-600: #dc2626;
+      --danger-700: #b91c1c;
+      --danger-bg: #fee2e2;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px rgba(12, 45, 107, 0.08);
+      --shadow-lg: 0 12px 28px rgba(12, 45, 107, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--slate-50);
+      color: var(--slate-800);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Bar */
+    .topbar {
+      background: linear-gradient(90deg, var(--primary-900) 0%, var(--primary-700) 100%);
+      color: var(--white);
+      padding: 12px 0;
+      border-bottom: 3px solid var(--accent-gold);
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-dtsen {
+      background: var(--white);
+      color: var(--primary-900);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      padding: 5px 11px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-subtitle {
+      font-size: 13px;
+      color: var(--primary-100);
+      font-weight: 500;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* Hero Banner */
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 55%, #1e5fd6 100%);
+      color: var(--white);
+      padding: 36px 0 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(24px, 3.4vw, 36px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title span {
+      color: #fde68a;
+    }
+
+    .hero-desc {
+      font-size: 14.5px;
+      color: var(--primary-100);
+      max-width: 580px;
+      margin-bottom: 18px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #e0e7ff;
+    }
+
+    .hero-meta-item {
+      background: rgba(12, 45, 107, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Portal Preview Card in Hero */
+    .portal-card {
+      background: var(--white);
+      color: var(--slate-900);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .portal-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .portal-badge {
+      background: var(--accent-amber-bg);
+      color: #92400e;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .portal-highlight {
+      background: linear-gradient(120deg, var(--primary-50) 0%, #f0f9ff 100%);
+      border: 1px solid var(--primary-100);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .portal-highlight h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary-900);
+      margin-bottom: 4px;
+    }
+
+    .portal-highlight p {
+      font-size: 12.5px;
+      color: var(--slate-600);
+    }
+
+    .portal-footer-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--slate-500);
+    }
+
+    .lapor-pill {
+      background: var(--danger-600);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Summary KPI Cards */
+    .kpi-wrapper {
+      margin-top: -36px;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 28px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--slate-200);
+      border-top: 4px solid var(--primary-600);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .kpi-card.bpnt {
+      border-top-color: var(--success-600);
+    }
+
+    .kpi-card.pkh {
+      border-top-color: var(--accent-gold);
+    }
+
+    .kpi-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--slate-500);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--slate-900);
+      line-height: 1;
+    }
+
+    .kpi-sub {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--slate-600);
+    }
+
+    .kpi-breakdown {
+      font-size: 12.5px;
+      color: var(--slate-600);
+      padding-top: 8px;
+      border-top: 1px dashed var(--slate-200);
+    }
+
+    .kpi-breakdown strong {
+      color: var(--slate-800);
+    }
+
+    /* Main Table Section */
+    .data-panel {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--slate-200);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .panel-header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--white);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .panel-subtitle {
+      font-size: 13px;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+
+    .controls-bar {
+      padding: 16px 24px;
+      background: var(--slate-50);
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+      max-width: 420px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--slate-800);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-500);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      color: var(--slate-700);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary-600);
+      color: var(--primary-700);
+    }
+
+    .filter-btn.active {
+      background: var(--primary-700);
+      border-color: var(--primary-700);
+      color: var(--white);
+    }
+
+    /* Table */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      background: var(--primary-900);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 16px;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--slate-100);
+      transition: background-color 0.15s ease;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fafcff;
+    }
+
+    tbody tr:hover {
+      background-color: var(--primary-50);
+    }
+
+    tbody td {
+      padding: 13px 16px;
+      font-size: 13.5px;
+      color: var(--slate-700);
+      white-space: nowrap;
+    }
+
+    .col-num {
+      font-weight: 700;
+      color: var(--slate-500);
+      width: 64px;
+    }
+
+    .col-name {
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .col-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      color: var(--slate-600);
+      background: var(--slate-100);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-layak {
+      background: var(--success-bg);
+      color: var(--success-700);
+    }
+
+    .status-tidak {
+      background: var(--danger-bg);
+      color: var(--danger-700);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--slate-500);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--primary-900);
+      color: var(--primary-100);
+      padding: 22px 0;
+      font-size: 12.5px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Utility Bar -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand-group">
+        <span class="badge-dtsen">DTSEN</span>
+        <span class="topbar-subtitle">Pencarian Data Penerima Manfaat Bansos &bull; Portal Perlinsos</span>
+      </div>
+      <div class="meta-pill">Pembaruan Arsip: 2026-11-27 18:44:57</div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-tag">Website Perlindungan Sosial (Perlinsos)</div>
+        <h1 class="hero-title">Hasil Kelayakan Warga Desa — <span>Wani Lumbumpetigo</span></h1>
+        <p class="hero-desc">
+          Rekapitulasi data kelayakan bantuan sosial <strong>BPNT</strong> dan <strong>PKH</strong> warga Desa Wani Lumbumpetigo berdasarkan arsip Portal Perlinsos.
+        </p>
+        <div class="hero-meta-row">
+          <div class="hero-meta-item">Sumber: Portal Perlinsos</div>
+          <div class="hero-meta-item">Arsip: kabdonggala.id/perlinsos/desa/warga.php</div>
+          <div class="hero-meta-item">Cetak: 28/11/26, 06.23</div>
+        </div>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <span style="font-weight: 800; font-size: 13px; color: var(--primary-900);">Kementerian Sosial RI</span>
+          <span class="portal-badge">Portal Agen Perlinsos</span>
+        </div>
+        <div class="portal-highlight">
+          <h4>Saatnya Jadi Pahlawan untuk Tetangga!</h4>
+          <p>Dampingi tetanggamu yang butuh bantuan. Jangan ada yang terlewat dalam verifikasi kelayakan bansos.</p>
+        </div>
+        <div class="portal-footer-note">
+          <span>Pencarian Data Penerima Manfaat</span>
+          <span class="lapor-pill">Lapor Minsos</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Summary KPI Cards -->
+  <section class="container kpi-wrapper">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Warga</div>
+        <div class="kpi-value-row">
+          <span class="kpi-number">188</span>
+          <span class="kpi-sub">Tampil: 188 warga</span>
+        </div>
+        <div class="kpi-breakdown">Seluruh warga terdaftar dalam arsip desa.</div>
+      </div>
+
+      <div class="kpi-card bpnt">
+        <div class="kpi-label">BPNT Berpotensi Layak</div>
+        <div class="kpi-value-row">
+          <span class="kpi-number" style="color: var(--success-700);">76</span>
+          <span class="kpi-sub">Warga Berpotensi</span>
+        </div>
+        <div class="kpi-breakdown"><strong>Tidak Layak:</strong> 112 warga</div>
+      </div>
+
+      <div class="kpi-card pkh">
+        <div class="kpi-label">PKH Berpotensi Layak</div>
+        <div class="kpi-value-row">
+          <span class="kpi-number" style="color: #b45309;">29</span>
+          <span class="kpi-sub">Warga Berpotensi</span>
+        </div>
+        <div class="kpi-breakdown"><strong>Tidak Layak:</strong> 157 warga</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Table Section -->
+  <main class="container">
+    <div class="data-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">Daftar Kelayakan Warga — Wani Lumbumpetigo</h2>
+          <p class="panel-subtitle" id="resultCountText">Menampilkan data warga terdaftar (No. 151–188 dari dokumen arsip)</p>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <div class="search-box">
+          <span class="search-icon">&#128269;</span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Cari nama lengkap, NIK, atau No. KK..."
+            aria-label="Cari nama lengkap, NIK, atau No. KK"
+          />
+        </div>
+
+        <div class="filter-group" role="group" aria-label="Filter status kelayakan">
+          <button type="button" class="filter-btn active" data-filter="all">Semua</button>
+          <button type="button" class="filter-btn" data-filter="bpnt-layak">BPNT Berpotensi Layak</button>
+          <button type="button" class="filter-btn" data-filter="pkh-layak">PKH Berpotensi Layak</button>
+          <button type="button" class="filter-btn" data-filter="keduanya-tidak">Keduanya Tidak Layak</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama Lengkap</th>
+              <th>NIK</th>
+              <th>No. KK</th>
+              <th>Status BPNT</th>
+              <th>Status PKH</th>
+            </tr>
+          </thead>
+          <tbody id="wargaTableBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display: none;">
+          Tidak ada data warga yang cocok dengan pencarian atau filter yang dipilih.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>Hasil Kelayakan Warga Desa — Wani Lumbumpetigo &bull; Sumber: Portal Perlinsos</span>
+      <span>Pembaruan Arsip: 2026-11-27 18:44:57</span>
+    </div>
+  </footer>
+
+  <script>
+    // Data warga sesuai dokumen PDF (151 - 188)
+    // Tambahkan baris nomor 1 - 150 ke array ini jika ingin menampilkan seluruh 188 data.
+    const wargaData = [
+      { no: 151, nama: "SARIMA", nik: "7203****0003", kk: "7203****0013", bpnt: true, pkh: false },
+      { no: 152, nama: "SARTIKA PANIGORO", nik: "7203****0001", kk: "7203****0001", bpnt: false, pkh: false },
+      { no: 153, nama: "SERLIYANTI", nik: "7203****0001", kk: "7203****0001", bpnt: true, pkh: false },
+      { no: 154, nama: "SIDARIA", nik: "7203****0001", kk: "7203****0001", bpnt: true, pkh: true },
+      { no: 155, nama: "SILVAYANTI", nik: "7203****0002", kk: "7204****0001", bpnt: true, pkh: true },
+      { no: 156, nama: "SIMAENI", nik: "7203****0001", kk: "7203****0001", bpnt: false, pkh: false },
+      { no: 157, nama: "SITI AMINA", nik: "7203****0002", kk: "7203****1699", bpnt: false, pkh: false },
+      { no: 158, nama: "SITIANI", nik: "7203****0012", kk: "7203****0026", bpnt: true, pkh: false },
+      { no: 159, nama: "SITIASIA", nik: "7203****0003", kk: "7203****0016", bpnt: false, pkh: false },
+      { no: 160, nama: "SITIRUPIA", nik: "7203****0001", kk: "7203****0017", bpnt: true, pkh: true },
+      { no: 161, nama: "SUHARNI", nik: "7203****0001", kk: "7203****0002", bpnt: false, pkh: false },
+      { no: 162, nama: "SUKMA", nik: "7203****0001", kk: "7203****0001", bpnt: false, pkh: false },
+      { no: 163, nama: "SUKUR", nik: "7203****0001", kk: "7203****0001", bpnt: false, pkh: false },
+      { no: 164, nama: "SUNARTIN", nik: "7203****0002", kk: "7203****0012", bpnt: false, pkh: false },
+      { no: 165, nama: "SURIATI", nik: "7203****0001", kk: "7203****1476", bpnt: false, pkh: false },
+      { no: 166, nama: "SURIYANI", nik: "7203****0004", kk: "7203****0001", bpnt: false, pkh: false },
+      { no: 167, nama: "SYAFIRA", nik: "7203****0001", kk: "7271****0017", bpnt: false, pkh: false },
+      { no: 168, nama: "SYAFRUDIN DAHLAN", nik: "7203****0004", kk: "7203****1924", bpnt: false, pkh: false },
+      { no: 169, nama: "ULFIAN", nik: "7203****0002", kk: "9271****0000", bpnt: false, pkh: false },
+      { no: 170, nama: "ULFIANI", nik: "7203****0002", kk: "7203****0005", bpnt: false, pkh: false },
+      { no: 171, nama: "UMAR CACO", nik: "7203****0001", kk: "7203****0015", bpnt: false, pkh: false },
+      { no: 172, nama: "VUNGARIA", nik: "7203****0006", kk: "7203****0028", bpnt: true, pkh: false },
+      { no: 173, nama: "WAHDA", nik: "7203****0002", kk: "7203****0016", bpnt: false, pkh: false },
+      { no: 174, nama: "WAHIDA", nik: "7203****0001", kk: "7203****0002", bpnt: true, pkh: false },
+      { no: 175, nama: "WAMI", nik: "7203****0001", kk: "7203****0001", bpnt: true, pkh: false },
+      { no: 176, nama: "WARTIN", nik: "7203****0001", kk: "7203****0006", bpnt: true, pkh: true },
+      { no: 177, nama: "WASNI", nik: "7203****0217", kk: "7203****0002", bpnt: false, pkh: false },
+      { no: 178, nama: "WATI", nik: "7203****0001", kk: "7203****0005", bpnt: true, pkh: false },
+      { no: 179, nama: "WIDADIA", nik: "7203****0002", kk: "7203****0004", bpnt: false, pkh: false },
+      { no: 180, nama: "WIN", nik: "7203****0002", kk: "7203****0002", bpnt: false, pkh: false },
+      { no: 181, nama: "WIRDAN", nik: "7203****0001", kk: "7203****0006", bpnt: false, pkh: false },
+      { no: 182, nama: "WIRNA", nik: "7203****0115", kk: "7203****0001", bpnt: true, pkh: true },
+      { no: 183, nama: "WISYANTI", nik: "7203****0001", kk: "7203****0001", bpnt: true, pkh: false },
+      { no: 184, nama: "YELIMINA", nik: "7203****0162", kk: "7203****1934", bpnt: true, pkh: false },
+      { no: 185, nama: "YULI AMELIA", nik: "7203****0001", kk: "7203****0008", bpnt: false, pkh: false },
+      { no: 186, nama: "YULIANA", nik: "7203****0002", kk: "7203****1520", bpnt: false, pkh: false },
+      { no: 187, nama: "YULIANA AGIS", nik: "7203****0001", kk: "7203****0002", bpnt: true, pkh: false },
+      { no: 188, nama: "YUSNIDAR", nik: "7203****0004", kk: "7203****0016", bpnt: true, pkh: false }
+    ];
+
+    const tbody = document.getElementById("wargaTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const emptyState = document.getElementById("emptyState");
+    const resultCountText = document.getElementById("resultCountText");
+
+    let activeFilter = "all";
+
+    function renderStatusBadge(isLayak) {
+      if (isLayak) {
+        return `<span class="status-badge status-layak">&#10003; Berpotensi Layak</span>`;
+      }
+      return `<span class="status-badge status-tidak">&#10005; Tidak Layak</span>`;
+    }
+
+    function renderTable() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filtered = wargaData.filter((item) => {
+        const matchesQuery =
+          !query ||
+          item.nama.toLowerCase().includes(query) ||
+          item.nik.toLowerCase().includes(query) ||
+          item.kk.toLowerCase().includes(query) ||
+          String(item.no).includes(query);
+
+        let matchesFilter = true;
+        if (activeFilter === "bpnt-layak") {
+          matchesFilter = item.bpnt === true;
+        } else if (activeFilter === "pkh-layak") {
+          matchesFilter = item.pkh === true;
+        } else if (activeFilter === "keduanya-tidak") {
+          matchesFilter = item.bpnt === false && item.pkh === false;
+        }
+
+        return matchesQuery && matchesFilter;
+      });
+
+      tbody.innerHTML = filtered
+        .map(
+          (item) => `
+          <tr>
+            <td class="col-num">${item.no}</td>
+            <td class="col-name">${item.nama}</td>
+            <td><span class="col-code">${item.nik}</span></td>
+            <td><span class="col-code">${item.kk}</span></td>
+            <td>${renderStatusBadge(item.bpnt)}</td>
+            <td>${renderStatusBadge(item.pkh)}</td>
+          </tr>
+        `
+        )
+        .join("");
+
+      emptyState.style.display = filtered.length === 0 ? "block" : "none";
+      resultCountText.textContent = `Menampilkan ${filtered.length} dari ${wargaData.length} baris data yang dimuat (Total arsip desa: 188 warga)`;
+    }
+
+    searchInput.addEventListener("input", renderTable);
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderTable();
+      });
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
